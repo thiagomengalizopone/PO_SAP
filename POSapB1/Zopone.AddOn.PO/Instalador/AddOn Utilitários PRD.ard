@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AddOnRegData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SlientInstallation="No" SlientUpgrade="No" Partnernmsp="Zopone" SchemaVersion="3.0" Type="" MultipleVersion="false" OnDemand="" OnPremise="" ExtName="Utilitarios" ExtVersion="2024.03.04.01" Contdata="Zopone" Partner="Zopone" DBType="MSSQL" ClientType="W">
+  <Validity>
+    <SBOCompatibility>
+      <Version From="9.0" To="11.0" />
+    </SBOCompatibility>
+  </Validity>
+  <Configuration>
+    <Repository>
+      <Properties />
+    </Repository>
+    <Deployment>
+      <Properties />
+    </Deployment>
+    <Assignment>
+      <Properties />
+    </Assignment>
+  </Configuration>
+  <Addons>
+    <Addon Name="" Group="" ForceFlag="" Visible="" AutoAssign="" SelfUpgrd="">
+      <x86 AddonExe="" AddonSig="">
+        <Installation>
+          <Files />
+        </Installation>
+        <Uninstallation>
+          <Files />
+        </Uninstallation>
+      </x86>
+      <x64 AddonExe="C:\Projetos\SAP\sap.dev.addon\Zopone.AddOn.PO\bin\Release\Zopone.AddOn.PO.exe" AddonSig="">
+        <Installation>
+          <Files>
+            <File FileName="Microsoft.Build.Framework.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Framework.pdb">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Framework.xml">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Tasks.Core.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Tasks.Core.pdb">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Tasks.Core.xml">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Utilities.Core.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Utilities.Core.pdb">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Utilities.Core.xml">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.IO.Redist.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.IO.Redist.xml">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.NET.StringTools.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.NET.StringTools.pdb">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.NET.StringTools.xml">
+              <Actions />
+            </File>
+            <File FileName="Newtonsoft.Json.dll">
+              <Actions />
+            </File>
+            <File FileName="Newtonsoft.Json.xml">
+              <Actions />
+            </File>
+            <File FileName="sap.dev.core.dll">
+              <Actions />
+            </File>
+            <File FileName="sap.dev.core.pdb">
+              <Actions />
+            </File>
+            <File FileName="sap.dev.data.dll">
+              <Actions />
+            </File>
+            <File FileName="sap.dev.data.pdb">
+              <Actions />
+            </File>
+            <File FileName="SAPBusinessOneSDK.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Buffers.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Buffers.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Collections.Immutable.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Collections.Immutable.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Configuration.ConfigurationManager.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Configuration.ConfigurationManager.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Memory.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Memory.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Numerics.Vectors.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Numerics.Vectors.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Resources.Extensions.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Resources.Extensions.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Runtime.CompilerServices.Unsafe.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Runtime.CompilerServices.Unsafe.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Security.AccessControl.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Security.AccessControl.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Security.Permissions.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Security.Permissions.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Security.Principal.Windows.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Security.Principal.Windows.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Threading.Tasks.Dataflow.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Threading.Tasks.Dataflow.xml">
+              <Actions />
+            </File>
+            <File FileName="Zopone.AddOn.PO.exe">
+              <Actions />
+            </File>
+            <File FileName="Zopone.AddOn.PO.exe.config">
+              <Actions />
+            </File>
+            <File FileName="Zopone.AddOn.PO.pdb">
+              <Actions />
+            </File>
+            <File FileName="zopone.jpg">
+              <Actions />
+            </File>
+            <File FileName="Zopone.Library.Utilitarios.dll">
+              <Actions />
+            </File>
+            <File FileName="Zopone.Library.Utilitarios.pdb">
+              <Actions />
+            </File>
+            <File FileName="View\Aprovacao\FrmListaPedidos.srf">
+              <Actions />
+            </File>
+            <File FileName="View\Config\FrmConf.srf">
+              <Actions />
+            </File>
+            <File FileName="View\ImportacaoArquivos\FrmConfigImpArq.srf">
+              <Actions />
+            </File>
+            <File FileName="View\Log\FrmLog.srf">
+              <Actions />
+            </File>
+          </Files>
+        </Installation>
+        <Uninstallation>
+          <Files>
+            <File FileName="Microsoft.Build.Framework.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Framework.pdb">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Framework.xml">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Tasks.Core.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Tasks.Core.pdb">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Tasks.Core.xml">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Utilities.Core.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Utilities.Core.pdb">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.Build.Utilities.Core.xml">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.IO.Redist.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.IO.Redist.xml">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.NET.StringTools.dll">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.NET.StringTools.pdb">
+              <Actions />
+            </File>
+            <File FileName="Microsoft.NET.StringTools.xml">
+              <Actions />
+            </File>
+            <File FileName="Newtonsoft.Json.dll">
+              <Actions />
+            </File>
+            <File FileName="Newtonsoft.Json.xml">
+              <Actions />
+            </File>
+            <File FileName="sap.dev.core.dll">
+              <Actions />
+            </File>
+            <File FileName="sap.dev.core.pdb">
+              <Actions />
+            </File>
+            <File FileName="sap.dev.data.dll">
+              <Actions />
+            </File>
+            <File FileName="sap.dev.data.pdb">
+              <Actions />
+            </File>
+            <File FileName="SAPBusinessOneSDK.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Buffers.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Buffers.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Collections.Immutable.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Collections.Immutable.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Configuration.ConfigurationManager.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Configuration.ConfigurationManager.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Memory.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Memory.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Numerics.Vectors.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Numerics.Vectors.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Resources.Extensions.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Resources.Extensions.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Runtime.CompilerServices.Unsafe.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Runtime.CompilerServices.Unsafe.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Security.AccessControl.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Security.AccessControl.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Security.Permissions.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Security.Permissions.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Security.Principal.Windows.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Security.Principal.Windows.xml">
+              <Actions />
+            </File>
+            <File FileName="System.Threading.Tasks.Dataflow.dll">
+              <Actions />
+            </File>
+            <File FileName="System.Threading.Tasks.Dataflow.xml">
+              <Actions />
+            </File>
+            <File FileName="Zopone.AddOn.PO.exe">
+              <Actions />
+            </File>
+            <File FileName="Zopone.AddOn.PO.exe.config">
+              <Actions />
+            </File>
+            <File FileName="Zopone.AddOn.PO.pdb">
+              <Actions />
+            </File>
+            <File FileName="zopone.jpg">
+              <Actions />
+            </File>
+            <File FileName="Zopone.Library.Utilitarios.dll">
+              <Actions />
+            </File>
+            <File FileName="Zopone.Library.Utilitarios.pdb">
+              <Actions />
+            </File>
+            <File FileName="View\Aprovacao\FrmListaPedidos.srf">
+              <Actions />
+            </File>
+            <File FileName="View\Config\FrmConf.srf">
+              <Actions />
+            </File>
+            <File FileName="View\ImportacaoArquivos\FrmConfigImpArq.srf">
+              <Actions />
+            </File>
+            <File FileName="View\Log\FrmLog.srf">
+              <Actions />
+            </File>
+          </Files>
+        </Uninstallation>
+      </x64>
+    </Addon>
+  </Addons>
+  <XApps>
+    <XApp Name="" Path="" FileName="" />
+  </XApps>
+  <UDQs>
+    <UDQ udqname="">
+      <Hana FileName="" />
+    </UDQ>
+  </UDQs>
+</AddOnRegData>

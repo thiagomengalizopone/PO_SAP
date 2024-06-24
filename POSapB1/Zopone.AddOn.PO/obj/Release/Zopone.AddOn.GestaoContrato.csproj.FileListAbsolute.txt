@@ -1,0 +1,16 @@
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\bin\Release\Zopone.AddOn.GestaoContrato.exe.config
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\bin\Release\Zopone.AddOn.GestaoContrato.exe
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\bin\Release\Zopone.AddOn.GestaoContrato.pdb
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\bin\Release\sap.dev.core.dll
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\bin\Release\SAPBusinessOneSDK.dll
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\bin\Release\sap.dev.core.pdb
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\obj\Release\Zopone.AddOn.GestaoContrato.csproj.AssemblyReference.cache
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\obj\Release\Zopone.AddOn.GestaoContrato.csproj.SuggestedBindingRedirects.cache
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\obj\Release\Zopone.AddOn.GestaoContrato.Properties.Resources.resources
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\obj\Release\Zopone.AddOn.GestaoContrato.csproj.GenerateResource.cache
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\obj\Release\Zopone.AddOn.GestaoContrato.csproj.CoreCompileInputs.cache
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\obj\Release\Zopone.AddOn.GestaoContrato.csproj.CopyComplete
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\obj\Release\Zopone.AddOn.GestaoContrato.exe
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\obj\Release\Zopone.AddOn.GestaoContrato.pdb
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\bin\Release\sap.dev.data.dll
+C:\Users\thiag\OneDrive\Zopone\Projeto\Zopone.AddOn.GestaoContrato\bin\Release\sap.dev.data.pdb

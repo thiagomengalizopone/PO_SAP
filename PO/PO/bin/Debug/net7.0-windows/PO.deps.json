@@ -1,0 +1,62 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "PO/1.0.0": {
+        "dependencies": {
+          "sap.dev.core": "1.0.0"
+        },
+        "runtime": {
+          "PO.dll": {}
+        }
+      },
+      "sap.dev.core/1.0.0": {
+        "runtime": {
+          "sap.dev.core.dll": {}
+        }
+      },
+      "SAPBusinessOneSDK/1.0.0.1": {
+        "runtime": {
+          "SAPBusinessOneSDK.dll": {
+            "assemblyVersion": "1.0.0.1",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "sap.dev.data/1.0.0.0": {
+        "runtime": {
+          "sap.dev.data.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PO/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "sap.dev.core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SAPBusinessOneSDK/1.0.0.1": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "sap.dev.data/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
