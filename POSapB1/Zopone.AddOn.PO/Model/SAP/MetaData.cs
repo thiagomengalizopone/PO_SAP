@@ -36,6 +36,30 @@ namespace Zopone.AddOn.PO.Model.SAP
                 valoresValidosEDF.Add(new Tuple<string, string>("ET", "Obra de Construção Cívil - Empreitada Total"));
                 valoresValidosEDF.Add(new Tuple<string, string>("EP", "Obra de Construção Cívil - Empreitada Parcial"));
 
+                #region Alocação
+                var valoresValidosClassificacao = new List<Tuple<string, string>>();
+                valoresValidosClassificacao.Add(new Tuple<string, string>("C", "Contrato"));
+                valoresValidosClassificacao.Add(new Tuple<string, string>("O", "Obra"));
+
+                var valoreSValidosTipo = new List<Tuple<string, string>>();
+                valoreSValidosTipo.Add(new Tuple<string, string>("A", "Analítico"));
+                valoreSValidosTipo.Add(new Tuple<string, string>("S", "Sintético"));
+
+                DBCreation.CriarTabelaUsuario("ZPN_ALOCA", "Cadastro Alocação - Etapa Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "Classif", "Classificação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresValidosClassificacao);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "Ref", "Referência", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "Desc", "Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "Tipo", "Tipo", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoreSValidosTipo);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "ItensRec", "Itens do Recebimento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresValidosSimNao);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "ItensPed", "Itens do Pedido", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresValidosSimNao);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "ItensFat", "Itens de Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresValidosSimNao);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "ExporEtap", "Exportar Etapa", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresValidosSimNao);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "Perc", "Percentual", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Percentage, 40, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "EtapaRec", "Etapa Recebimento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "EtapaRecD", "Etapa Recebimento Desc", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarUDO("ZPN_ALOCA", "ZPN_ALOCA", "ZPN_ALOCA", SAPbobsCOM.BoUDOObjType.boud_MasterData);
+                #endregion 
+
 
                 DBCreation.CriarTabelaUsuario("ZPN_CLASSOB", "Cadastro Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "Posicao", "Posição", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);

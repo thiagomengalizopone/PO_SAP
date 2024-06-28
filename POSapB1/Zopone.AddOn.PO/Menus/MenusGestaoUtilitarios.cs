@@ -40,11 +40,19 @@ namespace Zopone.AddOn.PO.Menus
                      null));
 
             listMenu.Add(new Menu(
+                   MenuConstantes.MnuFaturamento,
+                   BoMenuType.mt_STRING,
+                   MenuConstantes.MnuAlocacao,
+                   "Alocação",
+                   16,
+                   null));
+
+            listMenu.Add(new Menu(
                       MenuConstantes.MnuFaturamento,
                       BoMenuType.mt_STRING,
                       MenuConstantes.MnuCadPO,
                       "Cadastro de PO",
-                      16,
+                      17,
                       null));
 
            

@@ -32,12 +32,10 @@ namespace Zopone.AddOn.PO
             Configuracoes.CarregarConfiguracaoes();
             UtilAddOn.UtilAddOn.CarregarMenus();
 
-
             Globals.Master.Connection.Interface.MenuEvent += MenuEventHandler.Interface_MenuEvent;
             Globals.Master.Connection.Interface.ItemEvent += ItemEventHandler.Interface_ItemEvent;
             Globals.Master.Connection.Interface.FormDataEvent += FormDataEventHandler.Interface_FormDataEvent;
             Globals.Master.Connection.Interface.RightClickEvent += RightClickEventHandler.Interface_RightClickEvent;
-
         }
 
         private static Int32 GetDLLVersion()

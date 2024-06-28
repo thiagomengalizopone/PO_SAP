@@ -118,7 +118,6 @@ namespace Zopone.AddOn.PO.View.Obra
             EdLatitude = (EditText)oForm.Items.Item("EdLat").Specific;
             EdLongitude = (EditText)oForm.Items.Item("EdLong").Specific;
             EdAltitude = (EditText)oForm.Items.Item("EdAlt").Specific;
-            EdAltitude.LostFocusAfter += EdAltitude_LostFocusAfter;
 
             BtAddCandidato = (Button)oForm.Items.Item("BtAddCA").Specific;
             BtAddCandidato.PressedAfter += BtAddCandidato_PressedAfter;
@@ -181,7 +180,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 oForm.DataSources.UserDataSources.Item("Altit").ValueEx = DBObraCandidato.GetValue("U_Altitude", pVal.Row - 1);
 
                 UsRowId.ValueEx = pVal.Row.ToString();
-                UsRowId.ValueEx = "-1";
+
+                BtAddCandidato.Caption = "Atualizar";
 
             }
             catch (Exception Ex)
@@ -199,21 +199,22 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                int RowId = -1;
-
-                if (Convert.ToInt32(UsRowId.ValueEx) >= 0)
-                    RowId = Convert.ToInt32(UsRowId.ValueEx);
-                else
-                    RowId = DBObraCandidato.Size - 1;
-
-
-                oForm.Freeze(true);
-
+                
                 MtCandidato.FlushToDataSource();
-
+                
                 Util.DBDataSourceRemoveLinhasBranco(DBObraCandidato, "U_Identif");
 
-                DBObraCandidato.InsertRecord(DBObraCandidato.Size);
+                int RowId = -1;
+
+                if (!string.IsNullOrEmpty(UsRowId.ValueEx) && Convert.ToInt32(UsRowId.ValueEx) >= 0)
+                    RowId = Convert.ToInt32(UsRowId.ValueEx) - 1;
+                else
+                {
+                    DBObraCandidato.InsertRecord(DBObraCandidato.Size);
+                    RowId = DBObraCandidato.Size - 1;
+                }
+
+                oForm.Freeze(true);
 
                 DBObraCandidato.SetValue("U_Identif", RowId, EdIdent.Value);
                 DBObraCandidato.SetValue("U_Tipo", RowId, EdTipo.Value);
@@ -253,6 +254,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 MtCandidato.LoadFromDataSourceEx();
 
                 UsRowId.ValueEx = "-1";
+
+                BtAddCandidato.Caption = "Adicionar";
             }
             catch (Exception Ex)
             {
@@ -262,11 +265,6 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 oForm.Freeze(false);
             }
-        }
-
-        private void EdAltitude_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
-        {
-            AdicionaCandidato();
         }
 
         private void BtAddCandidato_PressedAfter(object sboObject, SBOItemEventArg pVal)

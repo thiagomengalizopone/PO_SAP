@@ -146,6 +146,8 @@
     <Compile Include="Events\ItemEventHandler.cs" />
     <Compile Include="Events\MenuEventHandler.cs" />
     <Compile Include="Events\RightClickEventHandler.cs" />
+    <Compile Include="Helpers\UtilCustomize.cs" />
+    <Compile Include="Helpers\UtilTextBox.cs" />
     <Compile Include="Install.cs" />
     <Compile Include="InstanceStartup.cs" />
     <Compile Include="Menus\AddMenusGestaoContratos.cs" />
@@ -161,11 +163,24 @@
     <Compile Include="UtilAddOn\AprovacaoDocumento.cs" />
     <Compile Include="UtilAddOn\UtilAddOn.cs" />
     <Compile Include="UtilAddOn\Configuracoes.cs" />
+    <Compile Include="View\Alocação\FrmAloca.cs" />
     <Compile Include="View\ClassificacaoObra\FrmClassObra.cs" />
     <Compile Include="View\ConfiguracaoImportWMS\FrmConfigImpWMS.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
     <Compile Include="View\ObraProjeto\Frm711.cs" />
     <Compile Include="View\Obra\FrmObra.cs" />
+    <Compile Include="View\PO\FrmPesquisa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\PO\FrmPesquisa.Designer.cs">
+      <DependentUpon>FrmPesquisa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\PO\FrmPO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\PO\FrmPO.Designer.cs">
+      <DependentUpon>FrmPO.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -177,6 +192,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="AddOnMain.cs" />
+    <EmbeddedResource Include="View\PO\FrmPesquisa.resx">
+      <DependentUpon>FrmPesquisa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\PO\FrmPO.resx">
+      <DependentUpon>FrmPO.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -218,6 +239,12 @@
     <EmbeddedResource Include="View\ClassificacaoObra\FrmClassObra.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAOBRA.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAOBRACANDIDATO.sql" />
+    <EmbeddedResource Include="View\Alocação\FrmAloca.srf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAETAPA.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

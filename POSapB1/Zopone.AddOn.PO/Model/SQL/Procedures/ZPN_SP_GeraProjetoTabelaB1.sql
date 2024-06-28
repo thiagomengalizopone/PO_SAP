@@ -37,8 +37,8 @@ SELECT
 	'N',
 	GETDATE(),
 	FORMAT(GETDATE(), 'HHmm'),
-	null,
-	null,
+	GETDATE(),
+	FORMAT(GETDATE(), 'HHmm'),
 	'O'
 FROM
 	OPRJ 
