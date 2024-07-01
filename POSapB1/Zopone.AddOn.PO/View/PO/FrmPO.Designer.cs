@@ -35,9 +35,9 @@ namespace Zopone.AddOn.PO.View.Obra
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -52,27 +52,15 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label2 = new System.Windows.Forms.Label();
             this.txtAnexo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblItemFat = new System.Windows.Forms.Label();
             this.lblCliente = new System.Windows.Forms.Label();
             this.lblObra = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.maskedTextBox4 = new System.Windows.Forms.MaskedTextBox();
-            this.maskedTextBox3 = new System.Windows.Forms.MaskedTextBox();
+            this.txtValor = new System.Windows.Forms.TextBox();
+            this.mskDataFaturamento = new System.Windows.Forms.MaskedTextBox();
+            this.mskDataLancamento = new System.Windows.Forms.MaskedTextBox();
             this.maskedTextBox2 = new System.Windows.Forms.MaskedTextBox();
             this.BtAdicionar = new System.Windows.Forms.Button();
             this.DgItensPO = new System.Windows.Forms.DataGridView();
-            this.Obra = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Candidato = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Cliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Parcela = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataLancamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NroNF = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataSolicitacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Observacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label20 = new System.Windows.Forms.Label();
             this.txtObservacao = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
@@ -97,7 +85,21 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtObra = new System.Windows.Forms.TextBox();
             this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.lblItemFat = new System.Windows.Forms.Label();
+            this.Obra = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Candidato = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Parcela = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataLancamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NroNF = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataSolicitacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Observacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblItemCode = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -210,12 +212,13 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblItemCode);
             this.groupBox1.Controls.Add(this.lblItemFat);
             this.groupBox1.Controls.Add(this.lblCliente);
             this.groupBox1.Controls.Add(this.lblObra);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.maskedTextBox4);
-            this.groupBox1.Controls.Add(this.maskedTextBox3);
+            this.groupBox1.Controls.Add(this.txtValor);
+            this.groupBox1.Controls.Add(this.mskDataFaturamento);
+            this.groupBox1.Controls.Add(this.mskDataLancamento);
             this.groupBox1.Controls.Add(this.maskedTextBox2);
             this.groupBox1.Controls.Add(this.BtAdicionar);
             this.groupBox1.Controls.Add(this.DgItensPO);
@@ -248,6 +251,16 @@ namespace Zopone.AddOn.PO.View.Obra
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Itens - PO";
             // 
+            // lblItemFat
+            // 
+            this.lblItemFat.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemFat.ForeColor = System.Drawing.Color.Red;
+            this.lblItemFat.Location = new System.Drawing.Point(683, 92);
+            this.lblItemFat.Name = "lblItemFat";
+            this.lblItemFat.Size = new System.Drawing.Size(302, 22);
+            this.lblItemFat.TabIndex = 50;
+            this.lblItemFat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // lblCliente
             // 
             this.lblCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -267,33 +280,34 @@ namespace Zopone.AddOn.PO.View.Obra
             this.lblObra.Size = new System.Drawing.Size(302, 22);
             this.lblObra.TabIndex = 48;
             this.lblObra.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.lblObra.Click += new System.EventHandler(this.lblObra_Click);
             // 
-            // textBox1
+            // txtValor
             // 
-            this.textBox1.Location = new System.Drawing.Point(90, 140);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(130, 22);
-            this.textBox1.TabIndex = 13;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.txtValor.Location = new System.Drawing.Point(90, 140);
+            this.txtValor.Name = "txtValor";
+            this.txtValor.Size = new System.Drawing.Size(130, 22);
+            this.txtValor.TabIndex = 13;
+            this.txtValor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtValor.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
             // 
-            // maskedTextBox4
+            // mskDataFaturamento
             // 
-            this.maskedTextBox4.Location = new System.Drawing.Point(467, 140);
-            this.maskedTextBox4.Mask = "99/99/9999";
-            this.maskedTextBox4.Name = "maskedTextBox4";
-            this.maskedTextBox4.Size = new System.Drawing.Size(100, 22);
-            this.maskedTextBox4.TabIndex = 16;
-            this.maskedTextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.mskDataFaturamento.Location = new System.Drawing.Point(467, 140);
+            this.mskDataFaturamento.Mask = "99/99/9999";
+            this.mskDataFaturamento.Name = "mskDataFaturamento";
+            this.mskDataFaturamento.Size = new System.Drawing.Size(100, 22);
+            this.mskDataFaturamento.TabIndex = 16;
+            this.mskDataFaturamento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // maskedTextBox3
+            // mskDataLancamento
             // 
-            this.maskedTextBox3.Location = new System.Drawing.Point(348, 140);
-            this.maskedTextBox3.Mask = "99/99/9999";
-            this.maskedTextBox3.Name = "maskedTextBox3";
-            this.maskedTextBox3.Size = new System.Drawing.Size(100, 22);
-            this.maskedTextBox3.TabIndex = 15;
-            this.maskedTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.mskDataLancamento.Location = new System.Drawing.Point(348, 140);
+            this.mskDataLancamento.Mask = "99/99/9999";
+            this.mskDataLancamento.Name = "mskDataLancamento";
+            this.mskDataLancamento.Size = new System.Drawing.Size(100, 22);
+            this.mskDataLancamento.TabIndex = 15;
+            this.mskDataLancamento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // maskedTextBox2
             // 
@@ -316,14 +330,14 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // DgItensPO
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.DgItensPO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgItensPO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Obra,
@@ -331,6 +345,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.Cliente,
             this.Item,
             this.ItemFaturamento,
+            this.ItemCode,
             this.Parcela,
             this.Valor,
             this.Tipo,
@@ -339,133 +354,29 @@ namespace Zopone.AddOn.PO.View.Obra
             this.NroNF,
             this.DataSolicitacao,
             this.Observacao});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle5;
             this.DgItensPO.Location = new System.Drawing.Point(6, 232);
             this.DgItensPO.Name = "DgItensPO";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.DgItensPO.RowHeadersWidth = 51;
             this.DgItensPO.RowTemplate.Height = 24;
             this.DgItensPO.Size = new System.Drawing.Size(1093, 392);
             this.DgItensPO.TabIndex = 21;
             this.DgItensPO.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgItensPO_CellContentClick);
-            // 
-            // Obra
-            // 
-            this.Obra.HeaderText = "Obra";
-            this.Obra.MinimumWidth = 6;
-            this.Obra.Name = "Obra";
-            this.Obra.ReadOnly = true;
-            this.Obra.Width = 125;
-            // 
-            // Candidato
-            // 
-            this.Candidato.HeaderText = "Candidato";
-            this.Candidato.MinimumWidth = 6;
-            this.Candidato.Name = "Candidato";
-            this.Candidato.ReadOnly = true;
-            this.Candidato.Width = 125;
-            // 
-            // Cliente
-            // 
-            this.Cliente.HeaderText = "Cliente";
-            this.Cliente.MinimumWidth = 6;
-            this.Cliente.Name = "Cliente";
-            this.Cliente.ReadOnly = true;
-            this.Cliente.Width = 125;
-            // 
-            // Item
-            // 
-            this.Item.HeaderText = "Item";
-            this.Item.MinimumWidth = 6;
-            this.Item.Name = "Item";
-            this.Item.ReadOnly = true;
-            this.Item.Width = 125;
-            // 
-            // ItemFaturamento
-            // 
-            this.ItemFaturamento.HeaderText = "Item Faturamento";
-            this.ItemFaturamento.MinimumWidth = 6;
-            this.ItemFaturamento.Name = "ItemFaturamento";
-            this.ItemFaturamento.ReadOnly = true;
-            this.ItemFaturamento.Width = 125;
-            // 
-            // Parcela
-            // 
-            this.Parcela.HeaderText = "Parcela";
-            this.Parcela.MinimumWidth = 6;
-            this.Parcela.Name = "Parcela";
-            this.Parcela.ReadOnly = true;
-            this.Parcela.Width = 125;
-            // 
-            // Valor
-            // 
-            this.Valor.HeaderText = "Valor";
-            this.Valor.MinimumWidth = 6;
-            this.Valor.Name = "Valor";
-            this.Valor.ReadOnly = true;
-            this.Valor.Width = 125;
-            // 
-            // Tipo
-            // 
-            this.Tipo.HeaderText = "Tipo";
-            this.Tipo.MinimumWidth = 6;
-            this.Tipo.Name = "Tipo";
-            this.Tipo.ReadOnly = true;
-            this.Tipo.Width = 125;
-            // 
-            // DataLancamento
-            // 
-            this.DataLancamento.HeaderText = "Data Lancamento";
-            this.DataLancamento.MinimumWidth = 6;
-            this.DataLancamento.Name = "DataLancamento";
-            this.DataLancamento.ReadOnly = true;
-            this.DataLancamento.Width = 125;
-            // 
-            // DataFaturamento
-            // 
-            this.DataFaturamento.HeaderText = "Data Faturamento";
-            this.DataFaturamento.MinimumWidth = 6;
-            this.DataFaturamento.Name = "DataFaturamento";
-            this.DataFaturamento.ReadOnly = true;
-            this.DataFaturamento.Width = 125;
-            // 
-            // NroNF
-            // 
-            this.NroNF.HeaderText = "Nro NF";
-            this.NroNF.MinimumWidth = 6;
-            this.NroNF.Name = "NroNF";
-            this.NroNF.ReadOnly = true;
-            this.NroNF.Width = 125;
-            // 
-            // DataSolicitacao
-            // 
-            this.DataSolicitacao.HeaderText = "Data Solicitação";
-            this.DataSolicitacao.MinimumWidth = 6;
-            this.DataSolicitacao.Name = "DataSolicitacao";
-            this.DataSolicitacao.ReadOnly = true;
-            this.DataSolicitacao.Width = 125;
-            // 
-            // Observacao
-            // 
-            this.Observacao.HeaderText = "Observação";
-            this.Observacao.MinimumWidth = 6;
-            this.Observacao.Name = "Observacao";
-            this.Observacao.ReadOnly = true;
-            this.Observacao.Width = 125;
             // 
             // label20
             // 
@@ -482,6 +393,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtObservacao.Name = "txtObservacao";
             this.txtObservacao.Size = new System.Drawing.Size(565, 22);
             this.txtObservacao.TabIndex = 19;
+            this.txtObservacao.Validated += new System.EventHandler(this.txtObservacao_Validated);
             // 
             // label19
             // 
@@ -675,15 +587,141 @@ namespace Zopone.AddOn.PO.View.Obra
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
             // 
-            // lblItemFat
+            // Obra
             // 
-            this.lblItemFat.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemFat.ForeColor = System.Drawing.Color.Red;
-            this.lblItemFat.Location = new System.Drawing.Point(683, 92);
-            this.lblItemFat.Name = "lblItemFat";
-            this.lblItemFat.Size = new System.Drawing.Size(302, 22);
-            this.lblItemFat.TabIndex = 50;
-            this.lblItemFat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.Obra.DataPropertyName = "Project";
+            this.Obra.HeaderText = "Obra";
+            this.Obra.MinimumWidth = 6;
+            this.Obra.Name = "Obra";
+            this.Obra.ReadOnly = true;
+            this.Obra.Width = 125;
+            // 
+            // Candidato
+            // 
+            this.Candidato.DataPropertyName = "U_Candidato";
+            this.Candidato.HeaderText = "Candidato";
+            this.Candidato.MinimumWidth = 6;
+            this.Candidato.Name = "Candidato";
+            this.Candidato.ReadOnly = true;
+            this.Candidato.Width = 125;
+            // 
+            // Cliente
+            // 
+            this.Cliente.DataPropertyName = "U_CardCode";
+            this.Cliente.HeaderText = "Cliente";
+            this.Cliente.MinimumWidth = 6;
+            this.Cliente.Name = "Cliente";
+            this.Cliente.ReadOnly = true;
+            this.Cliente.Width = 125;
+            // 
+            // Item
+            // 
+            this.Item.DataPropertyName = "U_Item";
+            this.Item.HeaderText = "Item";
+            this.Item.MinimumWidth = 6;
+            this.Item.Name = "Item";
+            this.Item.ReadOnly = true;
+            this.Item.Width = 125;
+            // 
+            // ItemFaturamento
+            // 
+            this.ItemFaturamento.DataPropertyName = "U_ItemFat";
+            this.ItemFaturamento.HeaderText = "Item Faturamento";
+            this.ItemFaturamento.MinimumWidth = 6;
+            this.ItemFaturamento.Name = "ItemFaturamento";
+            this.ItemFaturamento.ReadOnly = true;
+            this.ItemFaturamento.Width = 125;
+            // 
+            // ItemCode
+            // 
+            this.ItemCode.DataPropertyName = "ItemCode";
+            this.ItemCode.HeaderText = "Item SAP";
+            this.ItemCode.MinimumWidth = 6;
+            this.ItemCode.Name = "ItemCode";
+            this.ItemCode.ReadOnly = true;
+            this.ItemCode.Width = 125;
+            // 
+            // Parcela
+            // 
+            this.Parcela.DataPropertyName = "U_Parcela";
+            this.Parcela.HeaderText = "Parcela";
+            this.Parcela.MinimumWidth = 6;
+            this.Parcela.Name = "Parcela";
+            this.Parcela.ReadOnly = true;
+            this.Parcela.Width = 125;
+            // 
+            // Valor
+            // 
+            this.Valor.DataPropertyName = "LineTotal";
+            this.Valor.HeaderText = "Valor";
+            this.Valor.MinimumWidth = 6;
+            this.Valor.Name = "Valor";
+            this.Valor.ReadOnly = true;
+            this.Valor.Width = 125;
+            // 
+            // Tipo
+            // 
+            this.Tipo.DataPropertyName = "U_Tipo";
+            this.Tipo.HeaderText = "Tipo";
+            this.Tipo.MinimumWidth = 6;
+            this.Tipo.Name = "Tipo";
+            this.Tipo.ReadOnly = true;
+            this.Tipo.Width = 125;
+            // 
+            // DataLancamento
+            // 
+            this.DataLancamento.DataPropertyName = "U_DataLanc";
+            this.DataLancamento.HeaderText = "Data Lancamento";
+            this.DataLancamento.MinimumWidth = 6;
+            this.DataLancamento.Name = "DataLancamento";
+            this.DataLancamento.ReadOnly = true;
+            this.DataLancamento.Width = 125;
+            // 
+            // DataFaturamento
+            // 
+            this.DataFaturamento.DataPropertyName = "U_DataFat";
+            this.DataFaturamento.HeaderText = "Data Faturamento";
+            this.DataFaturamento.MinimumWidth = 6;
+            this.DataFaturamento.Name = "DataFaturamento";
+            this.DataFaturamento.ReadOnly = true;
+            this.DataFaturamento.Width = 125;
+            // 
+            // NroNF
+            // 
+            this.NroNF.DataPropertyName = "U_NroNF";
+            this.NroNF.HeaderText = "Nro NF";
+            this.NroNF.MinimumWidth = 6;
+            this.NroNF.Name = "NroNF";
+            this.NroNF.ReadOnly = true;
+            this.NroNF.Width = 125;
+            // 
+            // DataSolicitacao
+            // 
+            this.DataSolicitacao.DataPropertyName = "U_DataSol";
+            this.DataSolicitacao.HeaderText = "Data Solicitação";
+            this.DataSolicitacao.MinimumWidth = 6;
+            this.DataSolicitacao.Name = "DataSolicitacao";
+            this.DataSolicitacao.ReadOnly = true;
+            this.DataSolicitacao.Width = 125;
+            // 
+            // Observacao
+            // 
+            this.Observacao.DataPropertyName = "FreeTxt";
+            this.Observacao.HeaderText = "Observação";
+            this.Observacao.MinimumWidth = 6;
+            this.Observacao.Name = "Observacao";
+            this.Observacao.ReadOnly = true;
+            this.Observacao.Width = 125;
+            // 
+            // lblItemCode
+            // 
+            this.lblItemCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemCode.ForeColor = System.Drawing.Color.Red;
+            this.lblItemCode.Location = new System.Drawing.Point(991, 89);
+            this.lblItemCode.Name = "lblItemCode";
+            this.lblItemCode.Size = new System.Drawing.Size(108, 22);
+            this.lblItemCode.TabIndex = 51;
+            this.lblItemCode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // FrmPO
             // 
@@ -763,13 +801,19 @@ namespace Zopone.AddOn.PO.View.Obra
         private Button BtAdicionar;
         private MaskedTextBox maskedTextBox2;
         private MaskedTextBox maskedTextBox1;
-        private MaskedTextBox maskedTextBox4;
-        private MaskedTextBox maskedTextBox3;
+        private MaskedTextBox mskDataFaturamento;
+        private MaskedTextBox mskDataLancamento;
+        private TextBox txtValor;
+        private TextBox textBox2;
+        private Label lblObra;
+        private Label lblCliente;
+        private Label lblItemFat;
         private DataGridViewTextBoxColumn Obra;
         private DataGridViewTextBoxColumn Candidato;
         private DataGridViewTextBoxColumn Cliente;
         private DataGridViewTextBoxColumn Item;
         private DataGridViewTextBoxColumn ItemFaturamento;
+        private DataGridViewTextBoxColumn ItemCode;
         private DataGridViewTextBoxColumn Parcela;
         private DataGridViewTextBoxColumn Valor;
         private DataGridViewTextBoxColumn Tipo;
@@ -778,11 +822,7 @@ namespace Zopone.AddOn.PO.View.Obra
         private DataGridViewTextBoxColumn NroNF;
         private DataGridViewTextBoxColumn DataSolicitacao;
         private DataGridViewTextBoxColumn Observacao;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private Label lblObra;
-        private Label lblCliente;
-        private Label lblItemFat;
+        private Label lblItemCode;
     }
 }
 

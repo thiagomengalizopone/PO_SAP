@@ -12,6 +12,9 @@ namespace Zopone.AddOn.PO.View.Alocação
         EditText EdEtapa { get; set; }
         EditText EdEtapaDescricao { get; set; }
 
+        EditText EdItemCode { get; set; }
+        EditText EdItemName { get; set; }
+
         #endregion
 
         public FrmAloca() : base()
@@ -23,8 +26,32 @@ namespace Zopone.AddOn.PO.View.Alocação
             EdEtapa.ChooseFromListAfter += EdEtapa_ChooseFromListAfter;
             EdEtapa = (EditText)oForm.Items.Item("EdEtapD").Specific;
 
+            EdItemCode = (EditText)oForm.Items.Item("EdItemCode").Specific;
+            EdItemCode.ChooseFromListAfter += EdItemCode_ChooseFromListAfter;
+            EdItemName = (EditText)oForm.Items.Item("EdItemName").Specific;
+
             oForm.Visible = true;
 
+        }
+
+        private void EdItemCode_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                if (aEvent.SelectedObjects == null)
+                    return;
+
+                string ItemCode = Convert.ToString(aEvent.SelectedObjects.GetValue("ItemCode", 0));
+                string ItemName = Convert.ToString(aEvent.SelectedObjects.GetValue("ItemName", 0));
+
+                EdItemCode.Value = ItemCode;
+                EdItemName.Value = ItemName;
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar Etapa: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
         private void EdEtapa_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)

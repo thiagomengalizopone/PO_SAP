@@ -152,6 +152,7 @@
     <Compile Include="InstanceStartup.cs" />
     <Compile Include="Menus\AddMenusGestaoContratos.cs" />
     <Compile Include="Menus\MenusGestaoUtilitarios.cs" />
+    <Compile Include="Model\Objects\LinePO.cs" />
     <Compile Include="Model\SAP\MetaData.cs" />
     <Compile Include="Model\ScriptSQL.cs" />
     <Compile Include="Model\SqlFunctions.cs" />
