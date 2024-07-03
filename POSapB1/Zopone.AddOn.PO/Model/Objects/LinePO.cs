@@ -10,6 +10,7 @@ namespace Zopone.AddOn.PO.Model.Objects
     
     public class LinePO
     {
+        public Int32 LineNum { get; set; }
         public string Project   { get; set; }
         public string U_Candidato { get; set; }
         public string U_CardCode { get; set; }

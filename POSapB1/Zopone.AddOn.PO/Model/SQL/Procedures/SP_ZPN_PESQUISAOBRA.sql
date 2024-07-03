@@ -1,4 +1,4 @@
-﻿create PROCEDURE SP_ZPN_PESQUISAOBRA
+﻿CREATE PROCEDURE SP_ZPN_PESQUISAOBRA
 (
 	@CampoPesquisa varchar(250)
 )
@@ -10,18 +10,22 @@ AS
 
 		OPRJ.PrjCode	"Código Obra",
 		OPRJ.PRjName	"Obra",
-		OPRJ.U_IdSite	"Id Site",
+		ZPN_PRJ.U_IdSite	"Id Site",
 		ooat.Descript	"Contrato",
 		OBPL.BplName	"Filial",
 		OCRD."CardCode" "Código Cliente",
 		OCRD."CardName" "Cliente",
-		CLASS.Name		"Classificação Obra"
+		CLASS.Name		"Classificação Obra",
+		ZPN_PRJ.U_BplId	"ID Filial",
+		OBPL.BplName	"Filial/Empresa"
+
 	FROM 
 		OPRJ 
-		INNER JOIN OBPL					ON OPRJ.U_BPLId		= OBPL.BplId
-		INNER JOIN OOAT					ON OOAT.Number		= OPRJ.U_CodContrato
+		INNER JOIN "@ZPN_OPRJ" ZPN_PRJ	ON OPRJ.PrjCode     = ZPN_PRJ."Code"
+		INNER JOIN OBPL					ON ZPN_PRJ.U_BPLId	= OBPL.BplId
+		INNER JOIN OOAT					ON OOAT.Number		= ZPN_PRJ.U_CodContrato
 		INNER JOIN OCRD					ON OCRD."CardCode"	=  ooat."BPCode"
-		LEFT  JOIN "@ZPN_CLASSOB" CLASS	ON CLASS."Code"     = OPRJ.U_ClassOb
+		LEFT  JOIN "@ZPN_CLASSOB" CLASS	ON CLASS."Code"     = ZPN_PRJ.U_ClassOb
 	WHERE
 		OPRJ.PrjCode like '%' + @CampoPesquisa + '%' or 
 		OPRJ.PRjName like '%' + @CampoPesquisa + '%' or 
@@ -30,5 +34,6 @@ AS
 		CLASS.Name like '%' + @CampoPesquisa + '%' 
 	ORDER BY
 		OPRJ.PRjName;
+
 
 	

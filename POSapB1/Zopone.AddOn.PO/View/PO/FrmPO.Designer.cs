@@ -35,9 +35,9 @@ namespace Zopone.AddOn.PO.View.Obra
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -52,6 +52,9 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label2 = new System.Windows.Forms.Label();
             this.txtAnexo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BtCancelar = new System.Windows.Forms.Button();
+            this.BtSalvar = new System.Windows.Forms.Button();
+            this.lblItemCode = new System.Windows.Forms.Label();
             this.lblItemFat = new System.Windows.Forms.Label();
             this.lblCliente = new System.Windows.Forms.Label();
             this.lblObra = new System.Windows.Forms.Label();
@@ -61,6 +64,20 @@ namespace Zopone.AddOn.PO.View.Obra
             this.maskedTextBox2 = new System.Windows.Forms.MaskedTextBox();
             this.BtAdicionar = new System.Windows.Forms.Button();
             this.DgItensPO = new System.Windows.Forms.DataGridView();
+            this.Obra = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Candidato = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Parcela = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataLancamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NroNF = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataSolicitacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Observacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label20 = new System.Windows.Forms.Label();
             this.txtObservacao = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
@@ -83,23 +100,9 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtCandidato = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txtObra = new System.Windows.Forms.TextBox();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.mskDATA = new System.Windows.Forms.MaskedTextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.Obra = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Candidato = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Cliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Parcela = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataLancamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NroNF = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataSolicitacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Observacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lblItemCode = new System.Windows.Forms.Label();
+            this.CbStatus = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -212,6 +215,8 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.BtCancelar);
+            this.groupBox1.Controls.Add(this.BtSalvar);
             this.groupBox1.Controls.Add(this.lblItemCode);
             this.groupBox1.Controls.Add(this.lblItemFat);
             this.groupBox1.Controls.Add(this.lblCliente);
@@ -246,10 +251,40 @@ namespace Zopone.AddOn.PO.View.Obra
             this.groupBox1.Controls.Add(this.txtObra);
             this.groupBox1.Location = new System.Drawing.Point(12, 249);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1105, 643);
+            this.groupBox1.Size = new System.Drawing.Size(1105, 543);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Itens - PO";
+            // 
+            // BtCancelar
+            // 
+            this.BtCancelar.Location = new System.Drawing.Point(87, 492);
+            this.BtCancelar.Name = "BtCancelar";
+            this.BtCancelar.Size = new System.Drawing.Size(75, 23);
+            this.BtCancelar.TabIndex = 53;
+            this.BtCancelar.Text = "Cancelar";
+            this.BtCancelar.UseVisualStyleBackColor = true;
+            this.BtCancelar.Click += new System.EventHandler(this.BtCancelar_Click);
+            // 
+            // BtSalvar
+            // 
+            this.BtSalvar.Location = new System.Drawing.Point(6, 492);
+            this.BtSalvar.Name = "BtSalvar";
+            this.BtSalvar.Size = new System.Drawing.Size(75, 23);
+            this.BtSalvar.TabIndex = 52;
+            this.BtSalvar.Text = "Salvar";
+            this.BtSalvar.UseVisualStyleBackColor = true;
+            this.BtSalvar.Click += new System.EventHandler(this.BtSalvar_Click);
+            // 
+            // lblItemCode
+            // 
+            this.lblItemCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemCode.ForeColor = System.Drawing.Color.Red;
+            this.lblItemCode.Location = new System.Drawing.Point(991, 89);
+            this.lblItemCode.Name = "lblItemCode";
+            this.lblItemCode.Size = new System.Drawing.Size(108, 22);
+            this.lblItemCode.TabIndex = 51;
+            this.lblItemCode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // lblItemFat
             // 
@@ -257,7 +292,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.lblItemFat.ForeColor = System.Drawing.Color.Red;
             this.lblItemFat.Location = new System.Drawing.Point(683, 92);
             this.lblItemFat.Name = "lblItemFat";
-            this.lblItemFat.Size = new System.Drawing.Size(302, 22);
+            this.lblItemFat.Size = new System.Drawing.Size(282, 22);
             this.lblItemFat.TabIndex = 50;
             this.lblItemFat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -330,14 +365,14 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // DgItensPO
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             this.DgItensPO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgItensPO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Obra,
@@ -354,238 +389,29 @@ namespace Zopone.AddOn.PO.View.Obra
             this.NroNF,
             this.DataSolicitacao,
             this.Observacao});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle20;
             this.DgItensPO.Location = new System.Drawing.Point(6, 232);
             this.DgItensPO.Name = "DgItensPO";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle21;
             this.DgItensPO.RowHeadersWidth = 51;
             this.DgItensPO.RowTemplate.Height = 24;
-            this.DgItensPO.Size = new System.Drawing.Size(1093, 392);
+            this.DgItensPO.Size = new System.Drawing.Size(1093, 252);
             this.DgItensPO.TabIndex = 21;
             this.DgItensPO.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgItensPO_CellContentClick);
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(112, 173);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(82, 16);
-            this.label20.TabIndex = 47;
-            this.label20.Text = "Observação";
-            // 
-            // txtObservacao
-            // 
-            this.txtObservacao.Location = new System.Drawing.Point(115, 198);
-            this.txtObservacao.Name = "txtObservacao";
-            this.txtObservacao.Size = new System.Drawing.Size(565, 22);
-            this.txtObservacao.TabIndex = 19;
-            this.txtObservacao.Validated += new System.EventHandler(this.txtObservacao_Validated);
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 173);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(106, 16);
-            this.label19.TabIndex = 45;
-            this.label19.Text = "Data Solicitação";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(580, 119);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(50, 16);
-            this.label18.TabIndex = 43;
-            this.label18.Text = "Nro NF";
-            // 
-            // txtNroNF
-            // 
-            this.txtNroNF.Location = new System.Drawing.Point(580, 140);
-            this.txtNroNF.Name = "txtNroNF";
-            this.txtNroNF.Size = new System.Drawing.Size(100, 22);
-            this.txtNroNF.TabIndex = 17;
-            this.txtNroNF.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(464, 117);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(114, 16);
-            this.label17.TabIndex = 41;
-            this.label17.Text = "Data Faturamento";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(345, 117);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(113, 16);
-            this.label16.TabIndex = 39;
-            this.label16.Text = "Data Lançamento";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(220, 116);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(35, 16);
-            this.label15.TabIndex = 37;
-            this.label15.Text = "Tipo";
-            // 
-            // CbTipo
-            // 
-            this.CbTipo.FormattingEnabled = true;
-            this.CbTipo.Items.AddRange(new object[] {
-            "Material",
-            "Serviço"});
-            this.CbTipo.Location = new System.Drawing.Point(223, 138);
-            this.CbTipo.Name = "CbTipo";
-            this.CbTipo.Size = new System.Drawing.Size(121, 24);
-            this.CbTipo.TabIndex = 14;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(90, 117);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(39, 16);
-            this.label14.TabIndex = 35;
-            this.label14.Text = "Valor";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 117);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(54, 16);
-            this.label13.TabIndex = 33;
-            this.label13.Text = "Parcela";
-            // 
-            // txtParcela
-            // 
-            this.txtParcela.Location = new System.Drawing.Point(6, 140);
-            this.txtParcela.Name = "txtParcela";
-            this.txtParcela.Size = new System.Drawing.Size(81, 22);
-            this.txtParcela.TabIndex = 12;
-            this.txtParcela.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(435, 72);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(110, 16);
-            this.label12.TabIndex = 31;
-            this.label12.Text = "Item Faturamento";
-            // 
-            // txtItemFaturamento
-            // 
-            this.txtItemFaturamento.Location = new System.Drawing.Point(435, 92);
-            this.txtItemFaturamento.Name = "txtItemFaturamento";
-            this.txtItemFaturamento.Size = new System.Drawing.Size(245, 22);
-            this.txtItemFaturamento.TabIndex = 11;
-            this.txtItemFaturamento.DoubleClick += new System.EventHandler(this.txtItemFaturamento_DoubleClick);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 72);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(32, 16);
-            this.label11.TabIndex = 29;
-            this.label11.Text = "Item";
-            // 
-            // txtItem
-            // 
-            this.txtItem.Location = new System.Drawing.Point(6, 92);
-            this.txtItem.Name = "txtItem";
-            this.txtItem.Size = new System.Drawing.Size(423, 22);
-            this.txtItem.TabIndex = 10;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(528, 26);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(48, 16);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "Cliente";
-            // 
-            // txtCliente
-            // 
-            this.txtCliente.Location = new System.Drawing.Point(528, 45);
-            this.txtCliente.Name = "txtCliente";
-            this.txtCliente.Size = new System.Drawing.Size(152, 22);
-            this.txtCliente.TabIndex = 9;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(112, 22);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(69, 16);
-            this.label9.TabIndex = 25;
-            this.label9.Text = "Candidato";
-            // 
-            // txtCandidato
-            // 
-            this.txtCandidato.Location = new System.Drawing.Point(112, 45);
-            this.txtCandidato.Name = "txtCandidato";
-            this.txtCandidato.Size = new System.Drawing.Size(100, 22);
-            this.txtCandidato.TabIndex = 8;
-            this.txtCandidato.TextChanged += new System.EventHandler(this.txtCandidato_TextChanged);
-            this.txtCandidato.DoubleClick += new System.EventHandler(this.txtCandidato_DoubleClick);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 22);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(37, 16);
-            this.label8.TabIndex = 23;
-            this.label8.Text = "Obra";
-            // 
-            // txtObra
-            // 
-            this.txtObra.Location = new System.Drawing.Point(6, 45);
-            this.txtObra.Name = "txtObra";
-            this.txtObra.Size = new System.Drawing.Size(100, 22);
-            this.txtObra.TabIndex = 7;
-            this.txtObra.DoubleClick += new System.EventHandler(this.txtObra_DoubleClick);
-            // 
-            // maskedTextBox1
-            // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(656, 40);
-            this.maskedTextBox1.Mask = "99/99/9999";
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(87, 22);
-            this.maskedTextBox1.TabIndex = 3;
-            this.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(456, 40);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(186, 22);
-            this.textBox2.TabIndex = 2;
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
             // 
             // Obra
             // 
@@ -713,24 +539,233 @@ namespace Zopone.AddOn.PO.View.Obra
             this.Observacao.ReadOnly = true;
             this.Observacao.Width = 125;
             // 
-            // lblItemCode
+            // label20
             // 
-            this.lblItemCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCode.ForeColor = System.Drawing.Color.Red;
-            this.lblItemCode.Location = new System.Drawing.Point(991, 89);
-            this.lblItemCode.Name = "lblItemCode";
-            this.lblItemCode.Size = new System.Drawing.Size(108, 22);
-            this.lblItemCode.TabIndex = 51;
-            this.lblItemCode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(112, 173);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(82, 16);
+            this.label20.TabIndex = 47;
+            this.label20.Text = "Observação";
+            // 
+            // txtObservacao
+            // 
+            this.txtObservacao.Location = new System.Drawing.Point(115, 198);
+            this.txtObservacao.Name = "txtObservacao";
+            this.txtObservacao.Size = new System.Drawing.Size(565, 22);
+            this.txtObservacao.TabIndex = 19;
+            this.txtObservacao.Validated += new System.EventHandler(this.txtObservacao_Validated);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 173);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(106, 16);
+            this.label19.TabIndex = 45;
+            this.label19.Text = "Data Solicitação";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(580, 119);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(50, 16);
+            this.label18.TabIndex = 43;
+            this.label18.Text = "Nro NF";
+            // 
+            // txtNroNF
+            // 
+            this.txtNroNF.Location = new System.Drawing.Point(580, 140);
+            this.txtNroNF.Name = "txtNroNF";
+            this.txtNroNF.Size = new System.Drawing.Size(100, 22);
+            this.txtNroNF.TabIndex = 17;
+            this.txtNroNF.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(464, 117);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(114, 16);
+            this.label17.TabIndex = 41;
+            this.label17.Text = "Data Faturamento";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(345, 117);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(113, 16);
+            this.label16.TabIndex = 39;
+            this.label16.Text = "Data Lançamento";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(220, 116);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(35, 16);
+            this.label15.TabIndex = 37;
+            this.label15.Text = "Tipo";
+            // 
+            // CbTipo
+            // 
+            this.CbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbTipo.FormattingEnabled = true;
+            this.CbTipo.Location = new System.Drawing.Point(223, 138);
+            this.CbTipo.Name = "CbTipo";
+            this.CbTipo.Size = new System.Drawing.Size(121, 24);
+            this.CbTipo.TabIndex = 14;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(90, 117);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(39, 16);
+            this.label14.TabIndex = 35;
+            this.label14.Text = "Valor";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 117);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(54, 16);
+            this.label13.TabIndex = 33;
+            this.label13.Text = "Parcela";
+            // 
+            // txtParcela
+            // 
+            this.txtParcela.Location = new System.Drawing.Point(6, 140);
+            this.txtParcela.Name = "txtParcela";
+            this.txtParcela.Size = new System.Drawing.Size(81, 22);
+            this.txtParcela.TabIndex = 12;
+            this.txtParcela.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(435, 72);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(110, 16);
+            this.label12.TabIndex = 31;
+            this.label12.Text = "Item Faturamento";
+            // 
+            // txtItemFaturamento
+            // 
+            this.txtItemFaturamento.Location = new System.Drawing.Point(435, 92);
+            this.txtItemFaturamento.Name = "txtItemFaturamento";
+            this.txtItemFaturamento.Size = new System.Drawing.Size(245, 22);
+            this.txtItemFaturamento.TabIndex = 11;
+            this.txtItemFaturamento.DoubleClick += new System.EventHandler(this.txtItemFaturamento_DoubleClick);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 72);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(32, 16);
+            this.label11.TabIndex = 29;
+            this.label11.Text = "Item";
+            // 
+            // txtItem
+            // 
+            this.txtItem.Location = new System.Drawing.Point(6, 92);
+            this.txtItem.Name = "txtItem";
+            this.txtItem.Size = new System.Drawing.Size(423, 22);
+            this.txtItem.TabIndex = 10;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(528, 26);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(48, 16);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "Cliente";
+            // 
+            // txtCliente
+            // 
+            this.txtCliente.Location = new System.Drawing.Point(528, 45);
+            this.txtCliente.Name = "txtCliente";
+            this.txtCliente.Size = new System.Drawing.Size(152, 22);
+            this.txtCliente.TabIndex = 9;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(112, 22);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(69, 16);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "Candidato";
+            // 
+            // txtCandidato
+            // 
+            this.txtCandidato.Location = new System.Drawing.Point(112, 45);
+            this.txtCandidato.Name = "txtCandidato";
+            this.txtCandidato.Size = new System.Drawing.Size(100, 22);
+            this.txtCandidato.TabIndex = 8;
+            this.txtCandidato.TextChanged += new System.EventHandler(this.txtCandidato_TextChanged);
+            this.txtCandidato.DoubleClick += new System.EventHandler(this.txtCandidato_DoubleClick);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 22);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 16);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Obra";
+            // 
+            // txtObra
+            // 
+            this.txtObra.Location = new System.Drawing.Point(6, 45);
+            this.txtObra.Name = "txtObra";
+            this.txtObra.Size = new System.Drawing.Size(100, 22);
+            this.txtObra.TabIndex = 7;
+            this.txtObra.DoubleClick += new System.EventHandler(this.txtObra_DoubleClick);
+            // 
+            // mskDATA
+            // 
+            this.mskDATA.Location = new System.Drawing.Point(656, 40);
+            this.mskDATA.Mask = "99/99/9999";
+            this.mskDATA.Name = "mskDATA";
+            this.mskDATA.Size = new System.Drawing.Size(87, 22);
+            this.mskDATA.TabIndex = 3;
+            this.mskDATA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(456, 40);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(186, 22);
+            this.textBox2.TabIndex = 2;
+            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            // 
+            // CbStatus
+            // 
+            this.CbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbStatus.Enabled = false;
+            this.CbStatus.FormattingEnabled = true;
+            this.CbStatus.Location = new System.Drawing.Point(936, 38);
+            this.CbStatus.Name = "CbStatus";
+            this.CbStatus.Size = new System.Drawing.Size(175, 24);
+            this.CbStatus.TabIndex = 22;
             // 
             // FrmPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(1118, 904);
+            this.ClientSize = new System.Drawing.Size(1118, 804);
+            this.Controls.Add(this.CbStatus);
             this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.maskedTextBox1);
+            this.Controls.Add(this.mskDATA);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtAnexo);
@@ -744,12 +779,10 @@ namespace Zopone.AddOn.PO.View.Obra
             this.Controls.Add(this.txtNroPedido);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCodigo);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "FrmPO";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Detalhe PO";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmPO_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -800,7 +833,7 @@ namespace Zopone.AddOn.PO.View.Obra
         private DataGridView DgItensPO;
         private Button BtAdicionar;
         private MaskedTextBox maskedTextBox2;
-        private MaskedTextBox maskedTextBox1;
+        private MaskedTextBox mskDATA;
         private MaskedTextBox mskDataFaturamento;
         private MaskedTextBox mskDataLancamento;
         private TextBox txtValor;
@@ -823,6 +856,9 @@ namespace Zopone.AddOn.PO.View.Obra
         private DataGridViewTextBoxColumn DataSolicitacao;
         private DataGridViewTextBoxColumn Observacao;
         private Label lblItemCode;
+        private Button BtCancelar;
+        private Button BtSalvar;
+        private ComboBox CbStatus;
     }
 }
 

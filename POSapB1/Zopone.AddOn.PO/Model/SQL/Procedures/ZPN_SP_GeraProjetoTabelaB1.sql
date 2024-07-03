@@ -1,6 +1,6 @@
 ﻿
 
-alter PROCEDURE ZPN_SP_GeraProjetoTabelaB1
+create PROCEDURE ZPN_SP_GeraProjetoTabelaB1
 (
 	@UserCode varchar(50)
 )

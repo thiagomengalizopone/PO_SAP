@@ -1,0 +1,14 @@
+﻿
+CREATE VIEW ZPN_VW_PERCENTUALFATURAMENTO
+AS
+
+
+SELECT 
+	RDR1."DocEntry",
+	sum(INV1.LineTotal/RDR1.LineTotal*100) "PercFat"
+
+FROM 
+	RDR1 
+	INNER JOIN INV1 ON INV1.BaseLine = RDR1.LineNum AND INV1.BaseEntry = RDR1.DocEntry AND INV1.BaseType = RDR1.ObjType
+GROUP BY
+	RDR1."DocEntry"

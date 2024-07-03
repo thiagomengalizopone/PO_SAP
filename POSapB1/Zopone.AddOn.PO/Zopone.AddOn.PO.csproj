@@ -230,7 +230,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_GeraProjetoTabelaB1.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_GRAVARLOG.sql" />
     <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaSaldoPC.sql" />
-    <EmbeddedResource Include="Model\SQL\Views\VW_ZPN_SALDOPEDIDO.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_PERCENTUALFATURAMENTO.sql" />
     <EmbeddedResource Include="View\ConfiguracaoImportWMS\FrmConfigImpWMS.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

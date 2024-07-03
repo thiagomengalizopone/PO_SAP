@@ -5,7 +5,7 @@ namespace Zopone.AddOn.PO.Model
 {
     public static class SqlFunctions
     {
-        public static class FuncitionModelo
+        public static class FN_ZPN_RetornaSaldoPC
         {
             public const string Nome = "";
             public const string Descricao = "";
