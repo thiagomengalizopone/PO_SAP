@@ -35,9 +35,9 @@ namespace Zopone.AddOn.PO.View.Obra
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -60,7 +60,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.lblObra = new System.Windows.Forms.Label();
             this.txtValor = new System.Windows.Forms.TextBox();
             this.mskDataFaturamento = new System.Windows.Forms.MaskedTextBox();
-            this.mskDataLancamento = new System.Windows.Forms.MaskedTextBox();
             this.maskedTextBox2 = new System.Windows.Forms.MaskedTextBox();
             this.BtAdicionar = new System.Windows.Forms.Button();
             this.DgItensPO = new System.Windows.Forms.DataGridView();
@@ -84,7 +83,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label18 = new System.Windows.Forms.Label();
             this.txtNroNF = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.CbTipo = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -223,7 +221,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.groupBox1.Controls.Add(this.lblObra);
             this.groupBox1.Controls.Add(this.txtValor);
             this.groupBox1.Controls.Add(this.mskDataFaturamento);
-            this.groupBox1.Controls.Add(this.mskDataLancamento);
             this.groupBox1.Controls.Add(this.maskedTextBox2);
             this.groupBox1.Controls.Add(this.BtAdicionar);
             this.groupBox1.Controls.Add(this.DgItensPO);
@@ -233,7 +230,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Controls.Add(this.txtNroNF);
             this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.CbTipo);
             this.groupBox1.Controls.Add(this.label14);
@@ -335,15 +331,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.mskDataFaturamento.TabIndex = 16;
             this.mskDataFaturamento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // mskDataLancamento
-            // 
-            this.mskDataLancamento.Location = new System.Drawing.Point(348, 140);
-            this.mskDataLancamento.Mask = "99/99/9999";
-            this.mskDataLancamento.Name = "mskDataLancamento";
-            this.mskDataLancamento.Size = new System.Drawing.Size(100, 22);
-            this.mskDataLancamento.TabIndex = 15;
-            this.mskDataLancamento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // maskedTextBox2
             // 
             this.maskedTextBox2.Location = new System.Drawing.Point(6, 198);
@@ -365,14 +352,14 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // DgItensPO
             // 
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DgItensPO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgItensPO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Obra,
@@ -389,24 +376,24 @@ namespace Zopone.AddOn.PO.View.Obra
             this.NroNF,
             this.DataSolicitacao,
             this.Observacao});
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle2;
             this.DgItensPO.Location = new System.Drawing.Point(6, 232);
             this.DgItensPO.Name = "DgItensPO";
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.DgItensPO.RowHeadersWidth = 51;
             this.DgItensPO.RowTemplate.Height = 24;
             this.DgItensPO.Size = new System.Drawing.Size(1093, 252);
@@ -590,15 +577,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label17.Size = new System.Drawing.Size(114, 16);
             this.label17.TabIndex = 41;
             this.label17.Text = "Data Faturamento";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(345, 117);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(113, 16);
-            this.label16.TabIndex = 39;
-            this.label16.Text = "Data Lançamento";
             // 
             // label15
             // 
@@ -824,7 +802,6 @@ namespace Zopone.AddOn.PO.View.Obra
         private Label label15;
         private ComboBox CbTipo;
         private Label label17;
-        private Label label16;
         private Label label18;
         private TextBox txtNroNF;
         private Label label19;
@@ -835,7 +812,6 @@ namespace Zopone.AddOn.PO.View.Obra
         private MaskedTextBox maskedTextBox2;
         private MaskedTextBox mskDATA;
         private MaskedTextBox mskDataFaturamento;
-        private MaskedTextBox mskDataLancamento;
         private TextBox txtValor;
         private TextBox textBox2;
         private Label lblObra;

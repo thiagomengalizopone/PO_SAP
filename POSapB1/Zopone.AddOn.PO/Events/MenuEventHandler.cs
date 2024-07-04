@@ -31,6 +31,16 @@ namespace Zopone.AddOn.PO
                                 new FrmAloca();
                             }
                             break;
+                        case MenuConstantes.MnuContrato:
+                            {
+                                Globals.Master.Connection.Interface.ActivateMenuItem("2705");
+                            }
+                            break;
+                        case MenuConstantes.MnuObra:
+                            {
+                                new FrmObra();
+                            }
+                            break;
                         case MenuConstantes.MnuCadPO:
                             {
                                 formThread = new Thread(new ThreadStart(OpenForm2));

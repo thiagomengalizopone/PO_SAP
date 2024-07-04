@@ -43,6 +43,8 @@ namespace Zopone.AddOn.PO.View.Obra
 
             SelecionaValoresTela();
 
+            mskDATA.Text = DateTime.Now.ToString("dd/MM/yyyy");
+
         }
 
         private void SelecionaValoresTela()
@@ -105,7 +107,6 @@ namespace Zopone.AddOn.PO.View.Obra
                         U_Parcela = txtParcela.Text,
                         LineTotal = Convert.ToDouble(txtValor.Text),
                         U_Tipo = CbTipo.Text,
-                        U_DataLanc = Convert.ToDateTime(mskDataLancamento.Text),
                         U_DataFat = Convert.ToDateTime(mskDataFaturamento.Text),
                         U_NroNF = txtNroNF.Text,
                         U_DataSol = Convert.ToDateTime(maskedTextBox2.Text),
@@ -124,7 +125,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 txtParcela.Text = string.Empty;
                 txtValor.Text = string.Empty;
                 CbTipo.Text = string.Empty;
-                mskDataLancamento.Text = string.Empty;
                 mskDataFaturamento.Text = string.Empty;
                 txtNroNF.Text = string.Empty;
                 maskedTextBox2.Text = string.Empty;

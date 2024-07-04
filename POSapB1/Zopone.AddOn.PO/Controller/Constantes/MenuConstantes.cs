@@ -13,6 +13,8 @@ namespace Zopone.AddOn.PO.Controller.Constantes
         public const string MnuCadObra = "MnuCadObra";
         public const string MnuClassificacaoObra = "MnuClass";
         public const string MnuAlocacao = "MnuAlocacao";
+        public const string MnuContrato = "MnuContrato";
+        public const string MnuObra = "MnuObra";
     }
 
     public class FormConstantes

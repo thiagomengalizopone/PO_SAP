@@ -48,6 +48,22 @@ namespace Zopone.AddOn.PO.Menus
                    null));
 
             listMenu.Add(new Menu(
+                   MenuConstantes.MnuFaturamento,
+                   BoMenuType.mt_STRING,
+                   MenuConstantes.MnuContrato,
+                   "Contrato",
+                   16,
+                   null));
+
+            listMenu.Add(new Menu(
+                   MenuConstantes.MnuFaturamento,
+                   BoMenuType.mt_STRING,
+                   MenuConstantes.MnuObra,
+                   "Obra",
+                   16,
+                   null));
+
+            listMenu.Add(new Menu(
                       MenuConstantes.MnuFaturamento,
                       BoMenuType.mt_STRING,
                       MenuConstantes.MnuCadPO,

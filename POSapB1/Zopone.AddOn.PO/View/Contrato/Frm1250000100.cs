@@ -88,10 +88,42 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oStaticText = ((SAPbouiCOM.StaticText)(oItem.Specific));
                 oStaticText.Caption = "Número RH";
 
+                Item oFolderRef = oFormContrato.Items.Item("1320000072");
+
+                Item oNewFolderItem = oFormContrato.Items.Add("FldObra", BoFormItemTypes.it_FOLDER);
+                oNewFolderItem.Left = oFolderRef.Left; // Definir posição da nova pasta
+                oNewFolderItem.Top = oFolderRef.Top;
+                oNewFolderItem.Width = oFolderRef.Width;
+                oNewFolderItem.Height = oFolderRef.Height;
+
+                Folder oNewFolder = (Folder)oNewFolderItem.Specific;
+                oNewFolder.Caption = "Obras";
+                oNewFolder.Pane = 99;
+                oNewFolder.AutoPaneSelection= true;
+                oNewFolder.GroupWith(oFolderRef.UniqueID);
+
+                oNewFolder.ClickAfter += ONewFolder_ClickAfter;
+
+                oFormContrato.Update();
+
             }
             catch (Exception Ex)
             {
                 throw new Exception($"Erro ao abrir tela: {Ex.Message}");
+            }
+        }
+
+        private static void ONewFolder_ClickAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(pVal.FormUID);
+
+                oFormContrato.PaneLevel = 99;
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception($"Erro ao selecionar Folder tela: {Ex.Message}");
             }
         }
     }

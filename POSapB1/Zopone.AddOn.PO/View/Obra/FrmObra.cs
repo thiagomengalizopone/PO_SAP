@@ -135,9 +135,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
             PreencheCamposTela();
 
-            EdCodeObra.Item.Enabled = false;
-            EdDescObra.Item.Enabled = false;
-
             DBObra = oForm.DataSources.DBDataSources.Item("@ZPN_OPRJ");
             DBObraCandidato = oForm.DataSources.DBDataSources.Item("@ZPN_OPRJ_CAND");
 
@@ -344,7 +341,9 @@ namespace Zopone.AddOn.PO.View.Obra
             if (string.IsNullOrEmpty(CbPais.Value))
             {
                 CbPais.Select("BR", BoSearchKey.psk_ByValue);
-                oForm.Mode = BoFormMode.fm_UPDATE_MODE;
+
+                if (oForm.Mode == BoFormMode.fm_OK_MODE)
+                    oForm.Mode = BoFormMode.fm_UPDATE_MODE;
             }
 
 
@@ -352,6 +351,9 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 CbPaisCandidato.Select("BR", BoSearchKey.psk_ByValue);
                 Util.ComboBoxSetValoresValidosPorSQL(CbEstadoCandidato, UtilScriptsSQL.SQL_Estado(CbPaisCandidato.Value));
+
+                if (oForm.Mode == BoFormMode.fm_OK_MODE)
+                    oForm.Mode = BoFormMode.fm_UPDATE_MODE;
 
             }
         }
@@ -420,6 +422,60 @@ namespace Zopone.AddOn.PO.View.Obra
             }
         }
 
+        internal static bool Interface_FormDataEvent(ref BusinessObjectInfo businessObjectInfo)
+        {
+            try
+            {
+                if (businessObjectInfo.BeforeAction)
+                {
+                    if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
+                    {
+                        SalvarProjeto(businessObjectInfo.FormUID);
+                    }
+                }
 
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao salvar registro: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                return false;
+            }
+        }
+
+        private static void SalvarProjeto(string FormUID)
+        {
+            Form oForm = Globals.Master.Connection.Interface.Forms.Item(FormUID);
+
+            EditText EdCodeObra = (EditText)oForm.Items.Item("EdCode").Specific;
+            EditText EdDescObra = (EditText)oForm.Items.Item("EdDescOb").Specific;
+            ComboBox CbFilial = (ComboBox)oForm.Items.Item("CbFilial").Specific;
+
+            if (CbFilial.Selected == null || string.IsNullOrEmpty(CbFilial.Value))
+            {
+                throw new Exception("Seleciona a Filial!");
+            }
+
+            if (SqlUtils.ExistemRegistros($@"SELECT 1 FROM OPRJ WHERE ""PrjCode"" = '{EdCodeObra.Value}'"))
+                return;
+
+            CompanyService oCmpSrv = Globals.Master.Connection.Database.GetCompanyService();
+
+            // Obter o serviço de projetos
+            ProjectsService projectService = (ProjectsService)oCmpSrv.GetBusinessService(ServiceTypes.ProjectsService);
+
+            // Criar um novo projeto
+            Project project = (Project)projectService.GetDataInterface(ProjectsServiceDataInterfaces.psProject);
+
+            project.Code = EdCodeObra.Value;
+            project.Name = EdDescObra.Value;
+
+            project.UserFields.Item("U_BPLName").Value = CbFilial.Selected.Description;
+
+            // Adicionar o projeto
+            projectService.AddProject(project);
+
+
+        }
     }
 }
