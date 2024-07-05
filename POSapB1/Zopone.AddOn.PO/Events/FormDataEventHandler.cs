@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zopone.AddOn.PO.Controller.Constantes;
 using Zopone.AddOn.PO.View.Contrato;
 using Zopone.AddOn.PO.View.Obra;
 
@@ -19,6 +20,11 @@ namespace Zopone.AddOn.PO
             {
                 BubbleEvent = FrmObra.Interface_FormDataEvent(ref BusinessObjectInfo);
             }
+            else if (BusinessObjectInfo.FormTypeEx == FormConstantes.FrmContratoGuardaChuvas)
+            {
+                BubbleEvent = Frm1250000100.Interface_FormDataEvent(ref BusinessObjectInfo);
+            }
+
         }
     }
 }

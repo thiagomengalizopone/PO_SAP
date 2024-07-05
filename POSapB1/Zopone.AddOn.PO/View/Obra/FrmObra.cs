@@ -142,6 +142,7 @@ namespace Zopone.AddOn.PO.View.Obra
             MtCandidato.DoubleClickAfter += MtCandidato_DoubleClickAfter;
 
             oForm.Visible = true;
+
         }
 
         private void MtCandidato_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)
@@ -433,6 +434,13 @@ namespace Zopone.AddOn.PO.View.Obra
                         SalvarProjeto(businessObjectInfo.FormUID);
                     }
                 }
+                else
+                {
+                    if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_LOAD)
+                    {
+                        CarregarPO(businessObjectInfo.FormUID);
+                    }
+                }
 
                 return true;
             }
@@ -440,6 +448,35 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao salvar registro: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
                 return false;
+            }
+        }
+
+        private static void CarregarPO(string formUID)
+        {
+            try
+            {
+                Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+                EditText EdCodObra = (EditText)oForm.Items.Item("EdCode").Specific;
+
+                Grid oGridPO = (Grid)oForm.Items.Item("GdObra").Specific;
+                DataTable DtObra = oForm.DataSources.DataTables.Item("DtObra");
+
+                DtObra.ExecuteQuery($"ZPN_SP_LISTAOBRAPO '{EdCodObra.Value}'");
+
+                oGridPO.DataTable = DtObra;
+
+                for (int iCol = 0; iCol < oGridPO.Columns.Count; iCol++)
+                    oGridPO.Columns.Item(iCol).Editable = false;
+
+                oGridPO.SelectionMode = BoMatrixSelect.ms_Single;
+
+                oGridPO.AutoResizeColumns();
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados de PO: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
 
@@ -453,7 +490,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
             if (CbFilial.Selected == null || string.IsNullOrEmpty(CbFilial.Value))
             {
-                throw new Exception("Seleciona a Filial!");
+                throw new Exception("Selecione a Filial!");
             }
 
             if (SqlUtils.ExistemRegistros($@"SELECT 1 FROM OPRJ WHERE ""PrjCode"" = '{EdCodeObra.Value}'"))
