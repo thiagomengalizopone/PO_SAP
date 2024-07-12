@@ -21,11 +21,25 @@ namespace Zopone.AddOn.PO.View.Obra.Helpers
             textBox.BackColor = focusColor;
         }
 
+        public static void MskOnGotFocus(object sender, EventArgs e)
+        {
+            MaskedTextBox maskedEdit = sender as MaskedTextBox;
+
+            maskedEdit.BackColor = focusColor;
+        }
+
         public static void ExtOnLostFocus(object sender, EventArgs e)
         {
             TextBox textBox = sender as TextBox;
 
             textBox.BackColor = defaultColor;
+        }
+
+        public static void MskOnLostFocus(object sender, EventArgs e)
+        {
+            MaskedTextBox maskedEdit = sender as MaskedTextBox;
+
+            maskedEdit.BackColor = defaultColor;
         }
     }
 }

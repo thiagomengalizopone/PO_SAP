@@ -51,7 +51,8 @@ namespace Zopone.AddOn.PO.View.PO
                     commandSQL = $"SP_ZPN_PESQUISAOBRACANDIDATO '{txtPesquisar.Text}', '{Parametros[0]}'";
                 else if (TipoPesquisa == "ITEMFAT")
                     commandSQL = $"SP_ZPN_PESQUISAETAPA '{txtPesquisar.Text}'";
-
+                else if (TipoPesquisa == "PO")
+                    commandSQL = $"ZPN_SP_LISTAPO '{txtPesquisar.Text}'";
                 DataTable result = SqlUtils.ExecuteCommand(commandSQL);
 
                 dgResultado.DataSource = result;
@@ -61,6 +62,8 @@ namespace Zopone.AddOn.PO.View.PO
                     dgResultado.Columns[iCol].SortMode = DataGridViewColumnSortMode.Automatic;
                     dgResultado.Columns[iCol].ReadOnly = true;
                 }
+
+                dgResultado.AutoResizeColumns();
             }
             catch (Exception Ex)
             {
@@ -111,6 +114,10 @@ namespace Zopone.AddOn.PO.View.PO
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[0].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[1].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[2].Value.ToString());
+                }
+                else
+                {
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[0].Value.ToString());
                 }
 
                 this.Close();

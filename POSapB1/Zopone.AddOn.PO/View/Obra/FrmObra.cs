@@ -65,6 +65,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
         public UserDataSource UsRowId { get; set; }
 
+        public Grid GdListPO { get; set; }
+        public DateTime DtListPO { get; set; }
+
         #endregion
 
         public FrmObra(string CodigoObra = "") : base()
@@ -99,6 +102,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
             CbCidadeCandidato = (ComboBox)oForm.Items.Item("CbCidC").Specific;
             CbClassificacaoObra = (ComboBox)oForm.Items.Item("CbClassO").Specific;
+
+            GdListPO = (Grid)oForm.Items.Item("GdObra").Specific;
+            GdListPO.DoubleClickAfter += GdListPO_DoubleClickAfter;
 
 
             #region Aba Candidato
@@ -143,6 +149,22 @@ namespace Zopone.AddOn.PO.View.Obra
 
             oForm.Visible = true;
 
+        }
+
+        private void GdListPO_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                FrmPO.MenuPO(GdListPO.DataTable.GetValue(0, 0).ToString()); 
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados PO: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
+            }
         }
 
         private void MtCandidato_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)

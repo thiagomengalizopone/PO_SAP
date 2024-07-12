@@ -13,6 +13,10 @@ using Zopone.AddOn.PO.View.PO;
 using System.Threading;
 using Zopone.AddOn.PO.Model.Objects;
 using SAPbobsCOM;
+using System.Data.Common;
+using Zopone.AddOn.PO.Model.SAP;
+using static System.Windows.Forms.LinkLabel;
+using sap.dev.data;
 
 namespace Zopone.AddOn.PO.View.Obra
 {
@@ -21,6 +25,28 @@ namespace Zopone.AddOn.PO.View.Obra
         public static string TipoPesquisa { get; set; }
         public List<LinePO> linesPO = new List<LinePO>();
         public Int32 BPLId { get; set; }
+        public Int32 RowIndexEdit { get; set; }
+
+        public static string DocEntryPO { get; set; }
+        private static Thread formThread;
+
+        private static DbConnection DbConnection;
+
+
+
+        public static void MenuPO(string docEntryPO = "")
+        {
+            DocEntryPO = docEntryPO;
+
+            formThread = new Thread(new ThreadStart(OpenFormPO));
+            formThread.SetApartmentState(ApartmentState.STA);
+            formThread.Start();
+        }
+
+        private static void OpenFormPO()
+        {
+            System.Windows.Forms.Application.Run(new FrmPO());
+        }
 
         public FrmPO()
         {
@@ -37,6 +63,30 @@ namespace Zopone.AddOn.PO.View.Obra
                     textBox.LostFocus += UtilTextBox.ExtOnLostFocus;
                     textBox.GotFocus += UtilTextBox.ExtOnGotFocus;
                 }
+
+                if (control is MaskedTextBox)
+                {
+                    MaskedTextBox maskedEdit = (MaskedTextBox)control;
+                    maskedEdit.LostFocus += UtilTextBox.MskOnLostFocus;
+                    maskedEdit.GotFocus += UtilTextBox.MskOnGotFocus;
+                }
+            }
+
+            foreach (Control control in this.gbItens.Controls)
+            {
+                if (control is TextBox)
+                {
+                    TextBox textBox = (TextBox)control;
+                    textBox.LostFocus += UtilTextBox.ExtOnLostFocus;
+                    textBox.GotFocus += UtilTextBox.ExtOnGotFocus;
+                }
+
+                if (control is MaskedTextBox)
+                {
+                    MaskedTextBox maskedEdit = (MaskedTextBox)control;
+                    maskedEdit.LostFocus += UtilTextBox.MskOnLostFocus;
+                    maskedEdit.GotFocus += UtilTextBox.MskOnGotFocus;
+                }
             }
 
             DgItensPO.AutoResizeColumns();
@@ -44,6 +94,74 @@ namespace Zopone.AddOn.PO.View.Obra
             SelecionaValoresTela();
 
             mskDATA.Text = DateTime.Now.ToString("dd/MM/yyyy");
+
+            if (!string.IsNullOrEmpty(DocEntryPO))
+            {
+                CarregarDadosPO(DocEntryPO);
+                DocEntryPO = string.Empty;
+            }
+
+            this.WindowState = FormWindowState.Minimized;
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+
+        }
+
+        private void CarregarDadosPO(string docEntryPO)
+        {
+            try
+            {
+                PurchaseOrderSAP oPOSAP = new PurchaseOrderSAP();
+
+                if (oPOSAP.GetByDocEntry(Convert.ToInt16(txtCodigo.Text)))
+                {
+                    txtNroPedido.Text = oPOSAP.U_NroPedido;
+                    txtValor.Text = oPOSAP.U_Valor.ToString();
+                    mskDATA.Text = oPOSAP.U_Data.ToString("dd/mm/yyyy");
+                    txtNroContratoCliente.Text = oPOSAP.U_NroCont;
+                    CbStatus.SelectedValue = oPOSAP.U_Status;
+                    txtDescricao.Text = oPOSAP.U_Desc;
+                    txtAnexo.Text = oPOSAP.U_Anexo;
+
+                    linesPO.Clear();
+
+                    foreach (var poLine in oPOSAP.Lines)
+                    {
+                        linesPO.Add(
+                           new LinePO()
+                           {
+                               LineNum = -1,
+                               U_PrjCode = poLine.U_PrjCode,
+                               U_Candidato = poLine.U_Candidato,
+                               U_CardCode = poLine.U_CardCode,
+                               U_CardName = poLine.U_CardName,
+                               U_Item = poLine.U_Item,
+                               U_ItemFat = poLine.U_ItemFat,
+                               U_DescItemFat = poLine.U_DescItemFat,
+                               U_ItemCode = poLine.U_ItemCode,
+                               U_Parcela = poLine.U_Parcela,
+                               U_Valor = poLine.U_Valor,
+                               U_Tipo = poLine.U_Tipo,
+                               U_DataFat = poLine.U_DataFat,
+                               U_NroNF = poLine.U_NroNF,
+                               U_DataSol = poLine.U_DataSol,
+                               U_Obs = poLine.U_Obs
+                           }
+                           );
+                    }
+
+                    CarregarMatrixPO();
+
+                    LimparLinhaPO();
+                }
+            }
+            catch (Exception Ex)
+            {
+                string mensagemErro = $"Erro ao carregar dados  PO - {docEntryPO}: {Ex.Message}";
+                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+            }
+
 
         }
 
@@ -93,49 +211,39 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                linesPO.Add(
-                    new LinePO()
-                    {
-                        LineNum = -1,
-                        Project = txtObra.Text,
-                        U_Candidato = txtCandidato.Text,
-                        U_CardCode = txtCliente.Text,
-                        U_Item = txtItem.Text,
-                        U_ItemFat = txtItemFaturamento.Text,
-                        U_DescItemFat = lblItemFat.Text,
-                        ItemCode = lblItemCode.Text,
-                        U_Parcela = txtParcela.Text,
-                        LineTotal = Convert.ToDouble(txtValor.Text),
-                        U_Tipo = CbTipo.Text,
-                        U_DataFat = Convert.ToDateTime(mskDataFaturamento.Text),
-                        U_NroNF = txtNroNF.Text,
-                        U_DataSol = Convert.ToDateTime(maskedTextBox2.Text),
-                        FreeTxt = txtObservacao.Text
-                    }
-                    );
+                if (string.IsNullOrEmpty(txtObra.Text))
+                    return;                        
 
-                txtObra.Text = string.Empty;
-                txtCandidato.Text = string.Empty;
-                txtCliente.Text = string.Empty;
-                txtItem.Text = string.Empty;
-                txtItemFaturamento.Text = string.Empty;
-                lblItemCode.Text = string.Empty;
-                lblObra.Text = string.Empty;
-                lblItemFat.Text = string.Empty;
-                txtParcela.Text = string.Empty;
-                txtValor.Text = string.Empty;
-                CbTipo.Text = string.Empty;
-                mskDataFaturamento.Text = string.Empty;
-                txtNroNF.Text = string.Empty;
-                maskedTextBox2.Text = string.Empty;
-                txtObservacao.Text  = string.Empty;
+                LinePO oLinePO = new LinePO()
+                {
+                    LineNum = -1,
+                    U_PrjCode = txtObra.Text,
+                    U_Candidato = txtCandidato.Text,
+                    U_CardCode = txtCliente.Text,
+                    U_CardName = lblCliente.Text,
+                    U_Item = txtItem.Text,
+                    U_ItemFat = txtItemFaturamento.Text,
+                    U_DescItemFat = lblItemFat.Text,
+                    U_ItemCode = lblItemCode.Text,
+                    U_Parcela = txtParcela.Text,
+                    U_Valor = Convert.ToDouble(txtValor.Text),
+                    U_Tipo = CbTipo.Text,
+                    U_DataFat = Convert.ToDateTime(mskDataFaturamento.Text),
+                    U_NroNF = txtNroNF.Text,
+                    U_DataSol = Convert.ToDateTime(mskDataSol.Text),
+                    U_Obs = txtObservacao.Text
+                };
 
-                BindingSource dgItensPO = new BindingSource();
-                dgItensPO.DataSource = linesPO;
+                if (RowIndexEdit < 0)
+                    linesPO.Add(oLinePO);
+                else
+                    linesPO[RowIndexEdit] = oLinePO;
 
-                DgItensPO.DataSource = dgItensPO;
+                CarregarMatrixPO();
 
-                DgItensPO.AutoResizeColumns();
+                LimparLinhaPO();
+
+                RowIndexEdit = -1;
             }
             catch (Exception Ex)
             {
@@ -143,6 +251,36 @@ namespace Zopone.AddOn.PO.View.Obra
                 MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
             }
+        }
+
+        public void CarregarMatrixPO()
+        {
+            BindingSource dgItensPO = new BindingSource();
+            dgItensPO.DataSource = linesPO;
+
+            DgItensPO.DataSource = dgItensPO;
+
+            DgItensPO.AutoResizeColumns();
+        }
+
+        private void LimparLinhaPO()
+        {
+            txtObra.Text = string.Empty;
+            txtCandidato.Text = string.Empty;
+            txtCliente.Text = string.Empty;
+            txtItem.Text = string.Empty;
+            txtItemFaturamento.Text = string.Empty;
+            lblItemCode.Text = string.Empty;
+            lblObra.Text = string.Empty;
+            lblItemFat.Text = string.Empty;
+            txtParcela.Text = string.Empty;
+            txtValor.Text = string.Empty;
+            CbTipo.Text = string.Empty;
+            mskDataFaturamento.Text = string.Empty;
+            txtNroNF.Text = string.Empty;
+            mskDataSol.Text = string.Empty;
+            txtObservacao.Text = string.Empty;
+            lblItemFat.Text = string.Empty;
         }
 
         private void textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -227,6 +365,16 @@ namespace Zopone.AddOn.PO.View.Obra
                         lblItemCode.Text = retornoDados[2];
                     }
                 }
+                else if (TipoPesquisa == "PO")
+                {
+                    if (retornoDados.Count == 0)
+                        txtCodigo.Text = string.Empty;
+                    else
+                        txtCodigo.Text = retornoDados[0];
+
+                    CarregarDadosPO(txtCodigo.Text);
+                }
+
             }
             catch (Exception Ex)
             {
@@ -234,6 +382,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
             }
+
         }
 
         private void txtCandidato_TextChanged(object sender, EventArgs e)
@@ -269,7 +418,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
         private void BtCancelar_Click(object sender, EventArgs e)
         {
-                this.Close();
+            this.Close();
         }
 
         private bool ValidarFecharForm()
@@ -287,6 +436,36 @@ namespace Zopone.AddOn.PO.View.Obra
             SalvarPO();
         }
 
+        private void CarregarDadosLinhaPO(int rowIndex)
+        {
+            try
+            {
+                RowIndexEdit = rowIndex;
+                txtObra.Text = linesPO[rowIndex].U_PrjCode;
+                lblObra.Text = linesPO[rowIndex].U_PrjName;
+                txtCandidato.Text = linesPO[rowIndex].U_Candidato;
+                txtCliente.Text = linesPO[rowIndex].U_CardCode;
+                lblCliente.Text = linesPO[rowIndex].U_CardName;
+                txtItem.Text = linesPO[rowIndex].U_Item;
+                txtItemFaturamento.Text = linesPO[rowIndex].U_ItemFat;
+                lblItemCode.Text = linesPO[rowIndex].U_ItemCode;
+                lblItemFat.Text = linesPO[rowIndex].U_DescItemFat;
+                txtParcela.Text = linesPO[rowIndex].U_Parcela;
+                txtValor.Text = linesPO[rowIndex].U_Valor.ToString();
+                CbTipo.SelectedValue = linesPO[rowIndex].U_Tipo;
+                mskDataFaturamento.Text = linesPO[rowIndex].U_DataFat.ToString("dd/MM/yyyy");
+                txtNroNF.Text = linesPO[rowIndex].U_NroNF;
+                mskDataSol.Text = linesPO[rowIndex].U_DataSol.ToString("dd/MM/yyyy");
+                txtObservacao.Text = linesPO[rowIndex].U_Obs;
+            }
+            catch (Exception Ex)
+            {
+                string mensagemErro = $"Erro ao carregar dados de linha PO: {Ex.Message}";
+                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+            }
+        }
+
         private void SalvarPO()
         {
             try
@@ -296,68 +475,67 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 bool bExistePedido = false;
 
-                SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
 
-                if (!string.IsNullOrEmpty(txtNroNF.Text))
+                if (!string.IsNullOrEmpty(txtItem.Text))
+                    AdicionarItemGrid();
+
+                PurchaseOrderSAP oPOSAP = new PurchaseOrderSAP();
+
+                if (!string.IsNullOrEmpty(txtCodigo.Text))
                 {
-                    if (!oPedidoVenda.GetByKey(Convert.ToInt32(txtNroNF.Text)))
-                        throw new Exception($"Erro ao pesquisar Pedido: {txtNroNF.Text}");
-                    
+                    if (!oPOSAP.GetByDocEntry(Convert.ToInt32(txtCodigo.Text)))
+                        throw new Exception($"Erro ao pesquisar PO: {txtCodigo.Text}");
+
                     bExistePedido = true;
                 }
 
-                if (!bExistePedido) 
+                if (!bExistePedido)
                 {
-                    oPedidoVenda.NumAtCard = txtNroPedido.Text;
-                    oPedidoVenda.DocDate = Convert.ToDateTime(mskDATA.Text);
-                    oPedidoVenda.DocDueDate = Convert.ToDateTime(mskDATA.Text);
-                    oPedidoVenda.CardCode = linesPO[0].U_CardCode;
-                    oPedidoVenda.BPL_IDAssignedToInvoice = BPLId;
+                    oPOSAP.U_NroPedido = txtNroPedido.Text;
+                    oPOSAP.U_Data = Convert.ToDateTime(mskDATA.Text);
+                    oPOSAP.BplID = BPLId;
                 }
 
-                oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
-                oPedidoVenda.Comments = txtObservacao.Text;
+                oPOSAP.U_NroCont = txtNroContratoCliente.Text;
+                oPOSAP.U_Desc = txtObservacao.Text;
+                oPOSAP.U_Anexo = txtAnexo.Text;
+                oPOSAP.U_Status = CbStatus.SelectedValue.ToString();
+
+
+                oPOSAP.Lines.Clear();
 
                 foreach (var linePO in linesPO)
                 {
-                    if (linePO.LineNum == -1 && !string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
-                        oPedidoVenda.Lines.Add();
-                    else if (linePO.LineNum >= 0)
-                        oPedidoVenda.Lines.SetCurrentLine(linePO.LineNum);
-
-                    oPedidoVenda.Lines.ItemCode = linePO.ItemCode;
-                    oPedidoVenda.Lines.Quantity = 1;
-                    oPedidoVenda.Lines.Price = Convert.ToDouble(linePO.LineTotal);
-                    oPedidoVenda.Lines.ProjectCode = linePO.Project;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value = linePO.U_Candidato;
-                    oPedidoVenda.Lines.FreeText = linePO.FreeTxt;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value = linePO.U_DataFat;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataLanc").Value = linePO.U_DataLanc;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value = linePO.U_DataSol;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = linePO.U_Item;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value = linePO.U_ItemFat;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value = linePO.U_NroNF;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value = linePO.U_Tipo;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value = linePO.U_Parcela;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value = linePO.U_DescItemFat;
+                    oPOSAP.Lines.Add(new PurchaseOrderSAP.PurchaseOrderLine()
+                    {
+                        U_Candidato = linePO.U_Candidato,
+                        U_CardCode = linePO.U_CardCode,
+                        U_CardName = linePO.U_CardName,
+                        U_DataFat = linePO.U_DataFat,
+                        U_DataLanc = DateTime.Now,
+                        U_DataSol = linePO.U_DataSol,
+                        U_DescItemFat = linePO.U_DescItemFat,
+                        U_Item = linePO.U_Item,
+                        U_ItemCode = linePO.U_ItemCode,
+                        U_ItemFat = linePO.U_ItemFat,
+                        U_NroNF = linePO.U_NroNF,
+                        U_Obs = linePO.U_Obs,
+                        U_Parcela = linePO.U_Parcela,
+                        U_PrjCode = linePO.U_PrjCode,
+                        U_Tipo = linePO.U_Tipo,
+                        U_Valor = linePO.U_Valor
+                    });
                 }
 
                 if (bExistePedido)
-                {
-                    if (oPedidoVenda.Update() !=0)
-                        throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
-                }
+                    oPOSAP.Update();
                 else
                 {
-                    if (oPedidoVenda.Add() != 0)
-                        throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    oPOSAP.Add();
+                    txtCodigo.Text = SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM ""@ZPN_ORDR"" ");
                 }
-
-                txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();
-
+                
                 MessageBox.Show("PO salva com sucesso!");
-
-
             }
             catch (Exception Ex)
             {
@@ -365,7 +543,60 @@ namespace Zopone.AddOn.PO.View.Obra
                 MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
             }
-            
+
+        }
+
+        private void txtObra_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtPesqObra_Click(object sender, EventArgs e)
+        {
+            PesquisarDados("OBRA");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            PesquisarDados("CANDIDATO");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            PesquisarDados("CLIENTE");
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            PesquisarDados("ITEMFAT");
+        }
+
+        private void bindingNavigatorMoveNextItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PesquisarDados("PO");
+        }
+
+        private void DgItensPO_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CarregarDadosLinhaPO(e.RowIndex);
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void BtAnexo_Click(object sender, EventArgs e)
+        {
+            string fileNameAnexo = await Util.OpenFileDialogAsync(EnumList.TipoArquivo.Todos);
+
+            if (!string.IsNullOrEmpty(fileNameAnexo))
+                txtAnexo.Text = fileNameAnexo; 
         }
     }
 }

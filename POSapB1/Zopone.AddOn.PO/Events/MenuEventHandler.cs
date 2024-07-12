@@ -43,9 +43,7 @@ namespace Zopone.AddOn.PO
                             break;
                         case MenuConstantes.MnuCadPO:
                             {
-                                formThread = new Thread(new ThreadStart(OpenForm2));
-                                formThread.SetApartmentState(ApartmentState.STA); // Define o estado do apartamento como STA (Single-Threaded Apartment)
-                                formThread.Start();
+                                FrmPO.MenuPO();
                             }
                             break;
                     }
@@ -61,9 +59,6 @@ namespace Zopone.AddOn.PO
 
         }
 
-        private static void OpenForm2()
-        {
-            System.Windows.Forms.Application.Run(new FrmPO()); 
-        }
+        
     }
 }
