@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Zopone.AddOn.PO.Model.SAP
 {
-    public class PurchaseOrderSAP
+    public class PurchaseOrderSAP2
     {
         public int DocEntry { get; set; }
         public int DocNum { get; set; }
@@ -22,7 +22,7 @@ namespace Zopone.AddOn.PO.Model.SAP
 
         public List<PurchaseOrderLine> Lines { get; set; }
 
-        public PurchaseOrderSAP()
+        public PurchaseOrderSAP2()
         {
             Lines = new List<PurchaseOrderLine>();
         }

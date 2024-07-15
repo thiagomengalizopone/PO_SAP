@@ -37,56 +37,40 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 #endregion
 
-                #region PO 
-                var valoresValidosStatusDoc = new List<Tuple<string, string>>();
-                valoresValidosStatusDoc.Add(new Tuple<string, string>("F", "Faturado"));
-                valoresValidosStatusDoc.Add(new Tuple<string, string>("N", "Não Faturado"));
-                valoresValidosStatusDoc.Add(new Tuple<string, string>("P", "Parcialmente Faturado"));
-
-                DBCreation.CriarTabelaUsuario("ZPN_ORDR", "Cadastro PO", SAPbobsCOM.BoUTBTableType.bott_Document);
-                DBCreation.CriarTabelaUsuario("ZPN_RDR1", "Cadastro PO - ITENS", SAPbobsCOM.BoUTBTableType.bott_DocumentLines);
+                #region DOCUMENTOS
 
 
-
-
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "NroPedido", "NroPedido", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "Valor", "Valor", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Sum, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "Data", "Data", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "DataVenc", "Data Vencimento", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "BplID", "Filial", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 5, false, null);
-
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "NroCont", "Número Contrato Cliente", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "Status", "Status", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null, valoresValidosStatusDoc);
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "Desc", "Descrição", SAPbobsCOM.BoFieldTypes.db_Memo, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_ORDR", "Anexo", "Caminho anexo", SAPbobsCOM.BoFieldTypes.db_Memo, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "PrjCode", "Projeto", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "PrjName", "Projeto Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Candidato", "Candidato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "CardCode", "Projeto", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "CardName", "Projeto Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "ItemCode", "Item SAP", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Item", "Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "ItemFat", "Item Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "DescItemFat", "Desc Item Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Parcela", "Parcela", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Valor", "Valor", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Price, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Tipo", "Tipo", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "DataLanc", "Data Lançamento", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "DataFat", "Data Faturamento", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "NroNF", "Número NF", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "DataSol", "Data Solicitação", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Obs", "Observação", SAPbobsCOM.BoFieldTypes.db_Memo, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-
-                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Bloqueado", "Bloqueado", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, "N", valoresValidosSimNao);
-
-                List<ChildTables> aTabelasFilhasDocumento = new List<ChildTables>();
-                aTabelasFilhasDocumento.Add(new ChildTables("ZPN_RDR1", "ZPN_RDR1"));
-
-                DBCreation.CriarUDO("ZPN_ORDR", "ZPN_ORDR", "ZPN_ORDR", SAPbobsCOM.BoUDOObjType.boud_Document, aTabelasFilhasDocumento);
+                DBCreation.CriarCampoUsuario("ORDR", "NroCont", "Número Contrato Cliente", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+                
+                
+                DBCreation.CriarCampoUsuario("RDR1", "Candidato", "Candidato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "CardCode", "Projeto", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "CardName", "Projeto Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "Item", "Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "ItemFat", "Item Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "Parcela", "Parcela", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "Tipo", "Tipo", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "DataLanc", "Data Lançamento", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "DataFat", "Data Faturamento", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "NroNF", "Número NF", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "DataSol", "Data Solicitação", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "Bloqueado", "Bloqueado", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, "N", valoresValidosSimNao);
 
 
 
+
+
+
+                #endregion
+
+                #region PARAMETROS PO
+                
+                DBCreation.CriarTabelaUsuario("ZPN_CONFPO", "Cadastro Configurações PO", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "CardCodeH", "Código Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "CardNameH", "Descrição Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "ItemCode", "Código Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "ItemName", "Descrição Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarUDO("ZPN_CONFPO", "ZPN_CONFPO", "ZPN_CONFPO", SAPbobsCOM.BoUDOObjType.boud_MasterData);
                 #endregion
 
                 #region Alocação

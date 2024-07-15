@@ -100,46 +100,50 @@ namespace Zopone.AddOn.PO.View.Obra
 
         }
 
-        private void CarregarDadosPO(string docEntryPO)
+        private void CarregarDadosPO(string docEntryPO, bool isDraft = false)
         {
             try
             {
-                PurchaseOrderSAP oPOSAP = new PurchaseOrderSAP();
+                SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
 
-                if (oPOSAP.GetByDocEntry(Convert.ToInt16(txtCodigo.Text)))
+                if (isDraft)
+                    oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+                if (oPedidoVenda.GetByKey(Convert.ToInt16(txtCodigo.Text)))
                 {
-                    txtNroPedido.Text = oPOSAP.U_NroPedido;
-                    txtValorPO.Text = oPOSAP.U_Valor.ToString();
-                    mskDATA.Text = oPOSAP.U_Data.ToString("dd/mm/yyyy");
-                    txtNroContratoCliente.Text = oPOSAP.U_NroCont;
-                    CbStatus.SelectedValue = oPOSAP.U_Status;
-                    txtDescricao.Text = oPOSAP.U_Desc;
-                    txtAnexo.Text = oPOSAP.U_Anexo;
+                    txtNroPedido.Text = oPedidoVenda.NumAtCard;
+                    txtValorPO.Text = oPedidoVenda.DocTotal.ToString();
+                    mskDATA.Text = oPedidoVenda.DocDate.ToString("dd/MM/yyyy");
+                    txtNroContratoCliente.Text = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value.ToString();
+                    //CbStatus.SelectedValue = oPOSAP.U_Status;
+                    txtDescricao.Text = oPedidoVenda.Comments;
+                    //txtAnexo.Text = oPOSAP.U_Anexo;
 
                     linesPO.Clear();
 
-                    foreach (var poLine in oPOSAP.Lines)
+                    for (int iRow = 0; iRow < oPedidoVenda.Lines.Count; iRow++) 
                     {
+
                         linesPO.Add(
                            new LinePO()
                            {
-                               LineNum = -1,
-                               U_PrjCode = poLine.U_PrjCode,
-                               U_Candidato = poLine.U_Candidato,
-                               U_CardCode = poLine.U_CardCode,
-                               U_CardName = poLine.U_CardName,
-                               U_Item = poLine.U_Item,
-                               U_ItemFat = poLine.U_ItemFat,
-                               U_DescItemFat = poLine.U_DescItemFat,
-                               U_ItemCode = poLine.U_ItemCode,
-                               U_Parcela = poLine.U_Parcela,
-                               U_Valor = poLine.U_Valor,
-                               U_Tipo = poLine.U_Tipo,
-                               U_DataFat = poLine.U_DataFat,
-                               U_NroNF = poLine.U_NroNF,
-                               U_DataSol = poLine.U_DataSol,
-                               U_Obs = poLine.U_Obs,
-                               U_Bloqueado = poLine.U_Bloqueado == "Y"
+                               LineNum = oPedidoVenda.Lines.LineNum,
+                               U_PrjCode = oPedidoVenda.Lines.ProjectCode,
+                               U_Candidato = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value.ToString(),
+                               U_CardCode = oPedidoVenda.CardCode,
+                               U_CardName = oPedidoVenda.CardName,
+                               U_Item = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString(),
+                               U_ItemFat = oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value.ToString(),
+                               U_DescItemFat = oPedidoVenda.Lines.ItemDescription,
+                               U_ItemCode = oPedidoVenda.Lines.ItemCode,
+                               U_Parcela = oPedidoVenda.Lines.UserFields.Fields.Item("Parcela").Value.ToString(),
+                               U_Valor = oPedidoVenda.Lines.LineTotal,
+                               U_Tipo = oPedidoVenda.Lines.UserFields.Fields.Item("").Value.ToString(),
+                               U_DataFat = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("DataFat").Value),
+                               U_NroNF = oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value.ToString(),
+                               U_DataSol = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("DataSol").Value),
+                               U_Obs = oPedidoVenda.Lines.FreeText,
+                               U_Bloqueado = oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value.ToString() == "Y"
                            }
                            );
                     }
@@ -369,7 +373,9 @@ namespace Zopone.AddOn.PO.View.Obra
                     else
                         txtCodigo.Text = retornoDados[0];
 
-                    CarregarDadosPO(txtCodigo.Text);
+                    bool isDraft = retornoDados[1] == "D";
+
+                    CarregarDadosPO(txtCodigo.Text, isDraft);
                 }
 
             }
@@ -486,64 +492,74 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (!string.IsNullOrEmpty(txtItem.Text))
                     AdicionarItemGrid();
 
-                PurchaseOrderSAP oPOSAP = new PurchaseOrderSAP();
 
-                if (!string.IsNullOrEmpty(txtCodigo.Text))
+
+                SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
+
+                if (!string.IsNullOrEmpty(txtNroNF.Text))
                 {
-                    if (!oPOSAP.GetByDocEntry(Convert.ToInt32(txtCodigo.Text)))
-                        throw new Exception($"Erro ao pesquisar PO: {txtCodigo.Text}");
+                    if (!oPedidoVenda.GetByKey(Convert.ToInt32(txtNroNF.Text)))
+                        throw new Exception($"Erro ao pesquisar Pedido: {txtNroNF.Text}");
 
                     bExistePedido = true;
                 }
 
                 if (!bExistePedido)
                 {
-                    oPOSAP.U_NroPedido = txtNroPedido.Text;
-                    oPOSAP.U_Data = Convert.ToDateTime(mskDATA.Text);
-                    oPOSAP.BplID = BPLId;
+                    oPedidoVenda.NumAtCard = txtNroPedido.Text;
+                    oPedidoVenda.DocDate = Convert.ToDateTime(mskDATA.Text);
+                    oPedidoVenda.DocDueDate = Convert.ToDateTime(mskDATA.Text);
+                    oPedidoVenda.CardCode = linesPO[0].U_CardCode;
+                    oPedidoVenda.BPL_IDAssignedToInvoice = BPLId;
                 }
 
-                oPOSAP.U_NroCont = txtNroContratoCliente.Text;
-                oPOSAP.U_Desc = txtObservacao.Text;
-                oPOSAP.U_Anexo = txtAnexo.Text;
-                oPOSAP.U_Status = CbStatus.SelectedValue.ToString();
-                oPOSAP.U_Valor = Convert.ToDouble(txtValorPO.Text);
-
-                oPOSAP.Lines.Clear();
+                oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
+                oPedidoVenda.Comments = txtObservacao.Text;
 
                 foreach (var linePO in linesPO)
                 {
-                    oPOSAP.Lines.Add(new PurchaseOrderSAP.PurchaseOrderLine()
-                    {
-                        U_Candidato = linePO.U_Candidato,
-                        U_CardCode = linePO.U_CardCode,
-                        U_CardName = linePO.U_CardName,
-                        U_DataFat = linePO.U_DataFat,
-                        U_DataLanc = DateTime.Now,
-                        U_DataSol = linePO.U_DataSol,
-                        U_DescItemFat = linePO.U_DescItemFat,
-                        U_Item = linePO.U_Item,
-                        U_ItemCode = linePO.U_ItemCode,
-                        U_ItemFat = linePO.U_ItemFat,
-                        U_NroNF = linePO.U_NroNF,
-                        U_Obs = linePO.U_Obs,
-                        U_Parcela = linePO.U_Parcela,
-                        U_PrjCode = linePO.U_PrjCode,
-                        U_Tipo = linePO.U_Tipo,
-                        U_Valor = linePO.U_Valor,
-                        U_Bloqueado = (linePO.U_Bloqueado ? "Y" : "N")
-                    });
+                    if (linePO.LineNum == -1 && !string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
+                        oPedidoVenda.Lines.Add();
+                    else if (linePO.LineNum >= 0)
+                        oPedidoVenda.Lines.SetCurrentLine(linePO.LineNum);
+
+                    oPedidoVenda.Lines.ItemCode = linePO.U_ItemCode;
+                    oPedidoVenda.Lines.Quantity = 1;
+                    oPedidoVenda.Lines.Price = Convert.ToDouble(linePO.U_Valor);
+                    oPedidoVenda.Lines.ProjectCode = linePO.U_PrjCode;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value = linePO.U_Candidato;
+                    oPedidoVenda.Lines.FreeText = linePO.U_Obs;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value = linePO.U_DataFat;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataLanc").Value = linePO.U_DataLanc;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value = linePO.U_DataSol;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = linePO.U_Item;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value = linePO.U_ItemFat;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value = linePO.U_NroNF;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value = linePO.U_Tipo;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value = linePO.U_Parcela;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value = linePO.U_DescItemFat;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value = linePO.U_DescItemFat;
+
                 }
+
 
                 if (bExistePedido)
-                    oPOSAP.Update();
+                {
+                    if (oPedidoVenda.Update() != 0)
+                        throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                }
                 else
                 {
-                    oPOSAP.Add();
-                    txtCodigo.Text = SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM ""@ZPN_ORDR"" ");
+                    if (oPedidoVenda.Add() != 0)
+                        throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                 }
 
+                txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();
+
                 MessageBox.Show("PO salva com sucesso!");
+
+
+
             }
             catch (Exception Ex)
             {
