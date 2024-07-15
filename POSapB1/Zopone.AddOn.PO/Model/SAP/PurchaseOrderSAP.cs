@@ -40,6 +40,7 @@ namespace Zopone.AddOn.PO.Model.SAP
             public string U_NroNF { get; set; }
             public DateTime U_DataSol { get; set; }
             public string U_PrjCode { get; set; }
+            public string U_Bloqueado { get; set; }
             public string U_PrjName { get; set; }
             public string U_CardCode { get; set; }
             public string U_CardName { get; set; }
@@ -53,38 +54,7 @@ namespace Zopone.AddOn.PO.Model.SAP
             var generalService = ((CompanyService)Globals.Master.Connection.Database.GetCompanyService()).GetGeneralService("ZPN_ORDR");
             var generalData = (GeneralData)generalService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData);
 
-            generalData.SetProperty("U_NroPedido", U_NroPedido);
-            generalData.SetProperty("U_Valor", U_Valor);
-            generalData.SetProperty("U_Data", U_Data);
-            generalData.SetProperty("U_DataVenc", U_DataVenc);
-            generalData.SetProperty("U_NroCont", U_NroCont);
-            generalData.SetProperty("U_Status", U_Status);
-            generalData.SetProperty("U_Desc", U_Desc);
-            generalData.SetProperty("U_BplID", BplID);
-            generalData.SetProperty("U_Anexo", U_Anexo);
-
-
-            var lines = generalData.Child("ZPN_RDR1");
-            foreach (var line in Lines)
-            {
-                var lineData = lines.Add();
-                lineData.SetProperty("U_Candidato", line.U_Candidato);
-                lineData.SetProperty("U_Item", line.U_Item);
-                lineData.SetProperty("U_ItemFat", line.U_ItemFat);
-                lineData.SetProperty("U_DescItemFat", line.U_DescItemFat);
-                lineData.SetProperty("U_Parcela", line.U_Parcela);
-                lineData.SetProperty("U_Tipo", line.U_Tipo);
-                lineData.SetProperty("U_DataLanc", line.U_DataLanc);
-                lineData.SetProperty("U_DataFat", line.U_DataFat);
-                lineData.SetProperty("U_NroNF", line.U_NroNF);
-                lineData.SetProperty("U_DataSol", line.U_DataSol);
-                lineData.SetProperty("U_PrjCode", line.U_PrjCode);
-                lineData.SetProperty("U_CardCode", line.U_CardCode);
-                lineData.SetProperty("U_CardName", line.U_CardName);
-                lineData.SetProperty("U_ItemCode", line.U_ItemCode);
-                lineData.SetProperty("U_Valor", line.U_Valor);
-                lineData.SetProperty("U_Obs", line.U_Obs);
-            }
+            AtualizarPropriedades(generalData);
 
             generalService.Add(generalData);
         }
@@ -96,6 +66,13 @@ namespace Zopone.AddOn.PO.Model.SAP
             generalDataParams.SetProperty("DocEntry", DocEntry);
             var generalData = generalService.GetByParams(generalDataParams);
 
+            AtualizarPropriedades(generalData);
+
+            generalService.Update(generalData);
+        }
+
+        private void AtualizarPropriedades(GeneralData generalData)
+        {
             generalData.SetProperty("U_NroPedido", U_NroPedido);
             generalData.SetProperty("U_Valor", U_Valor);
             generalData.SetProperty("U_Data", U_Data);
@@ -132,9 +109,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 lineData.SetProperty("U_ItemCode", line.U_ItemCode);
                 lineData.SetProperty("U_Valor", line.U_Valor);
                 lineData.SetProperty("U_Obs", line.U_Obs);
-            }
-
-            generalService.Update(generalData);
+                lineData.SetProperty("U_Bloqueado", line.U_Bloqueado);           }
         }
 
         public void Delete()

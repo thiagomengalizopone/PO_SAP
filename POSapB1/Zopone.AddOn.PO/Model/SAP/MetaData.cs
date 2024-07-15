@@ -37,7 +37,7 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 #endregion
 
-                #region Documentos 
+                #region PO 
                 var valoresValidosStatusDoc = new List<Tuple<string, string>>();
                 valoresValidosStatusDoc.Add(new Tuple<string, string>("F", "Faturado"));
                 valoresValidosStatusDoc.Add(new Tuple<string, string>("N", "Não Faturado"));
@@ -77,6 +77,8 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("@ZPN_RDR1", "NroNF", "Número NF", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_RDR1", "DataSol", "Data Solicitação", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Obs", "Observação", SAPbobsCOM.BoFieldTypes.db_Memo, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+
+                DBCreation.CriarCampoUsuario("@ZPN_RDR1", "Bloqueado", "Bloqueado", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, "N", valoresValidosSimNao);
 
                 List<ChildTables> aTabelasFilhasDocumento = new List<ChildTables>();
                 aTabelasFilhasDocumento.Add(new ChildTables("ZPN_RDR1", "ZPN_RDR1"));

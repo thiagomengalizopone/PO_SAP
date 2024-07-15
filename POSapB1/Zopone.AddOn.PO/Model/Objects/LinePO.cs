@@ -23,6 +23,7 @@ namespace Zopone.AddOn.PO.Model.Objects
         public string U_NroNF { get; set; }
         public DateTime U_DataSol { get; set; }
         public string U_Obs { get; set; }
+        public Boolean U_Bloqueado { get; set; }
 
     }
 }

@@ -138,7 +138,8 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_DataFat = poLine.U_DataFat,
                                U_NroNF = poLine.U_NroNF,
                                U_DataSol = poLine.U_DataSol,
-                               U_Obs = poLine.U_Obs
+                               U_Obs = poLine.U_Obs,
+                               U_Bloqueado = poLine.U_Bloqueado == "Y"
                            }
                            );
                     }
@@ -224,7 +225,8 @@ namespace Zopone.AddOn.PO.View.Obra
                     U_DataFat = Convert.ToDateTime(mskDataFaturamento.Text),
                     U_NroNF = txtNroNF.Text,
                     U_DataSol = Convert.ToDateTime(mskDataSol.Text),
-                    U_Obs = txtObservacao.Text
+                    U_Obs = txtObservacao.Text,
+                    U_Bloqueado = cbBloqueado.Checked 
                 };
 
                 if (RowIndexEdit < 0)
@@ -275,6 +277,7 @@ namespace Zopone.AddOn.PO.View.Obra
             mskDataSol.Text = string.Empty;
             txtObservacao.Text = string.Empty;
             lblItemFat.Text = string.Empty;
+            cbBloqueado.Checked = false;
         }
 
         private void textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -451,6 +454,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 txtNroNF.Text = linesPO[rowIndex].U_NroNF;
                 mskDataSol.Text = linesPO[rowIndex].U_DataSol.ToString("dd/MM/yyyy");
                 txtObservacao.Text = linesPO[rowIndex].U_Obs;
+                cbBloqueado.Checked = linesPO[rowIndex].U_Bloqueado;
             }
             catch (Exception Ex)
             {
@@ -526,7 +530,8 @@ namespace Zopone.AddOn.PO.View.Obra
                         U_Parcela = linePO.U_Parcela,
                         U_PrjCode = linePO.U_PrjCode,
                         U_Tipo = linePO.U_Tipo,
-                        U_Valor = linePO.U_Valor
+                        U_Valor = linePO.U_Valor,
+                        U_Bloqueado = (linePO.U_Bloqueado ? "Y" : "N")
                     });
                 }
 
@@ -601,5 +606,6 @@ namespace Zopone.AddOn.PO.View.Obra
             if (!string.IsNullOrEmpty(fileNameAnexo))
                 txtAnexo.Text = fileNameAnexo;
         }
+
     }
 }
