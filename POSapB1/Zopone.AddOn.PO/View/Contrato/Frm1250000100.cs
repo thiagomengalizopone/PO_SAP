@@ -1,14 +1,7 @@
 ﻿using sap.dev.core;
-using sap.dev.data;
 using sap.dev.ui.Forms;
-using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Zopone.AddOn.PO.Controller.ParceiroNegocio;
 using Zopone.AddOn.PO.View.Obra;
 
 namespace Zopone.AddOn.PO.View.Contrato
@@ -46,7 +39,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 return true;
             }
-            catch (Exception Ex) 
+            catch (Exception Ex)
             {
                 throw new Exception($"Erro nos eventos: {Ex.Message}");
             }
@@ -67,7 +60,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 oItem = oFormContrato.Items.Add("EdNroRH", SAPbouiCOM.BoFormItemTypes.it_EDIT);
                 oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19; 
+                oItem.Top = oItemRef.Top + 19;
                 oItem.Width = 150;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
@@ -79,7 +72,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oItemRef = oFormContrato.Items.Item("1250000038");
                 oItem = oFormContrato.Items.Add("StNroRH", SAPbouiCOM.BoFormItemTypes.it_STATIC);
                 oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top+19; 
+                oItem.Top = oItemRef.Top + 19;
                 oItem.Width = 147;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
@@ -92,7 +85,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                 Item oFolderRef = oFormContrato.Items.Item("1320000072");
 
                 Item oNewFolderItem = oFormContrato.Items.Add("FldObra", BoFormItemTypes.it_FOLDER);
-                oNewFolderItem.Left = oFolderRef.Left; 
+                oNewFolderItem.Left = oFolderRef.Left;
                 oNewFolderItem.Top = oFolderRef.Top;
                 oNewFolderItem.Width = oFolderRef.Width;
                 oNewFolderItem.Height = oFolderRef.Height;
@@ -100,11 +93,11 @@ namespace Zopone.AddOn.PO.View.Contrato
                 Folder oNewFolder = (Folder)oNewFolderItem.Specific;
                 oNewFolder.Caption = "Obras";
                 oNewFolder.Pane = 99;
-                oNewFolder.AutoPaneSelection= true;
+                oNewFolder.AutoPaneSelection = true;
                 oNewFolder.GroupWith(oFolderRef.UniqueID);
 
                 Item iGridObras = oFormContrato.Items.Add("GdObras", BoFormItemTypes.it_GRID);
-                iGridObras.Left = 20 ;
+                iGridObras.Left = 20;
                 iGridObras.Top = oFolderRef.Top + 30;
                 iGridObras.Width = 600;
                 iGridObras.Height = 350;
@@ -117,7 +110,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oGridObras.SelectionMode = BoMatrixSelect.ms_Single;
 
                 DataTable DtObras = oFormContrato.DataSources.DataTables.Add("DtObras");
-                
+
                 oGridObras.DataTable = DtObras;
 
                 oGridObras.DoubleClickAfter += OGridObras_DoubleClickAfter;
@@ -156,7 +149,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
         private static void CarregarDadosObra(string formUID)
         {
-            try 
+            try
             {
                 Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
                 EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000004").Specific;
@@ -178,7 +171,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             DtObras.ExecuteQuery($"ZPN_SP_LISTAOBRACONTRATO '{CodContrato}'");
             oGridObras.AutoResizeColumns();
 
-            for (int iCol = 0; iCol< oGridObras.Columns.Count; iCol++)
+            for (int iCol = 0; iCol < oGridObras.Columns.Count; iCol++)
                 oGridObras.Columns.Item(iCol).Editable = false;
 
         }
@@ -209,7 +202,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                     }
                 }
             }
-            catch (Exception Ex ) 
+            catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao executar dados: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
 
@@ -219,6 +212,6 @@ namespace Zopone.AddOn.PO.View.Contrato
             return true;
         }
 
-        
+
     }
 }

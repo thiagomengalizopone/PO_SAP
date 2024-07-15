@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using sap.dev.core;
-using sap.dev.core.DTO;
+﻿using sap.dev.core;
 using sap.dev.core.MetaData;
+using System;
 using Zopone.AddOn.PO.Model;
 using Zopone.AddOn.PO.Model.SAP;
 

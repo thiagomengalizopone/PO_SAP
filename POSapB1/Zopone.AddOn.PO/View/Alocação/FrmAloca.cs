@@ -2,7 +2,6 @@
 using sap.dev.ui.Forms;
 using SAPbouiCOM;
 using System;
-using System.Windows.Forms;
 
 namespace Zopone.AddOn.PO.View.Alocação
 {
@@ -56,7 +55,7 @@ namespace Zopone.AddOn.PO.View.Alocação
 
         private void EdEtapa_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
         {
-            try 
+            try
             {
                 SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
                 if (aEvent.SelectedObjects == null)
@@ -70,7 +69,7 @@ namespace Zopone.AddOn.PO.View.Alocação
             }
             catch (Exception Ex)
             {
-                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar Etapa: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex); 
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar Etapa: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
     }

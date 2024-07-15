@@ -1,23 +1,15 @@
-﻿using Zopone.AddOn.PO.View.Obra.Helpers;
+﻿using sap.dev.core;
+using sap.dev.data;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using sap.dev.core;
-using Zopone.AddOn.PO.View.PO;
-using System.Threading;
-using Zopone.AddOn.PO.Model.Objects;
-using SAPbobsCOM;
 using System.Data.Common;
+using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
+using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.Model.SAP;
-using static System.Windows.Forms.LinkLabel;
-using sap.dev.data;
-using System.Collections;
+using Zopone.AddOn.PO.View.Obra.Helpers;
+using Zopone.AddOn.PO.View.PO;
 
 namespace Zopone.AddOn.PO.View.Obra
 {
@@ -213,7 +205,7 @@ namespace Zopone.AddOn.PO.View.Obra
             try
             {
                 if (string.IsNullOrEmpty(txtObra.Text))
-                    return;                        
+                    return;
 
                 LinePO oLinePO = new LinePO()
                 {
@@ -474,7 +466,7 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 if (MessageBox.Show("Deseja salvar a PO?", "Atenção!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                     return;
-                
+
                 double dblTotalPO = Convert.ToDouble(txtValorPO.Text);
                 double dblTotalLinhasPO = linesPO.Sum(item => item.U_Valor);
 
@@ -545,7 +537,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPOSAP.Add();
                     txtCodigo.Text = SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM ""@ZPN_ORDR"" ");
                 }
-                
+
                 MessageBox.Show("PO salva com sucesso!");
             }
             catch (Exception Ex)
@@ -607,7 +599,7 @@ namespace Zopone.AddOn.PO.View.Obra
             string fileNameAnexo = await Util.OpenFileDialogAsync(EnumList.TipoArquivo.Todos);
 
             if (!string.IsNullOrEmpty(fileNameAnexo))
-                txtAnexo.Text = fileNameAnexo; 
+                txtAnexo.Text = fileNameAnexo;
         }
     }
 }

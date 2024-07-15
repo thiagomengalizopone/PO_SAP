@@ -1,12 +1,8 @@
 ﻿using sap.dev.core;
-using sap.dev.data;
 using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.IO;
 
 
 namespace Zopone.AddOn.PO.View.ConfiguracaoImportWMS
@@ -21,7 +17,7 @@ namespace Zopone.AddOn.PO.View.ConfiguracaoImportWMS
         public Button BtDelSerie { get; set; }
 
         public Button BtOk { get; set; }
-        
+
         public SAPbouiCOM.DBDataSource DbConfigWMS;
         public SAPbouiCOM.DBDataSource DbConfWLSLinhas;
 
@@ -33,9 +29,9 @@ namespace Zopone.AddOn.PO.View.ConfiguracaoImportWMS
                 return;
 
             EdCode = (EditText)oForm.Items.Item("EdCode").Specific;
-            
+
             MtConfiguraoesSequencial = (Matrix)oForm.Items.Item("MtConfSQ").Specific;
-           
+
             BtAddSerie = (Button)oForm.Items.Item("BtAddS").Specific;
             BtAddSerie.PressedAfter += BtAddUsuario_PressedAfter;
             BtDelSerie = (Button)oForm.Items.Item("BtDelS").Specific;
@@ -52,14 +48,14 @@ namespace Zopone.AddOn.PO.View.ConfiguracaoImportWMS
             CarregarDadosTela();
         }
 
-       
+
 
         private void CarregarDadosTela()
         {
             try
             {
-                Util.MatrixComboBoxSetValoresValidosPorSQL(MtConfiguraoesSequencial, UtilScriptsSQL.SQL_Filial , "Filial");
-                Util.MatrixComboBoxSetValoresValidosPorSQL(MtConfiguraoesSequencial, UtilScriptsSQL.SQL_SerieDocumento , "Serie");
+                Util.MatrixComboBoxSetValoresValidosPorSQL(MtConfiguraoesSequencial, UtilScriptsSQL.SQL_Filial, "Filial");
+                Util.MatrixComboBoxSetValoresValidosPorSQL(MtConfiguraoesSequencial, UtilScriptsSQL.SQL_SerieDocumento, "Serie");
 
                 Recordset oRs = (Recordset)Globals.Master.Connection.Database.GetBusinessObject(BoObjectTypes.BoRecordset);
 

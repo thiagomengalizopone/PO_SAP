@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using sap.dev.core;
+﻿using sap.dev.core;
+using System;
 using System.Diagnostics;
 using System.Reflection;
-using static sap.dev.core.EnumList;
 using System.Text.RegularExpressions;
 using Zopone.AddOn.PO.UtilAddOn;
-using System.Windows.Forms;
+using static sap.dev.core.EnumList;
 
 namespace Zopone.AddOn.PO
 {

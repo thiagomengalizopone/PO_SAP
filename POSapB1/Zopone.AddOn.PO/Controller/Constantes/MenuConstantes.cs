@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Zopone.AddOn.PO.Controller.Constantes
+﻿namespace Zopone.AddOn.PO.Controller.Constantes
 {
     public class MenuConstantes
     {

@@ -4,7 +4,6 @@ using System.Threading;
 using Zopone.AddOn.PO.Controller.Constantes;
 using Zopone.AddOn.PO.View.Alocação;
 using Zopone.AddOn.PO.View.ClassificacaoObra;
-using Zopone.AddOn.PO.View.ConfiguracaoImportWMS;
 using Zopone.AddOn.PO.View.Obra;
 
 namespace Zopone.AddOn.PO
@@ -48,7 +47,7 @@ namespace Zopone.AddOn.PO
                             break;
                     }
                 }
-            
+
                 BubbleEvent = true;
             }
             catch (Exception ex)
@@ -59,6 +58,6 @@ namespace Zopone.AddOn.PO
 
         }
 
-        
+
     }
 }

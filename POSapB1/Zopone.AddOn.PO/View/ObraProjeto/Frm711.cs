@@ -1,16 +1,8 @@
 ﻿using sap.dev.core;
 using sap.dev.data;
 using sap.dev.ui.Forms;
-using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using Zopone.AddOn.PO.Controller.ParceiroNegocio;
 using Zopone.AddOn.PO.View.Obra;
 
 namespace Zopone.AddOn.PO.View.Contrato
@@ -51,7 +43,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 return true;
             }
-            catch (Exception Ex) 
+            catch (Exception Ex)
             {
                 throw new Exception($"Erro nos eventos: {Ex.Message}");
             }

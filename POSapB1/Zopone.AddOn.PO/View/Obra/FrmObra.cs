@@ -4,11 +4,6 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.IO;
-using System.Windows.Forms.VisualStyles;
-using System.Security.Cryptography;
 
 
 namespace Zopone.AddOn.PO.View.Obra
@@ -155,7 +150,7 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                FrmPO.MenuPO(GdListPO.DataTable.GetValue(0, 0).ToString()); 
+                FrmPO.MenuPO(GdListPO.DataTable.GetValue(0, 0).ToString());
             }
             catch (Exception Ex)
             {
@@ -176,11 +171,11 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (pVal.Row < 0)
                     return;
-                
+
                 if (!Util.RetornarDialogo("Deseja editar o registro de candidato?"))
                     return;
 
-                
+
                 EdIdent.Value = DBObraCandidato.GetValue("U_Identif", pVal.Row - 1);
                 EdTipo.Value = DBObraCandidato.GetValue("U_Tipo", pVal.Row - 1);
                 EdNome.Value = DBObraCandidato.GetValue("U_Nome", pVal.Row - 1);
@@ -219,9 +214,9 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                
+
                 MtCandidato.FlushToDataSource();
-                
+
                 Util.DBDataSourceRemoveLinhasBranco(DBObraCandidato, "U_Identif");
 
                 int RowId = -1;
@@ -255,16 +250,16 @@ namespace Zopone.AddOn.PO.View.Obra
                 DBObraCandidato.SetValue("U_Altitude", RowId, EdAltitude.Value);
 
 
-                EdIdent.Value   = string.Empty;
-                EdNome.Value    = string.Empty;
+                EdIdent.Value = string.Empty;
+                EdNome.Value = string.Empty;
                 EdTipo.Value = string.Empty;
-                EdDetent.Value  = string.Empty;
-                EdIdDete.Value  = string.Empty;
+                EdDetent.Value = string.Empty;
+                EdIdDete.Value = string.Empty;
                 EdTipoLog.Value = string.Empty;
-                EdRua.Value     = string.Empty;
-                EdNum.Value     = string.Empty;
-                EdComp.Value    = string.Empty;
-                EdCEP.Value     = string.Empty;
+                EdRua.Value = string.Empty;
+                EdNum.Value = string.Empty;
+                EdComp.Value = string.Empty;
+                EdCEP.Value = string.Empty;
                 EdBairro.Value = string.Empty;
                 EdLatitude.Value = string.Empty;
                 EdLongitude.Value = string.Empty;

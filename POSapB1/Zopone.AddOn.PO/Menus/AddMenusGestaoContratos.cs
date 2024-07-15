@@ -1,10 +1,6 @@
 ﻿using sap.dev.core;
 using SAPbouiCOM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zopone.AddOn.PO.Controller.Constantes;
 
 namespace Zopone.AddOn.PO.Menus
@@ -15,7 +11,7 @@ namespace Zopone.AddOn.PO.Menus
         {
             try
             {
-                MenusGestaoUtilitarios  mnuGC = new MenusGestaoUtilitarios();
+                MenusGestaoUtilitarios mnuGC = new MenusGestaoUtilitarios();
 
                 Util.RemoverMenus(MenuConstantes.MnuFaturamento);
 

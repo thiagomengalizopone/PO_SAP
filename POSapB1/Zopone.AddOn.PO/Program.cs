@@ -1,11 +1,8 @@
 ﻿using sap.dev.core;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Zopone.AddOn.PO
 {
@@ -16,7 +13,7 @@ namespace Zopone.AddOn.PO
             try
             {
                 //System.Windows.Forms.Application.ThreadException += new
-                  //System.Threading.ThreadExceptionEventHandler(Util.Application_ThreadException);
+                //System.Threading.ThreadExceptionEventHandler(Util.Application_ThreadException);
 
                 System.Windows.Forms.Application.SetUnhandledExceptionMode(System.Windows.Forms.UnhandledExceptionMode.CatchException);
 
@@ -63,7 +60,7 @@ namespace Zopone.AddOn.PO
                 try
                 {
                     Util.GravarLog(sap.dev.core.EnumList.EnumAddOn.AddOnUtilitarios, sap.dev.core.EnumList.TipoMensagem.Erro, "Erro ao iniciar AddOn", e);
-              
+
                 }
                 finally
                 {

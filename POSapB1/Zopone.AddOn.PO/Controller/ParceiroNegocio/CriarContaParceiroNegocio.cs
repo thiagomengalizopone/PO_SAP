@@ -2,10 +2,6 @@
 using sap.dev.data;
 using SAPbobsCOM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zopone.AddOn.PO.UtilAddOn;
 
 namespace Zopone.AddOn.PO.Controller.ParceiroNegocio
@@ -22,7 +18,7 @@ namespace Zopone.AddOn.PO.Controller.ParceiroNegocio
 
                 SAPbobsCOM.BusinessPartners oParceiroNegocio = (SAPbobsCOM.BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
                 SAPbobsCOM.ChartOfAccounts oContaContabil = (SAPbobsCOM.ChartOfAccounts)Globals.Master.Connection.Database.GetBusinessObject(BoObjectTypes.oChartOfAccounts);
-                
+
 
 
                 if (oParceiroNegocio.GetByKey(CardCode))

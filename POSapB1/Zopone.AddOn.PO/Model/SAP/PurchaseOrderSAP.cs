@@ -2,9 +2,6 @@
 using SAPbobsCOM;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zopone.AddOn.PO.Model.SAP
 {
@@ -12,7 +9,7 @@ namespace Zopone.AddOn.PO.Model.SAP
     {
         public int DocEntry { get; set; }
         public int DocNum { get; set; }
-        public int BplID { get; set; }      
+        public int BplID { get; set; }
         public string U_NroPedido { get; set; }
         public double U_Valor { get; set; }
         public DateTime U_Data { get; set; }
@@ -52,7 +49,7 @@ namespace Zopone.AddOn.PO.Model.SAP
         }
         public void Add()
         {
-            
+
             var generalService = ((CompanyService)Globals.Master.Connection.Database.GetCompanyService()).GetGeneralService("ZPN_ORDR");
             var generalData = (GeneralData)generalService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData);
 
@@ -63,10 +60,10 @@ namespace Zopone.AddOn.PO.Model.SAP
             generalData.SetProperty("U_NroCont", U_NroCont);
             generalData.SetProperty("U_Status", U_Status);
             generalData.SetProperty("U_Desc", U_Desc);
-            generalData.SetProperty("U_BplID", BplID);            
+            generalData.SetProperty("U_BplID", BplID);
             generalData.SetProperty("U_Anexo", U_Anexo);
 
-            
+
             var lines = generalData.Child("ZPN_RDR1");
             foreach (var line in Lines)
             {
@@ -155,7 +152,7 @@ namespace Zopone.AddOn.PO.Model.SAP
             {
                 var generalService = ((CompanyService)Globals.Master.Connection.Database.GetCompanyService()).GetGeneralService("ZPN_ORDR");
                 var generalDataParams = (GeneralDataParams)generalService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralDataParams);
-                GeneralData generalData ;
+                GeneralData generalData;
                 try
                 {
                     generalDataParams.SetProperty("DocEntry", docEntry);
@@ -186,7 +183,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 var linesPO = generalData.Child("ZPN_RDR1");
 
 
-                for (int i = 0; i < linesPO.Count ; i++)
+                for (int i = 0; i < linesPO.Count; i++)
                 {
                     var lineData = linesPO.Item(i);
                     var line = new PurchaseOrderLine

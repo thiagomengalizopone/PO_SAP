@@ -1,14 +1,9 @@
 ﻿using sap.dev.core;
-using SAPbobsCOM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zopone.AddOn.PO.UtilAddOn
 {
-    public  class Configuracoes
+    public class Configuracoes
     {
         public static SAPbobsCOM.Recordset oRecordsetConfig;
         public static bool GerarContasAutomaticamentePN => GetBoolConfig("U_GeraConPN");

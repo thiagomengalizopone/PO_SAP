@@ -1,12 +1,8 @@
 ﻿using sap.dev.core.Menus;
 using SAPbouiCOM;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Zopone.AddOn.PO.Controller.Constantes;
 
 namespace Zopone.AddOn.PO.Menus
@@ -71,7 +67,7 @@ namespace Zopone.AddOn.PO.Menus
                       17,
                       null));
 
-           
+
 
 
 

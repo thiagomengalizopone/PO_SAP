@@ -1,13 +1,8 @@
-﻿using SAPbobsCOM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Zopone.AddOn.PO.Model.Objects
 {
-    
+
     public class LinePO
     {
         public Int32 LineNum { get; set; }

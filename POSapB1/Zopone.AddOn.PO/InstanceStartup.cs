@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using sap.dev.core;
+﻿using sap.dev.core;
 using static sap.dev.core.EnumList;
 
 namespace Zopone.AddOn.PO
@@ -18,12 +13,12 @@ namespace Zopone.AddOn.PO
 
             sap.dev.core.AddOn oAddOn = new sap.dev.core.AddOn(lConexao, EnumAddOn.SapDevCore);
 
-           
+
 
 
 
         }
 
-        
+
     }
 }
