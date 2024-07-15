@@ -5,15 +5,6 @@ namespace Zopone.AddOn.PO.Model
 {
     public static class SqlProcedures
     {
-       
-        public static class SP_GRAVARLOG
-        {
-            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_GRAVARLOG.sql";
-            public const string Descricao = "Gravar Log do sistema";
-            public const TipoScript Tipo = TipoScript.Proc;
-            public const Int32 Versao = 2023090801;
-        }
-
         public static class SP_ZPN_PESQUISAETAPA
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_PESQUISAETAPA.sql";
@@ -46,5 +37,26 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2023090801;
         }
 
+        public static class ZPN_SP_LISTAOBRACONTRATO
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_LISTAOBRACONTRATO.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2023090801;
+        }
+        public static class ZPN_SP_LISTAOBRAPO
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_LISTAOBRAPO.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2023090801;
+        }
+        public static class ZPN_SP_LISTAPO
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_LISTAPO.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2023090801;
+        }
     }
 }

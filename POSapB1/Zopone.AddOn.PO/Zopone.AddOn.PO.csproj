@@ -250,7 +250,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAETAPA.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRACONTRATO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAPO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRAPO - Copy.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRAPO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

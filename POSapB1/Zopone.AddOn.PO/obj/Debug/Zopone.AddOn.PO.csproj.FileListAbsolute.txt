@@ -59,6 +59,7 @@ C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\zopone.jpg
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ConfiguracaoImportWMS\FrmConfigImpWMS.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Obra\FrmObra.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ClassificacaoObra\FrmClassObra.srf
+C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Alocação\FrmAloca.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\Zopone.AddOn.PO.exe.config
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\Zopone.AddOn.PO.exe
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\Zopone.AddOn.PO.pdb
@@ -107,11 +108,10 @@ C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\System.Securi
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\System.Threading.Tasks.Dataflow.xml
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.AssemblyReference.cache
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.Properties.Resources.resources
+C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.View.PO.FrmPesquisa.resources
+C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.View.Obra.FrmPO.resources
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.GenerateResource.cache
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.CoreCompileInputs.cache
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.CopyComplete
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.exe
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.pdb
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.View.Obra.FrmPO.resources
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.View.PO.FrmPesquisa.resources
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Alocação\FrmAloca.srf
