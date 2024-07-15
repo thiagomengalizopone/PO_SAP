@@ -386,7 +386,7 @@
   <metadata name="mskDATA.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="textBox2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="txtValorPO.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="BtPesqPO.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -408,7 +408,7 @@
   <data name="BtAnexo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABsAAAAaCAYAAABGiCfwAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAS
-        cwAAEnMBjCK5BwAAA3VJREFUSEu9lm1TEmsYx/k858v0sg9wXjjjizPjTC/qRc00ziGpsZpCzwkdTxx7
+        cgAAEnIBXmVb4wAAA3VJREFUSEu9lm1TEmsYx/k858v0sg9wXjjjizPjTC/qRc00ziGpsZpCzwkdTxx7
         GrMsYUxF7YFUFNQFVtgCFkgQVgLBxd0FhH9cV2nWlChN/meu2dn74frd18O9s6ZqtYbTMtMfvQmclpke
         eEs4LTM1Gg1UKhXU63WcVM2tKBt1SEoV8ZyBHa32ZeZbGYYBt9sNE0FKpRJqtR8v/JkItFtpQExruB8o
         YnR9G8HULsNpjkS+NU1DJBJBV1dX+zAquLylo28hi8diAU9CRX4ux8tNX3u8hiKSJAk2mw2dnZ3twfb2

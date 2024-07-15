@@ -17,6 +17,7 @@ using System.Data.Common;
 using Zopone.AddOn.PO.Model.SAP;
 using static System.Windows.Forms.LinkLabel;
 using sap.dev.data;
+using System.Collections;
 
 namespace Zopone.AddOn.PO.View.Obra
 {
@@ -116,7 +117,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (oPOSAP.GetByDocEntry(Convert.ToInt16(txtCodigo.Text)))
                 {
                     txtNroPedido.Text = oPOSAP.U_NroPedido;
-                    txtValor.Text = oPOSAP.U_Valor.ToString();
+                    txtValorPO.Text = oPOSAP.U_Valor.ToString();
                     mskDATA.Text = oPOSAP.U_Data.ToString("dd/mm/yyyy");
                     txtNroContratoCliente.Text = oPOSAP.U_NroCont;
                     CbStatus.SelectedValue = oPOSAP.U_Status;
@@ -271,6 +272,7 @@ namespace Zopone.AddOn.PO.View.Obra
             txtItem.Text = string.Empty;
             txtItemFaturamento.Text = string.Empty;
             lblItemCode.Text = string.Empty;
+            lblCliente.Text = string.Empty;
             lblObra.Text = string.Empty;
             lblItemFat.Text = string.Empty;
             txtParcela.Text = string.Empty;
@@ -472,6 +474,15 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 if (MessageBox.Show("Deseja salvar a PO?", "Atenção!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                     return;
+                
+                double dblTotalPO = Convert.ToDouble(txtValorPO.Text);
+                double dblTotalLinhasPO = linesPO.Sum(item => item.U_Valor);
+
+                if (dblTotalPO != dblTotalLinhasPO)
+                {
+                    MessageBox.Show("Total das linhas diferente do total da PO", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 bool bExistePedido = false;
 
@@ -500,7 +511,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 oPOSAP.U_Desc = txtObservacao.Text;
                 oPOSAP.U_Anexo = txtAnexo.Text;
                 oPOSAP.U_Status = CbStatus.SelectedValue.ToString();
-
+                oPOSAP.U_Valor = Convert.ToDouble(txtValorPO.Text);
 
                 oPOSAP.Lines.Clear();
 
