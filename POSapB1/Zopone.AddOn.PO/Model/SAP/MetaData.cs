@@ -41,8 +41,9 @@ namespace Zopone.AddOn.PO.Model.SAP
 
 
                 DBCreation.CriarCampoUsuario("ORDR", "NroCont", "Número Contrato Cliente", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+                DBCreation.CriarCampoUsuario("ORDR", "IdPO", "ID Po Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
                 
-                
+                DBCreation.CriarCampoUsuario("RDR1", "manSiteInfo", "manufactureSiteInfo", SAPbobsCOM.BoFieldTypes.db_Memo, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "Candidato", "Candidato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "CardCode", "Projeto", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "CardName", "Projeto Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
@@ -55,17 +56,17 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("RDR1", "NroNF", "Número NF", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "DataSol", "Data Solicitação", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "Bloqueado", "Bloqueado", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, "N", valoresValidosSimNao);
-
-
-
-
-
-
+                DBCreation.CriarCampoUsuario("RDR1", "itemDescription", "itemDescription", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false);
                 #endregion
 
                 #region PARAMETROS PO
-                
+
+                var valoresTipoDocumentoPO = new List<Tuple<string, string>>();
+                valoresTipoDocumentoPO.Add(new Tuple<string, string>("E", "Esboço Pedido de Venda"));
+                valoresTipoDocumentoPO.Add(new Tuple<string, string>("P", "Pedido de Venda"));
+
                 DBCreation.CriarTabelaUsuario("ZPN_CONFPO", "Cadastro Configurações PO", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "TipoDoc", "Tipo Documento PO", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresTipoDocumentoPO);
                 DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "CardCodeH", "Código Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "CardNameH", "Descrição Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "ItemCode", "Código Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);

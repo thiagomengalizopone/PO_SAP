@@ -1,4 +1,5 @@
 ﻿using Zopone.AddOn.PO.Controller.Constantes;
+using Zopone.AddOn.PO.View.Config;
 using Zopone.AddOn.PO.View.Contrato;
 
 namespace Zopone.AddOn.PO
@@ -18,6 +19,10 @@ namespace Zopone.AddOn.PO
             else if (pVal.FormTypeEx == FormConstantes.FrmProjetoObra)
             {
                 BubbleEvent = Frm711.Interface_FormItemEvent(ref pVal);
+            }
+            else if (pVal.FormTypeEx == FormConstantes.FrmConfiguracoesPO)
+            {
+                BubbleEvent = FrmConfPO.Interface_FormItemEvent(ref pVal);
             }
         }
     }

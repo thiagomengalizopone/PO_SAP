@@ -26,13 +26,21 @@ namespace Zopone.AddOn.PO.Menus
                     "Faturamento",
                     16,
                     imagem));
+            
+            listMenu.Add(new Menu(
+                 MenuConstantes.MnuFaturamento,
+                 BoMenuType.mt_STRING,
+                 MenuConstantes.MnuConfImportacaoPO,
+                 "Configuração Importação PO",
+                 17,
+                 null));
 
             listMenu.Add(new Menu(
                      MenuConstantes.MnuFaturamento,
                      BoMenuType.mt_STRING,
                      MenuConstantes.MnuClassificacaoObra,
                      "Classificação Obra",
-                     15,
+                     18,
                      null));
 
             listMenu.Add(new Menu(
@@ -40,7 +48,7 @@ namespace Zopone.AddOn.PO.Menus
                    BoMenuType.mt_STRING,
                    MenuConstantes.MnuAlocacao,
                    "Alocação",
-                   16,
+                   19,
                    null));
 
             listMenu.Add(new Menu(
@@ -48,7 +56,7 @@ namespace Zopone.AddOn.PO.Menus
                    BoMenuType.mt_STRING,
                    MenuConstantes.MnuContrato,
                    "Contrato",
-                   16,
+                   20,
                    null));
 
             listMenu.Add(new Menu(
@@ -56,7 +64,7 @@ namespace Zopone.AddOn.PO.Menus
                    BoMenuType.mt_STRING,
                    MenuConstantes.MnuObra,
                    "Obra",
-                   16,
+                   21,
                    null));
 
             listMenu.Add(new Menu(
@@ -64,11 +72,26 @@ namespace Zopone.AddOn.PO.Menus
                       BoMenuType.mt_STRING,
                       MenuConstantes.MnuCadPO,
                       "Cadastro de PO",
-                      17,
+                      22,
                       null));
 
+            listMenu.Add(new Menu(
+                      MenuConstantes.MnuFaturamento,
+                      BoMenuType.mt_STRING,
+                      MenuConstantes.MnuImportacaoPO,
+                      "Importação de PO",
+                      22,
+                      null));
 
+            listMenu.Add(new Menu(
+                      MenuConstantes.MnuFaturamento,
+                      BoMenuType.mt_STRING,
+                      MenuConstantes.MnuVerificaImpPO,
+                      "Verifica Importação de PO",
+                      23,
+                      null));
 
+            
 
 
 

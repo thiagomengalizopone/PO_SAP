@@ -53,13 +53,13 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label2 = new System.Windows.Forms.Label();
             this.txtAnexo = new System.Windows.Forms.TextBox();
             this.gbItens = new System.Windows.Forms.GroupBox();
+            this.cbBloqueado = new System.Windows.Forms.CheckBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.BtPesqObra = new System.Windows.Forms.Button();
             this.BtCancelar = new System.Windows.Forms.Button();
             this.BtSalvar = new System.Windows.Forms.Button();
-            this.lblItemCode = new System.Windows.Forms.Label();
             this.lblItemFat = new System.Windows.Forms.Label();
             this.lblCliente = new System.Windows.Forms.Label();
             this.lblObra = new System.Windows.Forms.Label();
@@ -68,6 +68,24 @@ namespace Zopone.AddOn.PO.View.Obra
             this.mskDataSol = new System.Windows.Forms.MaskedTextBox();
             this.BtAdicionar = new System.Windows.Forms.Button();
             this.DgItensPO = new System.Windows.Forms.DataGridView();
+            this.Obra = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Candidato = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Parcela = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataLancamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NroNF = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataSolicitacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Observacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.U_PrjName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.U_CardName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.U_DescItemFat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.U_Bloqueado = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label20 = new System.Windows.Forms.Label();
             this.txtObservacao = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
@@ -94,25 +112,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.CbStatus = new System.Windows.Forms.ComboBox();
             this.BtPesqPO = new System.Windows.Forms.Button();
             this.BtAnexo = new System.Windows.Forms.Button();
-            this.cbBloqueado = new System.Windows.Forms.CheckBox();
-            this.Obra = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Candidato = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Cliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Parcela = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataLancamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataFaturamento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NroNF = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataSolicitacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Observacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.U_PrjName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.U_CardName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.U_DescItemFat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.U_Bloqueado = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.gbItens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -233,7 +232,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.gbItens.Controls.Add(this.BtPesqObra);
             this.gbItens.Controls.Add(this.BtCancelar);
             this.gbItens.Controls.Add(this.BtSalvar);
-            this.gbItens.Controls.Add(this.lblItemCode);
             this.gbItens.Controls.Add(this.lblItemFat);
             this.gbItens.Controls.Add(this.lblCliente);
             this.gbItens.Controls.Add(this.lblObra);
@@ -270,6 +268,16 @@ namespace Zopone.AddOn.PO.View.Obra
             this.gbItens.TabStop = false;
             this.gbItens.Text = "Itens - PO";
             this.gbItens.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // cbBloqueado
+            // 
+            this.cbBloqueado.AutoSize = true;
+            this.cbBloqueado.Location = new System.Drawing.Point(6, 226);
+            this.cbBloqueado.Name = "cbBloqueado";
+            this.cbBloqueado.Size = new System.Drawing.Size(205, 20);
+            this.cbBloqueado.TabIndex = 20;
+            this.cbBloqueado.Text = "Bloqueado para Faturamento";
+            this.cbBloqueado.UseVisualStyleBackColor = true;
             // 
             // button5
             // 
@@ -330,16 +338,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtSalvar.Text = "Salvar";
             this.BtSalvar.UseVisualStyleBackColor = true;
             this.BtSalvar.Click += new System.EventHandler(this.BtSalvar_Click);
-            // 
-            // lblItemCode
-            // 
-            this.lblItemCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCode.ForeColor = System.Drawing.Color.Red;
-            this.lblItemCode.Location = new System.Drawing.Point(991, 89);
-            this.lblItemCode.Name = "lblItemCode";
-            this.lblItemCode.Size = new System.Drawing.Size(108, 22);
-            this.lblItemCode.TabIndex = 51;
-            this.lblItemCode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // lblItemFat
             // 
@@ -463,6 +461,169 @@ namespace Zopone.AddOn.PO.View.Obra
             this.DgItensPO.TabIndex = 21;
             this.DgItensPO.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgItensPO_CellContentClick);
             this.DgItensPO.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgItensPO_CellDoubleClick);
+            // 
+            // Obra
+            // 
+            this.Obra.DataPropertyName = "U_PrjCode";
+            this.Obra.HeaderText = "Obra";
+            this.Obra.MinimumWidth = 6;
+            this.Obra.Name = "Obra";
+            this.Obra.ReadOnly = true;
+            this.Obra.Width = 125;
+            // 
+            // Candidato
+            // 
+            this.Candidato.DataPropertyName = "U_Candidato";
+            this.Candidato.HeaderText = "Candidato";
+            this.Candidato.MinimumWidth = 6;
+            this.Candidato.Name = "Candidato";
+            this.Candidato.ReadOnly = true;
+            this.Candidato.Width = 125;
+            // 
+            // Cliente
+            // 
+            this.Cliente.DataPropertyName = "U_CardCode";
+            this.Cliente.HeaderText = "Cliente";
+            this.Cliente.MinimumWidth = 6;
+            this.Cliente.Name = "Cliente";
+            this.Cliente.ReadOnly = true;
+            this.Cliente.Width = 125;
+            // 
+            // Item
+            // 
+            this.Item.DataPropertyName = "U_Item";
+            this.Item.HeaderText = "Item";
+            this.Item.MinimumWidth = 6;
+            this.Item.Name = "Item";
+            this.Item.ReadOnly = true;
+            this.Item.Width = 125;
+            // 
+            // ItemFaturamento
+            // 
+            this.ItemFaturamento.DataPropertyName = "U_ItemFat";
+            this.ItemFaturamento.HeaderText = "Item Faturamento";
+            this.ItemFaturamento.MinimumWidth = 6;
+            this.ItemFaturamento.Name = "ItemFaturamento";
+            this.ItemFaturamento.ReadOnly = true;
+            this.ItemFaturamento.Width = 125;
+            // 
+            // ItemCode
+            // 
+            this.ItemCode.DataPropertyName = "U_ItemCode";
+            this.ItemCode.HeaderText = "Item SAP";
+            this.ItemCode.MinimumWidth = 6;
+            this.ItemCode.Name = "ItemCode";
+            this.ItemCode.ReadOnly = true;
+            this.ItemCode.Width = 125;
+            // 
+            // Parcela
+            // 
+            this.Parcela.DataPropertyName = "U_Parcela";
+            this.Parcela.HeaderText = "Parcela";
+            this.Parcela.MinimumWidth = 6;
+            this.Parcela.Name = "Parcela";
+            this.Parcela.ReadOnly = true;
+            this.Parcela.Width = 125;
+            // 
+            // Valor
+            // 
+            this.Valor.DataPropertyName = "U_Valor";
+            this.Valor.HeaderText = "Valor";
+            this.Valor.MinimumWidth = 6;
+            this.Valor.Name = "Valor";
+            this.Valor.ReadOnly = true;
+            this.Valor.Width = 125;
+            // 
+            // Tipo
+            // 
+            this.Tipo.DataPropertyName = "U_Tipo";
+            this.Tipo.HeaderText = "Tipo";
+            this.Tipo.MinimumWidth = 6;
+            this.Tipo.Name = "Tipo";
+            this.Tipo.ReadOnly = true;
+            this.Tipo.Width = 125;
+            // 
+            // DataLancamento
+            // 
+            this.DataLancamento.DataPropertyName = "U_DataLanc";
+            this.DataLancamento.HeaderText = "Data Lancamento";
+            this.DataLancamento.MinimumWidth = 6;
+            this.DataLancamento.Name = "DataLancamento";
+            this.DataLancamento.ReadOnly = true;
+            this.DataLancamento.Width = 125;
+            // 
+            // DataFaturamento
+            // 
+            this.DataFaturamento.DataPropertyName = "U_DataFat";
+            this.DataFaturamento.HeaderText = "Data Faturamento";
+            this.DataFaturamento.MinimumWidth = 6;
+            this.DataFaturamento.Name = "DataFaturamento";
+            this.DataFaturamento.ReadOnly = true;
+            this.DataFaturamento.Width = 125;
+            // 
+            // NroNF
+            // 
+            this.NroNF.DataPropertyName = "U_NroNF";
+            this.NroNF.HeaderText = "Nro NF";
+            this.NroNF.MinimumWidth = 6;
+            this.NroNF.Name = "NroNF";
+            this.NroNF.ReadOnly = true;
+            this.NroNF.Width = 125;
+            // 
+            // DataSolicitacao
+            // 
+            this.DataSolicitacao.DataPropertyName = "U_DataSol";
+            this.DataSolicitacao.HeaderText = "Data Solicitação";
+            this.DataSolicitacao.MinimumWidth = 6;
+            this.DataSolicitacao.Name = "DataSolicitacao";
+            this.DataSolicitacao.ReadOnly = true;
+            this.DataSolicitacao.Width = 125;
+            // 
+            // Observacao
+            // 
+            this.Observacao.DataPropertyName = "U_Obs";
+            this.Observacao.HeaderText = "Observação";
+            this.Observacao.MinimumWidth = 6;
+            this.Observacao.Name = "Observacao";
+            this.Observacao.ReadOnly = true;
+            this.Observacao.Width = 125;
+            // 
+            // U_PrjName
+            // 
+            this.U_PrjName.DataPropertyName = "U_PrjName";
+            this.U_PrjName.HeaderText = "Nome Projeto";
+            this.U_PrjName.MinimumWidth = 6;
+            this.U_PrjName.Name = "U_PrjName";
+            this.U_PrjName.ReadOnly = true;
+            this.U_PrjName.Visible = false;
+            this.U_PrjName.Width = 125;
+            // 
+            // U_CardName
+            // 
+            this.U_CardName.DataPropertyName = "U_CardName";
+            this.U_CardName.HeaderText = "Nome cliente";
+            this.U_CardName.MinimumWidth = 6;
+            this.U_CardName.Name = "U_CardName";
+            this.U_CardName.Visible = false;
+            this.U_CardName.Width = 125;
+            // 
+            // U_DescItemFat
+            // 
+            this.U_DescItemFat.DataPropertyName = "U_DescItemFat";
+            this.U_DescItemFat.HeaderText = "Descrição Item";
+            this.U_DescItemFat.MinimumWidth = 6;
+            this.U_DescItemFat.Name = "U_DescItemFat";
+            this.U_DescItemFat.ReadOnly = true;
+            this.U_DescItemFat.Width = 125;
+            // 
+            // U_Bloqueado
+            // 
+            this.U_Bloqueado.DataPropertyName = "U_Bloqueado";
+            this.U_Bloqueado.HeaderText = "Bloqueado";
+            this.U_Bloqueado.MinimumWidth = 6;
+            this.U_Bloqueado.Name = "U_Bloqueado";
+            this.U_Bloqueado.ReadOnly = true;
+            this.U_Bloqueado.Width = 125;
             // 
             // label20
             // 
@@ -693,179 +854,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtAnexo.UseVisualStyleBackColor = true;
             this.BtAnexo.Click += new System.EventHandler(this.BtAnexo_Click);
             // 
-            // cbBloqueado
-            // 
-            this.cbBloqueado.AutoSize = true;
-            this.cbBloqueado.Location = new System.Drawing.Point(6, 226);
-            this.cbBloqueado.Name = "cbBloqueado";
-            this.cbBloqueado.Size = new System.Drawing.Size(205, 20);
-            this.cbBloqueado.TabIndex = 20;
-            this.cbBloqueado.Text = "Bloqueado para Faturamento";
-            this.cbBloqueado.UseVisualStyleBackColor = true;
-            // 
-            // Obra
-            // 
-            this.Obra.DataPropertyName = "U_PrjCode";
-            this.Obra.HeaderText = "Obra";
-            this.Obra.MinimumWidth = 6;
-            this.Obra.Name = "Obra";
-            this.Obra.ReadOnly = true;
-            this.Obra.Width = 125;
-            // 
-            // Candidato
-            // 
-            this.Candidato.DataPropertyName = "U_Candidato";
-            this.Candidato.HeaderText = "Candidato";
-            this.Candidato.MinimumWidth = 6;
-            this.Candidato.Name = "Candidato";
-            this.Candidato.ReadOnly = true;
-            this.Candidato.Width = 125;
-            // 
-            // Cliente
-            // 
-            this.Cliente.DataPropertyName = "U_CardCode";
-            this.Cliente.HeaderText = "Cliente";
-            this.Cliente.MinimumWidth = 6;
-            this.Cliente.Name = "Cliente";
-            this.Cliente.ReadOnly = true;
-            this.Cliente.Width = 125;
-            // 
-            // Item
-            // 
-            this.Item.DataPropertyName = "U_Item";
-            this.Item.HeaderText = "Item";
-            this.Item.MinimumWidth = 6;
-            this.Item.Name = "Item";
-            this.Item.ReadOnly = true;
-            this.Item.Width = 125;
-            // 
-            // ItemFaturamento
-            // 
-            this.ItemFaturamento.DataPropertyName = "U_ItemFat";
-            this.ItemFaturamento.HeaderText = "Item Faturamento";
-            this.ItemFaturamento.MinimumWidth = 6;
-            this.ItemFaturamento.Name = "ItemFaturamento";
-            this.ItemFaturamento.ReadOnly = true;
-            this.ItemFaturamento.Width = 125;
-            // 
-            // ItemCode
-            // 
-            this.ItemCode.DataPropertyName = "U_ItemCode";
-            this.ItemCode.HeaderText = "Item SAP";
-            this.ItemCode.MinimumWidth = 6;
-            this.ItemCode.Name = "ItemCode";
-            this.ItemCode.ReadOnly = true;
-            this.ItemCode.Width = 125;
-            // 
-            // Parcela
-            // 
-            this.Parcela.DataPropertyName = "U_Parcela";
-            this.Parcela.HeaderText = "Parcela";
-            this.Parcela.MinimumWidth = 6;
-            this.Parcela.Name = "Parcela";
-            this.Parcela.ReadOnly = true;
-            this.Parcela.Width = 125;
-            // 
-            // Valor
-            // 
-            this.Valor.DataPropertyName = "U_Valor";
-            this.Valor.HeaderText = "Valor";
-            this.Valor.MinimumWidth = 6;
-            this.Valor.Name = "Valor";
-            this.Valor.ReadOnly = true;
-            this.Valor.Width = 125;
-            // 
-            // Tipo
-            // 
-            this.Tipo.DataPropertyName = "U_Tipo";
-            this.Tipo.HeaderText = "Tipo";
-            this.Tipo.MinimumWidth = 6;
-            this.Tipo.Name = "Tipo";
-            this.Tipo.ReadOnly = true;
-            this.Tipo.Width = 125;
-            // 
-            // DataLancamento
-            // 
-            this.DataLancamento.DataPropertyName = "U_DataLanc";
-            this.DataLancamento.HeaderText = "Data Lancamento";
-            this.DataLancamento.MinimumWidth = 6;
-            this.DataLancamento.Name = "DataLancamento";
-            this.DataLancamento.ReadOnly = true;
-            this.DataLancamento.Width = 125;
-            // 
-            // DataFaturamento
-            // 
-            this.DataFaturamento.DataPropertyName = "U_DataFat";
-            this.DataFaturamento.HeaderText = "Data Faturamento";
-            this.DataFaturamento.MinimumWidth = 6;
-            this.DataFaturamento.Name = "DataFaturamento";
-            this.DataFaturamento.ReadOnly = true;
-            this.DataFaturamento.Width = 125;
-            // 
-            // NroNF
-            // 
-            this.NroNF.DataPropertyName = "U_NroNF";
-            this.NroNF.HeaderText = "Nro NF";
-            this.NroNF.MinimumWidth = 6;
-            this.NroNF.Name = "NroNF";
-            this.NroNF.ReadOnly = true;
-            this.NroNF.Width = 125;
-            // 
-            // DataSolicitacao
-            // 
-            this.DataSolicitacao.DataPropertyName = "U_DataSol";
-            this.DataSolicitacao.HeaderText = "Data Solicitação";
-            this.DataSolicitacao.MinimumWidth = 6;
-            this.DataSolicitacao.Name = "DataSolicitacao";
-            this.DataSolicitacao.ReadOnly = true;
-            this.DataSolicitacao.Width = 125;
-            // 
-            // Observacao
-            // 
-            this.Observacao.DataPropertyName = "U_Obs";
-            this.Observacao.HeaderText = "Observação";
-            this.Observacao.MinimumWidth = 6;
-            this.Observacao.Name = "Observacao";
-            this.Observacao.ReadOnly = true;
-            this.Observacao.Width = 125;
-            // 
-            // U_PrjName
-            // 
-            this.U_PrjName.DataPropertyName = "U_PrjName";
-            this.U_PrjName.HeaderText = "Nome Projeto";
-            this.U_PrjName.MinimumWidth = 6;
-            this.U_PrjName.Name = "U_PrjName";
-            this.U_PrjName.ReadOnly = true;
-            this.U_PrjName.Visible = false;
-            this.U_PrjName.Width = 125;
-            // 
-            // U_CardName
-            // 
-            this.U_CardName.DataPropertyName = "U_CardName";
-            this.U_CardName.HeaderText = "Nome cliente";
-            this.U_CardName.MinimumWidth = 6;
-            this.U_CardName.Name = "U_CardName";
-            this.U_CardName.Visible = false;
-            this.U_CardName.Width = 125;
-            // 
-            // U_DescItemFat
-            // 
-            this.U_DescItemFat.DataPropertyName = "U_DescItemFat";
-            this.U_DescItemFat.HeaderText = "Descrição Item";
-            this.U_DescItemFat.MinimumWidth = 6;
-            this.U_DescItemFat.Name = "U_DescItemFat";
-            this.U_DescItemFat.ReadOnly = true;
-            this.U_DescItemFat.Width = 125;
-            // 
-            // U_Bloqueado
-            // 
-            this.U_Bloqueado.DataPropertyName = "U_Bloqueado";
-            this.U_Bloqueado.HeaderText = "Bloqueado";
-            this.U_Bloqueado.MinimumWidth = 6;
-            this.U_Bloqueado.Name = "U_Bloqueado";
-            this.U_Bloqueado.ReadOnly = true;
-            this.U_Bloqueado.Width = 125;
-            // 
             // FrmPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -951,7 +939,6 @@ namespace Zopone.AddOn.PO.View.Obra
         private Label lblObra;
         private Label lblCliente;
         private Label lblItemFat;
-        private Label lblItemCode;
         private Button BtCancelar;
         private Button BtSalvar;
         private ComboBox CbStatus;

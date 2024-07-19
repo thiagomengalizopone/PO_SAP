@@ -152,6 +152,7 @@
     <Compile Include="InstanceStartup.cs" />
     <Compile Include="Menus\AddMenusGestaoContratos.cs" />
     <Compile Include="Menus\MenusGestaoUtilitarios.cs" />
+    <Compile Include="Model\Objects\ConfiguracoesImportacaoPO.cs" />
     <Compile Include="Model\Objects\LinePO.cs" />
     <Compile Include="Model\SAP\MetaData.cs" />
     <Compile Include="Model\SAP\PurchaseOrderSAP.cs" />
@@ -168,9 +169,22 @@
     <Compile Include="View\Alocação\FrmAloca.cs" />
     <Compile Include="View\ClassificacaoObra\FrmClassObra.cs" />
     <Compile Include="View\ConfiguracaoImportWMS\FrmConfigImpWMS.cs" />
+    <Compile Include="View\Config\FrmConfPO.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
     <Compile Include="View\ObraProjeto\Frm711.cs" />
     <Compile Include="View\Obra\FrmObra.cs" />
+    <Compile Include="View\PO\FrmVerificaImportacaoPO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\PO\FrmVerificaImportacaoPO.Designer.cs">
+      <DependentUpon>FrmVerificaImportacaoPO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\PO\FrmImportacaoPO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\PO\FrmImportacaoPO.Designer.cs">
+      <DependentUpon>FrmImportacaoPO.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\PO\FrmPesquisa.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,6 +208,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="AddOnMain.cs" />
+    <EmbeddedResource Include="View\PO\FrmVerificaImportacaoPO.resx">
+      <DependentUpon>FrmVerificaImportacaoPO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\PO\FrmImportacaoPO.resx">
+      <DependentUpon>FrmImportacaoPO.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\PO\FrmPesquisa.resx">
       <DependentUpon>FrmPesquisa.cs</DependentUpon>
     </EmbeddedResource>
@@ -251,6 +271,15 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRACONTRATO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRAPO.sql" />
+    <EmbeddedResource Include="View\Config\FrmConfPO.srf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_IMPORTARPOHuawei.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_IMPORTARPOHuaweiItens.sql" />
+    <EmbeddedResource Include="Model\SQL\Tables\ZPN_LOGIMPORTACAOPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LOGIMPORTACAOPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_LISTALOGIMPORTACAOPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_VERIFICAIMPORTARPOHuawei.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

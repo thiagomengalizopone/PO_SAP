@@ -3,6 +3,7 @@ using sap.dev.data;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -19,7 +20,8 @@ namespace Zopone.AddOn.PO.View.Obra
         public List<LinePO> linesPO = new List<LinePO>();
         public Int32 BPLId { get; set; }
         public Int32 RowIndexEdit { get; set; }
-
+        public static Boolean IsDraft { get; set; }
+        
         public static string DocEntryPO { get; set; }
         private static Thread formThread;
 
@@ -27,9 +29,10 @@ namespace Zopone.AddOn.PO.View.Obra
 
 
 
-        public static void MenuPO(string docEntryPO = "")
+        public static void MenuPO(string docEntryPO = "", bool isDraft = false)
         {
             DocEntryPO = docEntryPO;
+            IsDraft = isDraft;
 
             formThread = new Thread(new ThreadStart(OpenFormPO));
             formThread.SetApartmentState(ApartmentState.STA);
@@ -90,9 +93,12 @@ namespace Zopone.AddOn.PO.View.Obra
 
             if (!string.IsNullOrEmpty(DocEntryPO))
             {
-                CarregarDadosPO(DocEntryPO);
+                txtCodigo.Text = DocEntryPO;
+                CarregarDadosPO(DocEntryPO, IsDraft);
                 DocEntryPO = string.Empty;
             }
+
+            RowIndexEdit = -1;
 
             this.WindowState = FormWindowState.Minimized;
             this.Show();
@@ -123,7 +129,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     for (int iRow = 0; iRow < oPedidoVenda.Lines.Count; iRow++) 
                     {
-
                         linesPO.Add(
                            new LinePO()
                            {
@@ -135,13 +140,12 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_Item = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString(),
                                U_ItemFat = oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value.ToString(),
                                U_DescItemFat = oPedidoVenda.Lines.ItemDescription,
-                               U_ItemCode = oPedidoVenda.Lines.ItemCode,
-                               U_Parcela = oPedidoVenda.Lines.UserFields.Fields.Item("Parcela").Value.ToString(),
+                               U_Parcela = oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value.ToString(),
                                U_Valor = oPedidoVenda.Lines.LineTotal,
-                               U_Tipo = oPedidoVenda.Lines.UserFields.Fields.Item("").Value.ToString(),
-                               U_DataFat = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("DataFat").Value),
+                               U_Tipo = oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value.ToString(),
+                               U_DataFat = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value),
                                U_NroNF = oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value.ToString(),
-                               U_DataSol = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("DataSol").Value),
+                               U_DataSol = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value),
                                U_Obs = oPedidoVenda.Lines.FreeText,
                                U_Bloqueado = oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value.ToString() == "Y"
                            }
@@ -222,13 +226,12 @@ namespace Zopone.AddOn.PO.View.Obra
                     U_Item = txtItem.Text,
                     U_ItemFat = txtItemFaturamento.Text,
                     U_DescItemFat = lblItemFat.Text,
-                    U_ItemCode = lblItemCode.Text,
                     U_Parcela = txtParcela.Text,
                     U_Valor = Convert.ToDouble(txtValor.Text),
                     U_Tipo = CbTipo.Text,
-                    U_DataFat = Convert.ToDateTime(mskDataFaturamento.Text),
+                    U_DataFat = mskDataFaturamento.MaskFull ? Convert.ToDateTime(mskDataFaturamento.Text) : DateTime.MinValue,
                     U_NroNF = txtNroNF.Text,
-                    U_DataSol = Convert.ToDateTime(mskDataSol.Text),
+                    U_DataSol = mskDataSol.MaskFull ? Convert.ToDateTime(mskDataSol.Text) : DateTime.MinValue,
                     U_Obs = txtObservacao.Text,
                     U_Bloqueado = cbBloqueado.Checked 
                 };
@@ -260,6 +263,18 @@ namespace Zopone.AddOn.PO.View.Obra
             DgItensPO.DataSource = dgItensPO;
 
             DgItensPO.AutoResizeColumns();
+
+            for (int iRow = 0; iRow < DgItensPO.Rows.Count; iRow ++) 
+            {
+                if (
+                    (DgItensPO.Rows[iRow].Cells["Cliente"].Value != null && !string.IsNullOrEmpty(DgItensPO.Rows[iRow].Cells["Cliente"].Value.ToString()))
+                    && 
+                    (DgItensPO.Rows[iRow].Cells["Obra"].Value == null ||  string.IsNullOrEmpty(DgItensPO.Rows[iRow].Cells["Obra"].Value.ToString()))
+                    )
+                {
+                    DgItensPO.Rows[iRow].DefaultCellStyle.BackColor = Color.OrangeRed;
+                }
+            }
         }
 
         private void LimparLinhaPO()
@@ -269,7 +284,6 @@ namespace Zopone.AddOn.PO.View.Obra
             txtCliente.Text = string.Empty;
             txtItem.Text = string.Empty;
             txtItemFaturamento.Text = string.Empty;
-            lblItemCode.Text = string.Empty;
             lblCliente.Text = string.Empty;
             lblObra.Text = string.Empty;
             lblItemFat.Text = string.Empty;
@@ -357,27 +371,23 @@ namespace Zopone.AddOn.PO.View.Obra
 
                         txtItemFaturamento.Text = string.Empty;
                         lblItemFat.Text = string.Empty;
-                        lblItemCode.Text = string.Empty;
                     }
                     else
                     {
                         txtItemFaturamento.Text = retornoDados[0];
                         lblItemFat.Text = retornoDados[1];
-                        lblItemCode.Text = retornoDados[2];
                     }
                 }
                 else if (TipoPesquisa == "PO")
-                {
+                {                    
                     if (retornoDados.Count == 0)
                         txtCodigo.Text = string.Empty;
                     else
+                    {
                         txtCodigo.Text = retornoDados[0];
-
-                    bool isDraft = retornoDados[1] == "D";
-
-                    CarregarDadosPO(txtCodigo.Text, isDraft);
+                        CarregarDadosPO(txtCodigo.Text, retornoDados[1] == "D");
+                    }
                 }
-
             }
             catch (Exception Ex)
             {
@@ -451,7 +461,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 lblCliente.Text = linesPO[rowIndex].U_CardName;
                 txtItem.Text = linesPO[rowIndex].U_Item;
                 txtItemFaturamento.Text = linesPO[rowIndex].U_ItemFat;
-                lblItemCode.Text = linesPO[rowIndex].U_ItemCode;
                 lblItemFat.Text = linesPO[rowIndex].U_DescItemFat;
                 txtParcela.Text = linesPO[rowIndex].U_Parcela;
                 txtValor.Text = linesPO[rowIndex].U_Valor.ToString();
@@ -496,7 +505,13 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
 
-                if (!string.IsNullOrEmpty(txtNroNF.Text))
+                if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
+                {
+                    oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                    oPedidoVenda.DocObjectCodeEx = "17";
+                }
+
+                if (!string.IsNullOrEmpty(txtCodigo.Text))
                 {
                     if (!oPedidoVenda.GetByKey(Convert.ToInt32(txtNroNF.Text)))
                         throw new Exception($"Erro ao pesquisar Pedido: {txtNroNF.Text}");
@@ -523,7 +538,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     else if (linePO.LineNum >= 0)
                         oPedidoVenda.Lines.SetCurrentLine(linePO.LineNum);
 
-                    oPedidoVenda.Lines.ItemCode = linePO.U_ItemCode;
+                    oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
                     oPedidoVenda.Lines.Quantity = 1;
                     oPedidoVenda.Lines.Price = Convert.ToDouble(linePO.U_Valor);
                     oPedidoVenda.Lines.ProjectCode = linePO.U_PrjCode;
@@ -538,7 +553,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value = linePO.U_Tipo;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value = linePO.U_Parcela;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value = linePO.U_DescItemFat;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value = linePO.U_DescItemFat;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value = linePO.U_Bloqueado ? "Y" : "N";
 
                 }
 

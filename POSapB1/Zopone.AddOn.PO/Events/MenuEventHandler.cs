@@ -1,10 +1,13 @@
 ﻿using sap.dev.core;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using Zopone.AddOn.PO.Controller.Constantes;
 using Zopone.AddOn.PO.View.Alocação;
 using Zopone.AddOn.PO.View.ClassificacaoObra;
+using Zopone.AddOn.PO.View.Config;
 using Zopone.AddOn.PO.View.Obra;
+using Zopone.AddOn.PO.View.PO;
 
 namespace Zopone.AddOn.PO
 {
@@ -20,6 +23,11 @@ namespace Zopone.AddOn.PO
                 {
                     switch (pVal.MenuUID)
                     {
+                        case MenuConstantes.MnuConfImportacaoPO:
+                            {
+                                new FrmConfPO();
+                            }
+                            break;
                         case MenuConstantes.MnuClassificacaoObra:
                             {
                                 new FrmClassObra();
@@ -45,6 +53,20 @@ namespace Zopone.AddOn.PO
                                 FrmPO.MenuPO();
                             }
                             break;
+                        case MenuConstantes.MnuImportacaoPO:
+                            {
+                                FrmImportacaoPO.MenuImpPO();
+                            }
+                            break;
+                        case MenuConstantes.MnuVerificaImpPO:
+                            {
+                                FrmVerificaImportacaoPO.MenuVerificaPO();
+                            }
+                            break;
+
+
+
+                            
                     }
                 }
 

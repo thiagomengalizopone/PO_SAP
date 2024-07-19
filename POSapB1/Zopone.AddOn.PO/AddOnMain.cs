@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.UtilAddOn;
 using static sap.dev.core.EnumList;
 
@@ -26,6 +27,8 @@ namespace Zopone.AddOn.PO
 
             Configuracoes.CarregarConfiguracaoes();
             UtilAddOn.UtilAddOn.CarregarMenus();
+
+            ConfiguracoesImportacaoPO.CarregarConfiguracoesPO();
 
             Globals.Master.Connection.Interface.MenuEvent += MenuEventHandler.Interface_MenuEvent;
             Globals.Master.Connection.Interface.ItemEvent += ItemEventHandler.Interface_ItemEvent;

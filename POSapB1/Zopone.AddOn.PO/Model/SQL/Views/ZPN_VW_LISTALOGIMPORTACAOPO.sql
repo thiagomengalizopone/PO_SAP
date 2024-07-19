@@ -1,0 +1,10 @@
+﻿CREATE VIEW ZPN_VW_LISTALOGIMPORTACAOPO
+AS
+
+	SELECT 
+		LOGIMP.po_id,
+		STRING_AGG(FORMAT(LOGIMP.DataLog, 'dd/MM/yyyy HH:mm') + ' - ' +  LOGIMP.MensagemLog, ' -  ') AS MensagemLog
+	FROM 
+		ZPN_LOGIMPORTACAOPO LOGIMP
+	GROUP BY 
+		LOGIMP.po_id;
