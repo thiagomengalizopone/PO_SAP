@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Threading;
@@ -34,18 +36,16 @@ namespace Zopone.AddOn.PO.View.PO
             formThread.Start();
         }
 
-        private static void OpenFormImportacaoPO()
-        {
-            System.Windows.Forms.Application.Run(new FrmImportacaoPO());
-        }
+        private static void OpenFormImportacaoPO() => System.Windows.Forms.Application.Run(new FrmImportacaoPO());
 
         private void BtImportar_Click(object sender, EventArgs e)
         {
 
-            ImportarPO();
+            if (CbEmpresa.Text == "Huawei")
+                ImportarPOHuawei();
         }
 
-        private void ImportarPO()
+        private void ImportarPOHuawei()
         {
             try
             {
@@ -146,10 +146,68 @@ namespace Zopone.AddOn.PO.View.PO
 
         private void BtnPesquisar_Click(object sender, EventArgs e)
         {
-            PesquisarDados();
+            if (CbEmpresa.Text == "Huawei")
+                PesquisarDadosHuawei();
+            else if (CbEmpresa.Text == "Ericsson")
+                PesquisarDadosEricssonAsync();
         }
 
-        private void PesquisarDados()
+        private async Task PesquisarDadosEricssonAsync()
+        {
+            try
+            {
+                string fileNameAnexo = await Util.OpenFileDialogAsync(EnumList.TipoArquivo.CSV);
+
+                if (!string.IsNullOrEmpty(fileNameAnexo))
+                {
+                    using (var arquivoEricsson = new StreamReader(fileNameAnexo))
+                    {
+                        pbProgresso.Value = 0;
+                        pbProgresso.Maximum = arquivoEricsson.cou
+
+                        while (!arquivoEricsson.EndOfStream)
+                        {
+                            
+                            var valores = arquivoEricsson.ReadLine().Split(';');
+
+                            if (valores.Length == 13)
+                            {
+                                if (Int64.TryParse(valores[2].Trim(), out Int64 PO))
+                                {
+                                    string SQL = $@"ZPN_SP_POERICSSON 
+                                                            '{fileNameAnexo}',
+                                                            {PO}, 
+                                                            '{valores[3].Trim()}', 
+                                                            '{valores[4].Trim()}', 
+                                                            '{valores[5].Trim()}', 
+                                                            {valores[6].Trim().Replace(".", "").Replace(",", ".")}, 
+                                                            '{valores[7].Trim()}', 
+                                                            '{valores[8].Trim()}', 
+                                                            {valores[9].Trim().Replace(".", "").Replace(",", ".")}, 
+                                                            '{valores[10].Trim()}', 
+                                                            'N' ";
+
+                                    SqlUtils.DoNonQuery(SQL);
+
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                    MessageBox.Show("Não há arquivo selecionado!");
+
+            }
+            catch (Exception Ex)
+            {
+                string mensagemErro = $"Erro ao carregar dados importação PO - Ericsson - {Ex.Message}";
+                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+            }
+
+        }
+
+        private void PesquisarDadosHuawei()
         {
             try
             {
@@ -171,7 +229,7 @@ namespace Zopone.AddOn.PO.View.PO
             }
             catch (Exception Ex)
             {
-                string mensagemErro = $"Erro ao carregar dados importação PO - {Ex.Message}";
+                string mensagemErro = $"Erro ao carregar dados importação PO - Huawei - {Ex.Message}";
                 MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
             }

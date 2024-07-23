@@ -63,6 +63,18 @@ namespace Zopone.AddOn.PO.View.PO
 
                 dgDadosPO.AutoResizeColumns();
 
+                for (int iRow = 0; iRow < dgDadosPO.Rows.Count; iRow++)
+                {
+                    if (
+                        (dgDadosPO.Rows[iRow].Cells["po_id"].Value != null && !string.IsNullOrEmpty(dgDadosPO.Rows[iRow].Cells["po_id"].Value.ToString()))
+                        &&
+                        (dgDadosPO.Rows[iRow].Cells["DOCTOOBRA"].Value != null && !string.IsNullOrEmpty(dgDadosPO.Rows[iRow].Cells["DOCTOOBRA"].Value.ToString()))
+                        )
+                    {
+                        dgDadosPO.Rows[iRow].DefaultCellStyle.BackColor = Color.OrangeRed;
+                    }
+                }
+
             }
             catch (Exception Ex)
             {

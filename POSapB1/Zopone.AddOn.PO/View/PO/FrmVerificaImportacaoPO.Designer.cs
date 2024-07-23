@@ -28,21 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.mskDataI = new System.Windows.Forms.MaskedTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.mskDataF = new System.Windows.Forms.MaskedTextBox();
             this.CbEmpresa = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.pbProgresso = new System.Windows.Forms.ProgressBar();
             this.dgDadosPO = new System.Windows.Forms.DataGridView();
+            this.BtnPesquisar = new System.Windows.Forms.Button();
             this.po_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DocEntryPO = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.poNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DOCTOOBRA = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.po_lis_DataConfirmacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mensagem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BtnPesquisar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -99,32 +102,60 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Empresa";
             // 
-            // pbProgresso
-            // 
-            this.pbProgresso.Location = new System.Drawing.Point(2, 516);
-            this.pbProgresso.Name = "pbProgresso";
-            this.pbProgresso.Size = new System.Drawing.Size(906, 23);
-            this.pbProgresso.TabIndex = 7;
-            // 
             // dgDadosPO
             // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgDadosPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgDadosPO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgDadosPO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.po_id,
             this.DocEntryPO,
             this.poNumber,
+            this.DOCTOOBRA,
             this.po_lis_DataConfirmacao,
             this.Status,
             this.Mensagem});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgDadosPO.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgDadosPO.Location = new System.Drawing.Point(12, 79);
             this.dgDadosPO.MultiSelect = false;
             this.dgDadosPO.Name = "dgDadosPO";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgDadosPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgDadosPO.RowHeadersWidth = 51;
             this.dgDadosPO.RowTemplate.Height = 24;
             this.dgDadosPO.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgDadosPO.Size = new System.Drawing.Size(896, 431);
+            this.dgDadosPO.Size = new System.Drawing.Size(1152, 457);
             this.dgDadosPO.TabIndex = 8;
             this.dgDadosPO.DoubleClick += new System.EventHandler(this.dgDadosPO_DoubleClick);
+            // 
+            // BtnPesquisar
+            // 
+            this.BtnPesquisar.Location = new System.Drawing.Point(332, 42);
+            this.BtnPesquisar.Name = "BtnPesquisar";
+            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
+            this.BtnPesquisar.TabIndex = 9;
+            this.BtnPesquisar.Text = "Pesquisar";
+            this.BtnPesquisar.UseVisualStyleBackColor = true;
+            this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
             // 
             // po_id
             // 
@@ -140,7 +171,7 @@
             // DocEntryPO
             // 
             this.DocEntryPO.DataPropertyName = "DocEntryPO";
-            this.DocEntryPO.HeaderText = "ID PO";
+            this.DocEntryPO.HeaderText = "PO SAP";
             this.DocEntryPO.MinimumWidth = 6;
             this.DocEntryPO.Name = "DocEntryPO";
             this.DocEntryPO.ReadOnly = true;
@@ -154,6 +185,15 @@
             this.poNumber.Name = "poNumber";
             this.poNumber.ReadOnly = true;
             this.poNumber.Width = 125;
+            // 
+            // DOCTOOBRA
+            // 
+            this.DOCTOOBRA.DataPropertyName = "DOCTOOBRA";
+            this.DOCTOOBRA.HeaderText = "PO Info";
+            this.DOCTOOBRA.MinimumWidth = 6;
+            this.DOCTOOBRA.Name = "DOCTOOBRA";
+            this.DOCTOOBRA.ReadOnly = true;
+            this.DOCTOOBRA.Width = 125;
             // 
             // po_lis_DataConfirmacao
             // 
@@ -182,24 +222,13 @@
             this.Mensagem.ReadOnly = true;
             this.Mensagem.Width = 125;
             // 
-            // BtnPesquisar
-            // 
-            this.BtnPesquisar.Location = new System.Drawing.Point(332, 42);
-            this.BtnPesquisar.Name = "BtnPesquisar";
-            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
-            this.BtnPesquisar.TabIndex = 9;
-            this.BtnPesquisar.Text = "Pesquisar";
-            this.BtnPesquisar.UseVisualStyleBackColor = true;
-            this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
-            // 
             // FrmVerificaImportacaoPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(920, 548);
+            this.ClientSize = new System.Drawing.Size(1176, 548);
             this.Controls.Add(this.dgDadosPO);
             this.Controls.Add(this.BtnPesquisar);
-            this.Controls.Add(this.pbProgresso);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.CbEmpresa);
             this.Controls.Add(this.mskDataF);
@@ -222,12 +251,12 @@
         private System.Windows.Forms.MaskedTextBox mskDataF;
         private System.Windows.Forms.ComboBox CbEmpresa;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ProgressBar pbProgresso;
         private System.Windows.Forms.DataGridView dgDadosPO;
         private System.Windows.Forms.Button BtnPesquisar;
         private System.Windows.Forms.DataGridViewTextBoxColumn po_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn DocEntryPO;
         private System.Windows.Forms.DataGridViewTextBoxColumn poNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DOCTOOBRA;
         private System.Windows.Forms.DataGridViewTextBoxColumn po_lis_DataConfirmacao;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Mensagem;

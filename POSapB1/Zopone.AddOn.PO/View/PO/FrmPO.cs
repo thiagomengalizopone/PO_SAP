@@ -1,5 +1,6 @@
 ﻿using sap.dev.core;
 using sap.dev.data;
+using SAPbobsCOM;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -20,8 +21,9 @@ namespace Zopone.AddOn.PO.View.Obra
         public List<LinePO> linesPO = new List<LinePO>();
         public Int32 BPLId { get; set; }
         public Int32 RowIndexEdit { get; set; }
+        public Int32 LineNumEdit { get; set; }
         public static Boolean IsDraft { get; set; }
-        
+
         public static string DocEntryPO { get; set; }
         private static Thread formThread;
 
@@ -127,7 +129,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     linesPO.Clear();
 
-                    for (int iRow = 0; iRow < oPedidoVenda.Lines.Count; iRow++) 
+                    for (int iRow = 0; iRow < oPedidoVenda.Lines.Count; iRow++)
                     {
                         linesPO.Add(
                            new LinePO()
@@ -147,7 +149,9 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_NroNF = oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value.ToString(),
                                U_DataSol = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value),
                                U_Obs = oPedidoVenda.Lines.FreeText,
-                               U_Bloqueado = oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value.ToString() == "Y"
+                               U_Bloqueado = oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value.ToString() == "Y",
+                               U_itemDescription = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value.ToString(),
+                               U_manSiteInfo = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value.ToString()
                            }
                            );
                     }
@@ -218,7 +222,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 LinePO oLinePO = new LinePO()
                 {
-                    LineNum = -1,
+                    LineNum = LineNumEdit,
                     U_PrjCode = txtObra.Text,
                     U_Candidato = txtCandidato.Text,
                     U_CardCode = txtCliente.Text,
@@ -233,7 +237,9 @@ namespace Zopone.AddOn.PO.View.Obra
                     U_NroNF = txtNroNF.Text,
                     U_DataSol = mskDataSol.MaskFull ? Convert.ToDateTime(mskDataSol.Text) : DateTime.MinValue,
                     U_Obs = txtObservacao.Text,
-                    U_Bloqueado = cbBloqueado.Checked 
+                    U_Bloqueado = cbBloqueado.Checked,
+                    U_itemDescription = txtDescItemPO.Text,
+                    U_manSiteInfo = txtInfoSitePO.Text
                 };
 
                 if (RowIndexEdit < 0)
@@ -246,6 +252,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 LimparLinhaPO();
 
                 RowIndexEdit = -1;
+                LineNumEdit = -1;
             }
             catch (Exception Ex)
             {
@@ -264,12 +271,12 @@ namespace Zopone.AddOn.PO.View.Obra
 
             DgItensPO.AutoResizeColumns();
 
-            for (int iRow = 0; iRow < DgItensPO.Rows.Count; iRow ++) 
+            for (int iRow = 0; iRow < DgItensPO.Rows.Count; iRow++)
             {
                 if (
                     (DgItensPO.Rows[iRow].Cells["Cliente"].Value != null && !string.IsNullOrEmpty(DgItensPO.Rows[iRow].Cells["Cliente"].Value.ToString()))
-                    && 
-                    (DgItensPO.Rows[iRow].Cells["Obra"].Value == null ||  string.IsNullOrEmpty(DgItensPO.Rows[iRow].Cells["Obra"].Value.ToString()))
+                    &&
+                    (DgItensPO.Rows[iRow].Cells["Obra"].Value == null || string.IsNullOrEmpty(DgItensPO.Rows[iRow].Cells["Obra"].Value.ToString()))
                     )
                 {
                     DgItensPO.Rows[iRow].DefaultCellStyle.BackColor = Color.OrangeRed;
@@ -296,6 +303,8 @@ namespace Zopone.AddOn.PO.View.Obra
             txtObservacao.Text = string.Empty;
             lblItemFat.Text = string.Empty;
             cbBloqueado.Checked = false;
+            txtInfoSitePO.Text = string.Empty;
+            txtDescItemPO.Text = string.Empty;
         }
 
         private void textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -379,7 +388,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     }
                 }
                 else if (TipoPesquisa == "PO")
-                {                    
+                {
                     if (retornoDados.Count == 0)
                         txtCodigo.Text = string.Empty;
                     else
@@ -453,7 +462,9 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
+
                 RowIndexEdit = rowIndex;
+                LineNumEdit = linesPO[rowIndex].LineNum;
                 txtObra.Text = linesPO[rowIndex].U_PrjCode;
                 lblObra.Text = linesPO[rowIndex].U_PrjName;
                 txtCandidato.Text = linesPO[rowIndex].U_Candidato;
@@ -470,6 +481,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 mskDataSol.Text = linesPO[rowIndex].U_DataSol.ToString("dd/MM/yyyy");
                 txtObservacao.Text = linesPO[rowIndex].U_Obs;
                 cbBloqueado.Checked = linesPO[rowIndex].U_Bloqueado;
+                txtDescItemPO.Text = linesPO[rowIndex].U_itemDescription;
+                txtInfoSitePO.Text = linesPO[rowIndex].U_manSiteInfo;
             }
             catch (Exception Ex)
             {
@@ -505,19 +518,33 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
 
-                if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
-                {
-                    oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-                    oPedidoVenda.DocObjectCodeEx = "17";
-                }
+
 
                 if (!string.IsNullOrEmpty(txtCodigo.Text))
                 {
-                    if (!oPedidoVenda.GetByKey(Convert.ToInt32(txtNroNF.Text)))
+                    if (IsDraft)
+                    {
+                        oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                        oPedidoVenda.DocObjectCodeEx = "17";
+                    }
+
+                    if (!oPedidoVenda.GetByKey(Convert.ToInt32(txtCodigo.Text)))
                         throw new Exception($"Erro ao pesquisar Pedido: {txtNroNF.Text}");
 
                     bExistePedido = true;
                 }
+                else
+                {
+
+                    if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
+                    {
+                        oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                        oPedidoVenda.DocObjectCodeEx = "17";
+                    }
+
+                }
+
+
 
                 if (!bExistePedido)
                 {
@@ -554,19 +581,27 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value = linePO.U_Parcela;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value = linePO.U_DescItemFat;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value = linePO.U_Bloqueado ? "Y" : "N";
-
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = linePO.U_itemDescription;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = linePO.U_manSiteInfo;
                 }
-
 
                 if (bExistePedido)
                 {
-                    if (oPedidoVenda.Update() != 0)
-                        throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    if (IsDraft)
+                        if (oPedidoVenda.SaveDraftToDocument() != 0)
+                            throw new Exception($"Erro ao atualizar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                        else
+                            if (oPedidoVenda.Update() != 0)
+                                throw new Exception($"Erro ao atualizar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                 }
                 else
                 {
-                    if (oPedidoVenda.Add() != 0)
-                        throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    if (IsDraft)
+                        if (oPedidoVenda.SaveDraftToDocument() != 0)
+                            throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                        else
+                            if (oPedidoVenda.Add() != 0)
+                            throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                 }
 
                 txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();

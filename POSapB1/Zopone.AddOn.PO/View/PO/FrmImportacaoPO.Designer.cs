@@ -37,19 +37,19 @@
             this.label3 = new System.Windows.Forms.Label();
             this.pbProgresso = new System.Windows.Forms.ProgressBar();
             this.dgDadosPO = new System.Windows.Forms.DataGridView();
-            this.BtnPesquisar = new System.Windows.Forms.Button();
             this.Importar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.po_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.poNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.po_lis_DataConfirmacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mensagem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BtnPesquisar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).BeginInit();
             this.SuspendLayout();
             // 
             // BtImportar
             // 
-            this.BtImportar.Location = new System.Drawing.Point(833, 42);
+            this.BtImportar.Location = new System.Drawing.Point(1189, 45);
             this.BtImportar.Name = "BtImportar";
             this.BtImportar.Size = new System.Drawing.Size(75, 23);
             this.BtImportar.TabIndex = 0;
@@ -95,7 +95,8 @@
             // 
             this.CbEmpresa.FormattingEnabled = true;
             this.CbEmpresa.Items.AddRange(new object[] {
-            "Huawei"});
+            "Huawei",
+            "Ericsson"});
             this.CbEmpresa.Location = new System.Drawing.Point(90, 37);
             this.CbEmpresa.Name = "CbEmpresa";
             this.CbEmpresa.Size = new System.Drawing.Size(236, 24);
@@ -112,9 +113,9 @@
             // 
             // pbProgresso
             // 
-            this.pbProgresso.Location = new System.Drawing.Point(2, 516);
+            this.pbProgresso.Location = new System.Drawing.Point(2, 722);
             this.pbProgresso.Name = "pbProgresso";
-            this.pbProgresso.Size = new System.Drawing.Size(906, 23);
+            this.pbProgresso.Size = new System.Drawing.Size(1271, 23);
             this.pbProgresso.TabIndex = 7;
             // 
             // dgDadosPO
@@ -131,18 +132,8 @@
             this.dgDadosPO.Name = "dgDadosPO";
             this.dgDadosPO.RowHeadersWidth = 51;
             this.dgDadosPO.RowTemplate.Height = 24;
-            this.dgDadosPO.Size = new System.Drawing.Size(896, 431);
+            this.dgDadosPO.Size = new System.Drawing.Size(1252, 637);
             this.dgDadosPO.TabIndex = 8;
-            // 
-            // BtnPesquisar
-            // 
-            this.BtnPesquisar.Location = new System.Drawing.Point(332, 42);
-            this.BtnPesquisar.Name = "BtnPesquisar";
-            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
-            this.BtnPesquisar.TabIndex = 9;
-            this.BtnPesquisar.Text = "Pesquisar";
-            this.BtnPesquisar.UseVisualStyleBackColor = true;
-            this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
             // 
             // Importar
             // 
@@ -201,11 +192,21 @@
             this.Mensagem.ReadOnly = true;
             this.Mensagem.Width = 125;
             // 
+            // BtnPesquisar
+            // 
+            this.BtnPesquisar.Location = new System.Drawing.Point(332, 42);
+            this.BtnPesquisar.Name = "BtnPesquisar";
+            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
+            this.BtnPesquisar.TabIndex = 9;
+            this.BtnPesquisar.Text = "Pesquisar";
+            this.BtnPesquisar.UseVisualStyleBackColor = true;
+            this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
+            // 
             // FrmImportacaoPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(920, 548);
+            this.ClientSize = new System.Drawing.Size(1276, 750);
             this.Controls.Add(this.BtnPesquisar);
             this.Controls.Add(this.dgDadosPO);
             this.Controls.Add(this.pbProgresso);

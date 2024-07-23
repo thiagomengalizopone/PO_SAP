@@ -24,6 +24,8 @@ namespace Zopone.AddOn.PO.Model.Objects
         public DateTime U_DataSol { get; set; }
         public string U_Obs { get; set; }
         public Boolean U_Bloqueado { get; set; }
+        public string U_itemDescription { get; set; }
+        public string U_manSiteInfo { get; set; }
 
     }
 }
