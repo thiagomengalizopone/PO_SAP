@@ -1,16 +1,8 @@
 ﻿using sap.dev.core;
 using sap.dev.data;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Policy;
-using System.Security.RightsManagement;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,9 +13,10 @@ namespace Zopone.AddOn.PO.View.PO
     public partial class FrmImportacaoPO : Form
     {
         private static Thread formThread;
-        public DataTable dtRegistros { get; set; }
+        public DataTable DtRegistros { get; set; }
 
-        public Int32 BPLId { get; set; }
+        public int BPLId { get; set; }
+
         public FrmImportacaoPO()
         {
             InitializeComponent();
@@ -31,23 +24,48 @@ namespace Zopone.AddOn.PO.View.PO
 
         internal static void MenuImpPO()
         {
-            formThread = new Thread(new ThreadStart(OpenFormImportacaoPO));
+            formThread = new Thread(OpenFormImportacaoPO);
             formThread.SetApartmentState(ApartmentState.STA);
             formThread.Start();
         }
 
-        private static void OpenFormImportacaoPO() => System.Windows.Forms.Application.Run(new FrmImportacaoPO());
+        private static void OpenFormImportacaoPO() => Application.Run(new FrmImportacaoPO());
 
         private void BtImportar_Click(object sender, EventArgs e)
         {
-
-            if (CbEmpresa.Text == "Huawei")
-                ImportarPOHuawei();
-            else if (CbEmpresa.Text == "Ericsson")
-                ImportarPOEricsson();
+            IImportacaoService importacaoService = ImportacaoServiceFactory.CreateImportacaoService(CbEmpresa.Text);
+            importacaoService.Importar(DtRegistros, BPLId, pbProgresso, dgDadosPO, CbEmpresa.Text);
         }
 
-        private void ImportarPOEricsson()
+        private void BtnPesquisar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                IPesquisaService pesquisaService = PesquisaServiceFactory.CreatePesquisaService(CbEmpresa.Text);
+                pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso);
+            }
+            catch (Exception Ex)
+            {
+                string mensagemErro = $"Erro ao Pesquisar dados -  {Ex.Message}";
+                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+            }
+        }
+
+        private void FrmImportacaoPO_Load(object sender, EventArgs e)
+        {
+            // Código para carregar o formulário
+        }
+    }
+
+    public interface IImportacaoService
+    {
+        void Importar(DataTable dtRegistros, int bplId, ProgressBar pbProgresso, DataGridView dgDadosPO, string Empresa);
+    }
+
+    public class ImportacaoService : IImportacaoService
+    {
+        public void Importar(DataTable dtRegistros, int bplId, ProgressBar pbProgresso, DataGridView dgDadosPO, string Empresa)
         {
             try
             {
@@ -63,16 +81,9 @@ namespace Zopone.AddOn.PO.View.PO
                     MessageBoxIcon.Question) == DialogResult.No)
                     return;
 
+                bplId = Convert.ToInt32(SqlUtils.GetValue("SELECT MIN(BPLId) FROM OBPL WHERE Disabled = 'N'"));
 
-                BPLId = Convert.ToInt32(SqlUtils.GetValue("SELECT MIN(BPLId) FROM OBPL WHERE Disabled = 'N'"));
-
-                SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
-
-                if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
-                {
-                    oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-                    oPedidoVenda.DocObjectCodeEx = "17";
-                }
+                SAPbobsCOM.Documents oPedidoVenda = CreatePedidoVenda();
 
                 pbProgresso.Value = 0;
                 pbProgresso.Maximum = dtRegistros.Rows.Count;
@@ -83,177 +94,150 @@ namespace Zopone.AddOn.PO.View.PO
                     {
                         pbProgresso.Value += 1;
 
-
                         if (dgDadosPO.Rows[iPedido].Cells["Importar"].Value == null || dgDadosPO.Rows[iPedido].Cells["Importar"].Value.ToString() != "1")
                             continue;
 
-                        oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
+                        oPedidoVenda = CreatePedidoVenda();
 
-                        if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
-                        {
-                            oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-                            oPedidoVenda.DocObjectCodeEx = "17";
-                        }
-
-                        oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePO;
-                        oPedidoVenda.DocDate = DateTime.Now;
-                        oPedidoVenda.DocDueDate = DateTime.Now;
-                        oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString();
-                        oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value = dtRegistros.Rows[iPedido]["po_id"].ToString();
-
-                        string SQL = $@"SP_ZPN_IMPORTARPOHuaweiItens '{dtRegistros.Rows[iPedido]["po_id"].ToString()}'";
-
-                        DataTable dtRegistrosItens = SqlUtils.ExecuteCommand(SQL);
-
-                        for (int iPedidoLinha = 0; iPedidoLinha < dtRegistrosItens.Rows.Count; iPedidoLinha++)
-                        {
-                            if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
-                                oPedidoVenda.Lines.Add();
-
-                            if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString()))
-                            {
-                                if (Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString()) > 0)
-                                    BPLId = Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString());
-                            }
-
-                            oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
-                            oPedidoVenda.Lines.Quantity = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["quantity"]);
-                            oPedidoVenda.Lines.Price = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["unitPrice"]);
-
-                            oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
-                            oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
-
-                            oPedidoVenda.BPL_IDAssignedToInvoice = BPLId;
-                        }
+                        PopulatePedidoVenda(dtRegistros, iPedido, oPedidoVenda, bplId, Empresa);
 
                         if (oPedidoVenda.Add() != 0)
                             throw new Exception($"{Globals.Master.Connection.Database.GetLastErrorDescription()}");
                     }
-                    catch (Exception Ex)
+                    catch (Exception ex)
                     {
-                        SqlUtils.DoNonQuery($@"ZPN_SP_LOGIMPORTACAOPO {dtRegistros.Rows[iPedido]["po_id"].ToString()}, '{Ex.Message}'");
+                        LogImportacaoErro(dtRegistros, iPedido, ex);
                     }
-
-                }
-
-                MessageBox.Show("PO's Ericsson Importadas com sucesso! Verifique o log de importações!");
-            }
-            catch (Exception Ex)
-            {
-                string mensagemErro = $"Erro ao importar dados PO Ericsson - {Ex.Message}";
-                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
-            }
-        }
-
-        private void ImportarPOHuawei()
-        {
-            try
-            {
-                if (dtRegistros.Rows.Count == 0)
-                {
-                    MessageBox.Show("Não há registros para importação!");
-                    return;
-                }
-
-                if (MessageBox.Show($@"Deseja prosseguir com a importação? Há um total de {dtRegistros.Rows.Count} registros!",
-                    "Atenção!",
-                    MessageBoxButtons.YesNo, 
-                    MessageBoxIcon.Question ) == DialogResult.No)
-                    return;
-
-
-                BPLId = Convert.ToInt32(SqlUtils.GetValue("SELECT MIN(BPLId) FROM OBPL WHERE Disabled = 'N'"));
-
-                SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
-
-                if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
-                {
-                    oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-                    oPedidoVenda.DocObjectCodeEx = "17";
-                }
-
-                pbProgresso.Value = 0;
-                pbProgresso.Maximum = dtRegistros.Rows.Count;
-
-                for (int iPedido = 0; iPedido < dtRegistros.Rows.Count; iPedido++)
-                {
-                    try
-                    {
-                        pbProgresso.Value += 1;
-
-
-                        if (dgDadosPO.Rows[iPedido].Cells["Importar"].Value == null || dgDadosPO.Rows[iPedido].Cells["Importar"].Value.ToString() != "1")
-                            continue;
-
-                        oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
-
-                        if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
-                        {
-                            oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-                            oPedidoVenda.DocObjectCodeEx = "17";
-                        }
-
-                        oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePO;
-                        oPedidoVenda.DocDate = DateTime.Now;
-                        oPedidoVenda.DocDueDate = DateTime.Now;
-                        oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString();
-                        oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value = dtRegistros.Rows[iPedido]["po_id"].ToString();
-
-                        string SQL = $@"SP_ZPN_IMPORTARPOHuaweiItens '{dtRegistros.Rows[iPedido]["po_id"].ToString()}'";
-
-                        DataTable dtRegistrosItens = SqlUtils.ExecuteCommand(SQL);
-
-                        for (int iPedidoLinha = 0; iPedidoLinha < dtRegistrosItens.Rows.Count; iPedidoLinha++)
-                        {
-                            if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
-                                oPedidoVenda.Lines.Add();
-
-                            if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString()))
-                            {
-                                if (Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString()) > 0)
-                                    BPLId = Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString());
-                            }
-
-                            oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
-                            oPedidoVenda.Lines.Quantity = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["quantity"]);
-                            oPedidoVenda.Lines.Price = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["unitPrice"]);
-                            
-                            oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
-                            oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
-                            
-                            oPedidoVenda.BPL_IDAssignedToInvoice = BPLId;
-                        }
-
-                        if (oPedidoVenda.Add() != 0)
-                            throw new Exception($"{Globals.Master.Connection.Database.GetLastErrorDescription()}");
-                    }
-                    catch (Exception Ex)
-                    {
-                        SqlUtils.DoNonQuery($@"ZPN_SP_LOGIMPORTACAOPO {dtRegistros.Rows[iPedido]["po_id"].ToString()}, '{Ex.Message}'");
-                    }
-
                 }
 
                 MessageBox.Show("PO Importadas com sucesso! Verifique o log de importações!");
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                string mensagemErro = $"Erro ao importar dados PO - {Ex.Message}";
-                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+                HandleImportacaoException("Huawei", ex);
             }
         }
 
-        private void BtnPesquisar_Click(object sender, EventArgs e)
+        private static SAPbobsCOM.Documents CreatePedidoVenda()
         {
-            if (CbEmpresa.Text == "Huawei")
-                PesquisarDadosHuawei();
-            else if (CbEmpresa.Text == "Ericsson")
-                PesquisarDadosEricssonAsync();
+            var oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
+            if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
+            {
+                oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                oPedidoVenda.DocObjectCodeEx = "17";
+            }
+
+            return oPedidoVenda;
         }
 
-        private async Task PesquisarDadosEricssonAsync()
+        private static void PopulatePedidoVenda(DataTable dtRegistros, int iPedido, SAPbobsCOM.Documents oPedidoVenda, int bplId, string Empresa)
+        {
+            oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePO;
+            oPedidoVenda.DocDate = DateTime.Now;
+            oPedidoVenda.DocDueDate = DateTime.Now;
+            oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString();
+            oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value = dtRegistros.Rows[iPedido]["po_id"].ToString();
+
+            string SQL = string.Empty;
+
+            if (Empresa == "Huawei")
+                SQL = $@"SP_ZPN_IMPORTARPOHuaweiItens '{dtRegistros.Rows[iPedido]["po_id"].ToString()}'";
+            else if (Empresa == "Huawei")
+                SQL = $@"SP_ZPN_IMPORTARPOERICSSONItens '{dtRegistros.Rows[iPedido]["po_id"].ToString()}'";
+
+            DataTable dtRegistrosItens = SqlUtils.ExecuteCommand(SQL);
+
+            for (int iPedidoLinha = 0; iPedidoLinha < dtRegistrosItens.Rows.Count; iPedidoLinha++)
+            {
+                if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
+                    oPedidoVenda.Lines.Add();
+
+                if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString()))
+                {
+                    if (Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString()) > 0)
+                        bplId = Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["Filial"].ToString());
+                }
+
+                oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
+                oPedidoVenda.Lines.Quantity = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["quantity"]);
+                oPedidoVenda.Lines.Price = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["unitPrice"]);
+
+                oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
+                oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
+                oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
+
+                oPedidoVenda.BPL_IDAssignedToInvoice = bplId;
+            }
+        }
+
+        private static void LogImportacaoErro(DataTable dtRegistros, int iPedido, Exception ex)
+        {
+            SqlUtils.DoNonQuery($@"ZPN_SP_LOGIMPORTACAOPO {dtRegistros.Rows[iPedido]["po_id"].ToString()}, '{ex.Message}'");
+        }
+
+        private static void HandleImportacaoException(string empresa, Exception ex)
+        {
+            string mensagemErro = $"Erro ao importar dados PO {empresa} - {ex.Message}";
+            MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, ex);
+        }
+    }
+
+
+    public static class ImportacaoServiceFactory
+    {
+        public static IImportacaoService CreateImportacaoService(string empresa)
+        {
+            if (empresa == "Huawei")
+                return new ImportacaoService();
+            else if (empresa == "Ericsson")
+                return new ImportacaoService();
+            else
+                throw new NotSupportedException($"Empresa {empresa} não suportada");
+        }
+    }
+
+    public interface IPesquisaService
+    {
+        void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso);
+    }
+
+    public class PesquisaHuaweiService : IPesquisaService
+    {
+        public void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso)
+        {
+            try
+            {
+                string dataInicial = (mskDataI.MaskFull ? Convert.ToDateTime(mskDataI.Text) : DateTime.MinValue).ToString("yyyyMMdd");
+                string dataFinal = (mskDataF.MaskFull ? Convert.ToDateTime(mskDataF.Text) : DateTime.MaxValue).ToString("yyyyMMdd");
+
+                string SQL = $@"SP_ZPN_IMPORTARPOHuawei '{dataInicial}', '{dataFinal}', 'N'";
+
+                DataTable dtRegistros = SqlUtils.ExecuteCommand(SQL);
+
+                dgDadosPO.DataSource = dtRegistros;
+
+                dgDadosPO.AutoResizeColumns();
+
+                dgDadosPO.Columns[0].ReadOnly = false;
+            }
+            catch (Exception ex)
+            {
+                HandlePesquisaException("Huawei", ex);
+            }
+        }
+
+        private static void HandlePesquisaException(string empresa, Exception ex)
+        {
+            string mensagemErro = $"Erro ao carregar dados importação PO - {empresa} - {ex.Message}";
+            MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, ex);
+        }
+    }
+
+    public class PesquisaEricssonService : IPesquisaService
+    {
+        public async void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso)
         {
             try
             {
@@ -263,8 +247,7 @@ namespace Zopone.AddOn.PO.View.PO
                 {
                     using (var arquivoEricsson = new StreamReader(fileNameAnexo))
                     {
-
-                        var linesArquivoEricsson = arquivoEricsson.ReadToEnd().Split(new char[] { '\n' });     
+                        var linesArquivoEricsson = arquivoEricsson.ReadToEnd().Split(new char[] { '\n' });
                         var count = linesArquivoEricsson.Length;
 
                         pbProgresso.Value = 0;
@@ -284,84 +267,67 @@ namespace Zopone.AddOn.PO.View.PO
                                 if (Int64.TryParse(valores[2].Trim(), out Int64 PO))
                                 {
                                     SQL = $@"ZPN_SP_POERICSSON 
-                                                            '{fileNameAnexo}',
-                                                            {PO}, 
-                                                            '{valores[3].Trim()}', 
-                                                            '{valores[4].Trim()}', 
-                                                            '{valores[5].Trim()}', 
-                                                            {valores[6].Trim().Replace(".", "").Replace(",", ".")}, 
-                                                            '{valores[7].Trim()}', 
-                                                            '{valores[8].Trim()}', 
-                                                            {valores[9].Trim().Replace(".", "").Replace(",", ".")}, 
-                                                            '{valores[10].Trim()}', 
-                                                            'N' ";
+                                                        '{fileNameAnexo}',
+                                                        {PO}, 
+                                                        '{valores[3].Trim()}', 
+                                                        '{valores[4].Trim()}', 
+                                                        '{valores[5].Trim()}', 
+                                                        {valores[6].Trim().Replace(".", "").Replace(",", ".")}, 
+                                                        '{valores[7].Trim()}', 
+                                                        '{valores[8].Trim()}', 
+                                                        {valores[9].Trim().Replace(".", "").Replace(",", ".")}, 
+                                                        '{valores[10].Trim()}', 
+                                                        'N' ";
 
                                     SqlUtils.DoNonQuery(SQL);
-
                                 }
                             }
                         }
 
                         SQL = $@"SP_ZPN_IMPORTARPOERICSSON";
 
-                        dtRegistros = SqlUtils.ExecuteCommand(SQL);
+                        DtRegistros = SqlUtils.ExecuteCommand(SQL);
 
-                        dgDadosPO.DataSource = dtRegistros;
-
-                        dgDadosPO.AutoResizeColumns();
-
-                        dgDadosPO.Columns[0].ReadOnly = false;
+                        dgDadosPO.Invoke(new Action(() =>
+                        {
+                            dgDadosPO.DataSource = dtRegistros;
+                            dgDadosPO.AutoResizeColumns();
+                            dgDadosPO.Columns[0].ReadOnly = false;
+                        }));
 
                         MessageBox.Show("Fim da leitura do arquivo!");
-
-
-
                     }
                 }
                 else
+                {
                     MessageBox.Show("Não há arquivo selecionado!");
-
+                }
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                string mensagemErro = $"Erro ao carregar dados importação PO - Ericsson - {Ex.Message}";
-                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
-            }
-
-        }
-
-        private void PesquisarDadosHuawei()
-        {
-            try
-            {
-                string dataInicial = (mskDataI.MaskFull ? Convert.ToDateTime(mskDataI.Text) : DateTime.MinValue).ToString("yyyyMMdd");
-                string dataFinal = (mskDataF.MaskFull ? Convert.ToDateTime(mskDataF.Text) : DateTime.MaxValue).ToString("yyyyMMdd");
-
-
-                string SQL = $@"SP_ZPN_IMPORTARPOHuawei '{dataInicial}', '{dataFinal}', 'N'";
-
-                string pedidoVenda = string.Empty;
-
-                dtRegistros = SqlUtils.ExecuteCommand(SQL);
-
-                dgDadosPO.DataSource = dtRegistros;
-
-                dgDadosPO.AutoResizeColumns();
-
-                dgDadosPO.Columns[0].ReadOnly = false;
-            }
-            catch (Exception Ex)
-            {
-                string mensagemErro = $"Erro ao carregar dados importação PO - Huawei - {Ex.Message}";
-                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+                HandlePesquisaException("Ericsson", ex);
             }
         }
 
-        private void FrmImportacaoPO_Load(object sender, EventArgs e)
+        private static void HandlePesquisaException(string empresa, Exception ex)
         {
+            string mensagemErro = $"Erro ao carregar dados importação PO - {empresa} - {ex.Message}";
+            MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, ex);
+        }
+    }
 
+
+        public static class PesquisaServiceFactory
+    {
+        public static IPesquisaService CreatePesquisaService(string empresa)
+        {
+            if (empresa == "Huawei")
+                return new PesquisaHuaweiService();
+            else if (empresa == "Ericsson")
+                return new PesquisaEricssonService();
+            else
+                throw new NotSupportedException($"Empresa {empresa} não suportada");
         }
     }
 }

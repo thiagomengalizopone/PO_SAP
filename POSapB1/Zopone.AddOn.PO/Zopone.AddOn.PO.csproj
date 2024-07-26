@@ -284,6 +284,7 @@
     <EmbeddedResource Include="Model\SQL\Tables\ZPN_POERICSSON.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_POERICSSON.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_IMPORTARPOERICSSON.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_IMPORTARPOERICSSONItens.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -18,7 +18,8 @@ BEGIN
 		,POList.[unitPrice]
 		,polist.manufactureSiteInfo
 		,"@ZPN_OPRJ"."Code" "IdObra"
-		,ISNULL("@ZPN_OPRJ"."U_BPLId",-1) "Filial"
+		,ISNULL("@ZPN_OPRJ"."U_BPLId",-1) "Filial",
+		polist.shipmentNum "ITEM"
 	FROM 
 		 [192.168.8.241,15050].Zopone.dbo.POList POList
 		INNER JOIN [192.168.8.241,15050].[Zopone].dbo.PO PO ON PO.po_id = POList.po_id

@@ -48,6 +48,9 @@ WHERE
 ORDER BY 
 	OPRJ."PrjCode";
 
+
+	update ONNM SET AutoKey = (SELECT isnull(MAX(DocEntry),1) + 1 FROM "@ZPN_OPRJ") where "ObjectCode" = 'ZPN_OPRJ';
+
 END;
 
 
