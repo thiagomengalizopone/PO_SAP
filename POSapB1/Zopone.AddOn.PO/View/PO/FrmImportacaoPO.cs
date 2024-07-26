@@ -286,7 +286,8 @@ namespace Zopone.AddOn.PO.View.PO
 
                         SQL = $@"SP_ZPN_IMPORTARPOERICSSON";
 
-                        DtRegistros = SqlUtils.ExecuteCommand(SQL);
+                        var dtRegistros = SqlUtils.ExecuteCommand(SQL);
+
 
                         dgDadosPO.Invoke(new Action(() =>
                         {
@@ -318,7 +319,7 @@ namespace Zopone.AddOn.PO.View.PO
     }
 
 
-        public static class PesquisaServiceFactory
+    public static class PesquisaServiceFactory
     {
         public static IPesquisaService CreatePesquisaService(string empresa)
         {
