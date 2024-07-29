@@ -37,13 +37,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.pbProgresso = new System.Windows.Forms.ProgressBar();
             this.dgDadosPO = new System.Windows.Forms.DataGridView();
+            this.BtnPesquisar = new System.Windows.Forms.Button();
             this.Importar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.po_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.poNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.po_lis_DataConfirmacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mensagem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BtnPesquisar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -135,14 +135,25 @@
             this.dgDadosPO.Size = new System.Drawing.Size(1252, 637);
             this.dgDadosPO.TabIndex = 8;
             // 
+            // BtnPesquisar
+            // 
+            this.BtnPesquisar.Location = new System.Drawing.Point(332, 42);
+            this.BtnPesquisar.Name = "BtnPesquisar";
+            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
+            this.BtnPesquisar.TabIndex = 9;
+            this.BtnPesquisar.Text = "Pesquisar";
+            this.BtnPesquisar.UseVisualStyleBackColor = true;
+            this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
+            // 
             // Importar
             // 
-            this.Importar.FalseValue = "0";
+            this.Importar.DataPropertyName = "Importar";
+            this.Importar.FalseValue = "false";
             this.Importar.HeaderText = "Importar";
-            this.Importar.IndeterminateValue = "0";
+            this.Importar.IndeterminateValue = "true";
             this.Importar.MinimumWidth = 6;
             this.Importar.Name = "Importar";
-            this.Importar.TrueValue = "1";
+            this.Importar.TrueValue = "true";
             this.Importar.Width = 125;
             // 
             // po_id
@@ -191,16 +202,6 @@
             this.Mensagem.Name = "Mensagem";
             this.Mensagem.ReadOnly = true;
             this.Mensagem.Width = 125;
-            // 
-            // BtnPesquisar
-            // 
-            this.BtnPesquisar.Location = new System.Drawing.Point(332, 42);
-            this.BtnPesquisar.Name = "BtnPesquisar";
-            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
-            this.BtnPesquisar.TabIndex = 9;
-            this.BtnPesquisar.Text = "Pesquisar";
-            this.BtnPesquisar.UseVisualStyleBackColor = true;
-            this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
             // 
             // FrmImportacaoPO
             // 

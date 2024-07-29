@@ -21,7 +21,8 @@ BEGIN
 		po.Descricao "manufactureSiteInfo",
 		OPRJ_INST."Code" "IdObra",
 		ISNULL(OPRJ_INST."U_BPLId",-1) "Filial",
-		po.ITEM
+		po.ITEM,
+		RIGHT(TRIM(PO.Municipio), 2) + '-' + PO.Site "SITE"
 	from 
 		ZPN_POERICSSON PO
 		LEFT JOIN ORDR ON ORDR."NumAtCard" = cast(PO.PO as varchar(50))

@@ -1,6 +1,6 @@
-﻿create TABLE ZPN_LOGIMPORTACAOPO
+﻿create  TABLE ZPN_LOGIMPORTACAOPO
 (
-	po_id int, 
+	po_id numeric, 
 	DataLog datetime, 
 	MensagemLog varchar(5000)
 )

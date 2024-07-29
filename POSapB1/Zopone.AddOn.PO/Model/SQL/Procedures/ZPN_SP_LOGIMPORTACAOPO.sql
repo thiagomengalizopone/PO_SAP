@@ -1,6 +1,6 @@
 ﻿create procedure ZPN_SP_LOGIMPORTACAOPO
 (
-	@po_id int, 
+	@po_id numeric, 
 	@MensagemLog varchar(5000)
 )
 as

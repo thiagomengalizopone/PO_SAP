@@ -41,7 +41,7 @@ namespace Zopone.AddOn.PO.Model.SAP
 
 
                 DBCreation.CriarCampoUsuario("ORDR", "NroCont", "Número Contrato Cliente", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
-                DBCreation.CriarCampoUsuario("ORDR", "IdPO", "ID Po Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+                DBCreation.CriarCampoUsuario("ORDR", "IdPO", "ID Po Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Quantity, 11, false, null);
                 
                 DBCreation.CriarCampoUsuario("RDR1", "manSiteInfo", "manufactureSiteInfo", SAPbobsCOM.BoFieldTypes.db_Memo, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "Candidato", "Candidato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);

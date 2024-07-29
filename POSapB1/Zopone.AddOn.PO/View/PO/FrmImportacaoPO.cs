@@ -98,7 +98,7 @@ namespace Zopone.AddOn.PO.View.PO
                     {
                         pbProgresso.Value += 1;
 
-                        if (dgDadosPO.Rows[iPedido].Cells["Importar"].Value == null || dgDadosPO.Rows[iPedido].Cells["Importar"].Value.ToString() != "1")
+                        if (dgDadosPO.Rows[iPedido].Cells["Importar"].Value == null || dgDadosPO.Rows[iPedido].Cells["Importar"].Value.ToString() != "true")
                             continue;
 
                         oPedidoVenda = CreatePedidoVenda();
@@ -140,7 +140,7 @@ namespace Zopone.AddOn.PO.View.PO
             oPedidoVenda.DocDate = DateTime.Now;
             oPedidoVenda.DocDueDate = DateTime.Now;
             oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString();
-            oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value = dtRegistros.Rows[iPedido]["po_id"].ToString();
+            oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value = Convert.ToDouble(dtRegistros.Rows[iPedido]["po_id"]);
 
             string SQL = string.Empty;
 
@@ -176,6 +176,9 @@ namespace Zopone.AddOn.PO.View.PO
 
                 if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString()))
                     oPedidoVenda.Lines.ProjectCode = dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString();
+
+                if (Empresa == "Ericsson")
+                    oPedidoVenda.Lines.FreeText = dtRegistrosItens.Rows[iPedidoLinha]["SITE"].ToString();
 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
@@ -234,6 +237,14 @@ namespace Zopone.AddOn.PO.View.PO
                 dgDadosPO.DataSource = dtRegistros;
 
                 dgDadosPO.AutoResizeColumns();
+
+                foreach (DataGridViewRow row in dgDadosPO.Rows)
+                {
+                    DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells["Importar"];
+                    chk.Value = chk.TrueValue; // Sets the checkbox to true
+                }
+
+
 
                 dgDadosPO.Columns[0].ReadOnly = false;
             }
@@ -320,6 +331,12 @@ namespace Zopone.AddOn.PO.View.PO
                         dgDadosPO.DataSource = dtRegistros;
                         dgDadosPO.AutoResizeColumns();
                         dgDadosPO.Columns[0].ReadOnly = false;
+
+                        foreach (DataGridViewRow row in dgDadosPO.Rows)
+                        {
+                            DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells["Importar"];
+                            chk.Value = chk.TrueValue; // Sets the checkbox to true
+                        }
 
 
                         MessageBox.Show("Fim da leitura do arquivo!");

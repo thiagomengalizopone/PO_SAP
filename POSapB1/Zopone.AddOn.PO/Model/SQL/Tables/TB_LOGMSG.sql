@@ -1,6 +1,6 @@
 ﻿CREATE TABLE TB_LOGMSG
 (
-	"LogId" INT IDENTITY(1,1) PRIMARY KEY,
+	"LogId" NUMERIC IDENTITY(1,1) PRIMARY KEY,
 	"DocEntry" INT ,
 	"ObjType" varchar(20),
 	"AddOn" varchar(50),
