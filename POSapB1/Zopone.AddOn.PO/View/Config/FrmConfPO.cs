@@ -17,7 +17,8 @@ namespace Zopone.AddOn.PO.View.Config
         EditText EdCardNameH { get; set; }
         EditText EdItemCode { get; set; }
         EditText EdItemName { get; set; }
-
+        EditText EdCardCodeE { get; set; }
+        EditText EdCardNameE { get; set; }
         #endregion
 
         public FrmConfPO() : base()
@@ -32,6 +33,11 @@ namespace Zopone.AddOn.PO.View.Config
             EdCardCodeH.ChooseFromListAfter += EdCardCodeH_ChooseFromListAfter;
             EdCardNameH = (EditText)oForm.Items.Item("EdCardName").Specific;
 
+
+            EdCardCodeE = (EditText)oForm.Items.Item("EdCardCodE").Specific;
+            EdCardCodeE.ChooseFromListAfter += EdCardCodeE_ChooseFromListAfter;
+            EdCardNameE = (EditText)oForm.Items.Item("EdCardNamE").Specific;
+
             EdItemCode = (EditText)oForm.Items.Item("EdItemCode").Specific;
             EdItemCode.ChooseFromListAfter += EdItemCode_ChooseFromListAfter;
 
@@ -44,6 +50,26 @@ namespace Zopone.AddOn.PO.View.Config
 
 
 
+        }
+
+        private void EdCardCodeE_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                if (aEvent.SelectedObjects == null)
+                    return;
+
+                string Code = Convert.ToString(aEvent.SelectedObjects.GetValue("CardCode", 0));
+                string Name = Convert.ToString(aEvent.SelectedObjects.GetValue("CardName", 0));
+
+                EdCardCodeE.Value = Code;
+                EdCardNameE.Value = Name;
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar item: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
         private void EdCardCodeH_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)

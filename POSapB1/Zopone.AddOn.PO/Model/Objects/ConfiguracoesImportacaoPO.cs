@@ -15,8 +15,10 @@ namespace Zopone.AddOn.PO.Model.Objects
 
         public static string ItemCodePO { get; set; }
         public static string ItemNamePO { get; set; }
-        public static string CardCodePO { get; set; }
-        public static string CardNamePO { get; set; }
+        public static string CardCodePOHawuey { get; set; }
+        public static string CardNamePOHawuey { get; set; }
+        public static string CardCodePOEricsson { get; set; }
+        public static string CardNamePOEricsson { get; set; }
         public static string TipoDocumentoPO { get; set; }
 
 
@@ -32,6 +34,8 @@ namespace Zopone.AddOn.PO.Model.Objects
                                         SELECT 
                                             ""U_CardCodeH"", 
                                             ""U_CardNameH"", 
+                                            ""U_CardCodeE"", 
+                                            ""U_CardNameE"", 
                                             ""U_ItemCode"", 
                                             ""U_ItemName"", 
                                             ""U_TipoDoc""
@@ -43,8 +47,10 @@ namespace Zopone.AddOn.PO.Model.Objects
 
                 if (!oRecordSet.EoF)
                 {
-                    CardCodePO = oRecordSet.Fields.Item("U_CardCodeH").Value.ToString();
-                    CardNamePO = oRecordSet.Fields.Item("U_CardNameH").Value.ToString();
+                    CardCodePOHawuey = oRecordSet.Fields.Item("U_CardCodeH").Value.ToString();
+                    CardNamePOHawuey = oRecordSet.Fields.Item("U_CardNameH").Value.ToString();
+                    CardCodePOEricsson = oRecordSet.Fields.Item("U_CardCodeE").Value.ToString();
+                    CardNamePOEricsson = oRecordSet.Fields.Item("U_CardNameE").Value.ToString();
                     ItemCodePO = oRecordSet.Fields.Item("U_ItemCode").Value.ToString();
                     ItemNamePO = oRecordSet.Fields.Item("U_ItemName").Value.ToString();
                     TipoDocumentoPO = oRecordSet.Fields.Item("U_TipoDoc").Value.ToString();

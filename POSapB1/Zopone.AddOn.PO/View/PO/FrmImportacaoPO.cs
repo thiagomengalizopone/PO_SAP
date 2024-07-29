@@ -1,5 +1,6 @@
 ﻿using sap.dev.core;
 using sap.dev.data;
+using SAPbobsCOM;
 using System;
 using System.Data;
 using System.IO;
@@ -41,8 +42,11 @@ namespace Zopone.AddOn.PO.View.PO
         {
             try
             {
+                DataTable dtRegistros = new DataTable();
                 IPesquisaService pesquisaService = PesquisaServiceFactory.CreatePesquisaService(CbEmpresa.Text);
-                pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso);
+                pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso,  out dtRegistros);
+
+                DtRegistros = dtRegistros;
             }
             catch (Exception Ex)
             {
@@ -132,7 +136,7 @@ namespace Zopone.AddOn.PO.View.PO
 
         private static void PopulatePedidoVenda(DataTable dtRegistros, int iPedido, SAPbobsCOM.Documents oPedidoVenda, int bplId, string Empresa)
         {
-            oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePO;
+            oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePOHawuey;
             oPedidoVenda.DocDate = DateTime.Now;
             oPedidoVenda.DocDueDate = DateTime.Now;
             oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString();
@@ -141,9 +145,17 @@ namespace Zopone.AddOn.PO.View.PO
             string SQL = string.Empty;
 
             if (Empresa == "Huawei")
+            {
+                oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePOHawuey;
+
                 SQL = $@"SP_ZPN_IMPORTARPOHuaweiItens '{dtRegistros.Rows[iPedido]["po_id"].ToString()}'";
-            else if (Empresa == "Huawei")
+            }
+            else if (Empresa == "Ericsson")
+            {
+                oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePOEricsson;
+
                 SQL = $@"SP_ZPN_IMPORTARPOERICSSONItens '{dtRegistros.Rows[iPedido]["po_id"].ToString()}'";
+            }
 
             DataTable dtRegistrosItens = SqlUtils.ExecuteCommand(SQL);
 
@@ -161,6 +173,9 @@ namespace Zopone.AddOn.PO.View.PO
                 oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
                 oPedidoVenda.Lines.Quantity = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["quantity"]);
                 oPedidoVenda.Lines.Price = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["unitPrice"]);
+
+                if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString()))
+                    oPedidoVenda.Lines.ProjectCode = dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString();
 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
@@ -199,13 +214,14 @@ namespace Zopone.AddOn.PO.View.PO
 
     public interface IPesquisaService
     {
-        void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso);
+        void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso, out DataTable dtRegistros);
     }
 
     public class PesquisaHuaweiService : IPesquisaService
     {
-        public void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso)
+        public void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso, out DataTable dtRegistros)
         {
+            dtRegistros = new DataTable();
             try
             {
                 string dataInicial = (mskDataI.MaskFull ? Convert.ToDateTime(mskDataI.Text) : DateTime.MinValue).ToString("yyyyMMdd");
@@ -213,7 +229,7 @@ namespace Zopone.AddOn.PO.View.PO
 
                 string SQL = $@"SP_ZPN_IMPORTARPOHuawei '{dataInicial}', '{dataFinal}', 'N'";
 
-                DataTable dtRegistros = SqlUtils.ExecuteCommand(SQL);
+                dtRegistros = SqlUtils.ExecuteCommand(SQL);
 
                 dgDadosPO.DataSource = dtRegistros;
 
@@ -237,12 +253,23 @@ namespace Zopone.AddOn.PO.View.PO
 
     public class PesquisaEricssonService : IPesquisaService
     {
-        public async void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso)
+        public void Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso, out DataTable dtRegistros)
         {
+            dtRegistros = new DataTable();
             try
             {
-                string fileNameAnexo = await Util.OpenFileDialogAsync(EnumList.TipoArquivo.CSV);
+                string fileNameAnexo = string.Empty;
 
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                    openFileDialog.Title = "Selecione um arquivo CSV";
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        fileNameAnexo = openFileDialog.FileName;
+                    }
+                }
                 if (!string.IsNullOrEmpty(fileNameAnexo))
                 {
                     using (var arquivoEricsson = new StreamReader(fileNameAnexo))
@@ -286,15 +313,14 @@ namespace Zopone.AddOn.PO.View.PO
 
                         SQL = $@"SP_ZPN_IMPORTARPOERICSSON";
 
-                        var dtRegistros = SqlUtils.ExecuteCommand(SQL);
+                        dtRegistros = SqlUtils.ExecuteCommand(SQL);
 
 
-                        dgDadosPO.Invoke(new Action(() =>
-                        {
-                            dgDadosPO.DataSource = dtRegistros;
-                            dgDadosPO.AutoResizeColumns();
-                            dgDadosPO.Columns[0].ReadOnly = false;
-                        }));
+
+                        dgDadosPO.DataSource = dtRegistros;
+                        dgDadosPO.AutoResizeColumns();
+                        dgDadosPO.Columns[0].ReadOnly = false;
+
 
                         MessageBox.Show("Fim da leitura do arquivo!");
                     }
