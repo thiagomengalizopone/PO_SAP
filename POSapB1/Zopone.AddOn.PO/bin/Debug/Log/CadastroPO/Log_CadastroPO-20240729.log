@@ -34,3 +34,14 @@
    em Zopone.AddOn.PO.View.PO.FrmVerificaImportacaoPO.PesquisarDados()';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near '4530745101'.
    em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 28
    em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao importar dados PO Huawei - ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'Z'.';'System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'Z'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 28
+   em Zopone.AddOn.PO.View.PO.ImportacaoService.LogImportacaoErro(DataTable dtRegistros, Int32 iPedido, Exception ex) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmImportacaoPO.cs:linha 193
+   em Zopone.AddOn.PO.View.PO.ImportacaoService.Importar(DataTable dtRegistros, Int32 bplId, ProgressBar pbProgresso, DataGridView dgDadosPO, String Empresa) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmImportacaoPO.cs:linha 113';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'Z'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 28
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao importar dados PO  - ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near Z.';'System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'Z'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 28
+   em Zopone.AddOn.PO.View.PO.ImportacaoService.LogImportacaoErro(DataTable dtRegistros, Int32 iPedido, Exception ex) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmImportacaoPO.cs:linha 195';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'Z'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 28
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;

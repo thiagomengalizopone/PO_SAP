@@ -1,6 +1,4 @@
 ﻿
-
-
 CREATE PROCEDURE [dbo].[SP_ZPN_VERIFICAIMPORTARPOHuawei]
 (
 	@DataInicial datetime,
@@ -11,7 +9,7 @@ BEGIN
 
 -- SP_ZPN_VERIFICAIMPORTARPOHuawei '2024-07-19', '2024-07-19'
 	SELECT DISTINCT
-		ORDR.U_IdPO  [po_id],
+		CAST(ORDR.U_IdPO AS NUMERIC)  [po_id],
 		ORDR.DocEntry as "DocEntryPO",
 		ORDR.NumAtCard AS poNumber,
 		ORDR.DocDate,
@@ -31,7 +29,7 @@ BEGIN
 	UNION ALL 
 
 	SELECT DISTINCT
-		ODRF.U_IdPO  [po_id],
+		CAST(ODRF.U_IdPO AS NUMERIC)  [po_id],
 		ODRF.DocEntry as "DocEntryPO",
 		ODRF.NumAtCard AS poNumber,
 		ODRF.DocDate,
@@ -49,6 +47,27 @@ BEGIN
 		ISNULL(ODRF.U_IdPO,0) > 0 AND 
 		ORDR.DocEntry IS NULL AND
 		ODRF.DocDate between @DataInicial AND @DataFinal 
+
+	UNION
+
+	SELECT DISTINCT
+		LOGPO.po_id  [po_id],
+		0 as "DocEntryPO",
+		LOGPO.po_id AS poNumber,
+		LOGPO.DataLog DocDate,
+		'Erro de importação' "Status",
+		LOGPO.MensagemLog "Mensagem",
+		'' 'DOCTOOBRA'
+	FROM 
+		ZPN_LOGIMPORTACAOPO LOGPO
+		LEFT JOIN ODRF  ON LOGPO.po_id = ODRF.U_IdPO 
+		LEFT JOIN ORDR	ON LOGPO.po_id = ORDR.U_IdPO
+	where 
+		ORDR.DocEntry IS NULL AND
+		ORDR.DocEntry IS NULL AND
+		cast(LOGPO.DataLog  as date) between @DataInicial AND @DataFinal 
+
+
 	ORDER BY 
 		DocDate,
 		NumAtCard

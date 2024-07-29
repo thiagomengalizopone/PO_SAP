@@ -106,7 +106,7 @@ namespace Zopone.AddOn.PO.View.PO
                         PopulatePedidoVenda(dtRegistros, iPedido, oPedidoVenda, bplId, Empresa);
 
                         if (oPedidoVenda.Add() != 0)
-                            throw new Exception($"{Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                            throw new Exception($"PN: {oPedidoVenda.CardCode} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                     }
                     catch (Exception ex)
                     {
@@ -190,12 +190,20 @@ namespace Zopone.AddOn.PO.View.PO
 
         private static void LogImportacaoErro(DataTable dtRegistros, int iPedido, Exception ex)
         {
-            SqlUtils.DoNonQuery($@"ZPN_SP_LOGIMPORTACAOPO {dtRegistros.Rows[iPedido]["po_id"].ToString()}, '{ex.Message}'");
+            try
+            {
+                string SQL_LOG = $@"ZPN_SP_LOGIMPORTACAOPO {dtRegistros.Rows[iPedido]["po_id"].ToString()}, '{ex.Message.Replace("'", "")}'";
+                SqlUtils.DoNonQuery(SQL_LOG);
+            }
+            catch (Exception Ex)
+            {
+                HandleImportacaoException("", Ex);
+            }
         }
 
         private static void HandleImportacaoException(string empresa, Exception ex)
         {
-            string mensagemErro = $"Erro ao importar dados PO {empresa} - {ex.Message}";
+            string mensagemErro = $"Erro ao importar dados PO {empresa} - {ex.Message}".Replace("'", "") ;
             MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, ex);
         }
@@ -240,8 +248,11 @@ namespace Zopone.AddOn.PO.View.PO
 
                 foreach (DataGridViewRow row in dgDadosPO.Rows)
                 {
-                    DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells["Importar"];
-                    chk.Value = chk.TrueValue; // Sets the checkbox to true
+                    if (row.Cells["Status"].Value != null && row.Cells["Status"].Value.ToString() != "Importado")
+                    {
+                        DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells["Importar"];
+                        chk.Value = chk.TrueValue; // Sets the checkbox to true
+                    }
                 }
 
 
@@ -332,10 +343,14 @@ namespace Zopone.AddOn.PO.View.PO
                         dgDadosPO.AutoResizeColumns();
                         dgDadosPO.Columns[0].ReadOnly = false;
 
+
                         foreach (DataGridViewRow row in dgDadosPO.Rows)
                         {
-                            DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells["Importar"];
-                            chk.Value = chk.TrueValue; // Sets the checkbox to true
+                            if (row.Cells["Status"].Value != null && row.Cells["Status"].Value.ToString() != "Importado")
+                            {
+                                DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells["Importar"];
+                                chk.Value = chk.TrueValue; // Sets the checkbox to true
+                            }
                         }
 
 

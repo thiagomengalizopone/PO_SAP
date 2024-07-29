@@ -35,10 +35,7 @@
             this.mskDataI = new System.Windows.Forms.MaskedTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.mskDataF = new System.Windows.Forms.MaskedTextBox();
-            this.CbEmpresa = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.dgDadosPO = new System.Windows.Forms.DataGridView();
-            this.BtnPesquisar = new System.Windows.Forms.Button();
             this.po_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DocEntryPO = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.poNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,6 +43,7 @@
             this.po_lis_DataConfirmacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mensagem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BtnPesquisar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -83,25 +81,6 @@
             this.mskDataF.Size = new System.Drawing.Size(100, 22);
             this.mskDataF.TabIndex = 4;
             // 
-            // CbEmpresa
-            // 
-            this.CbEmpresa.FormattingEnabled = true;
-            this.CbEmpresa.Items.AddRange(new object[] {
-            "Huawei"});
-            this.CbEmpresa.Location = new System.Drawing.Point(90, 37);
-            this.CbEmpresa.Name = "CbEmpresa";
-            this.CbEmpresa.Size = new System.Drawing.Size(236, 24);
-            this.CbEmpresa.TabIndex = 5;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 45);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(62, 16);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Empresa";
-            // 
             // dgDadosPO
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -129,7 +108,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgDadosPO.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgDadosPO.Location = new System.Drawing.Point(12, 79);
+            this.dgDadosPO.Location = new System.Drawing.Point(12, 53);
             this.dgDadosPO.MultiSelect = false;
             this.dgDadosPO.Name = "dgDadosPO";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -143,19 +122,9 @@
             this.dgDadosPO.RowHeadersWidth = 51;
             this.dgDadosPO.RowTemplate.Height = 24;
             this.dgDadosPO.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgDadosPO.Size = new System.Drawing.Size(1152, 457);
+            this.dgDadosPO.Size = new System.Drawing.Size(1747, 488);
             this.dgDadosPO.TabIndex = 8;
             this.dgDadosPO.DoubleClick += new System.EventHandler(this.dgDadosPO_DoubleClick);
-            // 
-            // BtnPesquisar
-            // 
-            this.BtnPesquisar.Location = new System.Drawing.Point(332, 42);
-            this.BtnPesquisar.Name = "BtnPesquisar";
-            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
-            this.BtnPesquisar.TabIndex = 9;
-            this.BtnPesquisar.Text = "Pesquisar";
-            this.BtnPesquisar.UseVisualStyleBackColor = true;
-            this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
             // 
             // po_id
             // 
@@ -222,15 +191,23 @@
             this.Mensagem.ReadOnly = true;
             this.Mensagem.Width = 125;
             // 
+            // BtnPesquisar
+            // 
+            this.BtnPesquisar.Location = new System.Drawing.Point(332, 11);
+            this.BtnPesquisar.Name = "BtnPesquisar";
+            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
+            this.BtnPesquisar.TabIndex = 9;
+            this.BtnPesquisar.Text = "Pesquisar";
+            this.BtnPesquisar.UseVisualStyleBackColor = true;
+            this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
+            // 
             // FrmVerificaImportacaoPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1176, 548);
+            this.ClientSize = new System.Drawing.Size(1771, 548);
             this.Controls.Add(this.dgDadosPO);
             this.Controls.Add(this.BtnPesquisar);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.CbEmpresa);
             this.Controls.Add(this.mskDataF);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.mskDataI);
@@ -249,8 +226,6 @@
         private System.Windows.Forms.MaskedTextBox mskDataI;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.MaskedTextBox mskDataF;
-        private System.Windows.Forms.ComboBox CbEmpresa;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dgDadosPO;
         private System.Windows.Forms.Button BtnPesquisar;
         private System.Windows.Forms.DataGridViewTextBoxColumn po_id;
