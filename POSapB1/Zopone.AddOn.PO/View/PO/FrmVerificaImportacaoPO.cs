@@ -86,7 +86,9 @@ namespace Zopone.AddOn.PO.View.PO
 
         private void FrmImportacaoPO_Load(object sender, EventArgs e)
         {
-
+            this.TopMost = true;
+            this.BringToFront();
+            this.TopMost = false;
         }
 
         private void dgDadosPO_DoubleClick(object sender, EventArgs e)

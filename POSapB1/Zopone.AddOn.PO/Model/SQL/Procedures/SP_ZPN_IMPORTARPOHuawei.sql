@@ -11,7 +11,7 @@ BEGIN
 	SELECT DISTINCT
 		PO.[po_id],
 		 POList.[poNumber],
-		 POList.po_lis_DataConfirmacao,
+		 CAST(POList.po_lis_DataConfirmacao AS DATE) po_lis_DataConfirmacao,
 		 CASE WHEN ISNULL(ODRF.NumAtCard, ORDR.NumAtCard) is null THEN 'Não Importado' ELSE  'Importado' end as "Status",
 		 LOGPO.MensagemLog "Mensagem"
 	FROM 

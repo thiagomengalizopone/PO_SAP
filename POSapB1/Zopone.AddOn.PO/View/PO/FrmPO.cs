@@ -102,9 +102,13 @@ namespace Zopone.AddOn.PO.View.Obra
 
             RowIndexEdit = -1;
 
-            this.WindowState = FormWindowState.Minimized;
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
+            //this.WindowState = FormWindowState.Minimized;
+            //this.Show();
+            //this.WindowState = FormWindowState.Normal;
+
+            this.TopMost = true;
+            this.BringToFront();
+            this.TopMost = false;
 
         }
 
@@ -145,9 +149,15 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_Parcela = oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value.ToString(),
                                U_Valor = oPedidoVenda.Lines.LineTotal,
                                U_Tipo = oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value.ToString(),
-                               U_DataFat = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value),
+                               U_DataFat = (oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value != null &&
+                                            Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value).Year != 1899) ?
+                                    Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value) :
+                                    (DateTime?)null,
                                U_NroNF = oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value.ToString(),
-                               U_DataSol = Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value),
+                               U_DataSol = oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value != null &&
+                                            Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value).Year != 1899 ?
+                                            Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value) :
+                                            (DateTime?)null,
                                U_Obs = oPedidoVenda.Lines.FreeText,
                                U_Bloqueado = oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value.ToString() == "Y",
                                U_itemDescription = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value.ToString(),
@@ -233,9 +243,9 @@ namespace Zopone.AddOn.PO.View.Obra
                     U_Parcela = txtParcela.Text,
                     U_Valor = Convert.ToDouble(txtValor.Text),
                     U_Tipo = CbTipo.Text,
-                    U_DataFat = mskDataFaturamento.MaskFull ? Convert.ToDateTime(mskDataFaturamento.Text) : DateTime.MinValue,
+                    U_DataFat = mskDataFaturamento.MaskFull ? Convert.ToDateTime(mskDataFaturamento.Text) : (DateTime?)null,
                     U_NroNF = txtNroNF.Text,
-                    U_DataSol = mskDataSol.MaskFull ? Convert.ToDateTime(mskDataSol.Text) : DateTime.MinValue,
+                    U_DataSol = mskDataSol.MaskFull ? Convert.ToDateTime(mskDataSol.Text) : (DateTime?)null,
                     U_Obs = txtObservacao.Text,
                     U_Bloqueado = cbBloqueado.Checked,
                     U_itemDescription = txtDescItemPO.Text,
@@ -476,9 +486,9 @@ namespace Zopone.AddOn.PO.View.Obra
                 txtParcela.Text = linesPO[rowIndex].U_Parcela;
                 txtValor.Text = linesPO[rowIndex].U_Valor.ToString();
                 CbTipo.SelectedValue = linesPO[rowIndex].U_Tipo;
-                mskDataFaturamento.Text = linesPO[rowIndex].U_DataFat.ToString("dd/MM/yyyy");
+                mskDataFaturamento.Text = linesPO[rowIndex].U_DataFat?.ToString("dd/MM/yyyy");
                 txtNroNF.Text = linesPO[rowIndex].U_NroNF;
-                mskDataSol.Text = linesPO[rowIndex].U_DataSol.ToString("dd/MM/yyyy");
+                mskDataSol.Text = linesPO[rowIndex].U_DataSol?.ToString("dd/MM/yyyy");
                 txtObservacao.Text = linesPO[rowIndex].U_Obs;
                 cbBloqueado.Checked = linesPO[rowIndex].U_Bloqueado;
                 txtDescItemPO.Text = linesPO[rowIndex].U_itemDescription;
@@ -571,9 +581,16 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.Lines.ProjectCode = linePO.U_PrjCode;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value = linePO.U_Candidato;
                     oPedidoVenda.Lines.FreeText = linePO.U_Obs;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value = linePO.U_DataFat;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataLanc").Value = linePO.U_DataLanc;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value = linePO.U_DataSol;
+
+                    if (linePO.U_DataFat != null)
+                        oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value = linePO.U_DataFat;
+
+                    if (linePO.U_DataLanc != null)
+                        oPedidoVenda.Lines.UserFields.Fields.Item("U_DataLanc").Value = linePO.U_DataLanc;
+
+                    if (linePO.U_DataSol != null)
+                        oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value = linePO.U_DataSol;
+
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = linePO.U_Item;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value = linePO.U_ItemFat;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value = linePO.U_NroNF;
@@ -587,21 +604,15 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (bExistePedido)
                 {
-                    if (IsDraft)
-                        if (oPedidoVenda.SaveDraftToDocument() != 0)
-                            throw new Exception($"Erro ao atualizar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
-                        else
-                            if (oPedidoVenda.Update() != 0)
-                                throw new Exception($"Erro ao atualizar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                    if (oPedidoVenda.Update() != 0)
+                        throw new Exception($"Erro ao atualizar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                 }
                 else
                 {
-                    if (IsDraft)
-                        if (oPedidoVenda.SaveDraftToDocument() != 0)
-                            throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
-                        else
-                            if (oPedidoVenda.Add() != 0)
-                            throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                    if (oPedidoVenda.Add() != 0)
+                        throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                 }
 
                 txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();

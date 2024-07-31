@@ -58,7 +58,9 @@ namespace Zopone.AddOn.PO.View.PO
 
         private void FrmImportacaoPO_Load(object sender, EventArgs e)
         {
-            // Código para carregar o formulário
+            this.TopMost = true;
+            this.BringToFront();
+            this.TopMost = false;
         }
     }
 
@@ -178,9 +180,12 @@ namespace Zopone.AddOn.PO.View.PO
                     oPedidoVenda.Lines.ProjectCode = dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString();
 
                 if (Empresa == "Ericsson")
+                {
                     oPedidoVenda.Lines.FreeText = dtRegistrosItens.Rows[iPedidoLinha]["SITE"].ToString();
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
+                }
 
-                oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
+                
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
 

@@ -122,7 +122,7 @@
             this.dgDadosPO.RowHeadersWidth = 51;
             this.dgDadosPO.RowTemplate.Height = 24;
             this.dgDadosPO.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgDadosPO.Size = new System.Drawing.Size(1747, 488);
+            this.dgDadosPO.Size = new System.Drawing.Size(1269, 488);
             this.dgDadosPO.TabIndex = 8;
             this.dgDadosPO.DoubleClick += new System.EventHandler(this.dgDadosPO_DoubleClick);
             // 
@@ -205,7 +205,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1771, 548);
+            this.ClientSize = new System.Drawing.Size(1291, 548);
             this.Controls.Add(this.dgDadosPO);
             this.Controls.Add(this.BtnPesquisar);
             this.Controls.Add(this.mskDataF);

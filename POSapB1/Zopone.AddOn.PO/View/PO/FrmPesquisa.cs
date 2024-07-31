@@ -25,8 +25,11 @@ namespace Zopone.AddOn.PO.View.PO
         }
 
         private void FrmPesquisa_Load(object sender, EventArgs e)
-        {
+        {            
             CarregarDadosPesquisa();
+            this.TopMost = true;
+            this.BringToFront();
+            this.TopMost = false;
         }
 
         private void CarregarDadosPesquisa()

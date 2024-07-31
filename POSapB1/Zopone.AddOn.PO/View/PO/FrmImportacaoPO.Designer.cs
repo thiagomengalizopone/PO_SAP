@@ -49,7 +49,7 @@
             // 
             // BtImportar
             // 
-            this.BtImportar.Location = new System.Drawing.Point(1676, 50);
+            this.BtImportar.Location = new System.Drawing.Point(1167, 45);
             this.BtImportar.Name = "BtImportar";
             this.BtImportar.Size = new System.Drawing.Size(75, 23);
             this.BtImportar.TabIndex = 0;
@@ -115,7 +115,7 @@
             // 
             this.pbProgresso.Location = new System.Drawing.Point(12, 722);
             this.pbProgresso.Name = "pbProgresso";
-            this.pbProgresso.Size = new System.Drawing.Size(1739, 23);
+            this.pbProgresso.Size = new System.Drawing.Size(1232, 23);
             this.pbProgresso.TabIndex = 7;
             // 
             // dgDadosPO
@@ -132,7 +132,7 @@
             this.dgDadosPO.Name = "dgDadosPO";
             this.dgDadosPO.RowHeadersWidth = 51;
             this.dgDadosPO.RowTemplate.Height = 24;
-            this.dgDadosPO.Size = new System.Drawing.Size(1739, 637);
+            this.dgDadosPO.Size = new System.Drawing.Size(1230, 637);
             this.dgDadosPO.TabIndex = 8;
             // 
             // Importar
@@ -207,7 +207,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1763, 750);
+            this.ClientSize = new System.Drawing.Size(1256, 750);
             this.Controls.Add(this.BtnPesquisar);
             this.Controls.Add(this.dgDadosPO);
             this.Controls.Add(this.pbProgresso);

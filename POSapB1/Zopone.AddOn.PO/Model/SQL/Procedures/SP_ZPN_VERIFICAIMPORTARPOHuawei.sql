@@ -53,7 +53,7 @@ BEGIN
 	SELECT DISTINCT
 		LOGPO.po_id  [po_id],
 		0 as "DocEntryPO",
-		LOGPO.po_id AS poNumber,
+		cast(LOGPO.po_id as varchar(30)) AS poNumber,
 		LOGPO.DataLog DocDate,
 		'Erro de importação' "Status",
 		LOGPO.MensagemLog "Mensagem",
