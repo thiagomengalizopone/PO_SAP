@@ -1,40 +1,36 @@
-﻿CREATE PROCEDURE SP_ZPN_IMPORTARPOERICSSONItens
+﻿CREATE PROCEDURE SP_ZPN_IMPORTARPOHuaweiItens
 (	
-	@po_id Numeric
+	@po_id INT
 )
 as
 BEGIN
 
+-- SP_ZPN_IMPORTARPOHuawei '2024-07-01', '2024-07-18', 'N'
+	SELECT 
+		 PO.[po_id]
+		,POList.po_lis_DataConfirmacao
+		,POList.[poNumber]
+		,POList.[shipmentNum]
+		,POList.[quantityCancelled]
+		, 1 [quantity]
+		,POList.[itemCode]
+		,(POList.[quantity] * POList.[unitPrice]) [unitPrice]
+		,polist.manufactureSiteInfo
+		,"@ZPN_OPRJ"."Code" "IdObra"
+		,ISNULL("@ZPN_OPRJ"."U_BPLId",-1) "Filial"
+		,polist.poLineNum "ITEM"
+		,cast(polist.poLineNum as varchar(10)) + ' ' + POList.[itemDescription] + ' '+ cast(POList.[quantity] as varchar(15))[itemDescription]
+		, isnull("@ZPN_OPRJ".U_CodContrato,0) U_CodContrato
+	FROM 
+		 [192.168.8.241,15050].Zopone.dbo.POList POList
+		INNER JOIN [192.168.8.241,15050].[Zopone].dbo.PO PO ON PO.po_id = POList.po_id
+		LEFT join "@ZPN_OPRJ" on polist.manufactureSiteInfo collate Latin1_General_CI_AS like '%'+ "@ZPN_OPRJ".U_IdSite+ '%'
 
-
-	select  
-		PO po_id,
-		GETDATE() po_lis_DataConfirmacao,
-		po.COdigo [itemDescription],
-		PO [poNumber],
-		0 [shipmentNum],
-		0 [quantityCancelled],
-		po.qtde AS [quantity],
-		PO.Codigo [itemCode],
-		PO.Piece [unitPrice],
-		po.Descricao "manufactureSiteInfo",
-		OPRJ_INST."Code" "IdObra",
-		ISNULL(OPRJ_INST."U_BPLId",-1) "Filial",
-		po.ITEM,
-		RIGHT(TRIM(PO.Municipio), 2) + '-' + PO.Site "SITE"
-	from 
-		ZPN_POERICSSON PO
-		LEFT JOIN ORDR ON ORDR."NumAtCard" = cast(PO.PO as varchar(50))
-		LEFT JOIN ODRF ON ODRF."NumAtCard" = cast(PO.PO as varchar(50))
-		LEFT join "@ZPN_OPRJ" OPRJ_INST on OPRJ_INST.Name = RIGHT(TRIM(PO.Municipio), 2) + '-' + PO.Site 
-		LEFT join "@ZPN_OPRJ" OPRJ_CW   on OPRJ_CW.Name = RIGHT(TRIM(PO.Municipio), 2) + '-' + PO.Site + '/CW'
-		LEFT join "@ZPN_OPRJ" OPRJ_5G   on OPRJ_5G.Name = RIGHT(TRIM(PO.Municipio), 2) + '-' + PO.Site + '-5G'
-		LEFT join "@ZPN_OPRJ" OPRJ_COD2 on OPRJ_COD2.Name = RIGHT(TRIM(PO.Municipio), 2) + '-' + PO.Site + '-2'
 	where 
-		PO.PO = @po_id
+		PO.po_id = @po_id
+	ORDER BY 
+		POList.[poNumber],
+		polist.poLineNum 
+DESC 
 
-	ORDER BY
-		PO.PO;
-
-		
 END;

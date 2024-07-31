@@ -116,7 +116,7 @@ namespace Zopone.AddOn.PO.View.PO
                     }
                 }
 
-                MessageBox.Show("PO Importadas com sucesso! Verifique o log de importações!");
+                FrmVerificaImportacaoPO.MenuVerificaPO();
             }
             catch (Exception ex)
             {
@@ -179,15 +179,20 @@ namespace Zopone.AddOn.PO.View.PO
                 if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString()))
                     oPedidoVenda.Lines.ProjectCode = dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString();
 
+                if (Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["U_CodContrato"]) > 0)
+                    oPedidoVenda.Lines.AgreementNo = Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["U_CodContrato"]);
+
+                oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
+
                 if (Empresa == "Ericsson")
                 {
                     oPedidoVenda.Lines.FreeText = dtRegistrosItens.Rows[iPedidoLinha]["SITE"].ToString();
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
                 }
 
                 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
+
 
                 oPedidoVenda.BPL_IDAssignedToInvoice = bplId;
             }

@@ -2,6 +2,8 @@
 using sap.dev.ui.Forms;
 using SAPbouiCOM;
 using System;
+using Zopone.AddOn.PO.View.Alocação;
+using Zopone.AddOn.PO.View.ContratoAlocacao;
 using Zopone.AddOn.PO.View.Obra;
 
 namespace Zopone.AddOn.PO.View.Contrato
@@ -57,6 +59,8 @@ namespace Zopone.AddOn.PO.View.Contrato
                 Item oItem;
                 EditText oEditText;
                 StaticText oStaticText;
+
+                Button BtAlocacao;
 
                 oItem = oFormContrato.Items.Add("EdNroRH", SAPbouiCOM.BoFormItemTypes.it_EDIT);
                 oItem.Left = oItemRef.Left;
@@ -119,12 +123,51 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 oNewFolder.ClickAfter += ONewFolder_ClickAfter;
 
+
+                 oItemRef = oFormContrato.Items.Item("1250000002");
+
+                oItem = oFormContrato.Items.Add("BtAlocacao", SAPbouiCOM.BoFormItemTypes.it_BUTTON);
+                oItem.Left = oItemRef.Left  + oItemRef.Width + 10;
+                oItem.Top = oItemRef.Top ;
+                oItem.Width = oItemRef.Width;
+                oItem.Height = oItemRef.Height;
+                oItem.FromPane = oItemRef.FromPane;
+                oItem.ToPane = oItemRef.ToPane;
+
+                BtAlocacao = ((SAPbouiCOM.Button)(oItem.Specific));
+                BtAlocacao.Caption = "Alocação";
+                BtAlocacao.PressedAfter += BtAlocacao_PressedAfter;
+
+
+
                 oFormContrato.Update();
 
             }
             catch (Exception Ex)
             {
                 throw new Exception($"Erro ao abrir tela: {Ex.Message}");
+            }
+        }
+
+        private static void BtAlocacao_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(pVal.FormUID);
+
+                if (oFormContrato.Mode != BoFormMode.fm_OK_MODE)
+                {
+                    Util.ExibirDialogo("Formulário não pode estar em modo de edição!");
+                    return;
+                }
+                
+                EditText oEditText = ((SAPbouiCOM.EditText)(oFormContrato.Items.Item("1250000004").Specific));
+
+                new FrmContAloca(oEditText.Value);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao abrir alocação: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
 

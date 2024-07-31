@@ -170,6 +170,7 @@
     <Compile Include="View\ClassificacaoObra\FrmClassObra.cs" />
     <Compile Include="View\ConfiguracaoImportWMS\FrmConfigImpWMS.cs" />
     <Compile Include="View\Config\FrmConfPO.cs" />
+    <Compile Include="View\ContratoAlocacao\FrmContAloca.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
     <Compile Include="View\ObraProjeto\Frm711.cs" />
     <Compile Include="View\Obra\FrmObra.cs" />
@@ -285,6 +286,10 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_POERICSSON.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_IMPORTARPOERICSSON.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_IMPORTARPOERICSSONItens.sql" />
+    <EmbeddedResource Include="View\ContratoAlocacao\FrmContAloca.srf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CRIAALOCACAOCONTRATO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

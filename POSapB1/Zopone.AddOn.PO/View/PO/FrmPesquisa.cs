@@ -98,6 +98,7 @@ namespace Zopone.AddOn.PO.View.PO
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[4].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[5].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[8].Value.ToString());
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[10].Value.ToString());
                 }
                 else if (TipoPesquisa == "CANDIDATO")
                 {

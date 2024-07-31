@@ -59,6 +59,20 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("RDR1", "itemDescription", "itemDescription", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false);
                 #endregion
 
+                #region ALOCAÇÃO OBRA                
+                DBCreation.CriarTabelaUsuario("ZPN_ALOCON", "Cadastro Contrato Aloc.", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                DBCreation.CriarTabelaUsuario("ZPN_ALOCONI", "Cadastro Contrato Aloc I", SAPbobsCOM.BoUTBTableType.bott_MasterDataLines);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCONI", "CodAloc", "Código Alocação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCONI", "DescAloc", "Descrição Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCONI", "PC", "PC", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "N", valoresValidosSimNao);
+
+
+                List<ChildTables> TabelasFilhasAlocacao = new List<ChildTables>();
+                TabelasFilhasAlocacao.Add(new ChildTables("ZPN_ALOCONI", "ZPN_ALOCONI"));
+
+                DBCreation.CriarUDO("ZPN_ALOCON", "ZPN_ALOCON", "ZPN_ALOCON", SAPbobsCOM.BoUDOObjType.boud_MasterData, TabelasFilhasAlocacao);
+                #endregion
+
                 #region PARAMETROS PO
 
                 var valoresTipoDocumentoPO = new List<Tuple<string, string>>();

@@ -17,8 +17,8 @@ AS
 		OCRD."CardName" "Cliente",
 		CLASS.Name		"Classificação Obra",
 		ZPN_PRJ.U_BplId	"ID Filial",
-		OBPL.BplName	"Filial/Empresa"
-
+		OBPL.BplName	"Filial/Empresa",
+		OOAT.[Number]   "Número Contrato"
 	FROM 
 		OPRJ 
 		INNER JOIN "@ZPN_OPRJ" ZPN_PRJ	ON OPRJ.PrjCode     = ZPN_PRJ."Code"

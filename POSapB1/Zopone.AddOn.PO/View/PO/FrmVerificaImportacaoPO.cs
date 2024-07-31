@@ -89,6 +89,25 @@ namespace Zopone.AddOn.PO.View.PO
             this.TopMost = true;
             this.BringToFront();
             this.TopMost = false;
+
+            CarregarDadosLogImportacaoPO();
+        }
+
+        private void CarregarDadosLogImportacaoPO()
+        {
+            try
+            {
+                mskDataI.Text = DateTime.Now.ToString("dd/MM/yyyy");
+                mskDataF.Text = DateTime.Now.ToString("dd/MM/yyyy");
+
+                PesquisarDados();
+            }
+            catch (Exception Ex)
+            {
+                string mensagemErro = $"Erro ao carregar dados log importação PO - {Ex.Message}";
+                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+            }        
         }
 
         private void dgDadosPO_DoubleClick(object sender, EventArgs e)

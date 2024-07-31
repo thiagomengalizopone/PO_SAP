@@ -133,8 +133,10 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     linesPO.Clear();
 
-                    for (int iRow = 0; iRow < oPedidoVenda.Lines.Count; iRow++)
+                    for (int iRow = oPedidoVenda.Lines.Count-1;  iRow >=0 ; iRow--)
                     {
+                        oPedidoVenda.Lines.SetCurrentLine(iRow);
+
                         linesPO.Add(
                            new LinePO()
                            {
@@ -249,7 +251,9 @@ namespace Zopone.AddOn.PO.View.Obra
                     U_Obs = txtObservacao.Text,
                     U_Bloqueado = cbBloqueado.Checked,
                     U_itemDescription = txtDescItemPO.Text,
-                    U_manSiteInfo = txtInfoSitePO.Text
+                    U_manSiteInfo = txtInfoSitePO.Text,
+                    AgrNo = !string.IsNullOrEmpty(txtNroCont.Text) ? Convert.ToInt32(txtNroCont.Text)  : 0
+
                 };
 
                 if (RowIndexEdit < 0)
@@ -374,6 +378,8 @@ namespace Zopone.AddOn.PO.View.Obra
                         lblCliente.Text = retornoDados[2];
 
                         BPLId = Convert.ToInt32(retornoDados[4]);
+
+                        txtNroCont.Text = retornoDados[5];
                     }
                 }
                 else if (TipoPesquisa == "CANDIDATO")
@@ -493,6 +499,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 cbBloqueado.Checked = linesPO[rowIndex].U_Bloqueado;
                 txtDescItemPO.Text = linesPO[rowIndex].U_itemDescription;
                 txtInfoSitePO.Text = linesPO[rowIndex].U_manSiteInfo;
+                txtNroCont.Text = linesPO[rowIndex].AgrNo.ToString();
             }
             catch (Exception Ex)
             {
@@ -600,6 +607,9 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value = linePO.U_Bloqueado ? "Y" : "N";
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = linePO.U_itemDescription;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = linePO.U_manSiteInfo;
+
+                    if (linePO.AgrNo > 0)
+                        oPedidoVenda.Lines.AgreementNo = linePO.AgrNo;
                 }
 
                 if (bExistePedido)

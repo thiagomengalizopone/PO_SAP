@@ -1,5 +1,5 @@
 ﻿
-create PROCEDURE SP_ZPN_IMPORTARPOERICSSONItens
+ALTER PROCEDURE SP_ZPN_IMPORTARPOERICSSONItens
 (	
 	@po_id Numeric
 )
@@ -11,18 +11,19 @@ BEGIN
 	select  
 		PO po_id,
 		GETDATE() po_lis_DataConfirmacao,
-		po.COdigo [itemDescription],
 		PO [poNumber],
 		0 [shipmentNum],
 		0 [quantityCancelled],
-		po.qtde AS [quantity],
+		1 AS [quantity],
 		PO.Codigo [itemCode],
-		PO.Piece [unitPrice],
+		po.qtde * PO.Piece [unitPrice],
 		po.Descricao "manufactureSiteInfo",
 		OPRJ_INST."Code" "IdObra",
 		ISNULL(OPRJ_INST."U_BPLId",-1) "Filial",
 		po.ITEM,
-		RIGHT(TRIM(PO.Municipio), 2) + '-' + PO.Site "SITE"
+		RIGHT(TRIM(PO.Municipio), 2) + '-' + PO.Site "SITE",
+		po.ITEM + ' '  + po.COdigo + ' ' + po.Descricao + ' ' + cast(po.qtde as varchar(20)) [itemDescription],
+		isnull(OPRJ_INST.U_CodContrato,0)U_CodContrato
 	from 
 		ZPN_POERICSSON PO
 		LEFT JOIN ORDR ON ORDR."NumAtCard" = cast(PO.PO as varchar(50))
