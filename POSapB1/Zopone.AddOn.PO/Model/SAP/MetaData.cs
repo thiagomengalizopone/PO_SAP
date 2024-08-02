@@ -15,9 +15,7 @@ namespace Zopone.AddOn.PO.Model.SAP
 
             if (Globals.Master.CurrentVersion < 2024070101)
             {
-
-
-                var valoresValidosSituacaoContrato = new List<Tuple<string, string>>();
+                                var valoresValidosSituacaoContrato = new List<Tuple<string, string>>();
                 valoresValidosSituacaoContrato.Add(new Tuple<string, string>("A", "Andamento"));
                 valoresValidosSituacaoContrato.Add(new Tuple<string, string>("CO", "Concluída"));
                 valoresValidosSituacaoContrato.Add(new Tuple<string, string>("E", "Embargada"));
@@ -206,6 +204,20 @@ namespace Zopone.AddOn.PO.Model.SAP
                 TabelasFilhasCandidato.Add(new ChildTables("ZPN_OPRJ_CAND", "ZPN_OPRJ_CAND"));
 
                 DBCreation.CriarUDO("ZPN_OPRJ", "ZPN_OPRJ", "ZPN_OPRJ", SAPbobsCOM.BoUDOObjType.boud_MasterData, TabelasFilhasCandidato);
+                #endregion
+
+                #region Campos PCI
+
+                
+
+                DBCreation.CriarCampoUsuario("OBPL", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("OBPL", "EnviaPCI", "Enviar para PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresValidosSimNao);
+                
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                DBCreation.CriarCampoUsuario("OCRD", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("CRD8", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("OCRD", "IdZSistemas", "Campo ID Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 #endregion
 
             }
