@@ -290,8 +290,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CRIAALOCACAOCONTRATO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ATUALIZAPCI.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ATUALIZACLIENTEPCI.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAEMPRESA.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZACLIENTE.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAETAPA.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAFILIALCENTROCUSTO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZACONTRATO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,5 +1,6 @@
 ﻿using sap.dev.core;
 using sap.dev.data;
+using SAPbobsCOM;
 using System;
 using System.Collections.Generic;
 
@@ -32,6 +33,8 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 #region Contrato
                 DBCreation.CriarCampoUsuario("OOAT", "CodigoRH", "Código RH", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
+                
+                DBCreation.CriarCampoUsuario("OOAT", "Regional", "Código Regional", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
 
                 #endregion
 
@@ -110,8 +113,8 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "EtapaRec", "Etapa Recebimento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "EtapaRecD", "Etapa Recebimento Desc", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
 
-                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "ItemCode", "Etapa Recebimento Desc", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "ItemName", "Etapa Recebimento Desc", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "BplID", "Filial", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+
                 DBCreation.CriarUDO("ZPN_ALOCA", "ZPN_ALOCA", "ZPN_ALOCA", SAPbobsCOM.BoUDOObjType.boud_MasterData);
                 #endregion
 
@@ -218,6 +221,15 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("OCRD", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 DBCreation.CriarCampoUsuario("CRD8", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 DBCreation.CriarCampoUsuario("OCRD", "IdZSistemas", "Campo ID Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                DBCreation.CriarCampoUsuario("OPRC", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("OPRC", "IdZSistemas", "Campo ID Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                DBCreation.CriarCampoUsuario("OOAT", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("OOAT", "IdZSistemas", "Campo ID Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
                 #endregion
 
             }

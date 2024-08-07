@@ -13,6 +13,7 @@ namespace Zopone.AddOn.PO.View.Alocação
 
         EditText EdItemCode { get; set; }
         EditText EdItemName { get; set; }
+        ComboBox CbFilial { get; set; }
 
         #endregion
 
@@ -29,8 +30,24 @@ namespace Zopone.AddOn.PO.View.Alocação
             EdItemCode.ChooseFromListAfter += EdItemCode_ChooseFromListAfter;
             EdItemName = (EditText)oForm.Items.Item("EdItemName").Specific;
 
+            CbFilial = (ComboBox)oForm.Items.Item("CbFilial").Specific;
+
+            CarregarDadosAlocacao();
+
             oForm.Visible = true;
 
+        }
+
+        private void CarregarDadosAlocacao()
+        {
+            try
+            {
+                Util.ComboBoxSetValoresValidosPorSQL(CbFilial, UtilScriptsSQL.SQL_Filial);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados Etapa: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
         private void EdItemCode_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)

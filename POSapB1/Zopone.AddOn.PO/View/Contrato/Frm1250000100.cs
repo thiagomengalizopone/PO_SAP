@@ -83,8 +83,45 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oItem.ToPane = oItemRef.ToPane;
 
 
+                oItemRef = oFormContrato.Items.Item("EdNroRH");
+
                 oStaticText = ((SAPbouiCOM.StaticText)(oItem.Specific));
                 oStaticText.Caption = "Número RH";
+
+
+                oItem = oFormContrato.Items.Add("CbReg", SAPbouiCOM.BoFormItemTypes.it_COMBO_BOX);
+                
+                oItem.Left = oItemRef.Left;
+                oItem.Top = oItemRef.Top + 19;
+                oItem.Width = 150;
+                oItem.Height = oItemRef.Height;
+                oItem.FromPane = oItemRef.FromPane;
+                oItem.ToPane = oItemRef.ToPane;
+
+                ComboBox CbRegional = ((SAPbouiCOM.ComboBox)(oItem.Specific));
+                CbRegional.Item.DisplayDesc = true;
+                CbRegional.ExpandType = BoExpandType.et_DescriptionOnly;
+
+                CbRegional.DataBind.SetBound(true, "OOAT", "U_Regional");
+
+                oItemRef = oFormContrato.Items.Item("StNroRH");
+                oItem = oFormContrato.Items.Add("StReg", SAPbouiCOM.BoFormItemTypes.it_STATIC);
+                oItem.Left = oItemRef.Left;
+                oItem.Top = oItemRef.Top + 19;
+                oItem.Width = 147;
+                oItem.Height = oItemRef.Height;
+                oItem.FromPane = oItemRef.FromPane;
+                oItem.ToPane = oItemRef.ToPane;
+
+
+
+                oStaticText = ((SAPbouiCOM.StaticText)(oItem.Specific));
+                oStaticText.Caption = "Regional";
+
+
+                Util.ComboBoxSetValoresValidosPorSQL(CbRegional, UtilScriptsSQL.SQL_Regionais);
+
+
 
                 Item oFolderRef = oFormContrato.Items.Item("1320000072");
 
