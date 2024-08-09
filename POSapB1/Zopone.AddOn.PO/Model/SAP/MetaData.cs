@@ -16,15 +16,16 @@ namespace Zopone.AddOn.PO.Model.SAP
 
             if (Globals.Master.CurrentVersion < 2024070101)
             {
-                                var valoresValidosSituacaoContrato = new List<Tuple<string, string>>();
-                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("A", "Andamento"));
-                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("CO", "Concluída"));
-                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("E", "Embargada"));
-                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("N", "Não Iniciada"));
-                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("P", "Paralisada"));
-                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("R", "RFI"));
-                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("CA", "Cancelada"));
-                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("I", "Início Programado"));
+
+                var valoresValidosSituacaoContrato = new List<Tuple<string, string>>();
+                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("1", "Andamento"));
+                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("2", "Concluída"));
+                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("3", "Embargada"));
+                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("4", "Não Iniciada"));
+                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("5", "Paralisada"));
+                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("6", "RFI"));
+                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("7", "Cancelada"));
+                valoresValidosSituacaoContrato.Add(new Tuple<string, string>("8", "Início Programado"));
 
                 var valoresValidosEDF = new List<Tuple<string, string>>();
                 valoresValidosEDF.Add(new Tuple<string, string>("NS", "Não esta sujeita a matrícula de obra"));
@@ -124,10 +125,21 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarUDO("ZPN_CLASSOB", "ZPN_CLASSOB", "ZPN_CLASSOB", SAPbobsCOM.BoUDOObjType.boud_MasterData);
                 #endregion
 
+                #region Classificação da Obra
+                DBCreation.CriarTabelaUsuario("ZPN_DETENT", "Detentora", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                DBCreation.CriarUDO("ZPN_DETENT", "ZPN_DETENT", "ZPN_DETENT", SAPbobsCOM.BoUDOObjType.boud_MasterData);
+                #endregion
+
                 #region Cadastro de Obra 
                 DBCreation.CriarTabelaUsuario("ZPN_OPRJ", "Cadastro Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
 
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdSite", "Id Site", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Equip", "Equipamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Detent", "Detentora", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdDetent", "Id Detentora", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Regional", "Regional", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
+
+
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "CodContrato", "Código Contrato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 20, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "DescContrato", "Descrição Contrato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "BPLId", "Filial", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 5, false, null);
@@ -200,6 +212,8 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ_CAND", "Latitude", "Latitude", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ_CAND", "Longitude", "Longitude", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ_CAND", "Altitude", "Longitude", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ_CAND", "Codigo", "Código", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null) ;
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ_CAND", "Equip", "Equipamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
 
 
 
@@ -218,6 +232,10 @@ namespace Zopone.AddOn.PO.Model.SAP
                 
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
 
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ_CAND", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                
+
                 DBCreation.CriarCampoUsuario("OCRD", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 DBCreation.CriarCampoUsuario("CRD8", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 DBCreation.CriarCampoUsuario("OCRD", "IdZSistemas", "Campo ID Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
@@ -227,6 +245,14 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 DBCreation.CriarCampoUsuario("OOAT", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 DBCreation.CriarCampoUsuario("OOAT", "IdZSistemas", "Campo ID Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                DBCreation.CriarCampoUsuario("@ZPN_DETENT", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                DBCreation.CriarCampoUsuario("ORDR", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
 
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
 

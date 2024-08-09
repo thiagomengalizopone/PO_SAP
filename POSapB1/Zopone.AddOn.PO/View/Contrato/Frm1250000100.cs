@@ -1,7 +1,9 @@
 ﻿using sap.dev.core;
+using sap.dev.data;
 using sap.dev.ui.Forms;
 using SAPbouiCOM;
 using System;
+using System.Threading.Tasks;
 using Zopone.AddOn.PO.View.Alocação;
 using Zopone.AddOn.PO.View.ContratoAlocacao;
 using Zopone.AddOn.PO.View.Obra;
@@ -226,6 +228,25 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
 
         }
+        private static async Task EnviarDadosPCIAsync(string formUID)
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000004").Specific;
+
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZACONTRATO '{oEditContrato.Value}'";
+
+                SqlUtils.DoNonQuery(SQL_Query);
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine($"Erro ao carregar dados da tela: {Ex.Message}");
+            }
+        }
 
         private static void CarregarDadosObra(string formUID)
         {
@@ -281,6 +302,19 @@ namespace Zopone.AddOn.PO.View.Contrato
                         CarregarDadosObra(businessObjectInfo.FormUID);
                     }
                 }
+                else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD ||
+                         businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
+                {
+                    if (!businessObjectInfo.BeforeAction)
+                    {
+                        string FormUID = businessObjectInfo.FormUID;
+
+                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();
+                        
+
+                     
+                    }
+                }
             }
             catch (Exception Ex)
             {
@@ -292,6 +326,6 @@ namespace Zopone.AddOn.PO.View.Contrato
             return true;
         }
 
-
+        
     }
 }

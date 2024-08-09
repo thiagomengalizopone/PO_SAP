@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.Model.SAP;
@@ -163,7 +164,9 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_Obs = oPedidoVenda.Lines.FreeText,
                                U_Bloqueado = oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value.ToString() == "Y",
                                U_itemDescription = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value.ToString(),
-                               U_manSiteInfo = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value.ToString()
+                               U_manSiteInfo = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value.ToString(),
+                               AgrNo = oPedidoVenda.Lines.AgreementNo
+
                            }
                            );
                     }
@@ -623,13 +626,15 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     if (oPedidoVenda.Add() != 0)
                         throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    
+                    txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();
                 }
 
-                txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();
+                new Task(() => { EnviarDadosPCIAsync(txtCodigo.Text); }).Start();
 
                 MessageBox.Show("PO salva com sucesso!");
 
-
+                
 
             }
             catch (Exception Ex)
@@ -639,6 +644,25 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
             }
 
+        }
+
+        private static async Task EnviarDadosPCIAsync(string Docentry)
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
+
+               
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAPO '{Docentry}'";
+
+                SqlUtils.DoNonQueryAsync(SQL_Query);
+
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine($"Erro ao enviar dados PCI: {Ex.Message}");
+            }
         }
 
         private void txtObra_TextChanged(object sender, EventArgs e)

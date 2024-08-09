@@ -295,6 +295,11 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAETAPA.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAFILIALCENTROCUSTO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZACONTRATO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRACLASSIFICACAO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRA.sql" />
+    <EmbeddedResource Include="Model\SQL\Sequence\ZPN_SEQ_Candidato.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRACANDIDATO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAPO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

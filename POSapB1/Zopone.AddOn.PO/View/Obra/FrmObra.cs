@@ -4,7 +4,7 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
-
+using System.Threading.Tasks;
 
 namespace Zopone.AddOn.PO.View.Obra
 {
@@ -23,6 +23,7 @@ namespace Zopone.AddOn.PO.View.Obra
         public ComboBox CbEstado { get; set; }
         public ComboBox CbCidade { get; set; }
 
+        public ComboBox CbRegional { get; set; }       
 
         public ComboBox CbPaisCandidato { get; set; }
         public ComboBox CbEstadoCandidato { get; set; }
@@ -55,6 +56,7 @@ namespace Zopone.AddOn.PO.View.Obra
         public EditText EdLongitude { get; set; }
 
         public EditText EdAltitude { get; set; }
+        public EditText EdEquipamento { get; set; }
 
         public Button BtAddCandidato { get; set; }
 
@@ -89,14 +91,13 @@ namespace Zopone.AddOn.PO.View.Obra
 
             CbCidade = (ComboBox)oForm.Items.Item("CbCid").Specific;
 
-            CbPaisCandidato = (ComboBox)oForm.Items.Item("CbPaisC").Specific;
-            CbPaisCandidato.ComboSelectAfter += CbPaisCandidato_ComboSelectAfter;
+         
 
-            CbEstadoCandidato = (ComboBox)oForm.Items.Item("CbEstC").Specific;
-            CbEstadoCandidato.ComboSelectAfter += CbEstadoCandidato_ComboSelectAfter;
-
-            CbCidadeCandidato = (ComboBox)oForm.Items.Item("CbCidC").Specific;
+            
             CbClassificacaoObra = (ComboBox)oForm.Items.Item("CbClassO").Specific;
+
+            
+            CbRegional = (ComboBox)oForm.Items.Item("CbRegion").Specific;            
 
             GdListPO = (Grid)oForm.Items.Item("GdObra").Specific;
             GdListPO.DoubleClickAfter += GdListPO_DoubleClickAfter;
@@ -122,6 +123,14 @@ namespace Zopone.AddOn.PO.View.Obra
 
             BtAddCandidato = (Button)oForm.Items.Item("BtAddCA").Specific;
             BtAddCandidato.PressedAfter += BtAddCandidato_PressedAfter;
+
+            CbPaisCandidato = (ComboBox)oForm.Items.Item("CbPaisC").Specific;
+            CbPaisCandidato.ComboSelectAfter += CbPaisCandidato_ComboSelectAfter;
+
+            CbEstadoCandidato = (ComboBox)oForm.Items.Item("CbEstC").Specific;
+            CbEstadoCandidato.ComboSelectAfter += CbEstadoCandidato_ComboSelectAfter;
+
+            CbCidadeCandidato = (ComboBox)oForm.Items.Item("CbCidC").Specific;
 
             UsRowId = oForm.DataSources.UserDataSources.Add("UsRowId", BoDataType.dt_SHORT_NUMBER, 5);
             #endregion
@@ -192,6 +201,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 EdBairro.Value = DBObraCandidato.GetValue("U_Bairro", pVal.Row - 1);
                 EdLatitude.Value = DBObraCandidato.GetValue("U_Latitude", pVal.Row - 1);
                 EdLongitude.Value = DBObraCandidato.GetValue("U_Longitude", pVal.Row - 1);
+                EdEquipamento.Value = DBObraCandidato.GetValue("U_Equip", pVal.Row - 1);
                 oForm.DataSources.UserDataSources.Item("Altit").ValueEx = DBObraCandidato.GetValue("U_Altitude", pVal.Row - 1);
 
                 UsRowId.ValueEx = pVal.Row.ToString();
@@ -219,6 +229,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 Util.DBDataSourceRemoveLinhasBranco(DBObraCandidato, "U_Identif");
 
+                if (string.IsNullOrEmpty(EdIdent.Value))
+                    return ;
+
                 int RowId = -1;
 
                 if (!string.IsNullOrEmpty(UsRowId.ValueEx) && Convert.ToInt32(UsRowId.ValueEx) >= 0)
@@ -237,8 +250,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 DBObraCandidato.SetValue("U_Detentora", RowId, EdDetent.Value);
                 DBObraCandidato.SetValue("U_IdDetentora", RowId, EdIdDete.Value);
                 DBObraCandidato.SetValue("U_Pais", RowId, CbPaisCandidato.Value);
-                DBObraCandidato.SetValue("U_Estado", RowId, CbEstadoCandidato.Value);
-                DBObraCandidato.SetValue("U_Cidade", RowId, CbCidadeCandidato.Value);
+                DBObraCandidato.SetValue("U_Estado", RowId, CbEstadoCandidato?.Value);
+                DBObraCandidato.SetValue("U_Cidade", RowId, CbCidadeCandidato?.Value);
                 DBObraCandidato.SetValue("U_Rua", RowId, EdRua.Value);
                 DBObraCandidato.SetValue("U_TipoLog", RowId, EdTipoLog.Value);
                 DBObraCandidato.SetValue("U_Numero", RowId, EdNum.Value);
@@ -248,6 +261,11 @@ namespace Zopone.AddOn.PO.View.Obra
                 DBObraCandidato.SetValue("U_Latitude", RowId, EdLatitude.Value);
                 DBObraCandidato.SetValue("U_Longitude", RowId, EdLongitude.Value);
                 DBObraCandidato.SetValue("U_Altitude", RowId, EdAltitude.Value);
+                DBObraCandidato.SetValue("U_Equip", RowId, EdEquipamento.Value);
+                
+                
+                if (string.IsNullOrEmpty(DBObraCandidato.GetValue("U_Codigo", RowId)?.ToString()))
+                    DBObraCandidato.SetValue("U_Codigo", RowId, SqlUtils.GetValue("SELECT NEXT VALUE FOR ZPN_SEQ_Candidato;"));
 
 
                 EdIdent.Value = string.Empty;
@@ -384,16 +402,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.ComboBoxSetValoresValidosPorSQL(CbPais, UtilScriptsSQL.SQL_Pais);
                 Util.ComboBoxSetValoresValidosPorSQL(CbPaisCandidato, UtilScriptsSQL.SQL_Pais);
                 Util.ComboBoxSetValoresValidosPorSQL(CbClassificacaoObra, UtilScriptsSQL.SQL_ClassificacaoObra);
-
-
-                string coluna = string.Empty;
-
-                for (int iCol = 0; iCol < MtCandidato.Columns.Count; iCol++)
-                {
-                    SAPbouiCOM.Column sboCol = (SAPbouiCOM.Column)MtCandidato.Columns.Item(iCol);
-
-                    coluna += $@" {sboCol.UniqueID} - {sboCol.Type} | ";
-                }
+                Util.ComboBoxSetValoresValidosPorSQL(CbRegional, UtilScriptsSQL.SQL_Regionais);
 
 
                 Util.MatrixComboBoxSetValoresValidosPorSQL(MtCandidato, UtilScriptsSQL.SQL_Pais, "CbPais");
@@ -440,6 +449,28 @@ namespace Zopone.AddOn.PO.View.Obra
             }
         }
 
+
+        private static async Task EnviarDadosPCIAsync(string formUID)
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
+
+                Form oFormObra = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                EditText EdCodeObra = (EditText)oFormObra.Items.Item("EdCode").Specific;
+
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAOBRA '{EdCodeObra.Value}'";
+
+                SqlUtils.DoNonQueryAsync(SQL_Query);
+                
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine($"Erro ao enviar dados PCI: {Ex.Message}");
+            }
+        }
+
         internal static bool Interface_FormDataEvent(ref BusinessObjectInfo businessObjectInfo)
         {
             try
@@ -449,6 +480,9 @@ namespace Zopone.AddOn.PO.View.Obra
                     if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
                     {
                         SalvarProjeto(businessObjectInfo.FormUID);
+
+                        string FormUID = businessObjectInfo.FormUID;
+                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();
                     }
                 }
                 else
