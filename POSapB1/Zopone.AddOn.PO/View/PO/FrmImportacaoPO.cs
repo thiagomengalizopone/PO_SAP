@@ -108,13 +108,18 @@ namespace Zopone.AddOn.PO.View.PO
                         PopulatePedidoVenda(dtRegistros, iPedido, oPedidoVenda, bplId, Empresa);
 
                         if (oPedidoVenda.Add() != 0)
-                            throw new Exception($"PN: {oPedidoVenda.CardCode} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                            throw new Exception($"PN: {oPedidoVenda.CardCode} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");                      
+
                     }
                     catch (Exception ex)
                     {
                         LogImportacaoErro(dtRegistros, iPedido, ex);
                     }
                 }
+
+                EnviarDadosPCIAsync();
+
+
 
                 FrmVerificaImportacaoPO.MenuVerificaPO();
             }
@@ -123,6 +128,28 @@ namespace Zopone.AddOn.PO.View.PO
                 HandleImportacaoException("Huawei", ex);
             }
         }
+
+        private static async Task EnviarDadosPCIAsync()
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
+
+
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAPO 0, '{DateTime.Now.ToString("yyyyMMdd")}'";
+
+                SqlUtils.DoNonQueryAsync(SQL_Query);
+
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+            }
+            catch (Exception Ex)
+            {
+                string mensagemErro = $"Erro ao enviar dados PCI: {Ex.Message}";
+                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+            }
+        }
+
 
         private static SAPbobsCOM.Documents CreatePedidoVenda()
         {

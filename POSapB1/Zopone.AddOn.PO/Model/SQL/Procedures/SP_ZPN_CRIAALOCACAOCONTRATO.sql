@@ -46,7 +46,7 @@ BEGIN
 		)
 	SELECT 
 		AbsId,
-		 ROW_NUMBER() OVER(PARTITION BY OOAT.AbsId ORDER BY OOAT.AbsId),
+		 ROW_NUMBER() OVER(PARTITION BY OOAT.AbsId ORDER BY OOAT.AbsId) + (SELECT isnull(MAX(ALCI.[LineId]),0)+1 FROM "@ZPN_ALOCONI" ALCI WHERE ALCI."Code" = OOAT.AbsId ),
 		 'ZPN_ALOCON',
 		 0,
 		 ALOC.Code,
@@ -62,3 +62,5 @@ BEGIN
 	order by OOAT.AbsId;
 
 END;
+
+

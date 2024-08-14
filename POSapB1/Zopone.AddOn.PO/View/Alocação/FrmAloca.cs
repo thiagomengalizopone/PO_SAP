@@ -12,8 +12,9 @@ namespace Zopone.AddOn.PO.View.Alocação
         #region Propriedades
         EditText EdEtapa { get; set; }
         EditText EdEtapaDescricao { get; set; }
-
         ComboBox CbFilial { get; set; }
+
+        ComboBox CbEtapaFaturamento { get; set; }
 
         #endregion
 
@@ -24,8 +25,10 @@ namespace Zopone.AddOn.PO.View.Alocação
 
             EdEtapa = (EditText)oForm.Items.Item("EdEtap").Specific;
             EdEtapa.ChooseFromListAfter += EdEtapa_ChooseFromListAfter;
-            EdEtapa = (EditText)oForm.Items.Item("EdEtapD").Specific;
+            EdEtapaDescricao = (EditText)oForm.Items.Item("EdEtapD").Specific;
 
+            CbEtapaFaturamento = (ComboBox)oForm.Items.Item("CbEtFat").Specific;
+            
 
             CbFilial = (ComboBox)oForm.Items.Item("CbFilial").Specific;
 
@@ -35,11 +38,14 @@ namespace Zopone.AddOn.PO.View.Alocação
 
         }
 
+        
+
         private void CarregarDadosAlocacao()
         {
             try
             {
                 Util.ComboBoxSetValoresValidosPorSQL(CbFilial, UtilScriptsSQL.SQL_Filial);
+                Util.ComboBoxSetValoresValidosPorSQL(CbEtapaFaturamento, UtilScriptsSQL.SQL_EtapaFaturamento);
             }
             catch (Exception Ex)
             {
@@ -75,7 +81,7 @@ namespace Zopone.AddOn.PO.View.Alocação
                     return;
 
                 string Code = Convert.ToString(aEvent.SelectedObjects.GetValue("Code", 0));
-                string Descricao = Convert.ToString(aEvent.SelectedObjects.GetValue("Name", 0));
+                string Descricao = Convert.ToString(aEvent.SelectedObjects.GetValue("U_Desc", 0));
 
                 EdEtapa.Value = Code;
                 EdEtapaDescricao.Value = Descricao;

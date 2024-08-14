@@ -113,6 +113,8 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "Perc", "Percentual", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Percentage, 40, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "EtapaRec", "Etapa Recebimento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "EtapaRecD", "Etapa Recebimento Desc", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "EtapaFat", "Etapa Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "EtapaFatD", "Etapa Faturamento Desc", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
 
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "BplID", "Filial", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
 

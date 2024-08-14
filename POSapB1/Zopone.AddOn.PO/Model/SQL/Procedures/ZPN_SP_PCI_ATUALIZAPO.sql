@@ -1,6 +1,7 @@
-﻿create PROCEDURE ZPN_SP_PCI_ATUALIZAPO
+﻿CREATE PROCEDURE ZPN_SP_PCI_ATUALIZAPO
 (
-	@DocEntry int
+	@DocEntry int,
+	@DataPO datetime
 )
 AS
 BEGIN
@@ -37,6 +38,7 @@ BEGIN
 		INNER JOIN OOAT ON OOAT.AbsID = RDR1.AgrNo
 	WHERE 
 		(ORDR.DocEntry = @DocEntry OR ISNULL(@DocEntry,0) = 0) AND
+		(ORDR.CreateDate = @DataPO AND ISNULL(@DocEntry,0) = 0) AND
 		OBPL.U_IdPCI is not null and
 		ORDR.DocEntry NOT IN
 		(
@@ -61,6 +63,7 @@ BEGIN
 										PO.[empresaid]	= OBPL.U_IdPCI
 	where 
 		(ORDR.DocEntry = @DocEntry OR ISNULL(@DocEntry,0) = 0) AND
+		(ORDR.CreateDate = @DataPO AND ISNULL(@DocEntry,0) = 0) AND
 		isnull(ORDR.U_IdPCI,'') = '' ;
 		
 	INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].POitem 
@@ -116,6 +119,7 @@ BEGIN
 		LEFT  JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code = RDR1.U_Candidato
 	WHERE
 		(ORDR.DocEntry = @DocEntry OR ISNULL(@DocEntry,0) = 0) AND
+		(ORDR.CreateDate = @DataPO AND ISNULL(@DocEntry,0) = 0) AND
 		ISNULL(ORDR.U_IdPCI,'') <> '' AND ISNULL(rdr1.U_IdPCI,'') = '';
 	
 
@@ -132,6 +136,7 @@ BEGIN
 			AND POitem.Item collate SQL_Latin1_General_CP1_CI_AS  = RDR1.U_Item
 	WHERE
 		(ORDR.DocEntry = @DocEntry OR ISNULL(@DocEntry,0) = 0) AND
+		(ORDR.CreateDate = @DataPO AND ISNULL(@DocEntry,0) = 0) AND
 		ISNULL(RDR1.U_IdPCI,'') = '';
 	
 
