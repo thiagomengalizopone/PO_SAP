@@ -59,9 +59,35 @@ BEGIN
 			"@ZPN_ALOCA" ALOCA
 			INNER JOIN OBPL ON OBPL.BPLId = ALOCA.U_BplId
 			INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETAPA ON 
-				ETAPA.nome collate SQL_Latin1_General_CP1_CI_AS = ALOCA.U_Desc and etapa.empresaid = OBPL.U_IdPCI
+				ETAPA.nome collate SQL_Latin1_General_CP1_CI_AS = ALOCA.U_Desc and 
+				cast(etapa.empresaid  as varchar(50)) = OBPL.U_IdPCI
 		WHERE 
-			isnull(ALOCA.U_IdPCI,'') <> etapa.etapaid;
+			(ISNULL(@CodeEtapa, '') = '' OR @CodeEtapa = ALOCA."Code")  and
+			isnull(ALOCA.U_IdPCI,'') <> cast(etapa.etapaid as varchar(50));
+
+
+	UPDATE [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa]
+	SET
+		ETP.gestatus = 1,
+		ETP.gedataacao = GETDATE(),
+		ETP.gecontaidacao = NULL,
+		ETP.nome = ALOCA.U_Desc COLLATE SQL_Latin1_General_CP1_CI_AS,
+		ETP.codigo = ALOCA.Code,
+		ETP.percentualfaturamento = ISNULL(ALOCA.U_Perc, 0),
+		ETP.itemfaturamento = CASE WHEN ISNULL(ALOCA.U_ItensFat, '') = 'Y' THEN 1 ELSE 0 END,
+		ETP.itempedido = CASE WHEN ISNULL(ALOCA.U_ItensPed, '') = 'Y' THEN 1 ELSE 0 END,
+		ETP.itemrecebimento = CASE WHEN ISNULL(ALOCA.U_ItensRec, '') = 'Y' THEN 1 ELSE 0 END
+	FROM
+		[LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETP
+		INNER JOIN "@ZPN_ALOCA" ALOCA ON cast(ETP.[etapaid] as varchar(50)) COLLATE SQL_Latin1_General_CP1_CI_AS = ALOCA.U_IdPCI
+		INNER JOIN OBPL ON OBPL.BPLId = ALOCA.U_BplId
+	WHERE
+		(ISNULL(@CodeEtapa, '') = '' OR @CodeEtapa = ALOCA."Code")  ;
+
+
+
+
+
 
 END;			
 			

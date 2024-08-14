@@ -661,7 +661,9 @@ namespace Zopone.AddOn.PO.View.Obra
             }
             catch (Exception Ex)
             {
-                Console.WriteLine($"Erro ao enviar dados PCI: {Ex.Message}");
+                string mensagemErro = $"Erro ao enviar dados PCI: {Ex.Message}";
+                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
             }
         }
 

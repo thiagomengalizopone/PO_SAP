@@ -21,8 +21,9 @@
         public const string FrmContratoGuardaChuvas = "1250000100";
         public const string FrmProjetoObra = "711";
         public const string FrmConfiguracoesPO = "FrmConfPO";
-
-
+        public const string FrmAloca = "FrmAloca";
+        public const string FrmClassificacaoObra  = "FrmClassObra";
+        public const string FrmParceiroNegocio = "134";
     }
 }
 

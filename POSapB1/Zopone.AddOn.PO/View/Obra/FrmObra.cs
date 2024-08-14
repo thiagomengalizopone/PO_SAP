@@ -23,7 +23,7 @@ namespace Zopone.AddOn.PO.View.Obra
         public ComboBox CbEstado { get; set; }
         public ComboBox CbCidade { get; set; }
 
-        public ComboBox CbRegional { get; set; }       
+        public ComboBox CbRegional { get; set; }
 
         public ComboBox CbPaisCandidato { get; set; }
         public ComboBox CbEstadoCandidato { get; set; }
@@ -91,13 +91,13 @@ namespace Zopone.AddOn.PO.View.Obra
 
             CbCidade = (ComboBox)oForm.Items.Item("CbCid").Specific;
 
-         
 
-            
+
+
             CbClassificacaoObra = (ComboBox)oForm.Items.Item("CbClassO").Specific;
 
-            
-            CbRegional = (ComboBox)oForm.Items.Item("CbRegion").Specific;            
+
+            CbRegional = (ComboBox)oForm.Items.Item("CbRegion").Specific;
 
             GdListPO = (Grid)oForm.Items.Item("GdObra").Specific;
             GdListPO.DoubleClickAfter += GdListPO_DoubleClickAfter;
@@ -230,7 +230,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.DBDataSourceRemoveLinhasBranco(DBObraCandidato, "U_Identif");
 
                 if (string.IsNullOrEmpty(EdIdent.Value))
-                    return ;
+                    return;
 
                 int RowId = -1;
 
@@ -262,8 +262,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 DBObraCandidato.SetValue("U_Longitude", RowId, EdLongitude.Value);
                 DBObraCandidato.SetValue("U_Altitude", RowId, EdAltitude.Value);
                 DBObraCandidato.SetValue("U_Equip", RowId, EdEquipamento.Value);
-                
-                
+
+
                 if (string.IsNullOrEmpty(DBObraCandidato.GetValue("U_Codigo", RowId)?.ToString()))
                     DBObraCandidato.SetValue("U_Codigo", RowId, SqlUtils.GetValue("SELECT NEXT VALUE FOR ZPN_SEQ_Candidato;"));
 
@@ -450,7 +450,7 @@ namespace Zopone.AddOn.PO.View.Obra
         }
 
 
-        private static async Task EnviarDadosPCIAsync(string formUID)
+        private static async Task EnviarDadosPCIAsync(string formUID, bool bUpdate)
         {
             try
             {
@@ -459,15 +459,17 @@ namespace Zopone.AddOn.PO.View.Obra
                 Form oFormObra = Globals.Master.Connection.Interface.Forms.Item(formUID);
                 EditText EdCodeObra = (EditText)oFormObra.Items.Item("EdCode").Specific;
 
-                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAOBRA '{EdCodeObra.Value}'";
+                string operacao = bUpdate ? "U" : "A";
+
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAOBRA '{EdCodeObra.Value}', '{operacao}'";
 
                 SqlUtils.DoNonQueryAsync(SQL_Query);
-                
+
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
             }
             catch (Exception Ex)
             {
-                Console.WriteLine($"Erro ao enviar dados PCI: {Ex.Message}");
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados da tela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
 
@@ -475,21 +477,27 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                if (businessObjectInfo.BeforeAction)
+                if (!businessObjectInfo.BeforeAction)
                 {
-                    if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
+                    if ((businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE))
                     {
                         SalvarProjeto(businessObjectInfo.FormUID);
 
                         string FormUID = businessObjectInfo.FormUID;
-                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();
+                        bool bUpdate = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE;
+                        new Task(() => { EnviarDadosPCIAsync(FormUID, bUpdate); }).Start();
+                    }
+                    else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_LOAD)
+                    {
+                        CarregarPO(businessObjectInfo.FormUID);
                     }
                 }
                 else
                 {
-                    if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_LOAD)
+
+                    if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
                     {
-                        CarregarPO(businessObjectInfo.FormUID);
+                        return ValidarDadosObra(businessObjectInfo.FormUID);
                     }
                 }
 
@@ -500,6 +508,44 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao salvar registro: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
                 return false;
             }
+        }
+
+        private static bool ValidarDadosObra(string formUID)
+        {
+            try
+            {
+                string MensagemErro = string.Empty;
+
+                Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+                DBDataSource oDB = oForm.DataSources.DBDataSources.Item("@ZPN_OPRJ");
+
+                if (string.IsNullOrEmpty(oDB.GetValue("U_CodContrato", 0)))
+                    MensagemErro += "\n Obrigatório selecionar Contrato";
+
+                if (string.IsNullOrEmpty(oDB.GetValue("U_BPLId", 0)))
+                    MensagemErro += "\n Obrigatório selecionar Filial";
+
+                if (string.IsNullOrEmpty(oDB.GetValue("U_ClassOb", 0)))
+                    MensagemErro += "\n Obrigatório selecionar Classificação da Obra";
+
+                if (string.IsNullOrEmpty(oDB.GetValue("U_Regional", 0)))
+                    MensagemErro += "\n Obrigatório selecionar Regional";
+
+                if (!string.IsNullOrEmpty(MensagemErro))
+                {
+                    Util.ExibeMensagensDialogoStatusBar(MensagemErro, BoMessageTime.bmt_Medium, true);
+                    return false;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao validar registro: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                return false;
+            }
+
+            return true;
         }
 
         private static void CarregarPO(string formUID)

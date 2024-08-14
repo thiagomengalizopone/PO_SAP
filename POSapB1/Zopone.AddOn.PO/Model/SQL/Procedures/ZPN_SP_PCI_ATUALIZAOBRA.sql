@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_PCI_ATUALIZAOBRA
+﻿alter PROCEDURE ZPN_SP_PCI_ATUALIZAOBRA
 (
 	@CodeObra varchar(30)
 )
@@ -116,8 +116,11 @@ where
 	(OBRA.Code = @CodeObra OR ISNULL(@CodeObra,'') = '' ) AND
 	isnull(OBRA.U_IdPci,'') = '';
 
-/*
-UPDATE [LINKZCLOUD].[zsistema_aceite].[dbo].[obra]
+
+
+
+
+UPDATE [LINKZCLOUD].[zsistema_aceite].[dbo].[obra] 
 SET
     [gedataacao] = GETDATE(),
     [gecontaidacao] = NULL,
@@ -161,12 +164,9 @@ FROM
     LEFT JOIN OCNT ON OCNT.[Code] = OBRA.U_Cidade
 	INNER JOIN  [LINKZCLOUD].[zsistema_aceite].[dbo].[obra] OBRAPCI ON OBRAPCI.[obraid] = OBRA.U_IdPci
 WHERE
-    (OBRA.Code = @CodeObra) OR 
-    (
-        isnull(@CodeObra,'') = '' and 
-        [dataatualizacao] < OBRA.UpdateDate
-    );
-    */
+    (OBRA.Code = @CodeObra) ;
+    
+
 
 
 END;

@@ -234,7 +234,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
                 Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000004").Specific;
+                EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000018").Specific;
 
                 string SQL_Query = $"ZPN_SP_PCI_ATUALIZACONTRATO '{oEditContrato.Value}'";
 
@@ -244,7 +244,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
             catch (Exception Ex)
             {
-                Console.WriteLine($"Erro ao carregar dados da tela: {Ex.Message}");
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados da tela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
 
@@ -309,8 +309,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                     {
                         string FormUID = businessObjectInfo.FormUID;
 
-                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();
-                        
+                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();                        
 
                      
                     }

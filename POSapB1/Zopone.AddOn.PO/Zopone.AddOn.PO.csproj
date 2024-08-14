@@ -172,6 +172,7 @@
     <Compile Include="View\Config\FrmConfPO.cs" />
     <Compile Include="View\ContratoAlocacao\FrmContAloca.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
+    <Compile Include="View\FrmParceiroNegocio\Frm134.cs" />
     <Compile Include="View\ObraProjeto\Frm711.cs" />
     <Compile Include="View\Obra\FrmObra.cs" />
     <Compile Include="View\PO\FrmVerificaImportacaoPO.cs">

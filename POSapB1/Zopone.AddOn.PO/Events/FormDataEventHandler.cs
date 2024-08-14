@@ -1,7 +1,10 @@
 ﻿using sap.dev.core.Controller;
 using Zopone.AddOn.PO.Controller.Constantes;
+using Zopone.AddOn.PO.View.Alocação;
+using Zopone.AddOn.PO.View.ClassificacaoObra;
 using Zopone.AddOn.PO.View.Contrato;
 using Zopone.AddOn.PO.View.Obra;
+using Zopone.AddOn.PO.View.FrmParceiroNegocio;
 
 namespace Zopone.AddOn.PO
 {
@@ -18,6 +21,18 @@ namespace Zopone.AddOn.PO
             else if (BusinessObjectInfo.FormTypeEx == FormConstantes.FrmContratoGuardaChuvas)
             {
                 BubbleEvent = Frm1250000100.Interface_FormDataEvent(ref BusinessObjectInfo);
+            }
+            else if (BusinessObjectInfo.FormTypeEx == FormConstantes.FrmAloca)
+            {
+                BubbleEvent = FrmAloca.Interface_FormDataEvent(ref BusinessObjectInfo);
+            }
+            else if (BusinessObjectInfo.FormTypeEx == FormConstantes.FrmClassificacaoObra)
+            {
+                BubbleEvent = FrmClassObra.Interface_FormDataEvent(ref BusinessObjectInfo);
+            }
+            else if (BusinessObjectInfo.FormTypeEx == FormConstantes.FrmParceiroNegocio)
+            {
+                BubbleEvent = Frm134.Interface_FormDataEvent(ref BusinessObjectInfo);
             }
 
         }

@@ -1,7 +1,9 @@
 ﻿using sap.dev.core;
+using sap.dev.data;
 using sap.dev.ui.Forms;
 using SAPbouiCOM;
 using System;
+using System.Threading.Tasks;
 
 namespace Zopone.AddOn.PO.View.Alocação
 {
@@ -11,8 +13,6 @@ namespace Zopone.AddOn.PO.View.Alocação
         EditText EdEtapa { get; set; }
         EditText EdEtapaDescricao { get; set; }
 
-        EditText EdItemCode { get; set; }
-        EditText EdItemName { get; set; }
         ComboBox CbFilial { get; set; }
 
         #endregion
@@ -26,9 +26,6 @@ namespace Zopone.AddOn.PO.View.Alocação
             EdEtapa.ChooseFromListAfter += EdEtapa_ChooseFromListAfter;
             EdEtapa = (EditText)oForm.Items.Item("EdEtapD").Specific;
 
-            EdItemCode = (EditText)oForm.Items.Item("EdItemCode").Specific;
-            EdItemCode.ChooseFromListAfter += EdItemCode_ChooseFromListAfter;
-            EdItemName = (EditText)oForm.Items.Item("EdItemName").Specific;
 
             CbFilial = (ComboBox)oForm.Items.Item("CbFilial").Specific;
 
@@ -61,8 +58,7 @@ namespace Zopone.AddOn.PO.View.Alocação
                 string ItemCode = Convert.ToString(aEvent.SelectedObjects.GetValue("ItemCode", 0));
                 string ItemName = Convert.ToString(aEvent.SelectedObjects.GetValue("ItemName", 0));
 
-                EdItemCode.Value = ItemCode;
-                EdItemName.Value = ItemName;
+                
             }
             catch (Exception Ex)
             {
@@ -87,6 +83,52 @@ namespace Zopone.AddOn.PO.View.Alocação
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar Etapa: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+
+        internal static bool Interface_FormDataEvent(ref BusinessObjectInfo businessObjectInfo)
+        {
+            try
+            {
+                if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD ||
+                             businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
+                {
+                    if (!businessObjectInfo.BeforeAction)
+                    {
+                        string FormUID = businessObjectInfo.FormUID;
+
+                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();
+
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao salvar registro: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                return false;
+            }
+        }
+
+        private static async Task EnviarDadosPCIAsync(string formUID)
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
+
+                Form oFormAloca = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                EditText EdCodeAloca = (EditText)oFormAloca.Items.Item("EdCode").Specific;
+
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAETAPA '{EdCodeAloca.Value}'";
+
+                SqlUtils.DoNonQueryAsync(SQL_Query);
+
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados da tela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
     }

@@ -4,22 +4,26 @@ using sap.dev.ui.Forms;
 using SAPbouiCOM;
 using System;
 using System.Threading.Tasks;
+using Zopone.AddOn.PO.View.Obra;
 
-namespace Zopone.AddOn.PO.View.ClassificacaoObra
+namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 {
-    public class FrmClassObra : FormSDK
+    public class Frm134 : FormSDK
     {
-        #region Propriedades
+
+        public class ItensUIDs
+        {
+
+        }
 
 
-        #endregion
-
-        public FrmClassObra() : base()
+        public Frm134() : base()
         {
             if (oForm == null)
                 return;
 
-            oForm.Visible = true;
+
+
 
         }
 
@@ -56,9 +60,9 @@ namespace Zopone.AddOn.PO.View.ClassificacaoObra
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
                 Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                EditText EdCode = (EditText)oForm.Items.Item("EdCode").Specific;
+                EditText EdCode = (EditText)oForm.Items.Item("5").Specific;
 
-                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAOBRACLASSIFICACAO '{EdCode.Value}'";
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZACLIENTE '{EdCode.Value}'";
 
                 SqlUtils.DoNonQueryAsync(SQL_Query);
 
