@@ -314,6 +314,7 @@
     <EmbeddedResource Include="View\Faturamento\FrmListaFaturamento.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ListaPedidosFaturamento.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
