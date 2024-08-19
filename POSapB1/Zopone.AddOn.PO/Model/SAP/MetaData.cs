@@ -17,6 +17,16 @@ namespace Zopone.AddOn.PO.Model.SAP
             if (Globals.Master.CurrentVersion < 2024070101)
             {
 
+                #region Campos AddOn WMS
+                var valoresValidosTipoDocumento = new List<Tuple<string, string>>();
+                valoresValidosTipoDocumento.Add(new Tuple<string, string>("TR", "TR"));
+                valoresValidosTipoDocumento.Add(new Tuple<string, string>("TA", "TA"));
+
+                DBCreation.CriarCampoUsuario("ORDR", "ZPN_TipoDocto", "Tipo Documento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresValidosTipoDocumento);
+
+                #endregion
+
+
                 var valoresValidosSituacaoContrato = new List<Tuple<string, string>>();
                 valoresValidosSituacaoContrato.Add(new Tuple<string, string>("1", "Andamento"));
                 valoresValidosSituacaoContrato.Add(new Tuple<string, string>("2", "Concluída"));
@@ -40,7 +50,9 @@ namespace Zopone.AddOn.PO.Model.SAP
                 #endregion
 
                 #region DOCUMENTOS
-
+                var valoresValidosStatusFaturamento = new List<Tuple<string, string>>();
+                valoresValidosStatusFaturamento.Add(new Tuple<string, string>("A", "À Faturar"));
+                valoresValidosStatusFaturamento.Add(new Tuple<string, string>("F", "Liberado para Faturamento"));
 
                 DBCreation.CriarCampoUsuario("ORDR", "NroCont", "Número Contrato Cliente", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
                 DBCreation.CriarCampoUsuario("ORDR", "IdPO", "ID Po Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Quantity, 11, false, null);
@@ -59,6 +71,9 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("RDR1", "DataSol", "Data Solicitação", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "Bloqueado", "Bloqueado", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, "N", valoresValidosSimNao);
                 DBCreation.CriarCampoUsuario("RDR1", "itemDescription", "itemDescription", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false);
+                
+                DBCreation.CriarCampoUsuario("RDR1", "StatusFat", "Status Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "A", valoresValidosStatusFaturamento);
+
                 #endregion
 
                 #region ALOCAÇÃO OBRA                

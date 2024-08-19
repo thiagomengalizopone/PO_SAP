@@ -172,6 +172,13 @@
     <Compile Include="View\Config\FrmConfPO.cs" />
     <Compile Include="View\ContratoAlocacao\FrmContAloca.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
+    <Compile Include="View\Faturamento\FrmListaFaturamento.cs" />
+    <Compile Include="View\Faturamento\FrmFaturamento.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Faturamento\FrmFaturamento.Designer.cs">
+      <DependentUpon>FrmFaturamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\FrmParceiroNegocio\Frm134.cs" />
     <Compile Include="View\ObraProjeto\Frm711.cs" />
     <Compile Include="View\Obra\FrmObra.cs" />
@@ -210,6 +217,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="AddOnMain.cs" />
+    <EmbeddedResource Include="View\Faturamento\FrmFaturamento.resx">
+      <DependentUpon>FrmFaturamento.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\PO\FrmVerificaImportacaoPO.resx">
       <DependentUpon>FrmVerificaImportacaoPO.cs</DependentUpon>
     </EmbeddedResource>
@@ -301,9 +311,15 @@
     <EmbeddedResource Include="Model\SQL\Sequence\ZPN_SEQ_Candidato.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRACANDIDATO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAPO.sql" />
+    <EmbeddedResource Include="View\Faturamento\FrmListaFaturamento.srf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Faturamento\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.2.2146\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets" Condition="Exists('packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.2.2146\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets')" />

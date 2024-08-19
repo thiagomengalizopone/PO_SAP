@@ -6,8 +6,10 @@ using Zopone.AddOn.PO.Controller.Constantes;
 using Zopone.AddOn.PO.View.Alocação;
 using Zopone.AddOn.PO.View.ClassificacaoObra;
 using Zopone.AddOn.PO.View.Config;
+using Zopone.AddOn.PO.View.Faturamento;
 using Zopone.AddOn.PO.View.Obra;
 using Zopone.AddOn.PO.View.PO;
+
 
 namespace Zopone.AddOn.PO
 {
@@ -63,10 +65,16 @@ namespace Zopone.AddOn.PO
                                 FrmVerificaImportacaoPO.MenuVerificaPO();
                             }
                             break;
-
-
-
+                        case MenuConstantes.MnuFaturarPO:
+                            {
+                                new FrmListaFaturamento();
+                            }
+                            break;
                             
+
+
+
+
                     }
                 }
 
