@@ -1,4 +1,4 @@
-﻿CREATE procedure ZPN_SP_ListaPedidosFaturamento
+﻿alter procedure ZPN_SP_ListaPedidosFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -27,14 +27,20 @@ SELECT
 	RDR1."U_itemDescription" "Descricao",
 	RDR1."LineTotal" "Valor",
 	ODRF."DocEntry" "Esboco",
-	0 "NF"
-
+	0 "NF",
+	DRF1."ItemCode",
+	DRF1."Dscription", 
+	FAT."SaldoFaturado",
+	(RDR1."LineTotal" - FAT."SaldoFaturado") "SaldoAberto",
+	0 "TotalFaturar"
 
 FROM
 	RDR1 
 	INNER JOIN ORDR ON ORDR."DocEntry" = RDR1."DocEntry"
 	LEFT JOIN DRF1 ON DRF1."U_BaseEntry" = ORDR."DocEntry" AND DRF1."U_BaseLine" = RDR1."LineNum"
 	LEFT JOIN ODRF ON ODRF."DocEntry" = DRF1."DocEntry"
+	LEFT JOIN ZPN_VW_TotalFaturadoPedido FAT ON FAT.U_BaseEntry = RDR1."DocEntry" AND FAT.U_BaseLine = RDR1.LineNum
+
 WHERE 
 	ISNULL(RDR1."U_StatusFat",'A') = @StatusFaturamento 
 	AND (isnull(ORDR."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')

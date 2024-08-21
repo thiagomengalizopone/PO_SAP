@@ -1,4 +1,5 @@
 ﻿using sap.dev.core;
+using sap.dev.data;
 using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
@@ -17,6 +18,13 @@ namespace Zopone.AddOn.PO.View.Faturamento
         Matrix MtPedidos { get; set; }
 
         Button BtPesquisar { get; set; }
+
+        Button BtEnviarFaturamento { get; set; }
+
+        Button BtPreFaturamento { get; set; }
+
+
+
         public FrmListaFaturamento() : base()
         {
             if (oForm == null)
@@ -34,6 +42,16 @@ namespace Zopone.AddOn.PO.View.Faturamento
             BtPesquisar = (Button)oForm.Items.Item("BtPesq").Specific;
             BtPesquisar.PressedAfter += BtPesquisar_PressedAfter;
 
+
+            BtEnviarFaturamento = (Button)oForm.Items.Item("BtEnv").Specific;
+            BtEnviarFaturamento.PressedAfter += BtEnviarFaturamento_PressedAfter;
+
+            BtPreFaturamento = (Button)oForm.Items.Item("BtPreFat").Specific;
+            BtPreFaturamento.PressedAfter += BtPreFaturamento_PressedAfter;
+
+            MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
+            MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
+
             MtPedidos.AutoResizeColumns();
 
             oForm.Visible = true;
@@ -42,17 +60,200 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
         }
 
+        private void MtPedidos_ValidateBefore(object sboObject, SBOItemEventArg pVal, out bool BubbleEvent)
+        {
+            try
+            {
+                BubbleEvent = true;
+
+                if (pVal.ColUID != "Col_15")
+                    return;
+
+
+                MtPedidos.FlushToDataSource();
+
+                double dblSaldoAberto = Convert.ToDouble(DtPesquisa.GetValue("SaldoAberto", pVal.Row - 1));
+                double dblValorFaturar = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", pVal.Row - 1));
+
+                if (dblValorFaturar > dblSaldoAberto)
+                {
+                    Util.ExibirMensagemStatusBar("Valor a faturar não pode ser maior que valor em aberto!", BoMessageTime.bmt_Medium, true);
+                    BubbleEvent = false;
+                }
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao validar dados coluna: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                BubbleEvent = false;
+            }            
+        }
+
+        private void BtPreFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (!Util.RetornarDialogo("Deseja gerar o pré faturamento dos documentos?"))
+                    return;
+
+                MtPedidos.FlushToDataSource();
+                
+                for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
+                {
+                    if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
+                    {
+                        GerarDocumentoPreFaturamento(iRow);
+                     
+                    }
+                }
+
+                Util.ExibirMensagemStatusBar("Pré Faturamento gerado com sucesso!");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                CarregarDadosFaturamento();
+            }
+        }
+
+        private void GerarDocumentoPreFaturamento(int iRow)
+        {
+            try
+            {
+
+                Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Pedido", iRow));
+                Int32 LineNum = Convert.ToInt32(DtPesquisa.GetValue("Linha", iRow));
+                string ItemCode = DtPesquisa.GetValue("ItemCode", iRow).ToString();
+                double TotalLinha = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", iRow));
+
+                SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
+                SAPbobsCOM.Documents oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+                if (oPedidoVenda.GetByKey(DocEntry))
+                {
+                    oPedidoVenda.Lines.SetCurrentLine(LineNum);
+
+                    oNotaFiscalSaida.DocObjectCodeEx = "13";
+                    oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
+                    oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
+
+                    oNotaFiscalSaida.Lines.ItemCode = ItemCode;
+
+                    
+                }
+
+
+                Util.ExibirMensagemStatusBar("Pré Faturamento gerado com sucesso!");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                CarregarDadosFaturamento();
+            }
+        }
+
+        private void BtEnviarFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (!Util.RetornarDialogo("Deseja enviar as notas selecionadas para Faturamento?"))
+                    return;
+
+                MtPedidos.FlushToDataSource();
+
+                string SQL_Update = string.Empty;
+                
+                for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
+                {
+                    if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
+                    {
+                        SQL_Update = $"ZPN_SP_AtualizaPedidoFaturamento {DtPesquisa.GetValue("Pedido", iRow).ToString()}, {DtPesquisa.GetValue("Linha", iRow).ToString()}";
+
+                        SqlUtils.DoNonQuery(SQL_Update);
+                    }
+                }
+
+                Util.ExibirMensagemStatusBar("Pedidos enviados para faturamento!");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao enviar documentos para Faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                CarregarDadosFaturamento();
+            }
+        }
+
+        private void MtPedidos_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (pVal.ColUID == "Col_8")
+                    SelecionaAtividadeServico(pVal.Row-1);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar atividade: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+
+        private void SelecionaAtividadeServico(int row)
+        {
+            try
+            {
+                MtPedidos.FlushToDataSource();
+
+                string Atividade = DtPesquisa.GetValue("Atividade", row).ToString();
+
+                if (string.IsNullOrEmpty(Atividade))
+                    return;
+
+                string SQL = $"ZPN_SP_SelecionaItemAtividade '{Atividade}'";
+
+                System.Data.DataTable dtRegistrosItens = SqlUtils.ExecuteCommand(SQL);
+
+                if (dtRegistrosItens.Rows.Count == 0)
+                {
+                    DtPesquisa.SetValue("Selecionar", row, "N");
+                    DtPesquisa.SetValue("ItemCode", row, string.Empty);
+                    DtPesquisa.SetValue("Dscription", row, string.Empty);
+
+                    Util.ExibeMensagensDialogoStatusBar($"Não há serviço cadastrado com o código {Atividade}");
+                    return;
+                }
+                
+                DtPesquisa.SetValue("Selecionar", row, "Y");
+                DtPesquisa.SetValue("ItemCode", row, dtRegistrosItens.Rows[0]["ItemCode"].ToString()   );
+                DtPesquisa.SetValue("Dscription", row, dtRegistrosItens.Rows[0]["ItemName"].ToString());
+
+                MtPedidos.LoadFromDataSourceEx();
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar tipo serviço: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+
         private void BtPesquisar_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
             try
             {
                 CarregarDadosFaturamento();
+
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao Pesquisar dados: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
+
 
         private void CarregarDadosFaturamento()
         {
@@ -68,7 +269,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_ListaPedidosFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}', '{CbStatus.Value}'";
+                string SQL_Query = $@"ZPN_SP_ListaPedidosFaturamento '{dataInicial}', '{dataFinal}','{CbStatus.Value}', '{EdPO.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
@@ -76,20 +277,31 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
-                MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Linha");
-                MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Item");
+                
+                MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Linha");
+                MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
                 MtPedidos.Columns.Item("Col_8").DataBind.Bind("DtPO", "Atividade");
                 MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "Descricao");
                 MtPedidos.Columns.Item("Col_5").DataBind.Bind("DtPO", "Valor");
                 MtPedidos.Columns.Item("Col_6").DataBind.Bind("DtPO", "Esboco");
                 MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "NF");
+                MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "ItemCode");
+                MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "Dscription");
+
+                MtPedidos.Columns.Item("Col_12").DataBind.Bind("DtPO", "Status");
+
+
+                MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
+                MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "SaldoAberto");
+                MtPedidos.Columns.Item("Col_15").DataBind.Bind("DtPO", "TotalFaturar");
+
 
 
 
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
 
-
+                BtPesquisar.Item.Enabled = false;
             }
             catch (Exception Ex)
             {
