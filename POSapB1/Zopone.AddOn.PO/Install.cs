@@ -1,6 +1,7 @@
 ﻿using sap.dev.core;
 using sap.dev.core.MetaData;
 using System;
+using Zopone.AddOn.PO.Controller.Localizacao;
 using Zopone.AddOn.PO.Model;
 using Zopone.AddOn.PO.Model.SAP;
 
@@ -25,6 +26,8 @@ namespace Zopone.AddOn.PO
                     Instalar.ExecutarScripts(ScriptSQL.RetornaSQLScripts());
 
                     Instalar.ExecutarScriptsAtualizacao();
+
+                    CentroCustoLocalizacao.CriarCentroCustoLocalizacao();
 
                     Instalar.AtualizarVersaoAtual();
 

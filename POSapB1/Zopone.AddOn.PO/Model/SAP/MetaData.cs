@@ -249,7 +249,7 @@ namespace Zopone.AddOn.PO.Model.SAP
 
 
                 #region Regional 
-                DBCreation.CriarCampoUsuario("OLCT", "RegDesc", "Regional Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 150, false, null);
+                DBCreation.CriarCampoUsuario("OLCT", "RegDesc", "Regional Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 
                 #endregion
 
@@ -261,6 +261,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("OPRC", "MM_Item", "Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("OPRC", "MM_DRZ", "DRZ", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("OPRC", "Obra", "Código da Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("OPRC", "Localiz", "Localização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
 
 
                 #endregion

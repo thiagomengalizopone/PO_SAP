@@ -31,6 +31,9 @@ namespace Zopone.AddOn.PO.Model.Objects
         public Boolean U_Bloqueado { get; set; }
         public string U_itemDescription { get; set; }
         public string U_manSiteInfo { get; set; }
+        public string CostingCode { get; set; }
+        public string CostingCode2 { get; set; }
+        public string CostingCode3 { get; set; }        
 
     }
 }

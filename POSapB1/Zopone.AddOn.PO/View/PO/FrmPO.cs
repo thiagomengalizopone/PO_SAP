@@ -23,6 +23,11 @@ namespace Zopone.AddOn.PO.View.Obra
         public Int32 BPLId { get; set; }
         public Int32 RowIndexEdit { get; set; }
         public Int32 LineNumEdit { get; set; }
+
+        public string PCG { get; set; }
+        public string OBRA { get; set; }
+        public string REGIONAL { get; set; }
+
         public static Boolean IsDraft { get; set; }
 
         public static string DocEntryPO { get; set; }
@@ -134,7 +139,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     linesPO.Clear();
 
-                    for (int iRow = oPedidoVenda.Lines.Count-1;  iRow >=0 ; iRow--)
+                    for (int iRow = oPedidoVenda.Lines.Count - 1; iRow >= 0; iRow--)
                     {
                         oPedidoVenda.Lines.SetCurrentLine(iRow);
 
@@ -165,7 +170,10 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_Bloqueado = oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value.ToString() == "Y",
                                U_itemDescription = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value.ToString(),
                                U_manSiteInfo = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value.ToString(),
-                               AgrNo = oPedidoVenda.Lines.AgreementNo
+                               AgrNo = oPedidoVenda.Lines.AgreementNo,
+                               CostingCode = oPedidoVenda.Lines.CostingCode,
+                               CostingCode2 = oPedidoVenda.Lines.CostingCode2,
+                               CostingCode3 = oPedidoVenda.Lines.CostingCode3
 
                            }
                            );
@@ -255,7 +263,10 @@ namespace Zopone.AddOn.PO.View.Obra
                     U_Bloqueado = cbBloqueado.Checked,
                     U_itemDescription = txtDescItemPO.Text,
                     U_manSiteInfo = txtInfoSitePO.Text,
-                    AgrNo = !string.IsNullOrEmpty(txtNroCont.Text) ? Convert.ToInt32(txtNroCont.Text)  : 0
+                    AgrNo = !string.IsNullOrEmpty(txtNroCont.Text) ? Convert.ToInt32(txtNroCont.Text) : 0,
+                    CostingCode = PCG,
+                    CostingCode2 = OBRA,
+                    CostingCode3 = REGIONAL
 
                 };
 
@@ -322,6 +333,10 @@ namespace Zopone.AddOn.PO.View.Obra
             cbBloqueado.Checked = false;
             txtInfoSitePO.Text = string.Empty;
             txtDescItemPO.Text = string.Empty;
+
+            PCG = string.Empty;
+            OBRA = string.Empty;
+            REGIONAL = string.Empty;
         }
 
         private void textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -371,6 +386,10 @@ namespace Zopone.AddOn.PO.View.Obra
                         txtCliente.Text = string.Empty;
                         lblCliente.Text = string.Empty;
                         BPLId = -1;
+
+                        PCG = string.Empty;
+                        OBRA = string.Empty;
+                        REGIONAL = string.Empty;
                     }
                     else
                     {
@@ -383,6 +402,10 @@ namespace Zopone.AddOn.PO.View.Obra
                         BPLId = Convert.ToInt32(retornoDados[4]);
 
                         txtNroCont.Text = retornoDados[5];
+
+                        PCG = retornoDados[6];
+                        OBRA = retornoDados[7];
+                        REGIONAL = retornoDados[8];
                     }
                 }
                 else if (TipoPesquisa == "CANDIDATO")
@@ -503,6 +526,9 @@ namespace Zopone.AddOn.PO.View.Obra
                 txtDescItemPO.Text = linesPO[rowIndex].U_itemDescription;
                 txtInfoSitePO.Text = linesPO[rowIndex].U_manSiteInfo;
                 txtNroCont.Text = linesPO[rowIndex].AgrNo.ToString();
+                PCG = linesPO[rowIndex].CostingCode;
+                OBRA = linesPO[rowIndex].CostingCode2;
+                REGIONAL = linesPO[rowIndex].CostingCode3;
             }
             catch (Exception Ex)
             {
@@ -612,6 +638,11 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = linePO.U_itemDescription;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = linePO.U_manSiteInfo;
 
+                    oPedidoVenda.Lines.CostingCode = linePO.CostingCode;
+                    oPedidoVenda.Lines.CostingCode2 = linePO.CostingCode2;
+                    oPedidoVenda.Lines.CostingCode3 = linePO.CostingCode3;
+
+
                     if (linePO.AgrNo > 0)
                         oPedidoVenda.Lines.AgreementNo = linePO.AgrNo;
                 }
@@ -627,7 +658,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     if (oPedidoVenda.Add() != 0)
                         throw new Exception($"Erro ao adicionar PO - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
-                    
+
                     txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();
                 }
 
@@ -635,7 +666,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 MessageBox.Show("PO salva com sucesso!");
 
-                
+
 
             }
             catch (Exception Ex)
@@ -653,7 +684,7 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
-               
+
                 string SQL_Query = $"ZPN_SP_PCI_ATUALIZAPO '{Docentry}', '{DateTime.Now.ToString("yyyyMMdd")}'";
 
                 SqlUtils.DoNonQueryAsync(SQL_Query);

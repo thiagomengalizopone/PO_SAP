@@ -18,7 +18,10 @@ AS
 		CLASS.Name		"Classificação Obra",
 		ZPN_PRJ.U_BplId	"ID Filial",
 		OBPL.BplName	"Filial/Empresa",
-		OOAT.[Number]   "Número Contrato"
+		OOAT.[Number]   "Número Contrato",
+		T0.[U_PCG] "PCG",
+		OPRC."PrcCode" "Obra",
+		T0.[U_Regional] "Regional"
 	FROM 
 		OPRJ 
 		INNER JOIN "@ZPN_OPRJ" ZPN_PRJ	ON OPRJ.PrjCode     = ZPN_PRJ."Code"
@@ -26,6 +29,7 @@ AS
 		INNER JOIN OOAT					ON OOAT.Number		= ZPN_PRJ.U_CodContrato
 		INNER JOIN OCRD					ON OCRD."CardCode"	=  ooat."BPCode"
 		LEFT  JOIN "@ZPN_CLASSOB" CLASS	ON CLASS."Code"     = ZPN_PRJ.U_ClassOb
+		LEFT JOIN  OPRC ON OPRC."U_Obra" = ZPN_PRJ."Code"
 	WHERE
 		OPRJ.PrjCode like '%' + @CampoPesquisa + '%' or 
 		OPRJ.PRjName like '%' + @CampoPesquisa + '%' or 

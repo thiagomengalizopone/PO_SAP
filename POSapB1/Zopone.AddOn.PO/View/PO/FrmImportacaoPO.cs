@@ -206,6 +206,15 @@ namespace Zopone.AddOn.PO.View.PO
                 oPedidoVenda.Lines.Price = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["unitPrice"]);
                 oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.TipoDocumentoPO;
 
+                if (dtRegistrosItens.Rows[iPedidoLinha]["PCG"] != null)
+                    oPedidoVenda.Lines.CostingCode = dtRegistrosItens.Rows[iPedidoLinha]["PCG"].ToString();
+
+                if (dtRegistrosItens.Rows[iPedidoLinha]["Obra"] != null)
+                    oPedidoVenda.Lines.CostingCode = dtRegistrosItens.Rows[iPedidoLinha]["Obra"].ToString();
+
+                if (dtRegistrosItens.Rows[iPedidoLinha]["Regional"] != null)
+                    oPedidoVenda.Lines.CostingCode = dtRegistrosItens.Rows[iPedidoLinha]["Regional"].ToString();
+
                 if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString()))
                     oPedidoVenda.Lines.ProjectCode = dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString();
 
