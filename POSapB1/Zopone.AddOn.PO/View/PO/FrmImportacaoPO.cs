@@ -160,6 +160,8 @@ namespace Zopone.AddOn.PO.View.PO
                 oPedidoVenda.DocObjectCodeEx = "17";
             }
 
+            oPedidoVenda.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.TipoDocumentoPO);
+
             return oPedidoVenda;
         }
 
@@ -202,6 +204,7 @@ namespace Zopone.AddOn.PO.View.PO
                 oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
                 oPedidoVenda.Lines.Quantity = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["quantity"]);
                 oPedidoVenda.Lines.Price = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["unitPrice"]);
+                oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.TipoDocumentoPO;
 
                 if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString()))
                     oPedidoVenda.Lines.ProjectCode = dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString();

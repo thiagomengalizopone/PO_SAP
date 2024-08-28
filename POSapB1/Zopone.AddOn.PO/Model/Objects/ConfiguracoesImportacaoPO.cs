@@ -20,7 +20,7 @@ namespace Zopone.AddOn.PO.Model.Objects
         public static string CardCodePOEricsson { get; set; }
         public static string CardNamePOEricsson { get; set; }
         public static string TipoDocumentoPO { get; set; }
-
+        public static string Utilizacao { get; set; }
 
 
         public static void CarregarConfiguracoesPO()
@@ -38,7 +38,8 @@ namespace Zopone.AddOn.PO.Model.Objects
                                             ""U_CardNameE"", 
                                             ""U_ItemCode"", 
                                             ""U_ItemName"", 
-                                            ""U_TipoDoc""
+                                            ""U_TipoDoc"",
+                                            ""U_Usage""
                                         FROM
                                             ""@ZPN_CONFPO""
                                         WHERE
@@ -54,6 +55,8 @@ namespace Zopone.AddOn.PO.Model.Objects
                     ItemCodePO = oRecordSet.Fields.Item("U_ItemCode").Value.ToString();
                     ItemNamePO = oRecordSet.Fields.Item("U_ItemName").Value.ToString();
                     TipoDocumentoPO = oRecordSet.Fields.Item("U_TipoDoc").Value.ToString();
+                    Utilizacao = oRecordSet.Fields.Item("U_Usage").Value.ToString();
+                    
                 }              
             }
             catch (Exception Ex)

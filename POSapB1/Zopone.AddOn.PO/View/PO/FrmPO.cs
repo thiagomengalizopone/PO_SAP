@@ -561,7 +561,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
                         oPedidoVenda.DocObjectCodeEx = "17";
                     }
-
+                    oPedidoVenda.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.TipoDocumentoPO);
                 }
 
 
@@ -585,6 +585,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     else if (linePO.LineNum >= 0)
                         oPedidoVenda.Lines.SetCurrentLine(linePO.LineNum);
 
+                    oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.TipoDocumentoPO;
                     oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
                     oPedidoVenda.Lines.Quantity = 1;
                     oPedidoVenda.Lines.Price = Convert.ToDouble(linePO.U_Valor);

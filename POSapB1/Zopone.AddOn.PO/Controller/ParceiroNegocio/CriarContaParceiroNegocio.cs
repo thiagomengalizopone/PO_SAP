@@ -1,4 +1,5 @@
 ﻿using sap.dev.core;
+using sap.dev.core.Controller;
 using sap.dev.data;
 using SAPbobsCOM;
 using System;
@@ -60,29 +61,7 @@ namespace Zopone.AddOn.PO.Controller.ParceiroNegocio
 
                     if (oRecordSet.EoF)
                     {
-
-                        oRecordSet.DoQuery("SELECT max(cast(PrcCode as int))+1  FROM OPRC where isnumeric(PrcCode) = 1");
-
-                        string CenterCode = oRecordSet.Fields.Item(0).Value.ToString();
-
-                        SAPbobsCOM.CompanyService oCompanyService = Globals.Master.Connection.Database.GetCompanyService();
-                        SAPbobsCOM.ProfitCentersService oPCService;
-                        SAPbobsCOM.ProfitCenter oPC;
-                        SAPbobsCOM.ProfitCenterParams oPCParams;
-
-                        oPCService = (SAPbobsCOM.ProfitCentersService)oCompanyService.GetBusinessService(SAPbobsCOM.ServiceTypes.ProfitCentersService);
-                        oPCParams = (SAPbobsCOM.ProfitCenterParams)oPCService.GetDataInterface(SAPbobsCOM.ProfitCentersServiceDataInterfaces.pcsProfitCenterParams);
-                        oPC = (SAPbobsCOM.ProfitCenter)oPCService.GetDataInterface(SAPbobsCOM.ProfitCentersServiceDataInterfaces.pcsProfitCenter);
-                        oPC.CenterCode = CenterCode;
-                        oPC.CenterName = oParceiroNegocio.CardName.Length > 30 ? oParceiroNegocio.CardName.Substring(0, 30) : oParceiroNegocio.CardName;
-                        oPC.InWhichDimension = Configuracoes.DimensaoCentroCustoCliente;
-                        oPC.CostCenterType = Configuracoes.TipoCentroCustoCliente;
-                        oPC.Effectivefrom = DateTime.Today;
-                        oPC.UserFields.Item("U_CardCode").Value = oParceiroNegocio.CardCode;
-                        oPC.UserFields.Item("U_Descricao").Value = oParceiroNegocio.CardName;
-                        oPC.UserFields.Item("U_MM_Item").Value = ".";
-                        oPC.UserFields.Item("U_MM_DRZ").Value = ".";
-                        oPCParams = oPCService.AddProfitCenter(oPC);
+                        CentroCusto.CriaCentroCusto(oParceiroNegocio.CardName, Configuracoes.DimensaoCentroCustoCliente, Configuracoes.TipoCentroCustoCliente, oParceiroNegocio.CardCode, oParceiroNegocio.CardName);
                     }
                 }
                 CodigoConta = AcctCode;

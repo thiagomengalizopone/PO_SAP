@@ -1,10 +1,12 @@
 ﻿using sap.dev.core;
+using sap.dev.core.Controller;
 using sap.dev.data;
 using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
 using System.Threading.Tasks;
+using Zopone.AddOn.PO.UtilAddOn;
 
 namespace Zopone.AddOn.PO.View.Obra
 {
@@ -24,6 +26,7 @@ namespace Zopone.AddOn.PO.View.Obra
         public ComboBox CbCidade { get; set; }
 
         public ComboBox CbRegional { get; set; }
+        public ComboBox CbPCG { get; set; }        
 
         public ComboBox CbPaisCandidato { get; set; }
         public ComboBox CbEstadoCandidato { get; set; }
@@ -98,6 +101,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
 
             CbRegional = (ComboBox)oForm.Items.Item("CbRegion").Specific;
+            CbPCG = (ComboBox)oForm.Items.Item("CbPCG").Specific;
 
             GdListPO = (Grid)oForm.Items.Item("GdObra").Specific;
             GdListPO.DoubleClickAfter += GdListPO_DoubleClickAfter;
@@ -403,7 +407,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.ComboBoxSetValoresValidosPorSQL(CbPaisCandidato, UtilScriptsSQL.SQL_Pais);
                 Util.ComboBoxSetValoresValidosPorSQL(CbClassificacaoObra, UtilScriptsSQL.SQL_ClassificacaoObra);
                 Util.ComboBoxSetValoresValidosPorSQL(CbRegional, UtilScriptsSQL.SQL_Regionais);
-
+                Util.ComboBoxSetValoresValidosPorSQL(CbPCG, UtilScriptsSQL.SQL_PCG);
+                
 
                 Util.MatrixComboBoxSetValoresValidosPorSQL(MtCandidato, UtilScriptsSQL.SQL_Pais, "CbPais");
                 Util.MatrixComboBoxSetValoresValidosPorSQL(MtCandidato, UtilScriptsSQL.SQL_Estado("BR"), "CbEst");
@@ -483,6 +488,8 @@ namespace Zopone.AddOn.PO.View.Obra
                     {
                         SalvarProjeto(businessObjectInfo.FormUID);
 
+                        SalvarCentroCusto(businessObjectInfo.FormUID);
+
                         string FormUID = businessObjectInfo.FormUID;
                         bool bUpdate = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE;
                         new Task(() => { EnviarDadosPCIAsync(FormUID, bUpdate); }).Start();
@@ -509,6 +516,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 return false;
             }
         }
+
+        
 
         private static bool ValidarDadosObra(string formUID)
         {
@@ -575,6 +584,21 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados de PO: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
+        }
+
+        private static void SalvarCentroCusto(string formUID)
+        {
+            Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+
+            EditText EdCodeObra = (EditText)oForm.Items.Item("EdCode").Specific;
+            EditText EdDescObra = (EditText)oForm.Items.Item("EdDescOb").Specific;
+
+            Int32 Dimensao = Convert.ToInt32(SqlUtils.GetValue(@"SELECT Max(T0.""DimCode"") FROM ODIM T0 WHERE T0.""DimDesc"" = 'OBRA'"));
+            string TipoCentroCusto = SqlUtils.GetValue(@"SELECT maX(CctCode) FROM OCCT WHERE CctName = 'Receitas'");
+            CentroCusto.CriaCentroCusto(EdDescObra.Value, Dimensao, TipoCentroCusto,"", "", EdCodeObra.Value);
+
+
         }
 
         private static void SalvarProjeto(string FormUID)

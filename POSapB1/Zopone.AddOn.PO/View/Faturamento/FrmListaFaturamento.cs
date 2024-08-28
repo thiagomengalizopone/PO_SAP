@@ -96,17 +96,25 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     return;
 
                 MtPedidos.FlushToDataSource();
+
+                string MensagemErro = string.Empty;
                 
                 for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
                 {
                     if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
                     {
-                        MensagemErro += GerarDocumentoPreFaturamento(iRow);
-                     
+                        MensagemErro += GerarDocumentoPreFaturamento(iRow);                     
                     }
                 }
 
-                Util.ExibirMensagemStatusBar("Pré Faturamento gerado com sucesso!");
+                if (!string.IsNullOrEmpty(MensagemErro))
+                {
+                    Util.ExibeMensagensDialogoStatusBar($"Há pedido(s) não faturado(s) \n: {MensagemErro}", BoMessageTime.bmt_Medium, true);
+                }
+                else
+                {
+                    Util.ExibirMensagemStatusBar("Pré Faturamento gerado com sucesso!");
+                }
             }
             catch (Exception Ex)
             {
@@ -118,7 +126,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             }
         }
 
-        private void GerarDocumentoPreFaturamento(int iRow)
+        private string GerarDocumentoPreFaturamento(int iRow)
         {
             try
             {
@@ -139,22 +147,43 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
                     oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
 
-                    oNotaFiscalSaida.Lines.ItemCode = ItemCode;
+                    oPedidoVenda.Lines.SetCurrentLine(LineNum);
 
-                    
+                    oNotaFiscalSaida.Lines.ItemCode = ItemCode;
+                    oNotaFiscalSaida.Lines.Quantity = 1;
+                    oNotaFiscalSaida.Lines.LineTotal = TotalLinha;
+                    oNotaFiscalSaida.Lines.Usage = oPedidoVenda.Lines.Usage;
+                    oNotaFiscalSaida.Lines.ProjectCode = oPedidoVenda.Lines.ProjectCode;
+                    oNotaFiscalSaida.Lines.COGSCostingCode = oPedidoVenda.Lines.COGSCostingCode;
+                    oNotaFiscalSaida.Lines.COGSCostingCode2 = oPedidoVenda.Lines.COGSCostingCode2;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Candidato").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescItemFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Parcela").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Tipo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_itemDescription").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Atividade").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Atividade").Value;
+
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseEntry").Value = oPedidoVenda.DocEntry;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseLine").Value = oPedidoVenda.Lines.LineNum;
+
+
+                    if (oNotaFiscalSaida.Add() != 0)
+                        return $"Erro ao gerar PO {oPedidoVenda.NumAtCard} Linha {LineNum} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
+
                 }
 
-
-                Util.ExibirMensagemStatusBar("Pré Faturamento gerado com sucesso!");
+                Util.ExibirMensagemStatusBar($"Pré Faturamento gerado com sucesso - {oPedidoVenda.NumAtCard} Linha {LineNum}!");
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
-            finally
-            {
-                CarregarDadosFaturamento();
-            }
+            
+
+            return string.Empty;
         }
 
         private void BtEnviarFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)

@@ -13,6 +13,10 @@ namespace Zopone.AddOn.PO.Model.Objects
         public string U_CardName { get; set; }
         public string U_Item { get; set; }
         public string U_ItemFat { get; set; }
+        public string PCG { get; set; }
+        public string Obra { get; set; }
+        public string Regional { get; set; }
+
         public string U_DescItemFat { get; set; }
         public string U_ItemCode { get; set; }
         public string U_Parcela { get; set; }
