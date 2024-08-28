@@ -101,7 +101,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 {
                     if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
                     {
-                        GerarDocumentoPreFaturamento(iRow);
+                        MensagemErro += GerarDocumentoPreFaturamento(iRow);
                      
                     }
                 }
