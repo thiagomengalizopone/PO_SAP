@@ -76,7 +76,11 @@ namespace Zopone.AddOn.PO
                                 new FrmPreFaturamento();
                             }
                             break;
-
+                        case MenuConstantes.MnuEfetFaturaPO:
+                            {
+                                new FrmEfetivaFaturamento();
+                            }
+                            break;
 
 
 
