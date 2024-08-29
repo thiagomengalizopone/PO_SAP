@@ -316,7 +316,7 @@
     <EmbeddedResource Include="View\Faturamento\FrmListaFaturamento.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ListaPedidosFaturamento.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ListaPedidosFaturamentoFaturar.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_SelecionaItemAtividade.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_AtualizaPedidoFaturamento.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_TotalFaturadoPedido.sql" />

@@ -19,9 +19,9 @@ AS
 		ZPN_PRJ.U_BplId	"ID Filial",
 		OBPL.BplName	"Filial/Empresa",
 		OOAT.[Number]   "Número Contrato",
-		T0.[U_PCG] "PCG",
+		ZPN_PRJ.[U_PCG] "PCG",
 		OPRC."PrcCode" "Obra",
-		T0.[U_Regional] "Regional"
+		ZPN_PRJ.[U_Regional] "Regional"
 	FROM 
 		OPRJ 
 		INNER JOIN "@ZPN_OPRJ" ZPN_PRJ	ON OPRJ.PrjCode     = ZPN_PRJ."Code"

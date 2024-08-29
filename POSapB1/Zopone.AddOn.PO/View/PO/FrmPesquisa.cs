@@ -116,7 +116,7 @@ namespace Zopone.AddOn.PO.View.PO
                 else if(TipoPesquisa == "PO") 
                 {
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[0].Value.ToString());
-                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[7].Value.ToString());
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[8].Value.ToString());
 
                 }
 

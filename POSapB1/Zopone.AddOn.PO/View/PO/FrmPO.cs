@@ -587,7 +587,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
                         oPedidoVenda.DocObjectCodeEx = "17";
                     }
-                    oPedidoVenda.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.TipoDocumentoPO);
+                    oPedidoVenda.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.Utilizacao);
                 }
 
 

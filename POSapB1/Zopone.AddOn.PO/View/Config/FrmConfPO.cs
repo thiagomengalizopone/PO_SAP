@@ -19,6 +19,7 @@ namespace Zopone.AddOn.PO.View.Config
         EditText EdItemName { get; set; }
         EditText EdCardCodeE { get; set; }
         EditText EdCardNameE { get; set; }
+        ComboBox CbUtilizacao { get; set; }
         #endregion
 
         public FrmConfPO() : base()
@@ -43,13 +44,22 @@ namespace Zopone.AddOn.PO.View.Config
 
             EdItemName = (EditText)oForm.Items.Item("EdItemName").Specific;
 
+            CbUtilizacao = (ComboBox)oForm.Items.Item("CbUtili").Specific;
+
             oForm.Visible = true;
+
+            CarregarCampos();
 
             CarregarDadosConfPO();
 
 
 
 
+        }
+
+        private void CarregarCampos()
+        {
+            Util.ComboBoxSetValoresValidosPorSQL(CbUtilizacao, UtilScriptsSQL.SQL_Utilizacao);
         }
 
         private void EdCardCodeE_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)

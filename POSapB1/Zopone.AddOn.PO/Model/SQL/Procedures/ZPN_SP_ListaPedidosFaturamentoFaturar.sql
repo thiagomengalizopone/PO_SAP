@@ -1,8 +1,7 @@
-﻿alter procedure ZPN_SP_ListaPedidosFaturamento
+﻿alter procedure ZPN_SP_ListaPedidosFaturamentoFaturar
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
-	 @StatusFaturamento varchar(1),
 	 @NumAtCard varchar(100)
 )
 AS
@@ -26,23 +25,22 @@ SELECT
 	RDR1."U_Atividade" "Atividade",
 	RDR1."U_itemDescription" "Descricao",
 	RDR1."LineTotal" "Valor",
-	ODRF."DocEntry" "Esboco",
+	0 "Esboco",
 	0 "NF",
-	DRF1."ItemCode",
-	DRF1."Dscription", 
-	FAT."SaldoFaturado",
-	(RDR1."LineTotal" - FAT."SaldoFaturado") "SaldoAberto",
-	0 "TotalFaturar"
+	RDR1."ItemCode",
+	RDR1."Dscription", 
+	isnull(FAT."SaldoFaturado",0)"SaldoFaturado",
+	(RDR1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "SaldoAberto",
+	0 "TotalFaturar",
+	RDR1.U_StatusFat as "Status"
 
 FROM
 	RDR1 
 	INNER JOIN ORDR ON ORDR."DocEntry" = RDR1."DocEntry"
-	LEFT JOIN DRF1 ON DRF1."U_BaseEntry" = ORDR."DocEntry" AND DRF1."U_BaseLine" = RDR1."LineNum"
-	LEFT JOIN ODRF ON ODRF."DocEntry" = DRF1."DocEntry"
 	LEFT JOIN ZPN_VW_TotalFaturadoPedido FAT ON FAT.U_BaseEntry = RDR1."DocEntry" AND FAT.U_BaseLine = RDR1.LineNum
 
 WHERE 
-	ISNULL(RDR1."U_StatusFat",'A') = @StatusFaturamento 
+	ISNULL(RDR1."U_StatusFat",'A') = 'A'
 	AND (isnull(ORDR."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
 	AND ORDR."DocDate" between @DataInicial and @DataFinal
 ORDER BY

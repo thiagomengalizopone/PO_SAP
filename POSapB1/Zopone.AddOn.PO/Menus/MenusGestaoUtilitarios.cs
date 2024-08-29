@@ -93,12 +93,12 @@ namespace Zopone.AddOn.PO.Menus
 
 
             listMenu.Add(new Menu(
-                  MenuConstantes.MnuFaturamento,
-                  BoMenuType.mt_STRING,
-                  MenuConstantes.MnuFaturarPO,
-                  "Faturamento de PO",
-                  24,
-                  null));
+                      MenuConstantes.MnuFaturamento,
+                      BoMenuType.mt_STRING,
+                      MenuConstantes.MnuFaturarPO,
+                      "Enviar para Faturamento PO",
+                      24,
+                      null));
 
 
 

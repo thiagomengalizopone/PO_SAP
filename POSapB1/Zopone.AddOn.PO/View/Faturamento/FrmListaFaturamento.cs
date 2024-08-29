@@ -13,17 +13,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
         EditText EdDataI { get; set; }
         EditText EdDataF { get; set; }
         EditText EdPO { get; set; }
-        ComboBox CbStatus { get; set; }
         DataTable DtPesquisa { get; set; }
         Matrix MtPedidos { get; set; }
 
         Button BtPesquisar { get; set; }
 
         Button BtEnviarFaturamento { get; set; }
-
-        Button BtPreFaturamento { get; set; }
-
-
 
         public FrmListaFaturamento() : base()
         {
@@ -33,7 +28,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdDataI = (EditText)oForm.Items.Item("EdDataI").Specific;
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
-            CbStatus = (ComboBox)oForm.Items.Item("CbStatus").Specific;
 
             MtPedidos = (Matrix)oForm.Items.Item("MtPed").Specific;
 
@@ -45,9 +39,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
             BtEnviarFaturamento = (Button)oForm.Items.Item("BtEnv").Specific;
             BtEnviarFaturamento.PressedAfter += BtEnviarFaturamento_PressedAfter;
-
-            BtPreFaturamento = (Button)oForm.Items.Item("BtPreFat").Specific;
-            BtPreFaturamento.PressedAfter += BtPreFaturamento_PressedAfter;
 
             MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
             MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
@@ -122,7 +113,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             }
             finally
             {
-                CarregarDadosFaturamento();
+                CarregarDadosFaturamentoFaturar();
             }
         }
 
@@ -215,7 +206,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             }
             finally
             {
-                CarregarDadosFaturamento();
+                CarregarDadosFaturamentoFaturar();
             }
         }
 
@@ -274,8 +265,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-                CarregarDadosFaturamento();
-
+               CarregarDadosFaturamentoFaturar();
             }
             catch (Exception Ex)
             {
@@ -284,21 +274,14 @@ namespace Zopone.AddOn.PO.View.Faturamento
         }
 
 
-        private void CarregarDadosFaturamento()
+        private void CarregarDadosFaturamentoFaturar()
         {
             try
             {
-                if (string.IsNullOrEmpty(CbStatus.Value))
-                {
-                    Util.ExibeMensagensDialogoStatusBar("Obrigatório selecionar o status!");
-
-                    return;
-                }
-
                 string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_ListaPedidosFaturamento '{dataInicial}', '{dataFinal}','{CbStatus.Value}', '{EdPO.Value}'";
+                string SQL_Query = $@"ZPN_SP_ListaPedidosFaturamentoFaturar '{dataInicial}', '{dataFinal}', '{EdPO.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
@@ -324,13 +307,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "SaldoAberto");
                 MtPedidos.Columns.Item("Col_15").DataBind.Bind("DtPO", "TotalFaturar");
 
-
-
-
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
 
-                BtPesquisar.Item.Enabled = false;
             }
             catch (Exception Ex)
             {

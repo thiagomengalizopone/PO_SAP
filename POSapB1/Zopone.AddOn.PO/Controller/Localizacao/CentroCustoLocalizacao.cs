@@ -3,6 +3,7 @@ using sap.dev.data;
 using SAPbobsCOM;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,16 +23,15 @@ namespace Zopone.AddOn.PO.Controller.Localizacao
 
             var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
 
-            oRecordSet.DoQuery(UtilScriptsSQLAddOn.SQL_Localizacao(CodeLocalizacao));
+            string SQL_Query = UtilScriptsSQLAddOn.SQL_Localizacao(CodeLocalizacao);
 
-            while (!oRecordSet.EoF)
+            DataTable DtResultados =  SqlUtils.ExecuteCommand(SQL_Query);
+            
+            
+            foreach (DataRow dr in DtResultados.Rows) 
             {
-                CentroCusto.CriaCentroCusto(oRecordSet.Fields.Item("Location").Value.ToString(), Dimensao, TipoCentroCusto, "", "", "",  oRecordSet.Fields.Item("Code").Value.ToString());
-
-                oRecordSet.MoveNext();
+                CentroCusto.CriaCentroCusto(dr["Location"].ToString(), Dimensao, TipoCentroCusto, "", "", "", dr["Code"].ToString());
             }
-
-
         }
     }
 }

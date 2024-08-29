@@ -26,7 +26,7 @@ namespace Zopone.AddOn.PO.View.Obra
         public ComboBox CbCidade { get; set; }
 
         public ComboBox CbRegional { get; set; }
-        public ComboBox CbPCG { get; set; }        
+        public ComboBox CbPCG { get; set; }
 
         public ComboBox CbPaisCandidato { get; set; }
         public ComboBox CbEstadoCandidato { get; set; }
@@ -408,7 +408,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.ComboBoxSetValoresValidosPorSQL(CbClassificacaoObra, UtilScriptsSQL.SQL_ClassificacaoObra);
                 Util.ComboBoxSetValoresValidosPorSQL(CbRegional, UtilScriptsSQL.SQL_Regionais);
                 Util.ComboBoxSetValoresValidosPorSQL(CbPCG, UtilScriptsSQL.SQL_PCG);
-                
+
 
                 Util.MatrixComboBoxSetValoresValidosPorSQL(MtCandidato, UtilScriptsSQL.SQL_Pais, "CbPais");
                 Util.MatrixComboBoxSetValoresValidosPorSQL(MtCandidato, UtilScriptsSQL.SQL_Estado("BR"), "CbEst");
@@ -517,7 +517,7 @@ namespace Zopone.AddOn.PO.View.Obra
             }
         }
 
-        
+
 
         private static bool ValidarDadosObra(string formUID)
         {
@@ -590,13 +590,15 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
 
-
             EditText EdCodeObra = (EditText)oForm.Items.Item("EdCode").Specific;
             EditText EdDescObra = (EditText)oForm.Items.Item("EdDescOb").Specific;
 
+            if (SqlUtils.ExistemRegistros($@"SELECT 1 FROM OPRC WHERE ""U_Obra"" = '{EdCodeObra.Value}'"))
+                return;
+
             Int32 Dimensao = Convert.ToInt32(SqlUtils.GetValue(@"SELECT Max(T0.""DimCode"") FROM ODIM T0 WHERE T0.""DimDesc"" = 'OBRA'"));
             string TipoCentroCusto = SqlUtils.GetValue(@"SELECT maX(CctCode) FROM OCCT WHERE CctName = 'Receitas'");
-            CentroCusto.CriaCentroCusto(EdDescObra.Value, Dimensao, TipoCentroCusto,"", "", EdCodeObra.Value);
+            CentroCusto.CriaCentroCusto(EdDescObra.Value, Dimensao, TipoCentroCusto, "", "", EdCodeObra.Value);
 
 
         }

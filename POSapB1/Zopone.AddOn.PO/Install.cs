@@ -27,8 +27,6 @@ namespace Zopone.AddOn.PO
 
                     Instalar.ExecutarScriptsAtualizacao();
 
-                    CentroCustoLocalizacao.CriarCentroCustoLocalizacao();
-
                     Instalar.AtualizarVersaoAtual();
 
                     Util.ExibeMensagensDialogoStatusBar("AddOn Atualizado para a versão mais recente.");

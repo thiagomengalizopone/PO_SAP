@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Zopone.AddOn.PO.Controller.Localizacao;
 using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.UtilAddOn;
 using static sap.dev.core.EnumList;
@@ -24,6 +25,9 @@ namespace Zopone.AddOn.PO
             Util.CriarPastaLog();
 
             Install.VerificaInstalacaoAddOn();
+
+            CentroCustoLocalizacao.CriarCentroCustoLocalizacao();
+
 
             Configuracoes.CarregarConfiguracaoes();
             UtilAddOn.UtilAddOn.CarregarMenus();

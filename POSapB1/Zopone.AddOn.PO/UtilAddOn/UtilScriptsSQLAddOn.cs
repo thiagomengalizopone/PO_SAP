@@ -12,15 +12,15 @@ namespace Zopone.AddOn.PO.UtilAddOn
         {
             return $@"
 					SELECT 
-						Code, 
-						Location, 
-						U_RegDesc 
+						OLCT.Code, 
+						OLCT.Location, 
+						OLCT.U_RegDesc 
 					FROM
 						OLCT
 					WHERE
 						('{CodeLocalizacao}' = '' or Code = '{CodeLocalizacao}') 
-						AND 
-							Code NOT IN 
+						AND
+							OLCT.Code NOT IN 
 							(
 								SELECT 
 									OPRC.U_Localiz
@@ -30,8 +30,10 @@ namespace Zopone.AddOn.PO.UtilAddOn
 									OPRC.U_Localiz = OLCT.Code
 							)
 					ORDER BY
-						Code ;
+						OLCT.Code ;
 					";
+
+
 
         }
 
