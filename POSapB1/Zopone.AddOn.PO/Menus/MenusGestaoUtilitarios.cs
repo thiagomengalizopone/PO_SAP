@@ -100,6 +100,14 @@ namespace Zopone.AddOn.PO.Menus
                       24,
                       null));
 
+            listMenu.Add(new Menu(
+                 MenuConstantes.MnuFaturamento,
+                 BoMenuType.mt_STRING,
+                 MenuConstantes.MnuPreFaturaPO,
+                 "Gerar Pré-Faturamento PO",
+                 24,
+                 null));
+
 
 
 
