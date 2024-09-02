@@ -14,7 +14,7 @@
         public const string MnuVerificaImpPO = "MnuVerImpoPO";
         public const string MnuFaturarPO = "MnuFaturarPO";
         public const string MnuPreFaturaPO = "MnuPreFaturaPO";
-        public const string MnuEfetFaturaPO = "MnuEfetFaturaPO";
+        public const string MnuEfetFaturaPO = "MnuEfetFatura";
 
 
     }

@@ -1,4 +1,4 @@
-﻿create procedure ZPN_SP_EfetivaPedidosPreFaturamento
+﻿ALTER procedure ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -24,19 +24,19 @@ SELECT
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
 	ORDR."NumAtCard" "PO",
-	RDR1."LineNum" "Linha",
-	RDR1."U_Item" "Item",
-	RDR1."U_Atividade" "Atividade",
-	RDR1."U_itemDescription" "Descricao",
-	RDR1."LineTotal" "Valor",
+	DRF1."LineNum" "Linha",
+	DRF1."U_Item" "Item",
+	DRF1."U_Atividade" "Atividade",
+	DRF1."U_itemDescription" "Descricao",
+	DRF1."LineTotal" "Valor",
 	DRF1.DocEntry "Esboco",
 	0 "NF",
-	RDR1."ItemCode",
-	RDR1."Dscription", 
+	DRF1."ItemCode",
+	DRF1."Dscription", 
 	isnull(FAT."SaldoFaturado",0)"SaldoFaturado",
-	(RDR1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "SaldoAberto",
-	(RDR1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "TotalFaturar",
-	RDR1.U_StatusFat as "Status",
+	(DRF1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "SaldoAberto",
+	(DRF1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "TotalFaturar",
+	DRF1.U_StatusFat as "Status",
 	0 as "TotalDocumento"
 FROM
 	RDR1 
@@ -45,11 +45,11 @@ FROM
 	INNER JOIN DRF1 ON DRF1.U_BaseEntry = RDR1."DocEntry" and DRF1."U_BaseLine" = RDR1."LineNum"
 	INNER JOIN ODRF ON ODRF."DocEntry" = DRF1."DocEntry"
 WHERE 
-	ISNULL(RDR1."U_StatusFat",'A') = 'F'
-	AND (isnull(ORDR."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
-	AND ORDR."DocDate" between @DataInicial and @DataFinal
+	ISNULL(DRF1."U_StatusFat",'A') = 'F'
+	AND (isnull(ODRF."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
+	AND DRF1."DocDate" between @DataInicial and @DataFinal
 ORDER BY
-	ORDR."DocDate", ORDR."DocNum", RDR1."LineNum";
+	DRF1."DocDate", ODRF."DocNum", DRF1."LineNum";
 
 
 END ;

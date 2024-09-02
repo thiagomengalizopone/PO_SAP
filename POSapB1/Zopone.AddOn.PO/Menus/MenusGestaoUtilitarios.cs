@@ -111,7 +111,7 @@ namespace Zopone.AddOn.PO.Menus
             listMenu.Add(new Menu(
                  MenuConstantes.MnuFaturamento,
                  BoMenuType.mt_STRING,
-                 MenuConstantes.MnuPreFaturaPO,
+                 MenuConstantes.MnuEfetFaturaPO,
                  "Efetivar Pré-Faturamento PO",
                  24,
                  null));

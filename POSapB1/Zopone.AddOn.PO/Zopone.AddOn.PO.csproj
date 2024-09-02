@@ -330,6 +330,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_EfetivaPedidosPreFaturamento.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_DOCUMENTOSIMPOSTO.sql" />
+    <EmbeddedResource Include="Model\SQL\Tables\ZPN_INTEGRAPCI.sql" />
+    <EmbeddedResource Include="Model\SQL\Tables\ZPN_LogImportacaoPCI.sql" />
+    <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ENVIACONTASRECEBER.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACONTASRECEBER.sql" />
+    <EmbeddedResource Include="Model\SQL\Tables\ZPN_IntegracaoDadosCancelamento.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACONTASRECEBERPAGAMENTO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

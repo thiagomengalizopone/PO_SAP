@@ -94,7 +94,14 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 {
                     if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
                     {
-                        MensagemErro += GerarDocumentoPreFaturamento(iRow);                     
+                        if (string.IsNullOrEmpty(DtPesquisa.GetValue("Atividade", iRow).ToString()))
+                        {
+                            MensagemErro += $"Não há atividade selecionada para a  linha {iRow+1}";
+                        }
+                        else
+                        {
+                            MensagemErro += GerarDocumentoPreFaturamento(iRow);
+                        }
                     }
                 }
 
@@ -125,6 +132,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Pedido", iRow));
                 Int32 LineNum = Convert.ToInt32(DtPesquisa.GetValue("Linha", iRow));
                 string ItemCode = DtPesquisa.GetValue("ItemCode", iRow).ToString();
+                string Atividade = DtPesquisa.GetValue("Atividade", iRow).ToString();
                 double TotalLinha = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", iRow));
 
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
@@ -162,7 +170,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Tipo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_itemDescription").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Atividade").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Atividade").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Atividade").Value = Atividade;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_StatusFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusFat").Value;
 
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseEntry").Value = oPedidoVenda.DocEntry;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseLine").Value = oPedidoVenda.Lines.LineNum;

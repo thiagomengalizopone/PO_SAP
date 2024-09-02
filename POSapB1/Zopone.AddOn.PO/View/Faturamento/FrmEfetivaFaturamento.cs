@@ -221,7 +221,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_ListaPedidosGerarPreFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}'";
+                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
@@ -232,8 +232,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 
                 MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
-                MtPedidos.Columns.Item("Col_8").DataBind.Bind("DtPO", "Atividade");
-                MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "Descricao");
                 MtPedidos.Columns.Item("Col_5").DataBind.Bind("DtPO", "Valor");
                 MtPedidos.Columns.Item("Col_6").DataBind.Bind("DtPO", "Esboco");
                 MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "NF");
@@ -245,7 +243,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
                 MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "SaldoAberto");
-                MtPedidos.Columns.Item("Col_15").DataBind.Bind("DtPO", "TotalFaturar");
                 MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "TotalDocumento");                
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();

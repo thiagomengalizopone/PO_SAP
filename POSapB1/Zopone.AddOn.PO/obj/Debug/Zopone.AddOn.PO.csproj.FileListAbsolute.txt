@@ -122,3 +122,4 @@ C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.View.Faturamento.FrmFaturamento.resources
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Faturamento\FrmListaFaturamento.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Faturamento\FrmPreFaturamento.srf
+C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Faturamento\FrmEfetivaFaturamento.srf
