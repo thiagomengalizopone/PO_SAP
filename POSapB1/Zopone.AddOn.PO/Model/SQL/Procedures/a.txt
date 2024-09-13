@@ -1,0 +1,43 @@
+ O volume na unidade C n∆o tem nome.
+ O N£mero de SÇrie do Volume Ç C8B2-638E
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Model\SQL\Procedures
+
+09/09/2024  09:43    <DIR>          .
+09/09/2024  09:43    <DIR>          ..
+09/09/2024  09:43                 0 a.txt
+25/09/2023  11:21               457 SP_GRAVARLOG.sql
+14/08/2024  16:15             1.348 SP_ZPN_CRIAALOCACAOCONTRATO.sql
+29/07/2024  14:50               562 SP_ZPN_IMPORTARPOERICSSON.sql
+28/08/2024  11:03             1.414 SP_ZPN_IMPORTARPOERICSSONItens.sql
+31/07/2024  15:34               983 SP_ZPN_IMPORTARPOHuawei.sql
+28/08/2024  11:04             1.220 SP_ZPN_IMPORTARPOHuaweiItens.sql
+01/07/2024  14:15               574 SP_ZPN_PESQUISAETAPA.sql
+28/08/2024  16:34             1.280 SP_ZPN_PESQUISAOBRA.sql
+03/07/2024  15:06             1.165 SP_ZPN_PESQUISAOBRACANDIDATO.sql
+30/07/2024  10:56             2.230 SP_ZPN_VERIFICAIMPORTARPOHuawei.sql
+21/08/2024  14:42               229 ZPN_SP_AtualizaPedidoFaturamento.sql
+29/08/2024  16:15             1.616 ZPN_SP_EfetivaPedidosPreFaturamento.sql
+26/07/2024  10:17             1.091 ZPN_SP_GeraProjetoTabelaB1.sql
+05/07/2024  15:05               353 ZPN_SP_LISTAOBRACONTRATO.sql
+12/07/2024  10:37               316 ZPN_SP_LISTAOBRAPO.sql
+29/08/2024  10:30             1.305 ZPN_SP_ListaPedidosFaturamentoFaturar.sql
+29/08/2024  15:41             1.637 ZPN_SP_ListaPedidosGerarPreFaturamento.sql
+28/08/2024  15:53             1.223 ZPN_SP_LISTAPO.sql
+29/07/2024  10:54               279 ZPN_SP_LOGIMPORTACAOPO.sql
+12/08/2024  10:52             3.538 ZPN_SP_PCI_ATUALIZACLIENTE.sql
+12/08/2024  16:40             2.954 ZPN_SP_PCI_ATUALIZACONTRATO.sql
+05/08/2024  09:21               524 ZPN_SP_PCI_ATUALIZAEMPRESA.sql
+09/08/2024  17:05             2.882 ZPN_SP_PCI_ATUALIZAETAPA.sql
+07/08/2024  08:39             1.706 ZPN_SP_PCI_ATUALIZAFILIALCENTROCUSTO.sql
+14/08/2024  11:46             4.486 ZPN_SP_PCI_ATUALIZAOBRA.sql
+08/08/2024  15:31             1.432 ZPN_SP_PCI_ATUALIZAOBRACANDIDATO.sql
+07/08/2024  10:09             1.543 ZPN_SP_PCI_ATUALIZAOBRACLASSIFICACAO.sql
+02/09/2024  13:53             2.866 ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER.sql
+02/09/2024  15:11             3.712 ZPN_SP_PCI_ENVIACONTASRECEBER.sql
+02/09/2024  13:51             3.714 ZPN_SP_PCI_ENVIACONTASRECEBERPAGAMENTO.sql
+04/09/2024  11:45            14.815 ZPN_SP_PCI_INSEREATUALIZAPO.sql
+23/07/2024  17:42               690 ZPN_SP_POERICSSON.sql
+21/08/2024  10:49               269 ZPN_SP_SelecionaItemAtividade.sql
+              34 arquivo(s)         64.413 bytes
+               2 pasta(s)   190.485.237.760 bytes dispon°veis

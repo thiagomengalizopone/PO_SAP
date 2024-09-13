@@ -1,4 +1,4 @@
-﻿ALTER procedure ZPN_SP_EfetivaPedidosPreFaturamento
+﻿CREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,

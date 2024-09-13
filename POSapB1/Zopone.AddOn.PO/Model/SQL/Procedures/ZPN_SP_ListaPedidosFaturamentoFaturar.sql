@@ -1,4 +1,4 @@
-﻿alter procedure ZPN_SP_ListaPedidosFaturamentoFaturar
+﻿CREATE PROCEDURE ZPN_SP_ListaPedidosFaturamentoFaturar
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,

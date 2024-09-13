@@ -160,6 +160,7 @@
     <Compile Include="Model\ScriptSQL.cs" />
     <Compile Include="Model\SqlFunctions.cs" />
     <Compile Include="Model\SqlProcedures.cs" />
+    <Compile Include="Model\SqlSequence.cs" />
     <Compile Include="Model\SqlTables.cs" />
     <Compile Include="Model\SqlViews.cs" />
     <Compile Include="Program.cs" />
@@ -314,7 +315,6 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRA.sql" />
     <EmbeddedResource Include="Model\SQL\Sequence\ZPN_SEQ_Candidato.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRACANDIDATO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAPO.sql" />
     <EmbeddedResource Include="View\Faturamento\FrmListaFaturamento.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -335,9 +335,14 @@
     <EmbeddedResource Include="Model\SQL\Tables\ZPN_LogImportacaoPCI.sql" />
     <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ENVIACONTASRECEBER.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACONTASRECEBER.sql" />
-    <EmbeddedResource Include="Model\SQL\Tables\ZPN_IntegracaoDadosCancelamento.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACONTASRECEBERPAGAMENTO.sql" />
+    <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ENVIACONTASRECEBERPAGAMENTO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_INSEREATUALIZAPO.sql" />
+    <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_INSEREPO.sql" />
+    <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ATUALIZAPO.sql" />
+    <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaPOItem.sql" />
+    <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaPO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

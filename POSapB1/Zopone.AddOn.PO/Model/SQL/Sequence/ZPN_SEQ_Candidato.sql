@@ -1,4 +1,3 @@
 ﻿CREATE SEQUENCE ZPN_SEQ_Candidato
     START WITH 1  
     INCREMENT BY 1 ;  
-GO  

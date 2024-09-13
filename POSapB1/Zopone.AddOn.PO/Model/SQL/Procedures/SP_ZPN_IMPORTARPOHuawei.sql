@@ -1,35 +1,32 @@
-﻿CREATE PROCEDURE SP_ZPN_IMPORTARPOHuaweiItens
-(	
-	@po_id INT
+﻿CREATE PROCEDURE [dbo].[SP_ZPN_IMPORTARPOHuawei]
+(
+	@DataInicial datetime,
+	@DataFinal datetime,
+	@Reimportar varchar(2)
 )
 as
 BEGIN
 
 -- SP_ZPN_IMPORTARPOHuawei '2024-07-01', '2024-07-18', 'N'
-	SELECT 
-		 PO.[po_id]
-		,POList.po_lis_DataConfirmacao
-		,POList.[poNumber]
-		,POList.[shipmentNum]
-		,POList.[quantityCancelled]
-		,POList.[quantity]
-		,POList.[itemCode]
-		,POList.[unitPrice]
-		,polist.manufactureSiteInfo
-		,"@ZPN_OPRJ"."Code" "IdObra"
-		,ISNULL("@ZPN_OPRJ"."U_BPLId",-1) "Filial"
-		,polist.poLineNum "ITEM"
-		,cast(polist.poLineNum as varchar(10)) + ' ' + POList.[itemDescription] + ' '+ cast(POList.[quantity] as varchar(15))[itemDescription]
+	SELECT DISTINCT
+		PO.[po_id],
+		 POList.[poNumber],
+		 CAST(POList.po_lis_DataConfirmacao AS DATE) po_lis_DataConfirmacao,
+		 CASE WHEN ISNULL(ODRF.NumAtCard, ORDR.NumAtCard) is null THEN 'Não Importado' ELSE  'Importado' end as "Status",
+		 LOGPO.MensagemLog "Mensagem"
 	FROM 
 		 [192.168.8.241,15050].Zopone.dbo.POList POList
 		INNER JOIN [192.168.8.241,15050].[Zopone].dbo.PO PO ON PO.po_id = POList.po_id
-		LEFT join "@ZPN_OPRJ" on polist.manufactureSiteInfo collate Latin1_General_CI_AS like '%'+ "@ZPN_OPRJ".U_IdSite+ '%'
-
+		LEFT JOIN ORDR ON ORDR."NumAtCard" = POList.[poNumber] COLLATE Latin1_General_CI_AS 
+		LEFT JOIN ODRF ON ODRF."NumAtCard" = POList.[poNumber] COLLATE Latin1_General_CI_AS 
+		LEFT JOIN ZPN_VW_LISTALOGIMPORTACAOPO LOGPO ON LOGPO.po_id = PO.[po_id]
 	where 
-		PO.po_id = @po_id
+		PO.po_status = 1 AND
+		CAST(POList.po_lis_DataConfirmacao  AS DATE) BETWEEN @DataInicial AND @DataFinal AND 
+		(
+			@Reimportar = 'Y' OR ORDR.NumAtCard is null
+	
+		)
 	ORDER BY 
-		POList.[poNumber],
-		polist.poLineNum 
-DESC 
-
-END;
+		POList.[poNumber] DESC 
+end;

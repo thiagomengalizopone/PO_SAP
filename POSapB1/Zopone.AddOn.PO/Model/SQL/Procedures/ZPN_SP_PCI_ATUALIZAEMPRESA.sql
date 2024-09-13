@@ -10,13 +10,9 @@ BEGIN
 			INNER JOIN OBPL ON OBPL.BPLId = EMP_Z.[BPL_ID]
 	WHERE
 		isnull(obpl.u_enviaPCI,'N') = 'Y' AND 
-		EMP_Z.[emp_bd] = 'SBO_ZOPONE' and 
+		EMP_Z.[emp_bd] = 'SBO_ZOPONE_ENGENHARIA' and 
 		isnull(OBPL.U_IdPCI,'') <> cast(EMP_PCI.empresaid as varchar(50));
 
 		
 
 END;
-
-
-
-

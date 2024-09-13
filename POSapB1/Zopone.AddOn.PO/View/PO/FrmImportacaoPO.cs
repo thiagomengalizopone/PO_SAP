@@ -87,6 +87,7 @@ namespace Zopone.AddOn.PO.View.PO
                     MessageBoxIcon.Question) == DialogResult.No)
                     return;
 
+                Int32 DocEntry = 0;
                 bplId = Convert.ToInt32(SqlUtils.GetValue("SELECT MIN(BPLId) FROM OBPL WHERE Disabled = 'N'"));
 
                 SAPbobsCOM.Documents oPedidoVenda = CreatePedidoVenda();
@@ -108,18 +109,17 @@ namespace Zopone.AddOn.PO.View.PO
                         PopulatePedidoVenda(dtRegistros, iPedido, oPedidoVenda, bplId, Empresa);
 
                         if (oPedidoVenda.Add() != 0)
-                            throw new Exception($"PN: {oPedidoVenda.CardCode} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");                      
+                            throw new Exception($"PN: {oPedidoVenda.CardCode} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                        
+                        DocEntry = Convert.ToInt32(Globals.Master.Connection.Database.GetNewObjectKey());
 
+                        EnviarDadosPCIAsync(DocEntry);
                     }
                     catch (Exception ex)
                     {
                         LogImportacaoErro(dtRegistros, iPedido, ex);
                     }
                 }
-
-                EnviarDadosPCIAsync();
-
-
 
                 FrmVerificaImportacaoPO.MenuVerificaPO();
             }
@@ -129,14 +129,14 @@ namespace Zopone.AddOn.PO.View.PO
             }
         }
 
-        private static async Task EnviarDadosPCIAsync()
+        private static async Task EnviarDadosPCIAsync(Int32 DocEntry)
         {
             try
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
 
-                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAPO 0, '{DateTime.Now.ToString("yyyyMMdd")}'";
+                string SQL_Query = $"ZPN_SP_PCI_INSEREATUALIZAPO {DocEntry}";
 
                 SqlUtils.DoNonQueryAsync(SQL_Query);
 

@@ -25,8 +25,9 @@ namespace Zopone.AddOn.PO.Model
             Type[] SqlFunctionsSql = RetornaScriptAlterado.Retorna(typeof(SqlFunctions).GetNestedTypes(), versaoAddOn);
             Type[] SqlTablesSql = RetornaScriptAlterado.Retorna(typeof(SqlTables).GetNestedTypes(), versaoAddOn);
             Type[] SqlViewsSql = RetornaScriptAlterado.Retorna(typeof(SqlViews).GetNestedTypes(), versaoAddOn);
+            Type[] SqlSequenceSql = RetornaScriptAlterado.Retorna(typeof(SqlSequence).GetNestedTypes(), versaoAddOn);
 
-            DTOScript[] SqlScriptsAddOn = new DTOScript[SqlProceduresSql.Length + SqlFunctionsSql.Length + SqlTablesSql.Length + SqlViewsSql.Length];
+            DTOScript[] SqlScriptsAddOn = new DTOScript[SqlProceduresSql.Length + SqlFunctionsSql.Length + SqlTablesSql.Length + SqlViewsSql.Length + SqlSequenceSql.Length];
 
             #region SQL - Table                        
             for (int iPos = 0; iPos < SqlTablesSql.Length; iPos++)
@@ -53,12 +54,10 @@ namespace Zopone.AddOn.PO.Model
             #region SQL  - View                        
             for (int iPos = 0; iPos < SqlViewsSql.Length; iPos++)
             {
-                SqlScriptsAddOn[Count] = new DTOScript
-                {
-                    Tipo = TipoScript.View,
-                    FileName = SqlViewsSql[iPos].GetField("Nome")?.GetValue(null).ToString(),
-                    Bytes = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SqlScriptsAddOn[Count].FileName), encoding)
-                };
+                SqlScriptsAddOn[Count] = new DTOScript();
+                SqlScriptsAddOn[Count].Tipo = TipoScript.View;
+                SqlScriptsAddOn[Count].FileName = SqlViewsSql[iPos].GetField("Nome")?.GetValue(null).ToString();
+                SqlScriptsAddOn[Count].Bytes = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SqlScriptsAddOn[Count].FileName), encoding);
                 Count++;
             }
             #endregion
@@ -69,6 +68,17 @@ namespace Zopone.AddOn.PO.Model
                 SqlScriptsAddOn[Count] = new DTOScript();
                 SqlScriptsAddOn[Count].Tipo = TipoScript.Proc;
                 SqlScriptsAddOn[Count].FileName = SqlProceduresSql[iPos].GetField("Nome")?.GetValue(null).ToString();
+                SqlScriptsAddOn[Count].Bytes = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SqlScriptsAddOn[Count].FileName), encoding);
+                Count++;
+            }
+            #endregion
+
+            #region SQL  - SEQUENCE                        
+            for (int iPos = 0; iPos < SqlSequenceSql.Length; iPos++)
+            {
+                SqlScriptsAddOn[Count] = new DTOScript();
+                SqlScriptsAddOn[Count].Tipo = TipoScript.Sequence;
+                SqlScriptsAddOn[Count].FileName = SqlSequenceSql[iPos].GetField("Nome")?.GetValue(null).ToString();
                 SqlScriptsAddOn[Count].Bytes = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SqlScriptsAddOn[Count].FileName), encoding);
                 Count++;
             }

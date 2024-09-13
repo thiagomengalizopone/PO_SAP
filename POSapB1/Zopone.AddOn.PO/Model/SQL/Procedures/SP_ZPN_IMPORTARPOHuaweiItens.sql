@@ -1,4 +1,4 @@
-﻿alter PROCEDURE SP_ZPN_IMPORTARPOHuaweiItens
+﻿CREATE PROCEDURE SP_ZPN_IMPORTARPOHuaweiItens
 (	
 	@po_id INT
 )

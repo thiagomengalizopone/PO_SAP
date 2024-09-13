@@ -1,4 +1,4 @@
-﻿crete procedure ZPN_SP_ListaPedidosGerarPreFaturamento
+﻿create procedure ZPN_SP_ListaPedidosGerarPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,

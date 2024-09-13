@@ -1,4 +1,4 @@
-﻿alter PROCEDURE ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER
+﻿CREATE PROCEDURE ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER
 (
 	@UltimaData date,
 	@UltimaHora int
@@ -19,7 +19,7 @@ DECLARE @DocDate DATE;
 
 
 IF EXISTS (SELECT * FROM tempdb.sys.tables 
-           WHERE NAME LIKE '##DadosCancelamnentoCRPCI%' AND TYPE = 'U')
+           WHERE NAME LIKE '#DadosCancelamnentoCRPCI%' AND TYPE = 'U')
 	BEGIN
 		drop table #DadosPagamentoPCI;
 	END
@@ -53,7 +53,7 @@ WHERE
 
 
 -- Definir o número de registros a serem processados
-SET @RowCount = (SELECT COUNT(*) FROM ZPN_IntegracaoDadosCancelamento);
+SET @RowCount = (SELECT COUNT(*) FROM #DadosCancelamnentoCRPCI);
 SET @CurrentRow = 1; -- Começar na primeira linha
 
 -- Loop WHILE para processar os dados

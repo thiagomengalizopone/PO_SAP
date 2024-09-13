@@ -143,9 +143,20 @@ namespace Zopone.AddOn.PO.Model.SAP
                 #endregion
 
                 #region Classificação da Obra
-                DBCreation.CriarTabelaUsuario("ZPN_CLASSOB", "Cadastro Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                DBCreation.CriarTabelaUsuario("ZPN_CLASSOB", "Cadastro Class Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "Posicao", "Posição", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
-                DBCreation.CriarUDO("ZPN_CLASSOB", "ZPN_CLASSOB", "ZPN_CLASSOB", SAPbobsCOM.BoUDOObjType.boud_MasterData);
+
+                DBCreation.CriarTabelaUsuario("ZPN_CLASSOBF", "Cadastro Class Obra Filiais", SAPbobsCOM.BoUTBTableType.bott_MasterDataLines);
+                DBCreation.CriarCampoUsuario("@ZPN_CLASSOBF", "BPLId", "Filial", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_CLASSOBF", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                List<ChildTables> tabelaFilhaClassificacao = new List<ChildTables>();
+                tabelaFilhaClassificacao.Add(new ChildTables("ZPN_CLASSOBF", "ZPN_CLASSOBF"));
+
+                DBCreation.CriarUDO("ZPN_CLASSOB", "ZPN_CLASSOB", "ZPN_CLASSOB", SAPbobsCOM.BoUDOObjType.boud_MasterData, tabelaFilhaClassificacao);
+
+
+
                 #endregion
 
                 #region Classificação da Obra
@@ -296,9 +307,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("RDR1", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 DBCreation.CriarCampoUsuario("INV6", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
 
-                DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
-
-
+                
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
 
                 #endregion
