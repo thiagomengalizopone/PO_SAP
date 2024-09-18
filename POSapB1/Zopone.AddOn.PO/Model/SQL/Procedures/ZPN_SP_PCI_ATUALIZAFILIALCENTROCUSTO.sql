@@ -1,20 +1,30 @@
-﻿
-
-CREATE PROCEDURE ZPN_SP_PCI_ATUALIZAFILIALCENTROCUSTO
+﻿ALTER PROCEDURE ZPN_SP_PCI_ATUALIZAFILIALCENTROCUSTO
 (
 	@PrcCode varchar(50)
 )
 AS 
 BEGIN
 
+	--ZPN_SP_PCI_ATUALIZAFILIALCENTROCUSTO 'Centr_zR'
+
+	UPDATE
+		OPRC
+	SET 
+		[U_IdPCI]  = NEWID()
+	WHERE
+		(PrcCode = @PrcCode OR ISNULL(@PrcCode,'') = '') AND
+		isnull([U_IdPCI],'') = '' AND
+		DimCode = 3;
 
 
+
+	
 
 	
 	INSERT INTO 
 		[LINKZCLOUD].[zsistema_aceite].[dbo].[filial] 
 		(
-			[filialid]
+			T0.[filialid]
 			,[gestatus]
 			,[gedataacao]
 			,[gecontaidacao]
@@ -24,7 +34,7 @@ BEGIN
 			,[codigo]
 		)
 		SELECT 
-			NEWID(),
+			T0.[U_IdPCI],
 			1,
 			GETDATE(),
 			null,
@@ -54,20 +64,7 @@ BEGIN
 
 
 
-	update
-		oprc
-	set
-		[U_IdPCI] = FILIAL.filialid, 
-		[U_IdZSistemas] = FILIAL.codigo
-	FROM 
-		OPRC T0  
-		INNER JOIN ODIM T1 ON T0.[DimCode] = T1.[DimCode]
-		INNER JOIN OBPL T2 ON T2.BPLId = T0.U_MM_Filial
-		INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[filial] FILIAL ON FILIAL.nome collate SQL_Latin1_General_CP1_CI_AS = T0.[PrcName] AND FILIAL.empresaid = t2.U_IdPCI	
-	WHERE	
-		T0.PrcCode = @PrcCode OR ISNULL(@PrcCode,'') = '' AND
-		T1.DimDesc = 'REGIONAL' AND
-		ISNULL(T0.[U_IdPCI],'') = '' AND
-		ISNULL(T0.[U_IdZSistemas] ,'') = '' ;
-
 END;
+
+
+

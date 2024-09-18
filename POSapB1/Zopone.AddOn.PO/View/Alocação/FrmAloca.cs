@@ -14,7 +14,10 @@ namespace Zopone.AddOn.PO.View.Alocação
         EditText EdEtapaDescricao { get; set; }
         ComboBox CbFilial { get; set; }
 
-        ComboBox CbEtapaFaturamento { get; set; }
+
+        EditText EdEtapF { get; set; }
+        EditText EdEtapFD { get; set; }
+
 
         #endregion
 
@@ -27,8 +30,9 @@ namespace Zopone.AddOn.PO.View.Alocação
             EdEtapa.ChooseFromListAfter += EdEtapa_ChooseFromListAfter;
             EdEtapaDescricao = (EditText)oForm.Items.Item("EdEtapD").Specific;
 
-            CbEtapaFaturamento = (ComboBox)oForm.Items.Item("CbEtFat").Specific;
-            
+            EdEtapF = (EditText)oForm.Items.Item("EdEtapF").Specific;
+            EdEtapF.ChooseFromListAfter += EdEtapF_ChooseFromListAfter;
+            EdEtapFD = (EditText)oForm.Items.Item("EdEtapFD").Specific;
 
             CbFilial = (ComboBox)oForm.Items.Item("CbFilial").Specific;
 
@@ -38,14 +42,29 @@ namespace Zopone.AddOn.PO.View.Alocação
 
         }
 
-        
+        private void EdEtapF_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                if (aEvent.SelectedObjects == null)
+                    return;
+
+                EdEtapFD.Value = Convert.ToString(aEvent.SelectedObjects.GetValue("U_Desc", 0));
+
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados Etapa Faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
 
         private void CarregarDadosAlocacao()
         {
             try
             {
                 Util.ComboBoxSetValoresValidosPorSQL(CbFilial, UtilScriptsSQL.SQL_Filial);
-                Util.ComboBoxSetValoresValidosPorSQL(CbEtapaFaturamento, UtilScriptsSQL.SQL_EtapaFaturamento);
             }
             catch (Exception Ex)
             {

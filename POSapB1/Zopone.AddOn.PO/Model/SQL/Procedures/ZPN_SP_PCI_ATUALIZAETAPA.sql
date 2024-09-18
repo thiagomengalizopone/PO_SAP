@@ -6,6 +6,30 @@ AS
 BEGIN
 
 
+
+	UPDATE "@ZPN_ALOCA"
+			SET U_IdPCI = etapa.etapaid
+		FROM
+			"@ZPN_ALOCA" ALOCA
+			INNER JOIN OBPL ON OBPL.BPLId = ALOCA.U_BplId
+			INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETAPA ON 
+				ETAPA.nome collate SQL_Latin1_General_CP1_CI_AS = ALOCA.U_Desc and 
+				cast(etapa.empresaid  as varchar(50)) = OBPL.U_IdPCI
+		WHERE 
+			(ISNULL(@CodeEtapa, '') = '' OR @CodeEtapa = ALOCA."Code") and
+			ALOCA.Name NOT IN 
+			(
+				SELECT 
+					[nome] COLLATE SQL_Latin1_General_CP1_CI_AS
+				FROM 
+					[LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETP 
+				WHERE 
+					ETP.Nome COLLATE SQL_Latin1_General_CP1_CI_AS = ALOCA.U_Desc COLLATE SQL_Latin1_General_CP1_CI_AS
+					AND CAST(ETP.[empresaid] AS VARCHAR(50)) COLLATE SQL_Latin1_General_CP1_CI_AS = OBPL.U_IdPci COLLATE SQL_Latin1_General_CP1_CI_AS
+			) ;
+
+
+
 	INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa]
 			   ([etapaid]
 			   ,[gestatus]
@@ -21,7 +45,7 @@ BEGIN
      
 	 
 		 SELECT 
-			NEWID(),
+			ALOCA.U_IdPCI,
 			1,
 			GETDATE(),
 			NULL,
@@ -50,20 +74,10 @@ BEGIN
 			(ISNULL(@CodeEtapa, '') = '' OR @CodeEtapa = ALOCA."Code") 
 			AND OBPL.U_EnviaPCI = 'Y' 
 			AND ISNULL(OBPL.U_IdPci, '') <> ''
-			AND ISNULL(ALOCA.U_IdPci, '') = '';
+			AND ISNULL(ALOCA.U_IdPci, '') <> '';
 	
 		
-		UPDATE "@ZPN_ALOCA"
-			SET U_IdPCI = etapa.etapaid
-		FROM
-			"@ZPN_ALOCA" ALOCA
-			INNER JOIN OBPL ON OBPL.BPLId = ALOCA.U_BplId
-			INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETAPA ON 
-				ETAPA.nome collate SQL_Latin1_General_CP1_CI_AS = ALOCA.U_Desc and 
-				cast(etapa.empresaid  as varchar(50)) = OBPL.U_IdPCI
-		WHERE 
-			(ISNULL(@CodeEtapa, '') = '' OR @CodeEtapa = ALOCA."Code")  and
-			isnull(ALOCA.U_IdPCI,'') <> cast(etapa.etapaid as varchar(50));
+		
 
 
 	UPDATE [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa]

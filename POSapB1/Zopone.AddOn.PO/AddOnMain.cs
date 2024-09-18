@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Zopone.AddOn.PO.Controller.Localizacao;
+using Zopone.AddOn.PO.Importação;
 using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.UtilAddOn;
 using static sap.dev.core.EnumList;
@@ -21,6 +22,12 @@ namespace Zopone.AddOn.PO
             SAPConnection lConexao = ISup.lConexao;
 
             Globals.Master = new Master(lConexao, EnumAddOn.CadastroPO, GetDLLVersion());
+
+
+            //TESTE
+            //ImportaContratoHomologacao.ImportaContratoValidacao();
+
+
 
             Util.CriarPastaLog();
 

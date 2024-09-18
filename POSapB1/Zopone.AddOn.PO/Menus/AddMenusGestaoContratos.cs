@@ -13,7 +13,7 @@ namespace Zopone.AddOn.PO.Menus
             {
                 MenusGestaoUtilitarios mnuGC = new MenusGestaoUtilitarios();
 
-                Util.RemoverMenus(MenuConstantes.MnuFaturamento);
+                Util.RemoverMenus(MenuConstantes.MnuFaturamentoPO);
 
                 sap.dev.core.Util.AddMenuItens(mnuGC.GetMenus());
             }

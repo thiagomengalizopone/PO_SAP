@@ -159,7 +159,7 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 #endregion
 
-                #region Classificação da Obra
+                #region ZPN_DETENT
                 DBCreation.CriarTabelaUsuario("ZPN_DETENT", "Detentora", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 DBCreation.CriarUDO("ZPN_DETENT", "ZPN_DETENT", "ZPN_DETENT", SAPbobsCOM.BoUDOObjType.boud_MasterData);
                 #endregion

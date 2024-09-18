@@ -10,6 +10,17 @@ BEGIN
 
 
 
+	UPDATE OOAT
+		SET 
+			U_IdPCI = newid()
+	FROM 
+		OOAT
+	WHERE
+		ISNULL(OOAT.U_IdPCI,'') = '' AND
+		(OOAT.Descript = @Descript or ISNULL(@Descript,'') = '') ;
+
+
+
 
 INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[CONTRATO]
            (
@@ -28,7 +39,7 @@ INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[CONTRATO]
 		  )
      
 	 SELECT 
-		NEWID(),
+		OOAT.U_IdPCI,
 		1,
 		GETDATE(),
 		NULL,
@@ -92,18 +103,7 @@ INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[CONTRATO]
 
 
 
-	UPDATE OOAT
-		SET 
-			U_IdPCI = CONT.[contratoid],
-			U_IdZSistemas = CONT.[codigo]
-	FROM 
-		OOAT
-		INNER JOIN OPRC ON OPRC.PrcCode = OOAT.U_Regional 
-		INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[CONTRATO] CONT ON 
-									CONT.[referencia] COLLATE SQL_Latin1_General_CP1_CI_AS = OOAT.Descript  AND 
-									CAST(CONT.[filialid] AS VARCHAR(50))   COLLATE SQL_Latin1_General_CP1_CI_AS = OPRC.U_IdPCI
-	WHERE
-		ISNULL(OOAT.U_IdPCI,'') = '';
+
 
 
 END;

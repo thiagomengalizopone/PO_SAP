@@ -149,6 +149,7 @@
     <Compile Include="Events\RightClickEventHandler.cs" />
     <Compile Include="Helpers\UtilCustomize.cs" />
     <Compile Include="Helpers\UtilTextBox.cs" />
+    <Compile Include="Importação\ImportaContratoHomologacao.cs" />
     <Compile Include="Install.cs" />
     <Compile Include="InstanceStartup.cs" />
     <Compile Include="Menus\AddMenusGestaoContratos.cs" />
@@ -343,6 +344,11 @@
     <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ATUALIZAPO.sql" />
     <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaPOItem.sql" />
     <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\IMPORTACLASSIFICACAOOBRApci.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\IMPORTAETAPAPCI.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\ATUALIZACLIENTEPCI-SAP.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\ATUALIZAcentrocustoregional.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\IMPORTARCONTRATOTEMP.SQL" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -2,7 +2,7 @@
 {
     public class MenuConstantes
     {
-        public const string MnuFaturamento = "MnuFatura";
+        public const string MnuFaturamentoPO = "MnuFatura";
         public const string MnuCadPO = "MnuCadPO";
         public const string MnuCadObra = "MnuCadObra";
         public const string MnuClassificacaoObra = "MnuClass";
@@ -16,6 +16,10 @@
         public const string MnuPreFaturaPO = "MnuPreFaturaPO";
         public const string MnuEfetFaturaPO = "MnuEfetFatura";
 
+        public const string MnuConfiguracoes = "MnuConfiguracoes";
+        public const string MnuCadastros = "MnuCadastros";
+        public const string MnuPO = "MnPO";
+        public const string MnuFaturamento = "MnuFaturamento";
 
     }
 

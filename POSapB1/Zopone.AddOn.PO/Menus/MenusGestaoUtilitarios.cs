@@ -22,13 +22,21 @@ namespace Zopone.AddOn.PO.Menus
             listMenu.Add(new Menu(
                     $"43520",
                     BoMenuType.mt_POPUP,
-                    MenuConstantes.MnuFaturamento,
+                    MenuConstantes.MnuFaturamentoPO,
                     "Faturamento",
                     16,
                     imagem));
-            
+
             listMenu.Add(new Menu(
-                 MenuConstantes.MnuFaturamento,
+                 MenuConstantes.MnuFaturamentoPO,
+                 BoMenuType.mt_POPUP,
+                 MenuConstantes.MnuConfiguracoes,
+                 "Configurações",
+                 17,
+                 null));
+
+            listMenu.Add(new Menu(
+                 MenuConstantes.MnuConfiguracoes,
                  BoMenuType.mt_STRING,
                  MenuConstantes.MnuConfImportacaoPO,
                  "Configuração Importação PO",
@@ -36,7 +44,15 @@ namespace Zopone.AddOn.PO.Menus
                  null));
 
             listMenu.Add(new Menu(
-                     MenuConstantes.MnuFaturamento,
+                 MenuConstantes.MnuFaturamentoPO,
+                 BoMenuType.mt_POPUP,
+                 MenuConstantes.MnuCadastros,
+                 "Cadastros",
+                 17,
+                 null));
+
+            listMenu.Add(new Menu(
+                     MenuConstantes.MnuCadastros,
                      BoMenuType.mt_STRING,
                      MenuConstantes.MnuClassificacaoObra,
                      "Classificação Obra",
@@ -44,7 +60,7 @@ namespace Zopone.AddOn.PO.Menus
                      null));
 
             listMenu.Add(new Menu(
-                   MenuConstantes.MnuFaturamento,
+                   MenuConstantes.MnuCadastros,
                    BoMenuType.mt_STRING,
                    MenuConstantes.MnuAlocacao,
                    "Alocação",
@@ -52,7 +68,7 @@ namespace Zopone.AddOn.PO.Menus
                    null));
 
             listMenu.Add(new Menu(
-                   MenuConstantes.MnuFaturamento,
+                   MenuConstantes.MnuCadastros,
                    BoMenuType.mt_STRING,
                    MenuConstantes.MnuContrato,
                    "Contrato",
@@ -60,7 +76,7 @@ namespace Zopone.AddOn.PO.Menus
                    null));
 
             listMenu.Add(new Menu(
-                   MenuConstantes.MnuFaturamento,
+                   MenuConstantes.MnuCadastros,
                    BoMenuType.mt_STRING,
                    MenuConstantes.MnuObra,
                    "Obra",
@@ -68,7 +84,15 @@ namespace Zopone.AddOn.PO.Menus
                    null));
 
             listMenu.Add(new Menu(
-                      MenuConstantes.MnuFaturamento,
+                             MenuConstantes.MnuFaturamentoPO,
+                             BoMenuType.mt_POPUP,
+                             MenuConstantes.MnuPO,
+                             "PO",
+                             17,
+                             null));
+
+            listMenu.Add(new Menu(
+                      MenuConstantes.MnuPO,
                       BoMenuType.mt_STRING,
                       MenuConstantes.MnuCadPO,
                       "Cadastro de PO",
@@ -76,7 +100,7 @@ namespace Zopone.AddOn.PO.Menus
                       null));
 
             listMenu.Add(new Menu(
-                      MenuConstantes.MnuFaturamento,
+                      MenuConstantes.MnuPO,
                       BoMenuType.mt_STRING,
                       MenuConstantes.MnuImportacaoPO,
                       "Importação de PO",
@@ -84,13 +108,20 @@ namespace Zopone.AddOn.PO.Menus
                       null));
 
             listMenu.Add(new Menu(
-                      MenuConstantes.MnuFaturamento,
+                      MenuConstantes.MnuPO,
                       BoMenuType.mt_STRING,
                       MenuConstantes.MnuVerificaImpPO,
                       "Verifica Importação de PO",
                       23,
                       null));
 
+            listMenu.Add(new Menu(
+                 MenuConstantes.MnuFaturamentoPO,
+                 BoMenuType.mt_POPUP,
+                 MenuConstantes.MnuFaturamento,
+                 "Faturamento",
+                 17,
+                 null));
 
             listMenu.Add(new Menu(
                       MenuConstantes.MnuFaturamento,
