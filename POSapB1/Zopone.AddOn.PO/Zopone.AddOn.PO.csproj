@@ -187,6 +187,7 @@
     </Compile>
     <Compile Include="View\FrmParceiroNegocio\Frm134.cs" />
     <Compile Include="View\ObraProjeto\Frm711.cs" />
+    <Compile Include="View\Obra\FrmGerarObra.cs" />
     <Compile Include="View\Obra\FrmObra.cs" />
     <Compile Include="View\PO\FrmVerificaImportacaoPO.cs">
       <SubType>Form</SubType>
@@ -349,6 +350,10 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\ATUALIZACLIENTEPCI-SAP.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\ATUALIZAcentrocustoregional.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\IMPORTARCONTRATOTEMP.SQL" />
+    <EmbeddedResource Include="View\Obra\FrmGerarObra.srf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_GeraCodigosObra.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

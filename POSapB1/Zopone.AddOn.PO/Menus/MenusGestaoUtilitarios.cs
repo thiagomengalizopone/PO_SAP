@@ -82,6 +82,13 @@ namespace Zopone.AddOn.PO.Menus
                    "Obra",
                    21,
                    null));
+            listMenu.Add(new Menu(
+               MenuConstantes.MnuCadastros,
+               BoMenuType.mt_STRING,
+               MenuConstantes.MnuGerarObra,
+               "Gerar Obra",
+               21,
+               null));
 
             listMenu.Add(new Menu(
                              MenuConstantes.MnuFaturamentoPO,

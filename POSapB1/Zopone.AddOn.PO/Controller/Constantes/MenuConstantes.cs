@@ -8,6 +8,7 @@
         public const string MnuClassificacaoObra = "MnuClass";
         public const string MnuAlocacao = "MnuAlocacao";
         public const string MnuContrato = "MnuContrato";
+        public const string MnuGerarObra = "MnuGerarObra";
         public const string MnuObra = "MnuObra";
         public const string MnuImportacaoPO = "MnuImpoPO";
         public const string MnuConfImportacaoPO = "MnuConfImpoPO";

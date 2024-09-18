@@ -50,6 +50,11 @@ namespace Zopone.AddOn.PO
                                 new FrmObra();
                             }
                             break;
+                        case MenuConstantes.MnuGerarObra:
+                            {
+                                new FrmGerarObra();
+                            }
+                            break;
                         case MenuConstantes.MnuCadPO:
                             {
                                 FrmPO.MenuPO();
