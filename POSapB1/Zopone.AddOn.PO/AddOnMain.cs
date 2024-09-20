@@ -25,7 +25,8 @@ namespace Zopone.AddOn.PO
 
 
             //TESTE
-            //ImportaContratoHomologacao.ImportaContratoValidacao();
+            //ImportaContratoHomologacao.ImportarObrasSAPB1();
+            ImportaContratoHomologacao.ImportaContratoValidacao();
 
 
 

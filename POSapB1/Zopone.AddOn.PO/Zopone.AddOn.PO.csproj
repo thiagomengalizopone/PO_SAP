@@ -147,6 +147,7 @@
     <Compile Include="Events\ItemEventHandler.cs" />
     <Compile Include="Events\MenuEventHandler.cs" />
     <Compile Include="Events\RightClickEventHandler.cs" />
+    <Compile Include="Helpers\UtilProjetos.cs" />
     <Compile Include="Helpers\UtilCustomize.cs" />
     <Compile Include="Helpers\UtilTextBox.cs" />
     <Compile Include="Importação\ImportaContratoHomologacao.cs" />
@@ -354,6 +355,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_GeraCodigosObra.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_GeraProjetoTabelaB1PCI.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_INSEREIMPORTAOBRA.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

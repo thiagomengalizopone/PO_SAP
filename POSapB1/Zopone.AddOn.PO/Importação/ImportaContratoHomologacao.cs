@@ -8,11 +8,37 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zopone.AddOn.PO.Helpers;
 
 namespace Zopone.AddOn.PO.Importação
 {
     public class ImportaContratoHomologacao
     {
+
+        public static void ImportarObrasSAPB1()
+        {
+            System.Data.DataTable DtContrato =
+                       SqlUtils.ExecuteCommand(@"
+                                                SELECT * FROM vw_sp_importaobrapcivalidacao
+                        ");
+
+
+            foreach (DataRow row in DtContrato.Rows)
+            {
+                try
+                {
+                    UtilProjetos.SalvarProjeto(row["referencia"].ToString(), row["referencia"].ToString());
+
+                    //SqlUtils.DoNonQuery($"SP_ZPN_INSEREIMPORTAOBRA '{row["referencia"].ToString()}'");
+                    
+                }
+                catch (Exception ex)
+                {
+                    // Trate exceções ou faça logging
+                    Console.WriteLine($"Erro ao importar contrato: {ex.Message}");
+                }
+            }
+        }
 
 
         public static void ImportaContratoValidacao()

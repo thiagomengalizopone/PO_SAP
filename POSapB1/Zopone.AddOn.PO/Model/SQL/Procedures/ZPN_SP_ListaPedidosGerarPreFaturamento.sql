@@ -1,4 +1,4 @@
-﻿create procedure ZPN_SP_ListaPedidosGerarPreFaturamento
+﻿CREATE procedure ZPN_SP_ListaPedidosGerarPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -19,7 +19,6 @@ BEGIN
 --set @DataFinal = '2025-01-01';
 
 --set @StatusFaturamento = 'A';
-
 SELECT 
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
@@ -29,9 +28,9 @@ SELECT
 	RDR1."U_Atividade" "Atividade",
 	RDR1."U_itemDescription" "Descricao",
 	RDR1."LineTotal" "Valor",
-	--DRF1.DocEntry "Esboco",
-	0 "Esboco",
-	0 "NF",
+	ALOCA.U_Desc "Alocacao",
+	ALOCAFAT."Code" "AlocacaoFAT",
+	ALOCAFAT.U_Desc "DescAlocacaoFAT",
 	RDR1."ItemCode",
 	RDR1."Dscription", 
 	isnull(FAT."SaldoFaturado",0)"SaldoFaturado",
@@ -43,9 +42,10 @@ FROM
 	RDR1 
 	INNER JOIN ORDR ON ORDR."DocEntry" = RDR1."DocEntry"
 	LEFT JOIN ZPN_VW_TotalFaturadoPedido FAT ON FAT.U_BaseEntry = RDR1."DocEntry" AND FAT.U_BaseLine = RDR1.LineNum
---	LEFT JOIN DRF1 ON DRF1.U_BaseEntry = RDR1."DocEntry" and DRF1."U_BaseLine" = RDR1."LineNum"
---	LEFT JOIN ODRF ON ODRF."DocEntry" = DRF1."DocEntry"
+	LEFT JOIN "@ZPN_ALOCA" ALOCA    ON ALOCA."Code" = RDR1.U_ItemFat 
+	LEFT JOIN "@ZPN_ALOCA" ALOCAFAT ON ALOCAFAT."Code" = ALOCA.U_EtapaFat
 WHERE 
+	isnull(FAT."SaldoFaturado",0) < RDR1."LineTotal" and
 	ISNULL(RDR1."U_StatusFat",'A') = 'F'
 	AND (isnull(ORDR."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
 	AND ORDR."DocDate" between @DataInicial and @DataFinal

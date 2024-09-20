@@ -160,7 +160,7 @@ namespace Zopone.AddOn.PO.View.PO
                 oPedidoVenda.DocObjectCodeEx = "17";
             }
 
-            oPedidoVenda.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.TipoDocumentoPO);
+            oPedidoVenda.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.Utilizacao);
 
             return oPedidoVenda;
         }
@@ -204,16 +204,16 @@ namespace Zopone.AddOn.PO.View.PO
                 oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
                 oPedidoVenda.Lines.Quantity = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["quantity"]);
                 oPedidoVenda.Lines.Price = Convert.ToDouble(dtRegistrosItens.Rows[iPedidoLinha]["unitPrice"]);
-                oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.TipoDocumentoPO;
+                oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
 
                 if (dtRegistrosItens.Rows[iPedidoLinha]["PCG"] != null)
                     oPedidoVenda.Lines.CostingCode = dtRegistrosItens.Rows[iPedidoLinha]["PCG"].ToString();
 
                 if (dtRegistrosItens.Rows[iPedidoLinha]["Obra"] != null)
-                    oPedidoVenda.Lines.CostingCode = dtRegistrosItens.Rows[iPedidoLinha]["Obra"].ToString();
+                    oPedidoVenda.Lines.CostingCode2 = dtRegistrosItens.Rows[iPedidoLinha]["Obra"].ToString();
 
                 if (dtRegistrosItens.Rows[iPedidoLinha]["Regional"] != null)
-                    oPedidoVenda.Lines.CostingCode = dtRegistrosItens.Rows[iPedidoLinha]["Regional"].ToString();
+                    oPedidoVenda.Lines.CostingCode3 = dtRegistrosItens.Rows[iPedidoLinha]["Regional"].ToString();
 
                 if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString()))
                     oPedidoVenda.Lines.ProjectCode = dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString();

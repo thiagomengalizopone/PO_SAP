@@ -7,6 +7,7 @@ using SAPbouiCOM;
 using System;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Zopone.AddOn.PO.Helpers;
 using Zopone.AddOn.PO.UtilAddOn;
 
 namespace Zopone.AddOn.PO.View.Obra
@@ -156,28 +157,12 @@ namespace Zopone.AddOn.PO.View.Obra
                     oGeneralParams = oGeneralService.Add(oGeneralData);
 
 
-                    SalvarProjeto(Code);
+                   UtilProjetos.SalvarProjeto(Code, Code);
                 }
             }
 
         }
 
 
-        private static void SalvarProjeto(string CodeObra)
-        {
-
-            CompanyService oCmpSrv = Globals.Master.Connection.Database.GetCompanyService();
-
-            ProjectsService projectService = (ProjectsService)oCmpSrv.GetBusinessService(ServiceTypes.ProjectsService);
-
-            Project project = (Project)projectService.GetDataInterface(ProjectsServiceDataInterfaces.psProject);
-
-            project.Code = CodeObra;
-            project.Name = CodeObra;
-
-
-            projectService.AddProject(project);
-
-        }
     }
 }

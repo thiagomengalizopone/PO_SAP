@@ -611,7 +611,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     else if (linePO.LineNum >= 0)
                         oPedidoVenda.Lines.SetCurrentLine(linePO.LineNum);
 
-                    oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.TipoDocumentoPO;
+                    oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                     oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
                     oPedidoVenda.Lines.Quantity = 1;
                     oPedidoVenda.Lines.Price = Convert.ToDouble(linePO.U_Valor);
@@ -633,7 +633,6 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value = linePO.U_NroNF;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value = linePO.U_Tipo;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value = linePO.U_Parcela;
-                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value = linePO.U_DescItemFat;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value = linePO.U_Bloqueado ? "Y" : "N";
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = linePO.U_itemDescription;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = linePO.U_manSiteInfo;

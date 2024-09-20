@@ -5,7 +5,10 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Zopone.AddOn.PO.Helpers;
 using Zopone.AddOn.PO.UtilAddOn;
 
 namespace Zopone.AddOn.PO.View.Obra
@@ -23,14 +26,11 @@ namespace Zopone.AddOn.PO.View.Obra
 
         public ComboBox CbPais { get; set; }
         public ComboBox CbEstado { get; set; }
-        public ComboBox CbCidade { get; set; }
 
         public ComboBox CbRegional { get; set; }
-        public ComboBox CbPCG { get; set; }
 
         public ComboBox CbPaisCandidato { get; set; }
         public ComboBox CbEstadoCandidato { get; set; }
-        public ComboBox CbCidadeCandidato { get; set; }
 
         public ComboBox CbClassificacaoObra { get; set; }
 
@@ -53,6 +53,13 @@ namespace Zopone.AddOn.PO.View.Obra
         public EditText EdNum { get; set; }
         public EditText EdComp { get; set; }
         public EditText EdBairro { get; set; }
+        public EditText EdCidade { get; set; }
+        public EditText EdCidadeD { get; set; }
+        public EditText EdCidadeCandidato { get; set; }
+        public EditText EdCidadeCandidatoDescricao { get; set; }
+        public EditText EdPCG { get; set; }
+
+
 
         public EditText EdLatitude { get; set; }
 
@@ -90,18 +97,20 @@ namespace Zopone.AddOn.PO.View.Obra
             CbPais.ComboSelectAfter += CbPais_ComboSelectAfter;
 
             CbEstado = (ComboBox)oForm.Items.Item("CbEst").Specific;
-            CbEstado.ComboSelectAfter += CbEstado_ComboSelectAfter;
 
-            CbCidade = (ComboBox)oForm.Items.Item("CbCid").Specific;
+            EdCidade = (EditText)oForm.Items.Item("EdCidade").Specific;
+            EdCidadeD = (EditText)oForm.Items.Item("EdCidadeD").Specific;
+            EdCidadeD.ChooseFromListBefore += EdCidadeD_ChooseFromListBefore;
+            EdCidadeD.ChooseFromListAfter += EdCidadeD_ChooseFromListAfter;
 
 
-
+            EdEquipamento = (EditText)oForm.Items.Item("EdEquip").Specific;
 
             CbClassificacaoObra = (ComboBox)oForm.Items.Item("CbClassO").Specific;
 
 
             CbRegional = (ComboBox)oForm.Items.Item("CbRegion").Specific;
-            CbPCG = (ComboBox)oForm.Items.Item("CbPCG").Specific;
+            EdPCG = (EditText)oForm.Items.Item("EdPCG").Specific;
 
             GdListPO = (Grid)oForm.Items.Item("GdObra").Specific;
             GdListPO.DoubleClickAfter += GdListPO_DoubleClickAfter;
@@ -132,9 +141,12 @@ namespace Zopone.AddOn.PO.View.Obra
             CbPaisCandidato.ComboSelectAfter += CbPaisCandidato_ComboSelectAfter;
 
             CbEstadoCandidato = (ComboBox)oForm.Items.Item("CbEstC").Specific;
-            CbEstadoCandidato.ComboSelectAfter += CbEstadoCandidato_ComboSelectAfter;
 
-            CbCidadeCandidato = (ComboBox)oForm.Items.Item("CbCidC").Specific;
+            EdCidadeCandidato = (EditText)oForm.Items.Item("EdCidadC").Specific;
+           
+            EdCidadeCandidatoDescricao = (EditText)oForm.Items.Item("EdCidadDC").Specific;
+            EdCidadeCandidatoDescricao.ChooseFromListBefore += EdCidadeCandidatoDescricao_ChooseFromListBefore;
+            EdCidadeCandidatoDescricao.ChooseFromListAfter += EdCidadeCandidatoDescricao_ChooseFromListAfter;
 
             UsRowId = oForm.DataSources.UserDataSources.Add("UsRowId", BoDataType.dt_SHORT_NUMBER, 5);
             #endregion
@@ -158,6 +170,7 @@ namespace Zopone.AddOn.PO.View.Obra
             oForm.Visible = true;
 
         }
+
 
         private void GdListPO_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)
         {
@@ -196,7 +209,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 EdIdDete.Value = DBObraCandidato.GetValue("U_IdDetentora", pVal.Row - 1);
                 CbPais.Select(DBObraCandidato.GetValue("U_Pais", pVal.Row - 1));
                 CbEstado.Select(DBObraCandidato.GetValue("U_Estado", pVal.Row - 1));
-                CbCidade.Select(DBObraCandidato.GetValue("U_Cidade", pVal.Row - 1));
+
                 EdRua.Value = DBObraCandidato.GetValue("U_Rua", pVal.Row - 1);
                 EdTipoLog.Value = DBObraCandidato.GetValue("U_TipoLog", pVal.Row - 1);
                 EdNum.Value = DBObraCandidato.GetValue("U_Numero", pVal.Row - 1);
@@ -255,7 +268,10 @@ namespace Zopone.AddOn.PO.View.Obra
                 DBObraCandidato.SetValue("U_IdDetentora", RowId, EdIdDete.Value);
                 DBObraCandidato.SetValue("U_Pais", RowId, CbPaisCandidato.Value);
                 DBObraCandidato.SetValue("U_Estado", RowId, CbEstadoCandidato?.Value);
-                DBObraCandidato.SetValue("U_Cidade", RowId, CbCidadeCandidato?.Value);
+                
+                DBObraCandidato.SetValue("U_Cidade", RowId, EdCidadeCandidato.Value);
+                DBObraCandidato.SetValue("U_CidadeDesc", RowId, EdCidadeCandidatoDescricao.Value);
+
                 DBObraCandidato.SetValue("U_Rua", RowId, EdRua.Value);
                 DBObraCandidato.SetValue("U_TipoLog", RowId, EdTipoLog.Value);
                 DBObraCandidato.SetValue("U_Numero", RowId, EdNum.Value);
@@ -308,45 +324,16 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             AdicionaCandidato();
         }
-
-        private void CbEstado_ComboSelectAfter(object sboObject, SBOItemEventArg pVal)
-        {
-            if (!string.IsNullOrEmpty(CbEstado.Value))
-                Util.ComboBoxSetValoresValidosPorSQL(CbCidade, UtilScriptsSQL.SQL_Cidade(CbPais.Value, CbEstado.Value));
-        }
         private void CbPais_ComboSelectAfter(object sboObject, SBOItemEventArg pVal)
         {
             if (!string.IsNullOrEmpty(CbPais.Value))
                 Util.ComboBoxSetValoresValidosPorSQL(CbEstado, UtilScriptsSQL.SQL_Estado(CbPais.Value));
-        }
-        private void CbEstadoCandidato_ComboSelectAfter(object sboObject, SBOItemEventArg pVal)
-        {
-            try
-            {
-                oForm.Freeze(true);
-
-                if (!string.IsNullOrEmpty(CbEstadoCandidato.Value))
-                {
-                    Util.ComboBoxSetValoresValidosPorSQL(CbCidadeCandidato, UtilScriptsSQL.SQL_Cidade(CbPaisCandidato.Value, CbEstadoCandidato.Value));
-                    Util.MatrixComboBoxSetValoresValidosPorSQL(MtCandidato, UtilScriptsSQL.SQL_Cidade(CbPaisCandidato.Value, CbEstadoCandidato.Value), "CbCid");
-                }
-            }
-            catch (Exception Ex)
-            {
-                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar cidades: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
-            }
-            finally
-            {
-                oForm.Freeze(false);
-            }
-
         }
         private void CbPaisCandidato_ComboSelectAfter(object sboObject, SBOItemEventArg pVal)
         {
             if (!string.IsNullOrEmpty(CbPaisCandidato.Value))
             {
                 Util.ComboBoxSetValoresValidosPorSQL(CbEstadoCandidato, UtilScriptsSQL.SQL_Estado(CbPaisCandidato.Value));
-                Util.MatrixComboBoxSetValoresValidosPorSQL(MtCandidato, UtilScriptsSQL.SQL_Cidade(CbPaisCandidato.Value, CbCidadeCandidato.Value), "CbCid");
             }
         }
 
@@ -407,7 +394,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.ComboBoxSetValoresValidosPorSQL(CbPaisCandidato, UtilScriptsSQL.SQL_Pais);
                 Util.ComboBoxSetValoresValidosPorSQL(CbClassificacaoObra, UtilScriptsSQL.SQL_ClassificacaoObra);
                 Util.ComboBoxSetValoresValidosPorSQL(CbRegional, UtilScriptsSQL.SQL_Regionais);
-                Util.ComboBoxSetValoresValidosPorSQL(CbPCG, UtilScriptsSQL.SQL_PCG);
 
 
                 Util.MatrixComboBoxSetValoresValidosPorSQL(MtCandidato, UtilScriptsSQL.SQL_Pais, "CbPais");
@@ -416,6 +402,133 @@ namespace Zopone.AddOn.PO.View.Obra
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados: {Ex.Message}");
+            }
+        }
+        private Conditions CriaCondicoesCidade(string Estado)
+        {
+            if (string.IsNullOrEmpty(Estado))
+                throw new Exception("Selecione o Estado!");
+
+            var oConds = new SAPbouiCOM.Conditions();
+
+            var oCond = oConds.Add();
+
+            oCond.Alias = "State";
+
+            oCond.Operation = SAPbouiCOM.BoConditionOperation.co_EQUAL;
+
+            oCond.CondVal = Estado;
+
+            return oConds;
+        }
+
+
+
+        private void EdCidadeCandidatoDescricao_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                if (aEvent.SelectedObjects == null)
+                    return;
+
+                string CidadeId = Convert.ToString(aEvent.SelectedObjects.GetValue("AbsId", 0));
+                string CidadeNome = Convert.ToString(aEvent.SelectedObjects.GetValue("Name", 0));
+
+                EdCidadeCandidato.Value = CidadeId;
+                EdCidadeCandidatoDescricao.Value = CidadeNome;
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar contrato: {Ex.Message}");
+            }
+        }
+
+        private void EdCidadeCandidatoDescricao_ChooseFromListBefore(object sboObject, SBOItemEventArg pVal, out bool BubbleEvent)
+        {
+            var oConds = new SAPbouiCOM.Conditions();
+            var oCfLs = oForm.ChooseFromLists;
+
+
+            try
+            {
+                var cfl = oCfLs.Item("CFL_CidadC");
+
+                if (cfl.GetConditions().Count == 0)
+                {
+                    cfl.SetConditions(CriaCondicoesCidade(CbEstadoCandidato.Value));
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar(Ex.Message);
+                BubbleEvent = false;
+
+            }
+            finally
+            {
+
+                Marshal.ReleaseComObject(oConds);
+
+                Marshal.ReleaseComObject(oCfLs);
+            }
+            BubbleEvent = true;
+        }
+
+
+
+        private void EdCidadeD_ChooseFromListBefore(object sboObject, SBOItemEventArg pVal, out bool BubbleEvent)
+        {
+            var oConds = new SAPbouiCOM.Conditions();
+            var oCfLs = oForm.ChooseFromLists;
+
+
+            try
+            {
+                var cfl = oCfLs.Item("CFL_Cidad");
+
+                if (cfl.GetConditions().Count== 0)
+                {
+                    cfl.SetConditions(CriaCondicoesCidade(CbEstado.Value));
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar(Ex.Message);
+                BubbleEvent = false;
+
+            }
+            finally
+            {
+
+                Marshal.ReleaseComObject(oConds);
+
+                Marshal.ReleaseComObject(oCfLs);
+            }
+            BubbleEvent = true;
+        }
+
+        private void EdCidadeD_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                if (aEvent.SelectedObjects == null)
+                    return;
+
+                string CidadeId = Convert.ToString(aEvent.SelectedObjects.GetValue("AbsId", 0));
+                string CidadeNome = Convert.ToString(aEvent.SelectedObjects.GetValue("Name", 0));
+
+                EdCidade.Value = CidadeId;
+                EdCidadeD.Value = CidadeNome;
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar contrato: {Ex.Message}");
             }
         }
 
@@ -621,19 +734,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
             CompanyService oCmpSrv = Globals.Master.Connection.Database.GetCompanyService();
 
-            // Obter o serviço de projetos
-            ProjectsService projectService = (ProjectsService)oCmpSrv.GetBusinessService(ServiceTypes.ProjectsService);
 
-            // Criar um novo projeto
-            Project project = (Project)projectService.GetDataInterface(ProjectsServiceDataInterfaces.psProject);
+            UtilProjetos.SalvarProjeto(EdCodeObra.Value, EdDescObra.Value, CbFilial.Selected.Description);
 
-            project.Code = EdCodeObra.Value;
-            project.Name = EdDescObra.Value;
-
-            project.UserFields.Item("U_BPLName").Value = CbFilial.Selected.Description;
-
-            // Adicionar o projeto
-            projectService.AddProject(project);
 
 
         }

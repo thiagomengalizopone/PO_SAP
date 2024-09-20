@@ -4,6 +4,7 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
+using System.Drawing;
 
 
 namespace Zopone.AddOn.PO.View.Faturamento
@@ -43,6 +44,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
             MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
             MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
 
+            MtPedidos.ChooseFromListAfter += MtPedidos_ChooseFromListAfter;
+
             MtPedidos.AutoResizeColumns();
 
             oForm.Visible = true;
@@ -50,6 +53,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
 
         }
+
+        
 
         private void MtPedidos_ValidateBefore(object sboObject, SBOItemEventArg pVal, out bool BubbleEvent)
         {
@@ -134,6 +139,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string ItemCode = DtPesquisa.GetValue("ItemCode", iRow).ToString();
                 string Atividade = DtPesquisa.GetValue("Atividade", iRow).ToString();
                 double TotalLinha = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", iRow));
+                
+                string ItemFaturamento = DtPesquisa.GetValue("AlocacaoFAT", iRow).ToString();
+                string DescItemFaturamento = DtPesquisa.GetValue("DescAlocacaoFAT", iRow).ToString();
+
 
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
                 SAPbobsCOM.Documents oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
@@ -164,8 +173,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     oNotaFiscalSaida.Lines.COGSCostingCode3 = oPedidoVenda.Lines.COGSCostingCode3;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Candidato").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescItemFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value = ItemFaturamento;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescItemFat").Value = DescItemFaturamento;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Parcela").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Tipo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_itemDescription").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value;
@@ -200,6 +209,38 @@ namespace Zopone.AddOn.PO.View.Faturamento
             
 
             return string.Empty;
+        }
+
+        private void MtPedidos_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (pVal.ColUID == "Col_7")
+                {
+                    MtPedidos.FlushToDataSource();
+
+                    Int32 row = pVal.Row - 1;
+
+                    SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                    if (aEvent.SelectedObjects == null)
+                        return;
+
+                    string Code = Convert.ToString(aEvent.SelectedObjects.GetValue("Code", 0));
+                    string Descricao = Convert.ToString(aEvent.SelectedObjects.GetValue("U_Desc", 0));
+
+
+                    
+                    DtPesquisa.SetValue("AlocacaoFAT", row, Code);
+                    DtPesquisa.SetValue("DescAlocacaoFAT", row, Descricao);
+
+                    MtPedidos.LoadFromDataSourceEx();
+                }
+                    
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar alocação faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
 
@@ -283,13 +324,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
                 
-                MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
                 MtPedidos.Columns.Item("Col_8").DataBind.Bind("DtPO", "Atividade");
                 MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "Descricao");
                 MtPedidos.Columns.Item("Col_5").DataBind.Bind("DtPO", "Valor");
-                MtPedidos.Columns.Item("Col_6").DataBind.Bind("DtPO", "Esboco");
-                MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "NF");
                 MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "ItemCode");
                 MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "Dscription");
 
@@ -299,7 +337,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
                 MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "SaldoAberto");
                 MtPedidos.Columns.Item("Col_15").DataBind.Bind("DtPO", "TotalFaturar");
-                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "TotalDocumento");                
+
+                MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Alocacao");
+                MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "AlocacaoFAT");
+                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "DescAlocacaoFAT");
+                
+
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
 

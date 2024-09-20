@@ -103,7 +103,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmPesquisa";
-            this.Text = "FrmObra";
+            this.Text = "Pesquisa";
             this.Load += new System.EventHandler(this.FrmPesquisa_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgResultado)).EndInit();
             this.ResumeLayout(false);

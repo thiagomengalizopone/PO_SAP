@@ -83,7 +83,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-                if (!Util.RetornarDialogo("Deseja gerar o pré faturamento dos documentos?"))
+                if (!Util.RetornarDialogo("Deseja efetivar o pré faturamento dos documentos?"))
                     return;
 
                 MtPedidos.FlushToDataSource();
@@ -131,8 +131,14 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     if (oEsbocoNotaFiscalSaida.SaveDraftToDocument() != 0)
                         return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} Linha {iRow+1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
 
-                    if (oEsbocoNotaFiscalSaida.Close() != 0)
-                        return $"Erro ao Fechar Esboço pré faturamento: {oEsbocoNotaFiscalSaida.DocEntry} Linha {iRow + 1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
+
+                    oEsbocoNotaFiscalSaida.GetByKey(DocEntry);
+
+                    if (oEsbocoNotaFiscalSaida.DocumentStatus == BoStatus.bost_Open)
+                    {
+                        if (oEsbocoNotaFiscalSaida.Close() != 0)
+                            return $"Erro ao Fechar Esboço pré faturamento: {oEsbocoNotaFiscalSaida.DocEntry} Linha {iRow + 1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
+                    }
                 }
 
 
