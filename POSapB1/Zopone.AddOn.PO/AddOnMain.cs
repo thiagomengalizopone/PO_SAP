@@ -24,12 +24,6 @@ namespace Zopone.AddOn.PO
             Globals.Master = new Master(lConexao, EnumAddOn.CadastroPO, GetDLLVersion());
 
 
-            //TESTE
-            //ImportaContratoHomologacao.ImportarObrasSAPB1();
-            ImportaContratoHomologacao.ImportaContratoValidacao();
-
-
-
             Util.CriarPastaLog();
 
             Install.VerificaInstalacaoAddOn();

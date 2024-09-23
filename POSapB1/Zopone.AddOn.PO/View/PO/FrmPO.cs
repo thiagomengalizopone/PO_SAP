@@ -171,9 +171,9 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_itemDescription = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value.ToString(),
                                U_manSiteInfo = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value.ToString(),
                                AgrNo = oPedidoVenda.Lines.AgreementNo,
-                               CostingCode = oPedidoVenda.Lines.CostingCode,
-                               CostingCode2 = oPedidoVenda.Lines.CostingCode2,
-                               CostingCode3 = oPedidoVenda.Lines.CostingCode3
+                               PCG = oPedidoVenda.Lines.CostingCode,
+                               Obra = oPedidoVenda.Lines.CostingCode2,
+                               Regional = oPedidoVenda.Lines.CostingCode3
 
                            }
                            );
@@ -370,6 +370,12 @@ namespace Zopone.AddOn.PO.View.Obra
                 {
                     parametro.Add(txtObra.Text);
                 }
+                else if (tipoPesquisa == "ITEMFAT")
+                {
+                    parametro.Add(txtObra.Text);
+
+                }
+
 
                 FrmPesquisa frmPesq = new FrmPesquisa(TipoPesquisa, parametro);
                 frmPesq.ShowDialog();
@@ -396,8 +402,8 @@ namespace Zopone.AddOn.PO.View.Obra
                         txtObra.Text = retornoDados[0];
                         lblObra.Text = retornoDados[1];
 
-                        txtCliente.Text = retornoDados[3];
-                        lblCliente.Text = retornoDados[2];
+                        txtCliente.Text = retornoDados[2];
+                        lblCliente.Text = retornoDados[3];
 
                         BPLId = Convert.ToInt32(retornoDados[4]);
 

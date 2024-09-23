@@ -140,8 +140,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\CentroCusto\CentroCustoCliente.cs" />
+    <Compile Include="Controller\CentroCusto\CentroCustoObra.cs" />
     <Compile Include="Controller\Constantes\MenuConstantes.cs" />
-    <Compile Include="Controller\Localizacao\CentroCustoLocalizacao.cs" />
+    <Compile Include="Controller\CentroCusto\CentroCustoLocalizacao.cs" />
     <Compile Include="Controller\ParceiroNegocio\CriarContaParceiroNegocio.cs" />
     <Compile Include="Events\FormDataEventHandler.cs" />
     <Compile Include="Events\ItemEventHandler.cs" />

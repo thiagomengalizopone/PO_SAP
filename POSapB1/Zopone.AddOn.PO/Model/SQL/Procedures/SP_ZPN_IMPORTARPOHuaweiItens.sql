@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SP_ZPN_IMPORTARPOHuaweiItens
+﻿create PROCEDURE SP_ZPN_IMPORTARPOHuaweiItens
 (	
 	@po_id INT
 )
@@ -29,7 +29,7 @@ BEGIN
 		 [192.168.8.241,15050].Zopone.dbo.POList POList
 		INNER JOIN [192.168.8.241,15050].[Zopone].dbo.PO PO ON PO.po_id = POList.po_id
 		LEFT join "@ZPN_OPRJ" on polist.manufactureSiteInfo collate Latin1_General_CI_AS like '%'+ "@ZPN_OPRJ".U_IdSite+ '%' AND ISNULL("@ZPN_OPRJ".U_IdSite,'') <> ''
-		LEFT JOIN OPRC ON OPRC."U_Obra" = "@ZPN_OPRJ"."Code"
+		LEFT JOIN OPRC ON OPRC."U_Obra" = "@ZPN_OPRJ"."Code" AND OPRC."DimCode" = 2
 
 	where 
 		PO.po_id = @po_id

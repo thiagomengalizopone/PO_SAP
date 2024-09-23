@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE SP_ZPN_IMPORTARPOERICSSONItens
+﻿create PROCEDURE SP_ZPN_IMPORTARPOERICSSONItens
 (	
 	@po_id Numeric
 )
@@ -35,7 +34,7 @@ BEGIN
 		LEFT join "@ZPN_OPRJ" OPRJ_CW   on OPRJ_CW.Name = RIGHT(TRIM(PO.Municipio), 2) + '/CW-' + PO.Site 
 		LEFT join "@ZPN_OPRJ" OPRJ_5G   on OPRJ_5G.Name = RIGHT(TRIM(PO.Municipio), 2) + '-5G-' + PO.Site 
 		LEFT join "@ZPN_OPRJ" OPRJ_COD2 on OPRJ_COD2.Name = RIGHT(TRIM(PO.Municipio), 2) + '-2-' + PO.Site 
-		LEFT JOIN OPRC ON OPRC."U_Obra" = OPRJ_INST."Code"
+		LEFT JOIN OPRC ON OPRC."U_Obra" = OPRJ_INST."Code"  AND OPRC."DimCode" = 2
 	where 
 		PO.PO = @po_id
 

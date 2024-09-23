@@ -1,19 +1,23 @@
 ﻿create PROCEDURE SP_ZPN_PESQUISAETAPA
 (
-	@CampoPesquisa varchar(100)
+	@CampoPesquisa varchar(100),
+	@Obra varchar(100)
 )
 AS 
 BEGIN
 
+
 	SELECT
-		ALC."Code" "Código", 
-		ALC."U_Desc" "Descrição"
+		ALCI.U_CodAloc "Código", 
+		ALCI.U_Descaloc "Descrição"
 	FROM 
-		"@ZPN_ALOCA" ALC
+		"@ZPN_OPRJ" OBRA 
+		INNER JOIN "@ZPN_ALOCONI" ALCI ON ALCI.Code = OBRA.U_CodContrato AND ALCI.U_PC = 'Y'
 	where
-		ALC."Code" LIKE '%' ++ ISNULL(@CampoPesquisa,'') ++  '%'  OR
-		ALC."U_Desc"  LIKE '%' ++ ISNULL(@CampoPesquisa,'') ++  '%' 
+		OBRA."Code" = @Obra AND
+		ALCI.U_CodAloc LIKE '%' ++ ISNULL(@CampoPesquisa,'') ++  '%'  OR
+		ALCI.U_Descaloc  LIKE '%' ++ ISNULL(@CampoPesquisa,'') ++  '%' 
 	order by 
-		ALC."U_Desc" ;
+		ALCI.U_Descaloc ;
 
 END;

@@ -415,11 +415,11 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // lblCliente
             // 
-            this.lblCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCliente.ForeColor = System.Drawing.Color.Red;
-            this.lblCliente.Location = new System.Drawing.Point(702, 43);
+            this.lblCliente.Location = new System.Drawing.Point(686, 43);
             this.lblCliente.Name = "lblCliente";
-            this.lblCliente.Size = new System.Drawing.Size(392, 22);
+            this.lblCliente.Size = new System.Drawing.Size(408, 22);
             this.lblCliente.TabIndex = 49;
             this.lblCliente.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 

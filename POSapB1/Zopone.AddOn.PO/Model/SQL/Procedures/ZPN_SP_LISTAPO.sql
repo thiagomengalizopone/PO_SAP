@@ -1,11 +1,8 @@
-﻿
-CREATE PROCEDURE ZPN_SP_LISTAPO
+﻿CREATE PROCEDURE ZPN_SP_LISTAPO
 (
 	@CampoPesquisa varchar(50)
 )
 AS
-
-
 
 SELECT DISTINCT
 	T0."DocEntry"							"Id PO", 
@@ -16,11 +13,11 @@ SELECT DISTINCT
 	cast(T0.DocDueDate  as varchar(10))		"Data Vencimento",  
 	OPRJ."PrjCode"							"Código Obra",
 	OPRJ."PrjName"							"Obra",
-	'D'										"Documento"
+	'P'										"Documento"
 
 FROM 
-	ODRF  T0 
-	INNER JOIN DRF1 T1 ON T1."DocEntry"				= T0."DocEntry"
+	ORDR  T0 
+	INNER JOIN RDR1 T1 ON T1."DocEntry"				= T0."DocEntry"
 	INNER JOIN OBPL	   ON OBPL."BplID"				= T0.BPLId
 	INNER JOIN OPRJ    ON OPRJ."PrjCode"			= T1.Project
 WHERE	

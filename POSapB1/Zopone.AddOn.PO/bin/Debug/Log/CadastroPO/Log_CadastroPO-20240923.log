@@ -1,0 +1,14 @@
+'CadastroPO';'Erro';'Erro ao abrir alocação contrato: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Violation of PRIMARY KEY constraint 'KZPN_ALOCONI_PR'. Cannot insert duplicate key in object 'dbo.@ZPN_ALOCONI'. The duplicate key value is (246, 2).
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.';'System.Exception: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Violation of PRIMARY KEY constraint 'KZPN_ALOCONI_PR'. Cannot insert duplicate key in object 'dbo.@ZPN_ALOCONI'. The duplicate key value is (246, 2).
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em Zopone.AddOn.PO.View.ContratoAlocacao.FrmContAloca.CarregarDadosAlocacao(String Code) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\ContratoAlocacao\FrmContAloca.cs:linha 37';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'KZPN_ALOCONI_PR'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao abrir alocação contrato: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Violation of PRIMARY KEY constraint 'KZPN_ALOCONI_PR'. Cannot insert duplicate key in object 'dbo.@ZPN_ALOCONI'. The duplicate key value is (246, 2).
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.';'System.Exception: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Violation of PRIMARY KEY constraint 'KZPN_ALOCONI_PR'. Cannot insert duplicate key in object 'dbo.@ZPN_ALOCONI'. The duplicate key value is (246, 2).
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em Zopone.AddOn.PO.View.ContratoAlocacao.FrmContAloca.CarregarDadosAlocacao(String Code) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\ContratoAlocacao\FrmContAloca.cs:linha 37';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'KZPN_ALOCONI_PR'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;

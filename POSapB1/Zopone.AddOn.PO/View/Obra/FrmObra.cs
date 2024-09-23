@@ -711,9 +711,13 @@ namespace Zopone.AddOn.PO.View.Obra
 
             Int32 Dimensao = Convert.ToInt32(SqlUtils.GetValue(@"SELECT Max(T0.""DimCode"") FROM ODIM T0 WHERE T0.""DimDesc"" = 'OBRA'"));
             string TipoCentroCusto = SqlUtils.GetValue(@"SELECT maX(CctCode) FROM OCCT WHERE CctName = 'Receitas'");
-            CentroCusto.CriaCentroCusto(EdDescObra.Value, Dimensao, TipoCentroCusto, "", "", EdCodeObra.Value);
+            string CentroCustoRetorno = CentroCusto.CriaCentroCusto(EdDescObra.Value, Dimensao, TipoCentroCusto, "", "", EdCodeObra.Value);
 
+            string SqL_UPDATE = $@"UPDATE ""@ZPN_OPRJ"" SET ""U_PCG"" = '{CentroCustoRetorno}' WHERE ""Code"" =  '{EdCodeObra.Value}'";
 
+            SqlUtils.DoNonQuery(SqL_UPDATE);
+
+            oForm.Refresh();
         }
 
         private static void SalvarProjeto(string FormUID)

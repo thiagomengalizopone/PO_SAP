@@ -44,7 +44,7 @@ namespace Zopone.AddOn.PO.View.PO
                 else if (TipoPesquisa == "CANDIDATO")
                     commandSQL = $"SP_ZPN_PESQUISAOBRACANDIDATO '{txtPesquisar.Text}', '{Parametros[0]}'";
                 else if (TipoPesquisa == "ITEMFAT")
-                    commandSQL = $"SP_ZPN_PESQUISAETAPA '{txtPesquisar.Text}'";
+                    commandSQL = $"SP_ZPN_PESQUISAETAPA '{txtPesquisar.Text}', '{Parametros[0]}'";
                 else if (TipoPesquisa == "PO")
                     commandSQL = $"ZPN_SP_LISTAPO '{txtPesquisar.Text}'";
                 DataTable result = SqlUtils.ExecuteCommand(commandSQL);
@@ -93,10 +93,10 @@ namespace Zopone.AddOn.PO.View.PO
 
                 if (TipoPesquisa == "OBRA")
                 {
-                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[0].Value.ToString());
-                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[1].Value.ToString());
-                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[4].Value.ToString());
-                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[5].Value.ToString());
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[0].Value.ToString());//obra
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[1].Value.ToString());//desc obra
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[5].Value.ToString());//código cliente
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[6].Value.ToString());//cliente
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[8].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[10].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[11].Value.ToString());
