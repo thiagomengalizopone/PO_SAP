@@ -56,7 +56,13 @@ namespace Zopone.AddOn.PO.View.Contrato
             {
                 Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
 
-                Item oItemRef = oFormContrato.Items.Item("1250000039");
+
+                Item oItemRef = oFormContrato.Items.Item("1250000036");
+
+                int Width = oItemRef.Width;
+
+
+                oItemRef = oFormContrato.Items.Item("1250000039");
 
                 Item oItem;
                 EditText oEditText;
@@ -67,7 +73,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oItem = oFormContrato.Items.Add("EdNroRH", SAPbouiCOM.BoFormItemTypes.it_EDIT);
                 oItem.Left = oItemRef.Left;
                 oItem.Top = oItemRef.Top + 19;
-                oItem.Width = 150;
+                oItem.Width = Width;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
@@ -79,7 +85,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oItem = oFormContrato.Items.Add("StNroRH", SAPbouiCOM.BoFormItemTypes.it_STATIC);
                 oItem.Left = oItemRef.Left;
                 oItem.Top = oItemRef.Top + 19;
-                oItem.Width = 147;
+                oItem.Width = Width;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
@@ -234,7 +240,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
                 Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000018").Specific;
+                EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000004").Specific;
 
                 string SQL_Query = $"ZPN_SP_PCI_ATUALIZACONTRATO '{oEditContrato.Value}'";
 

@@ -1,0 +1,7 @@
+'CadastroPO';'Erro';'Erro ao carregar dados da tela: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot insert the value NULL into column 'contratoid', table 'zsistema_aceite.dbo.contrato'; column does not allow nulls. INSERT fails.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.';'System.Exception: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot insert the value NULL into column 'contratoid', table 'zsistema_aceite.dbo.contrato'; column does not allow nulls. INSERT fails.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em Zopone.AddOn.PO.View.Contrato.Frm1250000100.<EnviarDadosPCIAsync>d__6.MoveNext() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\Contrato\Frm1250000100.cs:linha 247';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'contratoid'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;

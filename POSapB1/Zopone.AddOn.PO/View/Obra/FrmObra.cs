@@ -32,7 +32,8 @@ namespace Zopone.AddOn.PO.View.Obra
         public ComboBox CbPaisCandidato { get; set; }
         public ComboBox CbEstadoCandidato { get; set; }
 
-        public ComboBox CbClassificacaoObra { get; set; }
+        public EditText EdClassificacaoObra { get; set; }
+        public EditText EdClassificacaoObraDesc { get; set; }
 
         public Matrix MtCandidato { get; set; }
 
@@ -106,7 +107,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
             EdEquipamento = (EditText)oForm.Items.Item("EdEquip").Specific;
 
-            CbClassificacaoObra = (ComboBox)oForm.Items.Item("CbClassO").Specific;
+            EdClassificacaoObra = (EditText)oForm.Items.Item("EdCodClas").Specific;
+            EdClassificacaoObraDesc = (EditText)oForm.Items.Item("EdDesClas").Specific;
+            EdClassificacaoObraDesc.ChooseFromListAfter += EdClassificacaoObraDesc_ChooseFromListAfter;
 
 
             CbRegional = (ComboBox)oForm.Items.Item("CbRegion").Specific;
@@ -171,6 +174,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
         }
 
+       
 
         private void GdListPO_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)
         {
@@ -379,8 +383,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 CbPaisCandidato.Select("BR", BoSearchKey.psk_ByValue);
                 Util.ComboBoxSetValoresValidosPorSQL(CbEstadoCandidato, UtilScriptsSQL.SQL_Estado(CbPaisCandidato.Value));
 
-                if (oForm.Mode == BoFormMode.fm_OK_MODE)
-                    oForm.Mode = BoFormMode.fm_UPDATE_MODE;
 
             }
         }
@@ -392,7 +394,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.ComboBoxSetValoresValidosPorSQL(CbFilial, UtilScriptsSQL.SQL_Filial);
                 Util.ComboBoxSetValoresValidosPorSQL(CbPais, UtilScriptsSQL.SQL_Pais);
                 Util.ComboBoxSetValoresValidosPorSQL(CbPaisCandidato, UtilScriptsSQL.SQL_Pais);
-                Util.ComboBoxSetValoresValidosPorSQL(CbClassificacaoObra, UtilScriptsSQL.SQL_ClassificacaoObra);
                 Util.ComboBoxSetValoresValidosPorSQL(CbRegional, UtilScriptsSQL.SQL_Regionais);
 
 
@@ -423,6 +424,26 @@ namespace Zopone.AddOn.PO.View.Obra
         }
 
 
+        private void EdClassificacaoObraDesc_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                if (aEvent.SelectedObjects == null)
+                    return;
+
+                string Code = Convert.ToString(aEvent.SelectedObjects.GetValue("Code", 0));
+                string Name = Convert.ToString(aEvent.SelectedObjects.GetValue("Name", 0));
+
+                EdClassificacaoObra.Value = Code;
+                EdClassificacaoObraDesc.Value = Name;
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar classificação de obra: {Ex.Message}");
+            }
+        }
 
         private void EdCidadeCandidatoDescricao_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
         {
