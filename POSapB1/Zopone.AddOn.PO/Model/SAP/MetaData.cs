@@ -173,7 +173,13 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdDetent", "Id Detentora", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Regional", "Regional", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "PCG", "PCG", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
-                
+
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdObra", "Id Obra", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Ano", "Ano", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "CardCode", "Código PN", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "CardName", "Descrição PN", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+
 
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "CodContrato", "Código Contrato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 20, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "DescContrato", "Descrição Contrato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);

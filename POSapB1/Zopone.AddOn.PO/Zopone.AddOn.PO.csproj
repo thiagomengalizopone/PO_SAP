@@ -149,6 +149,7 @@
     <Compile Include="Events\ItemEventHandler.cs" />
     <Compile Include="Events\MenuEventHandler.cs" />
     <Compile Include="Events\RightClickEventHandler.cs" />
+    <Compile Include="Helpers\UtilPCI.cs" />
     <Compile Include="Helpers\UtilProjetos.cs" />
     <Compile Include="Helpers\UtilCustomize.cs" />
     <Compile Include="Helpers\UtilTextBox.cs" />
@@ -360,6 +361,9 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_GeraProjetoTabelaB1PCI.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_INSEREIMPORTAOBRA.sql" />
     <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaContrato.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_COPIAALOCACAOCONTRATO.sql" />
+    <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaObra.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRAPCG.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

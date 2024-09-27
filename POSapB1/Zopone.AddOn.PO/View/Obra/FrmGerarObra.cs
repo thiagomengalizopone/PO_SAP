@@ -16,12 +16,15 @@ namespace Zopone.AddOn.PO.View.Obra
     {
         #region Propriedades
         public EditText EdPrefix { get; set; }
-        public EditText EdCodIni { get; set; }
         public EditText EdQtde { get; set; }
-        public EditText EdSufix { get; set; }
         public DataTable DtObras { get; set; }
-        public Grid GdObras { get; set; }
+        public Matrix MtObras { get; set; }
         public Button BtGerar { get; set; }
+        public Button BtValidar { get; set; }
+        public UserDataSource USValidou { get; set; }
+
+
+        public Button BtAtualizar { get; set; }
 
 
         #endregion
@@ -32,71 +35,213 @@ namespace Zopone.AddOn.PO.View.Obra
                 return;
 
             EdPrefix = (EditText)oForm.Items.Item("EdPrefix").Specific;
-            EdPrefix.LostFocusAfter += EdPrefix_LostFocusAfter;
-
-            EdCodIni = (EditText)oForm.Items.Item("EdCodIni").Specific;
-            EdCodIni.LostFocusAfter += EdCodIni_LostFocusAfter;
 
             EdQtde = (EditText)oForm.Items.Item("EdQtde").Specific;
-            EdQtde.LostFocusAfter += EdQtde_LostFocusAfter;
 
-            EdSufix = (EditText)oForm.Items.Item("EdSufix").Specific;
-            EdSufix.LostFocusAfter += EdSufix_LostFocusAfter;
-
-            GdObras = (Grid)oForm.Items.Item("GdObras").Specific;
+            MtObras = (Matrix)oForm.Items.Item("MtObras").Specific;
 
             DtObras = oForm.DataSources.DataTables.Item("DtObras");
 
             BtGerar = (Button)oForm.Items.Item("BtGerar").Specific;
             BtGerar.PressedAfter += BtGerar_PressedAfter;
 
+            BtAtualizar = (Button)oForm.Items.Item("BtAtu").Specific;
+            BtAtualizar.PressedAfter += BtAtualizar_PressedAfter;
 
-            GerarCodigosObra(string.Empty, string.Empty, "0", string.Empty);
+            BtValidar = (Button)oForm.Items.Item("BtValidar").Specific;
+            BtValidar.PressedAfter += BtValidar_PressedAfter;
 
+            USValidou = oForm.DataSources.UserDataSources.Item("Validou");
+
+            MtObras.AutoResizeColumns();
+            MtObras.DoubleClickAfter += MtObras_DoubleClickAfter;
 
             oForm.Visible = true;
 
         }
 
-        private void EdSufix_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
+        private void MtObras_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)
         {
-            EnviarGerarCodigoObra();
+            try
+            {
+                if (pVal.Row == 0)
+                    return;
+
+                string CodigoObra = DtObras.GetValue("CodObra", pVal.Row-1).ToString().Trim();
+
+                if (string.IsNullOrEmpty(CodigoObra))
+                    return;
+                
+                var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                oRecordSet.DoQuery($@"SELECT 1 FROM ""@ZPN_OPRJ"" WHERE ""Code"" = '{CodigoObra}' ");
+
+                if (oRecordSet.EoF)
+                    return;
+
+                new FrmObra(CodigoObra);
+
+
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar obra - {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+
+            }
         }
 
-        private void EdQtde_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
+        private void BtValidar_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
-            EnviarGerarCodigoObra();
+            try
+            {
+                oForm.Freeze(true);
+
+                ValidarDados();
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar códigos te obra - {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
+            }
         }
 
-        private void EdCodIni_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
+        private void ValidarDados()
         {
-            EnviarGerarCodigoObra();
+            var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+            MtObras.FlushToDataSource();
+
+            string ErroValida = string.Empty;
+
+            USValidou.Value = "";
+
+            for (int iRow = 0; iRow < DtObras.Rows.Count; iRow++)
+            {
+                ErroValida = string.Empty;
+
+                string CodigoObra = DtObras.GetValue("CodObra", iRow).ToString().Trim();
+
+                oRecordSet.DoQuery($@"SELECT 1 FROM ""@ZPN_OPRJ"" WHERE Code = '{CodigoObra}'");
+
+                if (!oRecordSet.EoF)
+                {
+                    ErroValida += "Obra já existente | ";
+                }
+
+
+                string CodigoCliente = DtObras.GetValue("CodCli", iRow).ToString().Trim();
+
+                oRecordSet.DoQuery($@"SELECT CardCode, CardName FROM OCRD WHERE CardCode Like '%0{CodigoCliente}'");
+
+                if (!oRecordSet.EoF && !string.IsNullOrEmpty(CodigoCliente))
+                {
+                    DtObras.SetValue("Cliente", iRow, oRecordSet.Fields.Item("CardName").Value.ToString());
+                    DtObras.SetValue("IdCliente", iRow, oRecordSet.Fields.Item("CardCode").Value.ToString());
+                }
+                else
+                {
+                    ErroValida += "Cliente não encontrado | ";
+                }
+
+
+                string CodRegional = DtObras.GetValue("Regional", iRow).ToString().Trim();
+
+                oRecordSet.DoQuery($@"SELECT T0.[PrcCode] FROM OPRC T0 WHERE T0.[PrcName] like '%{CodRegional}%' AND T0.[DimCode] = 3");
+
+                if (!oRecordSet.EoF && !string.IsNullOrEmpty(CodRegional))
+                {
+                    DtObras.SetValue("IdRegional", iRow, oRecordSet.Fields.Item("PrcCode").Value.ToString());
+                }
+                else
+                {
+                    ErroValida += "Regional não encontrada | ";
+                }
+
+                string CodContrato = DtObras.GetValue("Contrato", iRow).ToString().Trim();
+
+                oRecordSet.DoQuery($@"SELECT T0.[AbsID] FROM OOAT T0 WHERE T0.[Descript] like '%{CodContrato}%'");
+
+                if (!oRecordSet.EoF && !string.IsNullOrEmpty(CodContrato))
+                {
+                    DtObras.SetValue("IdContrato", iRow, oRecordSet.Fields.Item("AbsID").Value.ToString());
+                }
+                else
+                {
+                    ErroValida += "Contrato não encontrado | ";
+                }
+
+                if (!string.IsNullOrEmpty(ErroValida))
+                {
+                    DtObras.SetValue("Validacao", iRow, ErroValida);
+                    MtObras.CommonSetting.SetCellFontColor(iRow + 1, 8, 255);
+                    USValidou.Value = "E";
+                }
+                else
+                    DtObras.SetValue("Validacao", iRow, string.Empty);
+            }
+
+            if (string.IsNullOrEmpty(USValidou.Value))
+            {
+                USValidou.Value = "V";
+            }
+
+            MtObras.LoadFromDataSourceEx();
+            MtObras.AutoResizeColumns();
         }
 
-        private void EdPrefix_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
+        private void BtAtualizar_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
-            EnviarGerarCodigoObra();
+            try
+            {
+                if (!Util.RetornarDialogo("Deseja gerar os códigos em tela? \n A tabela abaixo será limpa e criada novamente!"))
+                    return;
+
+                EnviarGerarCodigoObra();
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar códigos te obra - {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
+
+
+
 
         public void EnviarGerarCodigoObra()
         {
 
-            if (!string.IsNullOrEmpty(EdSufix.Value) &&
-                !string.IsNullOrEmpty(EdCodIni.Value) &&
-                !string.IsNullOrEmpty(EdQtde.Value) &&
-                !string.IsNullOrEmpty(EdSufix.Value)
+            if (
+                    !string.IsNullOrEmpty(EdPrefix.Value) &&
+                    !string.IsNullOrEmpty(EdQtde.Value)
                 )
-                GerarCodigosObra(EdPrefix.Value, EdCodIni.Value, EdSufix.Value, EdQtde.Value);
+                GerarCodigosObra(EdPrefix.Value, EdQtde.Value);
         }
 
-        private void GerarCodigosObra(string Prefixo, string CodigoInicial, string Sufixo, string Qtde)
+        private void GerarCodigosObra(string Prefixo, string Qtde)
         {
             try
             {
-                DtObras.ExecuteQuery($"SP_ZPN_GeraCodigosObra '{Prefixo}', '{CodigoInicial}', '{Sufixo}','{Qtde}'");
+                DtObras.ExecuteQuery($"SP_ZPN_GeraCodigosObra '{Prefixo}', '{Qtde}'");
 
-                GdObras.Columns.Item(0).Editable = false;
-                GdObras.Columns.Item(1).Editable = false;
+                MtObras.Columns.Item("Col_0").DataBind.Bind("DtObras", "Site");
+                MtObras.Columns.Item("Col_1").DataBind.Bind("DtObras", "CodCli");
+                MtObras.Columns.Item("Col_2").DataBind.Bind("DtObras", "Cliente");
+                MtObras.Columns.Item("Col_3").DataBind.Bind("DtObras", "Contrato");
+                MtObras.Columns.Item("Col_4").DataBind.Bind("DtObras", "CodObra");
+                MtObras.Columns.Item("Col_5").DataBind.Bind("DtObras", "Cadastro");
+                MtObras.Columns.Item("Col_6").DataBind.Bind("DtObras", "Regional");
+                MtObras.Columns.Item("Col_7").DataBind.Bind("DtObras", "IdContrato");
+                MtObras.Columns.Item("Col_8").DataBind.Bind("DtObras", "IdRegional");
+                MtObras.Columns.Item("Col_9").DataBind.Bind("DtObras", "IdCliente");
+                MtObras.Columns.Item("Col_10").DataBind.Bind("DtObras", "Validacao");
+
+                MtObras.LoadFromDataSourceEx();
+
+
             }
             catch (Exception Ex)
             {
@@ -109,16 +254,31 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
+                if (string.IsNullOrEmpty(USValidou.ValueEx))
+                {
+                    ValidarDados();
+                }
+
+                if (USValidou.ValueEx == "E")
+                {
+                    if (!Util.RetornarDialogo("Linhas com erro serão ignoradas! Deseja prosseguir mesmo assim?"))
+                        return;
+                }
+
                 if (!Util.RetornarDialogo("Deseja gerar as obras no SAP B1? \n Obras já geradas, serão ignoradas!"))
                     return;
 
                 Globals.Master.Connection.Database.StartTransaction();
                 GerarProjetosSAPB1();
                 Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
-                
-                EnviarGerarCodigoObra();
+
+                UtilPCI.EnviarDadosPCIAsync(string.Empty, DateTime.Now);
+
+                SqlUtils.DoNonQuery($"ZPN_SP_PCI_ATUALIZAOBRAPCG '', '{DateTime.Now.ToString("yyyy-MM-dd")}'");
 
                 Util.ExibeMensagensDialogoStatusBar($"Fim da geração de obras!");
+                
+                USValidou.ValueEx = string.Empty;
 
             }
             catch (Exception Ex)
@@ -134,6 +294,10 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             string Code = string.Empty;
 
+            Int32 Dimensao = Convert.ToInt32(SqlUtils.GetValue(@"SELECT Max(T0.""DimCode"") FROM ODIM T0 WHERE T0.""DimDesc"" = 'OBRA'"));
+            string TipoCentroCusto = SqlUtils.GetValue(@"SELECT maX(CctCode) FROM OCCT WHERE CctName = 'Receitas'");
+
+
             GeneralService oGeneralService = null;
             GeneralData oGeneralData = null;
             GeneralDataParams oGeneralParams = null;
@@ -144,22 +308,35 @@ namespace Zopone.AddOn.PO.View.Obra
 
             for (int iRow = 0; iRow < DtObras.Rows.Count; iRow++)
             {
-                if (string.IsNullOrEmpty(DtObras.GetValue(1, iRow).ToString()))
+                if (!string.IsNullOrEmpty(DtObras.GetValue("CodObra", iRow).ToString()))
                 {
-                    Code = DtObras.GetValue(0, iRow).ToString();
+                    Code = DtObras.GetValue("CodObra", iRow).ToString();
 
                     Util.ExibirMensagemStatusBar($"Gerando obra {Code}");
 
                     oGeneralData = (GeneralData)oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData);
                     oGeneralData.SetProperty("Code", Code);
-                    oGeneralData.SetProperty("Code", Code);
+                    oGeneralData.SetProperty("Name", Code);
+
+                    oGeneralData.SetProperty("U_IdSite", DtObras.GetValue("Site", iRow).ToString());
+                    oGeneralData.SetProperty("U_CodContrato", DtObras.GetValue("IdContrato", iRow).ToString());
+                    oGeneralData.SetProperty("U_DescContrato", DtObras.GetValue("Contrato", iRow).ToString());
+                    oGeneralData.SetProperty("U_BPLId", 1);
+                    oGeneralData.SetProperty("U_CardCode", DtObras.GetValue("IdCliente", iRow).ToString());
+                    oGeneralData.SetProperty("U_CardName", DtObras.GetValue("Cliente", iRow).ToString());
+                    oGeneralData.SetProperty("U_Regional", DtObras.GetValue("IdRegional", iRow).ToString());
+                    oGeneralData.SetProperty("U_Pais", "BR");
 
                     oGeneralParams = oGeneralService.Add(oGeneralData);
 
 
-                   UtilProjetos.SalvarProjeto(Code, Code);
+                    UtilProjetos.SalvarProjeto(Code, Code);
+
+                    CentroCusto.CriaCentroCusto(Code, Dimensao, TipoCentroCusto, "", "", Code);
+
                 }
             }
+
 
         }
 

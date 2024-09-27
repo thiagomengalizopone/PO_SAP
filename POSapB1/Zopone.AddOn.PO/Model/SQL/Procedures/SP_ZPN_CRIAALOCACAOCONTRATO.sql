@@ -35,33 +35,6 @@ BEGIN
 
 		
 
-	INSERT INTO "@ZPN_ALOCONI"
-           ([Code]
-           ,[LineId]
-           ,[Object]
-           ,[LogInst]
-           ,[U_CodAloc]
-           ,[U_DescAloc]           
-		   ,[U_PC]
-		)
-	SELECT 
-		AbsId,
-		 ROW_NUMBER() OVER(PARTITION BY  OOAT.AbsId ORDER BY ALOC.U_Desc, OOAT.AbsId) + (SELECT isnull(MAX(ALCI.[LineId]),0)+1 FROM "@ZPN_ALOCONI" ALCI WHERE ALCI."Code" = OOAT.AbsId ),
-		 'ZPN_ALOCON',
-		 0,
-		 ALOC.Code,
-		 ALOC.U_Desc,
-		 'N'		
-	FROM	
-		OOAT
-		CROSS JOIN [@ZPN_ALOCA] ALOC
-	WHERE	
-		(@AbsId = -1 OR OOAT.AbsId = @AbsId) and
-		OOAT.AbsId not in (SELECT ALOCI."Code" FROM "@ZPN_ALOCONI" ALOCI WHERE ALOCI."Code" = OOAT.AbsId and ALOCI.U_CodAloc = ALOC."Code")
-
-
-	order by ALOC.U_Desc, OOAT.AbsId;
-
 END;
 
 

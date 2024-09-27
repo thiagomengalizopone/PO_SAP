@@ -1,8 +1,6 @@
-﻿CREATE PROCEDURE SP_ZPN_GeraCodigosObra
+﻿Create PROCEDURE SP_ZPN_GeraCodigosObra
 (
-	@Prefixo VARCHAR(10), 
-    @CodigoInicial VARCHAR(10), 
-    @Sufixo VARCHAR(10), 
+	@Prefixo VARCHAR(10),  
     @Quantidade INT
 
 )
@@ -10,18 +8,45 @@ AS
 BEGIN
 
 
+declare @CodigoInicial int, 
+        @Sufixo VARCHAR(10);
 
 /*
 DECLARE @Prefixo VARCHAR(10), 
-        @CodigoInicial VARCHAR(10), 
-        @Sufixo VARCHAR(10), 
+        
         @Quantidade INT;
 
 SET @Prefixo = 'R5';
-SET @CodigoInicial = '0009';
-SET @Sufixo = '25';
+
+
 SET @Quantidade = 20;
 */
+
+SET @Sufixo = substring(cast(YEAR(GETDATE()) as varchar(4)), 3, 2);
+
+WITH CTE AS (
+    SELECT 
+        Code,
+        -- Extrai a parte entre o '.' e o '/'
+        SUBSTRING(Code, CHARINDEX('.', Code) + 1, 
+                  CHARINDEX('/', Code) - CHARINDEX('.', Code) - 1) AS ExtractedValue,
+        -- Extrai o ano após o '/'
+        CAST(SUBSTRING(Code, CHARINDEX('/', Code) + 1, LEN(Code)) AS INT) AS YearValue
+    FROM 
+        "@ZPN_OPRJ"
+)
+
+
+
+SELECT 
+     @CodigoInicial=  isnull(MAX(CAST(ExtractedValue AS INT)),0)+1
+FROM 
+    CTE
+WHERE 
+    YearValue = substring(cast(YEAR(GETDATE()) as varchar(4)), 3, 2)
+
+
+
 
 DECLARE @CodigoBase INT;
 SET @CodigoBase = CAST(@CodigoInicial AS INT);
@@ -41,14 +66,20 @@ WITH CTE_Codigos AS (
 )
 
 SELECT 
-    CONCAT(@Prefixo, '.', RIGHT('0000' + CAST(Codigo AS VARCHAR(10)), LEN(@CodigoInicial)), '/', @Sufixo) AS "Código Gerado",
-	CASE 
-		WHEN ISNULL(OPRJ."PrjCode",'') <> '' THEN 'Obra gerada!'
-		Else ''
-	end 'Status'
+	'                                ' "Site",
+	'                                ' "CodCli", 
+	'                                                                                                                                                                                                ' "Cliente", 
+	'                                                                ' "Contrato", 
+    CONCAT(@Prefixo, '.', RIGHT('0000' + CAST(Codigo AS VARCHAR(10)), LEN(@CodigoInicial)), '/', @Sufixo) AS "CodObra",
+	GEtdatE() "Cadastro",
+	'                                 ' Regional,
+	'																											                                            																											                                            ' Validacao,
+	'                                ' "IdContrato",
+	'                                ' "IdRegional",
+	'                                ' "IdCliente"
+	
 FROM 
     CTE_Codigos
-	LEFT JOIN OPRJ ON OPRJ."PrjCode" = CONCAT(@Prefixo, '.', RIGHT('0000' + CAST(Codigo AS VARCHAR(10)), LEN(@CodigoInicial)), '/', @Sufixo) 
 OPTION (MAXRECURSION 0);
 
 

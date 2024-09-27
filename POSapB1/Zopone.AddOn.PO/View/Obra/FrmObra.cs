@@ -18,6 +18,8 @@ namespace Zopone.AddOn.PO.View.Obra
         #region Propriedades
         public EditText EdCodeObra { get; set; }
         public EditText EdDescObra { get; set; }
+        public EditText EdCardCode { get; set; }
+        public EditText EdCardName { get; set; }
 
         public EditText EdCodeContrato { get; set; }
         public EditText EdDescContrato { get; set; }
@@ -89,6 +91,12 @@ namespace Zopone.AddOn.PO.View.Obra
             EdCodeContrato = (EditText)oForm.Items.Item("EdCodCont").Specific;
             EdDescContrato = (EditText)oForm.Items.Item("EdDescCont").Specific;
             EdDescContrato.ChooseFromListAfter += EdDescContrato_ChooseFromListAfter;
+
+
+            EdCardCode = (EditText)oForm.Items.Item("EdCardCode").Specific;
+            EdCardCode.ChooseFromListAfter += EdCardCode_ChooseFromListAfter;
+            EdCardName = (EditText)oForm.Items.Item("EdCardName").Specific;
+
 
             MtCandidato = (Matrix)oForm.Items.Item("MtCandi").Specific;
 
@@ -174,7 +182,25 @@ namespace Zopone.AddOn.PO.View.Obra
 
         }
 
-       
+        private void EdCardCode_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                if (aEvent.SelectedObjects == null)
+                    return;
+
+                string CardCode = Convert.ToString(aEvent.SelectedObjects.GetValue("CardCode", 0));
+                string CardName = Convert.ToString(aEvent.SelectedObjects.GetValue("CardName", 0));
+
+                EdCardName.Value = CardName;
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados PN: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+
+            }
+        }
 
         private void GdListPO_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)
         {
@@ -375,15 +401,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (oForm.Mode == BoFormMode.fm_OK_MODE)
                     oForm.Mode = BoFormMode.fm_UPDATE_MODE;
-            }
-
-
-            if (string.IsNullOrEmpty(CbPaisCandidato.Value))
-            {
-                CbPaisCandidato.Select("BR", BoSearchKey.psk_ByValue);
-                Util.ComboBoxSetValoresValidosPorSQL(CbEstadoCandidato, UtilScriptsSQL.SQL_Estado(CbPaisCandidato.Value));
-
-
             }
         }
 
@@ -593,18 +610,10 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
-
                 Form oFormObra = Globals.Master.Connection.Interface.Forms.Item(formUID);
                 EditText EdCodeObra = (EditText)oFormObra.Items.Item("EdCode").Specific;
 
-                string operacao = bUpdate ? "U" : "A";
-
-                string SQL_Query = $"ZPN_SP_PCI_ATUALIZAOBRA '{EdCodeObra.Value}', '{operacao}'";
-
-                SqlUtils.DoNonQueryAsync(SQL_Query);
-
-                Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+                UtilPCI.EnviarDadosPCIAsync(EdCodeObra.Value, DateTime.Now);
             }
             catch (Exception Ex)
             {

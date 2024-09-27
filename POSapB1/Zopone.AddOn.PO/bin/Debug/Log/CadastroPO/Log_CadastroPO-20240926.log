@@ -1,0 +1,9 @@
+'CadastroPO';'Erro';'Erro ao carregar obra - 1). [Microsoft][ODBC Driver 13 for SQL Server][SQL Server]Invalid object name 'ZPN_OPRJ'.
+2). [Microsoft][ODBC Driver 13 for SQL Server][SQL Server]Statement(s) could not be prepared.
+';'System.Runtime.InteropServices.COMException (0xFFFFF830): 1). [Microsoft][ODBC Driver 13 for SQL Server][SQL Server]Invalid object name 'ZPN_OPRJ'.
+2). [Microsoft][ODBC Driver 13 for SQL Server][SQL Server]Statement(s) could not be prepared.
+
+   em SAPbobsCOM.IRecordset.DoQuery(String QueryStr)
+   em Zopone.AddOn.PO.View.Obra.FrmGerarObra.MtObras_DoubleClickAfter(Object sboObject, SBOItemEventArg pVal) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\Obra\FrmGerarObra.cs:linha 77';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'ZPN_OPRJ'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
