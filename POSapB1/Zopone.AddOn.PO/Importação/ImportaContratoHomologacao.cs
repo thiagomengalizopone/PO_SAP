@@ -19,17 +19,19 @@ namespace Zopone.AddOn.PO.Importação
         {
             System.Data.DataTable DtContrato =
                        SqlUtils.ExecuteCommand(@"
-                                                SELECT * FROM vw_sp_importaobrapcivalidacao
+                                                select obraref from zpn_obrasaimportar where obraref not in (select prjcode from oprj where prjcode = obraref);
                         ");
 
-
+            int count = 0;
             foreach (DataRow row in DtContrato.Rows)
             {
                 try
                 {
-                    UtilProjetos.SalvarProjeto(row["referencia"].ToString(), row["referencia"].ToString());
+                    count++;
 
-                    //SqlUtils.DoNonQuery($"SP_ZPN_INSEREIMPORTAOBRA '{row["referencia"].ToString()}'");
+                    UtilProjetos.SalvarProjeto(row["obraref"].ToString(), row["obraref"].ToString());
+
+                    //SqlUtils.DoNonQuery($"SP_ZPN_INSEREIMPORTAOBRA '{row["obraref"].ToString()}'");
                     
                 }
                 catch (Exception ex)

@@ -7,7 +7,7 @@ AS
 BEGIN
 
 
-	SELECT
+	SELECT distinct
 		ALCI.U_CodAloc "Código", 
 		ALCI.U_Descaloc "Descrição"
 	FROM 

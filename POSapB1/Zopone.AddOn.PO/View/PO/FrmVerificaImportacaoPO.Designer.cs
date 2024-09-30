@@ -44,6 +44,7 @@
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mensagem = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BtnPesquisar = new System.Windows.Forms.Button();
+            this.cbDataPesq = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -193,7 +194,7 @@
             // 
             // BtnPesquisar
             // 
-            this.BtnPesquisar.Location = new System.Drawing.Point(332, 11);
+            this.BtnPesquisar.Location = new System.Drawing.Point(581, 15);
             this.BtnPesquisar.Name = "BtnPesquisar";
             this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
             this.BtnPesquisar.TabIndex = 9;
@@ -201,11 +202,23 @@
             this.BtnPesquisar.UseVisualStyleBackColor = true;
             this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
             // 
+            // cbDataPesq
+            // 
+            this.cbDataPesq.FormattingEnabled = true;
+            this.cbDataPesq.Items.AddRange(new object[] {
+            "Data de Importação",
+            "Data da PO"});
+            this.cbDataPesq.Location = new System.Drawing.Point(332, 12);
+            this.cbDataPesq.Name = "cbDataPesq";
+            this.cbDataPesq.Size = new System.Drawing.Size(243, 24);
+            this.cbDataPesq.TabIndex = 10;
+            // 
             // FrmVerificaImportacaoPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1291, 548);
+            this.Controls.Add(this.cbDataPesq);
             this.Controls.Add(this.dgDadosPO);
             this.Controls.Add(this.BtnPesquisar);
             this.Controls.Add(this.mskDataF);
@@ -235,5 +248,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn po_lis_DataConfirmacao;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Mensagem;
+        private System.Windows.Forms.ComboBox cbDataPesq;
     }
 }

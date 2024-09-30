@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Markup;
 using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.View.Obra;
 
@@ -49,11 +50,14 @@ namespace Zopone.AddOn.PO.View.PO
         {
             try
             {
+
+                string tipoDataPEsquisa = cbDataPesq.Text.Trim() == "Data de Importação" ? "I" : "P";
+
                 string dataInicial = (mskDataI.MaskFull ? Convert.ToDateTime(mskDataI.Text) : DateTime.MinValue).ToString("yyyyMMdd");
                 string dataFinal = (mskDataF.MaskFull ? Convert.ToDateTime(mskDataF.Text) : DateTime.MaxValue).ToString("yyyyMMdd");
 
 
-                string SQL = $@"SP_ZPN_VERIFICAIMPORTARPOHuawei '{dataInicial}', '{dataFinal}'";
+                string SQL = $@"SP_ZPN_VERIFICAIMPORTARPOHuawei '{dataInicial}', '{dataFinal}', '{tipoDataPEsquisa}'";
 
                 string pedidoVenda = string.Empty;
 
@@ -89,6 +93,8 @@ namespace Zopone.AddOn.PO.View.PO
             this.TopMost = true;
             this.BringToFront();
             this.TopMost = false;
+
+            cbDataPesq.SelectedIndex = 0;
 
             CarregarDadosLogImportacaoPO();
         }

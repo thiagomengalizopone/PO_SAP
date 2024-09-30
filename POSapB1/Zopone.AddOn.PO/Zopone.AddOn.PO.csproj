@@ -364,6 +364,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_COPIAALOCACAOCONTRATO.sql" />
     <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaObra.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRAPCG.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_RetornaProximaAlocacao.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

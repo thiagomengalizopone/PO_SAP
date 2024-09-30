@@ -153,7 +153,7 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_CardName = oPedidoVenda.CardName,
                                U_Item = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString(),
                                U_ItemFat = oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value.ToString(),
-                               U_DescItemFat = oPedidoVenda.Lines.ItemDescription,
+                               U_DescItemFat = oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value.ToString(),
                                U_Parcela = oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value.ToString(),
                                U_Valor = oPedidoVenda.Lines.LineTotal,
                                U_Tipo = oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value.ToString(),
@@ -636,6 +636,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = linePO.U_Item;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value = linePO.U_ItemFat;
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value = linePO.U_DescItemFat;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value = linePO.U_NroNF;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value = linePO.U_Tipo;
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value = linePO.U_Parcela;

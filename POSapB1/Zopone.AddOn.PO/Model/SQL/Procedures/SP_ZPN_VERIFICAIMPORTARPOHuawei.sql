@@ -1,8 +1,8 @@
-﻿
-CREATE PROCEDURE [dbo].[SP_ZPN_VERIFICAIMPORTARPOHuawei]
+﻿CREATE PROCEDURE [dbo].[SP_ZPN_VERIFICAIMPORTARPOHuawei]
 (
 	@DataInicial datetime,
-	@DataFinal datetime
+	@DataFinal datetime,
+	@TipoData varchar(10)
 )
 as
 BEGIN
@@ -24,7 +24,11 @@ BEGIN
 													   DOCPO."Documento" = 'P'
 	where 
 		ISNULL(ORDR.U_IdPO,0) > 0 AND 
-		ORDR.DocDate between @DataInicial AND @DataFinal 
+		(
+			(ORDR.DocDate between @DataInicial AND @DataFinal and @TipoData = 'P')
+			OR 
+			(ORDR.CreateDate between @DataInicial AND @DataFinal and @TipoData = 'I')
+		)
 
 
 	UNION

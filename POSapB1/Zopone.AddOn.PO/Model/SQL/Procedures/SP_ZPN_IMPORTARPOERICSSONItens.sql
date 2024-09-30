@@ -25,7 +25,8 @@ BEGIN
 		isnull(OPRJ_INST.U_CodContrato,0)U_CodContrato
 		,OPRJ_INST.[U_PCG] "PCG"
 		,OPRJ_INST.[U_Regional] "Regional"
-		,OPRC."PrcCode" "Obra"
+		,OPRC."PrcCode" "Obra",
+		isnull(OPRJ_INST."U_CardCode",'') "CardCode"
 	from 
 		ZPN_POERICSSON PO
 		LEFT JOIN ORDR ON ORDR."NumAtCard" = cast(PO.PO as varchar(50))

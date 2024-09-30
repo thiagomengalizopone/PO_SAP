@@ -186,6 +186,8 @@ namespace Zopone.AddOn.PO.View.ContratoAlocacao
 
                 MtAlocacao.AutoResizeColumns();
 
+                Util.MatrixInserirLinha(oForm, MtAlocacao, oDBAloca, true, true);
+
             }
             catch (Exception Ex)
             {

@@ -1,4 +1,5 @@
-﻿using sap.dev.core.Controller;
+﻿using sap.dev.core;
+using sap.dev.core.Controller;
 using sap.dev.data;
 using SAPbobsCOM;
 using System;
@@ -13,6 +14,28 @@ namespace Zopone.AddOn.PO.Controller.Localizacao
 {
     public class CentroCustoObra
     {
+
+
+
+
+        public static void AtualizaCentroCustoObra()
+        {
+            string SQL_Query = "select PrcCode from oprc where (validfrom > '2024-01-01'  or dimcode = 2) and dimcode <=3  ";
+
+            DataTable DtResultados = SqlUtils.ExecuteCommand(SQL_Query);
+
+            int cont = 0;
+
+
+            foreach (DataRow dr in DtResultados.Rows)
+            {
+                cont++;
+                Util.ExibirMensagemStatusBar($"Atualizando centro de custo {cont} de {DtResultados.Rows.Count}");
+                CentroCusto.AtualizaCentroCusto(dr["PrcCode"].ToString());
+            }
+
+        }
+
 
         public static void CriarCentroCustoObra()
         {
@@ -51,17 +74,6 @@ namespace Zopone.AddOn.PO.Controller.Localizacao
                 CentroCusto.CriaCentroCusto(dr["Code"].ToString(), Dimensao, TipoCentroCusto, "", "", dr["Code"].ToString());
             }
 
-            SqlUtils.DoNonQuery($@"
-                                    update ""@ZPN_OPRJ"" 
-                                    SET
-	                                    U_PCG = oprc.prccode
-
-                                    FROM
-	                                    ""@ZPN_OPRJ""  OBRA
-	                                    INNER JOIN OPRC ON OPRC.""PrcName"" = obra.""code"" and oprc.""U_Obra""=  obra.""code""
-                                    WHERE
-	                                    ISNULL(OBRA.U_PCG,'') <> oprc.prccode
-                                    ");
         }
     }
 }

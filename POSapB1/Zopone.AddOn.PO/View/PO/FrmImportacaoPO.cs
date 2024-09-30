@@ -109,11 +109,10 @@ namespace Zopone.AddOn.PO.View.PO
                         PopulatePedidoVenda(dtRegistros, iPedido, oPedidoVenda, bplId, Empresa);
 
                         if (oPedidoVenda.Add() != 0)
-                            throw new Exception($"PN: {oPedidoVenda.CardCode} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                            throw new Exception($"Pedido: {oPedidoVenda.NumAtCard} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                         
                         DocEntry = Convert.ToInt32(Globals.Master.Connection.Database.GetNewObjectKey());
 
-                        EnviarDadosPCIAsync(DocEntry);
                     }
                     catch (Exception ex)
                     {
@@ -129,26 +128,6 @@ namespace Zopone.AddOn.PO.View.PO
             }
         }
 
-        private static async Task EnviarDadosPCIAsync(Int32 DocEntry)
-        {
-            try
-            {
-                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
-
-
-                string SQL_Query = $"ZPN_SP_PCI_INSEREATUALIZAPO {DocEntry}";
-
-                SqlUtils.DoNonQueryAsync(SQL_Query);
-
-                Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
-            }
-            catch (Exception Ex)
-            {
-                string mensagemErro = $"Erro ao enviar dados PCI: {Ex.Message}";
-                MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
-            }
-        }
 
 
         private static SAPbobsCOM.Documents CreatePedidoVenda()
@@ -168,8 +147,12 @@ namespace Zopone.AddOn.PO.View.PO
         private static void PopulatePedidoVenda(DataTable dtRegistros, int iPedido, SAPbobsCOM.Documents oPedidoVenda, int bplId, string Empresa)
         {
             oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePOHawuey;
+#if DEBUG
             oPedidoVenda.DocDate = DateTime.Now;
-            oPedidoVenda.DocDueDate = DateTime.Now;
+#else
+            oPedidoVenda.DocDate = Convert.ToDateTime(dtRegistros.Rows[iPedido]["po_lis_DataConfirmacao"]);
+#endif 
+            oPedidoVenda.DocDueDate = oPedidoVenda.DocDate;
             oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString();
             oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value = Convert.ToDouble(dtRegistros.Rows[iPedido]["po_id"]);
 
@@ -192,6 +175,12 @@ namespace Zopone.AddOn.PO.View.PO
 
             for (int iPedidoLinha = 0; iPedidoLinha < dtRegistrosItens.Rows.Count; iPedidoLinha++)
             {
+
+                if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString()))
+                {
+                    oPedidoVenda.CardCode = dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString();
+                }
+
                 if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
                     oPedidoVenda.Lines.Add();
 
@@ -219,7 +208,19 @@ namespace Zopone.AddOn.PO.View.PO
                     oPedidoVenda.Lines.ProjectCode = dtRegistrosItens.Rows[iPedidoLinha]["IdObra"].ToString();
 
                 if (Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["U_CodContrato"]) > 0)
+                {
                     oPedidoVenda.Lines.AgreementNo = Convert.ToInt32(dtRegistrosItens.Rows[iPedidoLinha]["U_CodContrato"]);
+
+
+                    string CodeAloca = SqlUtils.GetValue($@"ZPN_SP_RetornaProximaAlocacao {oPedidoVenda.Lines.AgreementNo}, '{oPedidoVenda.Lines.ProjectCode}'", "");
+
+                    if (!string.IsNullOrEmpty(CodeAloca))
+                        oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value = CodeAloca;
+
+
+
+
+                }
 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
 
