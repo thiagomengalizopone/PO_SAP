@@ -29,7 +29,7 @@ BEGIN
 	FROM 
 		 [192.168.8.241,15050].Zopone.dbo.POList POList
 		INNER JOIN [192.168.8.241,15050].[Zopone].dbo.PO PO ON PO.po_id = POList.po_id
-		LEFT join "@ZPN_OPRJ" on polist.manufactureSiteInfo collate Latin1_General_CI_AS like '%'+ "@ZPN_OPRJ".U_IdSite+ '%' AND ISNULL("@ZPN_OPRJ".U_IdSite,'') <> ''
+		LEFT join "@ZPN_OPRJ" on dbo.ZPN_FN_RetornaObraPOHuawei(polist.manufactureSiteInfo) = "@ZPN_OPRJ"."Code"
 		LEFT JOIN OPRC ON OPRC."U_Obra" = "@ZPN_OPRJ"."Code" AND OPRC."DimCode" = 2
 		LEFT JOIN OOAT ON OOAT."AbsId" = "@ZPN_OPRJ".U_CodContrato
 

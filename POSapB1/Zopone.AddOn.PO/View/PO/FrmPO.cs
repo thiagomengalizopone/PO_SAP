@@ -691,7 +691,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
 
-                string SQL_Query = $"ZPN_SP_PCI_INSEREATUALIZAPO '{Docentry}', '{DateTime.Now.ToString("yyyyMMdd")}'";
+                string SQL_Query = $"ZPN_SP_PCI_INSEREATUALIZAPO '{Docentry}'";
 
                 SqlUtils.DoNonQueryAsync(SQL_Query);
 

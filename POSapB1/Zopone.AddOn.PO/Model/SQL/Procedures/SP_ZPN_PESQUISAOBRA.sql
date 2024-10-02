@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SP_ZPN_PESQUISAOBRA
+﻿create PROCEDURE SP_ZPN_PESQUISAOBRA
 (
     @CampoPesquisa VARCHAR(250)
 )
@@ -33,10 +33,13 @@ BEGIN
         LEFT JOIN OPRC OPRC_PCG ON OPRC_PCG.U_CardCode = OCRD.CardCode
     WHERE
         OPRJ.PrjCode LIKE '%' + @CampoPesquisa + '%' OR 
+        ZPN_PRJ.U_IdSite LIKE '%' + @CampoPesquisa + '%' OR 
         OPRJ.PrjName LIKE '%' + @CampoPesquisa + '%' OR 
         OBPL.BplName LIKE '%' + @CampoPesquisa + '%' OR 
         OOAT.Descript LIKE '%' + @CampoPesquisa + '%' OR
-        CLASS.Name LIKE '%' + @CampoPesquisa + '%'
+        CLASS.Name LIKE '%' + @CampoPesquisa + '%' OR 
+		OCRD.CardCode LIKE '%' + @CampoPesquisa + '%' OR 
+        OCRD.CardName LIKE '%' + @CampoPesquisa + '%' 
     ORDER BY
         OPRJ.PrjName;
 END
