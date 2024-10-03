@@ -1,4 +1,5 @@
 ﻿using sap.dev.core;
+using sap.dev.core.Controller;
 using sap.dev.data;
 using SAPbobsCOM;
 using System;
@@ -15,11 +16,68 @@ namespace Zopone.AddOn.PO.Importação
     public class ImportaContratoHomologacao
     {
 
+
+
+
+        public static void criacentrocusto()
+        {
+
+            System.Data.DataTable DtContrato =
+                       SqlUtils.ExecuteCommand(@"                                                
+                           SELECT 
+	                            ""Code""
+                            FROM 
+	                            ""@ZPN_OPRJ""
+                            WHERE
+	                            ""Code"" NOT IN 
+	                            (
+		                            select 
+			                            U_Obra
+		                            from	
+			                            oprc
+		                            where
+			                            U_Obra = ""Code""
+	                            )
+
+
+                        ");
+
+
+            Int32 Dimensao = Convert.ToInt32(SqlUtils.GetValue(@"SELECT Max(T0.""DimCode"") FROM ODIM T0 WHERE T0.""DimDesc"" = 'OBRA'"));
+            string TipoCentroCusto = SqlUtils.GetValue(@"SELECT maX(CctCode) FROM OCCT WHERE CctName = 'Receitas'");
+            int count = 0;
+            foreach (DataRow row in DtContrato.Rows)
+            {
+                try
+                {
+                    count++;
+
+                    string CentroCustoRetorno = CentroCusto.CriaCentroCusto(row["Code"].ToString(), Dimensao, TipoCentroCusto, "", "", row["Code"].ToString());
+
+                    string SqL_UPDATE = $@"UPDATE ""@ZPN_OPRJ"" SET ""U_PCG"" = '{CentroCustoRetorno}' WHERE ""Code"" =  '{row["Code"].ToString()}'";
+
+                }
+                catch (Exception ex)
+                {
+                    // Trate exceções ou faça logging
+                    Console.WriteLine($"Erro ao importar contrato: {ex.Message}");
+                }
+            }
+
+
+            
+        }
         public static void ImportarObrasSAPB1()
         {
             System.Data.DataTable DtContrato =
-                       SqlUtils.ExecuteCommand(@"
-                                                select obraref from zpn_obrasaimportar where obraref not in (select prjcode from oprj where prjcode = obraref);
+                       SqlUtils.ExecuteCommand(@"                                                
+                                    SELECT 
+	                                    REFERENCIA, 
+	                                    ABSID,
+	                                    DESCRIPT
+                                    FROM
+	                                    vw_tmp_obrasimportar
+
                         ");
 
             int count = 0;
@@ -29,9 +87,13 @@ namespace Zopone.AddOn.PO.Importação
                 {
                     count++;
 
-                    UtilProjetos.SalvarProjeto(row["obraref"].ToString(), row["obraref"].ToString());
+                    UtilProjetos.SalvarProjeto(row["REFERENCIA"].ToString(), row["REFERENCIA"].ToString());
 
-                    //SqlUtils.DoNonQuery($"SP_ZPN_INSEREIMPORTAOBRA '{row["obraref"].ToString()}'");
+                    //SqlUtils.DoNonQuery($"SP_ZPN_INSEREIMPORTAOBRA2 '{row["REFERENCIA"].ToString()}'");
+
+
+                    //SqlUtils.DoNonQuery($"ZPN_SP_PCI_ATUALIZAOBRA '{row["REFERENCIA"].ToString()}', '2024-01-01'");
+
                     
                 }
                 catch (Exception ex)
@@ -59,8 +121,8 @@ namespace Zopone.AddOn.PO.Importação
                     // Acessa os valores das colunas usando o nome das colunas
                     ImportaContrato(
                         row["CardCode"].ToString(),
-                        Convert.ToDateTime(row["iniciocontrato"]),
-                        row["contratoid"].ToString(),
+                        Convert.ToDateTime("2024-01-01"),
+                        string.Empty,
                         row["referencia"].ToString(),
                         row["descricao"].ToString()
                     );

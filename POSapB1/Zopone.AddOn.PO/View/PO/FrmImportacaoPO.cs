@@ -176,9 +176,12 @@ namespace Zopone.AddOn.PO.View.PO
             for (int iPedidoLinha = 0; iPedidoLinha < dtRegistrosItens.Rows.Count; iPedidoLinha++)
             {
 
-                if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString()))
+                if (Empresa == "Huawei")
                 {
-                    oPedidoVenda.CardCode = dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString();
+                    if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString()))
+                    {
+                        oPedidoVenda.CardCode = dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString();
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))

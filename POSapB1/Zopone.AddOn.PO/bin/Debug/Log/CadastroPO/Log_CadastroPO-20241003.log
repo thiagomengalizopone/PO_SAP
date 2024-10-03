@@ -1,0 +1,68 @@
+'CadastroPO';'Erro';'Erro ao carregar dados importação PO - Ericsson - O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.';'System.IO.IOException: O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.
+   em System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   em System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path)
+   em Zopone.AddOn.PO.View.PO.PesquisaEricssonService.Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso, DataTable& dtRegistros) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmImportacaoPO.cs:linha 347';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near '\'.
+ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]The label 'G' has already been declared. Label names must be unique within a query batch or stored procedure.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao carregar dados importação PO - Ericsson - O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.';'System.IO.IOException: O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.
+   em System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   em System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path)
+   em Zopone.AddOn.PO.View.PO.PesquisaEricssonService.Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso, DataTable& dtRegistros) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmImportacaoPO.cs:linha 350';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near '\'.
+ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]The label 'G' has already been declared. Label names must be unique within a query batch or stored procedure.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao carregar dados importação PO - Ericsson - O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.';'System.IO.IOException: O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.
+   em System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   em System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path)
+   em Zopone.AddOn.PO.View.PO.PesquisaEricssonService.Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso, DataTable& dtRegistros) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmImportacaoPO.cs:linha 350';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near '\'.
+ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]The label 'G' has already been declared. Label names must be unique within a query batch or stored procedure.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao carregar dados importação PO - Ericsson - O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.';'System.IO.IOException: O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.
+   em System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   em System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path)
+   em Zopone.AddOn.PO.View.PO.PesquisaEricssonService.Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso, DataTable& dtRegistros) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmImportacaoPO.cs:linha 350';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near '\'.
+ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]The label 'G' has already been declared. Label names must be unique within a query batch or stored procedure.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao carregar dados importação PO - Ericsson - O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.';'System.IO.IOException: O processo não pode acessar o arquivo 'G:\PROVISÓRIO\Thiago Mengali\RELATÓRIO PB DE PO - ERICSSON.csv' porque ele está sendo usado por outro processo.
+   em System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   em System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost)
+   em System.IO.StreamReader..ctor(String path)
+   em Zopone.AddOn.PO.View.PO.PesquisaEricssonService.Pesquisar(MaskedTextBox mskDataI, MaskedTextBox mskDataF, DataGridView dgDadosPO, ProgressBar pbProgresso, DataTable& dtRegistros) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmImportacaoPO.cs:linha 350';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near '\'.
+ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]The label 'G' has already been declared. Label names must be unique within a query batch or stored procedure.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao carregar dados da tela: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot insert the value NULL into column 'filialid', table 'zsistema_aceite.dbo.contrato'; column does not allow nulls. INSERT fails.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.';'System.Exception: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot insert the value NULL into column 'filialid', table 'zsistema_aceite.dbo.contrato'; column does not allow nulls. INSERT fails.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em Zopone.AddOn.PO.View.Contrato.Frm1250000100.<EnviarDadosPCIAsync>d__6.MoveNext() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\Contrato\Frm1250000100.cs:linha 247';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'filialid'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;
+'CadastroPO';'Erro';'Erro ao atualizar dados de obra: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot insert the value NULL into column 'contratoid', table 'zsistema_aceite.dbo.obra'; column does not allow nulls. INSERT fails.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.';'System.Exception: ERROR [23000] [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot insert the value NULL into column 'contratoid', table 'zsistema_aceite.dbo.obra'; column does not allow nulls. INSERT fails.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][SQL Server]The statement has been terminated.
+   em sap.dev.data.SqlUtils.<DoNonQueryAsync>d__0.MoveNext() na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 32
+--- Fim do rastreamento de pilha do local anterior onde a exceção foi gerada ---
+   em System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   em System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   em System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   em Zopone.AddOn.PO.Helpers.UtilPCI.<EnviarDadosPCIAsync>d__0.MoveNext() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Helpers\UtilPCI.cs:linha 23';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'contratoid'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;

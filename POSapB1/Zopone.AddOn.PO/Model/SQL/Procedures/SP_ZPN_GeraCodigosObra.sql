@@ -1,4 +1,4 @@
-﻿Create PROCEDURE SP_ZPN_GeraCodigosObra
+﻿CREATE PROCEDURE SP_ZPN_GeraCodigosObra
 (
 	@Prefixo VARCHAR(10),  
     @Quantidade INT
@@ -34,6 +34,8 @@ WITH CTE AS (
         CAST(SUBSTRING(Code, CHARINDEX('/', Code) + 1, LEN(Code)) AS INT) AS YearValue
     FROM 
         "@ZPN_OPRJ"
+    WHERE
+		LEN(Code) = 10
 )
 
 

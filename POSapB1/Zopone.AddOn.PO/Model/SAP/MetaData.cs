@@ -168,8 +168,9 @@ namespace Zopone.AddOn.PO.Model.SAP
                 #region Cadastro de Obra 
                 DBCreation.CriarTabelaUsuario("ZPN_OPRJ", "Cadastro Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
 
-                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdSite", "Id Site", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
-                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Equip", "Equipamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdSite", "Id Site", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Local", "Localização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Equip", "Equipamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Detent", "Detentora", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdDetent", "Id Detentora", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Regional", "Regional", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);

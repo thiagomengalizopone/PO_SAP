@@ -23,7 +23,6 @@ namespace Zopone.AddOn.PO
 
             Globals.Master = new Master(lConexao, EnumAddOn.CadastroPO, GetDLLVersion());
 
-
             Util.CriarPastaLog();
 
             Install.VerificaInstalacaoAddOn();

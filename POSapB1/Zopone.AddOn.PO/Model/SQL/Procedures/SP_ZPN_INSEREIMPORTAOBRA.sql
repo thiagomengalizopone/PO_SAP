@@ -88,7 +88,8 @@ AS
 		[LINKZCLOUD].[zsistema_aceite].[dbo].[obra] OBRAPCI
 		INNER JOIN OPRJ ON OPRJ.PrjCode = OBRAPCI.referencia COLLATE SQL_Latin1_General_CP1_CI_AS
 		INNER JOIN "@ZPN_CLASSOBF" CLASS ON OBRAPCI.obraclassificacaoid = CLASS.U_IdPCI
-		INNER JOIN OOAT ON CAST(OOAT.U_IdPCI AS VARCHAR(100)) = OBRAPCI.contratoid
+		inner join vw_tmp_obrasimportar obraimp on obraimp.referencia =  OBRAPCI.referencia
+		INNER JOIN OOAT ON ooat.absid = obraimp.absid
 		INNER JOIN OPRC ON OPRC.U_IdPCI = OBRAPCI.filialid AND OPRC.DimCOde = 3
 		LEFT JOIN OCNT ON OCNT.[Name] = OBRAPCI.cidade COLLATE SQL_Latin1_General_CP1_CI_AS
 	WHERE
