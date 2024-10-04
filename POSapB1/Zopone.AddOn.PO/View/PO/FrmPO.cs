@@ -648,6 +648,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.Lines.CostingCode2 = linePO.CostingCode2;
                     oPedidoVenda.Lines.CostingCode3 = linePO.CostingCode3;
 
+                    oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusImp").Value = "Y";
 
                     if (linePO.AgrNo > 0)
                         oPedidoVenda.Lines.AgreementNo = linePO.AgrNo;

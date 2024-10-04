@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.mskDataI = new System.Windows.Forms.MaskedTextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -40,11 +40,16 @@
             this.DocEntryPO = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.poNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DOCTOOBRA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Empresa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.po_lis_DataConfirmacao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mensagem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Validado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BtnPesquisar = new System.Windows.Forms.Button();
             this.cbDataPesq = new System.Windows.Forms.ComboBox();
+            this.CkValidado = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.CbEmpresa = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,46 +89,48 @@
             // 
             // dgDadosPO
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgDadosPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgDadosPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgDadosPO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgDadosPO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.po_id,
             this.DocEntryPO,
             this.poNumber,
             this.DOCTOOBRA,
+            this.Empresa,
             this.po_lis_DataConfirmacao,
             this.Status,
-            this.Mensagem});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgDadosPO.DefaultCellStyle = dataGridViewCellStyle5;
+            this.Mensagem,
+            this.Validado});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgDadosPO.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgDadosPO.Location = new System.Drawing.Point(12, 53);
             this.dgDadosPO.MultiSelect = false;
             this.dgDadosPO.Name = "dgDadosPO";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgDadosPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgDadosPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgDadosPO.RowHeadersWidth = 51;
             this.dgDadosPO.RowTemplate.Height = 24;
             this.dgDadosPO.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgDadosPO.Size = new System.Drawing.Size(1269, 488);
+            this.dgDadosPO.Size = new System.Drawing.Size(1691, 655);
             this.dgDadosPO.TabIndex = 8;
             this.dgDadosPO.DoubleClick += new System.EventHandler(this.dgDadosPO_DoubleClick);
             // 
@@ -165,6 +172,15 @@
             this.DOCTOOBRA.ReadOnly = true;
             this.DOCTOOBRA.Width = 125;
             // 
+            // Empresa
+            // 
+            this.Empresa.DataPropertyName = "Empresa";
+            this.Empresa.HeaderText = "Empresa";
+            this.Empresa.MinimumWidth = 6;
+            this.Empresa.Name = "Empresa";
+            this.Empresa.ReadOnly = true;
+            this.Empresa.Width = 125;
+            // 
             // po_lis_DataConfirmacao
             // 
             this.po_lis_DataConfirmacao.DataPropertyName = "DocDate";
@@ -192,9 +208,18 @@
             this.Mensagem.ReadOnly = true;
             this.Mensagem.Width = 125;
             // 
+            // Validado
+            // 
+            this.Validado.DataPropertyName = "Validado";
+            this.Validado.HeaderText = "Validado";
+            this.Validado.MinimumWidth = 6;
+            this.Validado.Name = "Validado";
+            this.Validado.ReadOnly = true;
+            this.Validado.Width = 125;
+            // 
             // BtnPesquisar
             // 
-            this.BtnPesquisar.Location = new System.Drawing.Point(581, 13);
+            this.BtnPesquisar.Location = new System.Drawing.Point(1185, 18);
             this.BtnPesquisar.Name = "BtnPesquisar";
             this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
             this.BtnPesquisar.TabIndex = 9;
@@ -213,11 +238,45 @@
             this.cbDataPesq.Size = new System.Drawing.Size(243, 24);
             this.cbDataPesq.TabIndex = 10;
             // 
+            // CkValidado
+            // 
+            this.CkValidado.AutoSize = true;
+            this.CkValidado.Location = new System.Drawing.Point(926, 16);
+            this.CkValidado.Name = "CkValidado";
+            this.CkValidado.Size = new System.Drawing.Size(136, 20);
+            this.CkValidado.TabIndex = 11;
+            this.CkValidado.Text = "Ignorar Validados";
+            this.CkValidado.UseVisualStyleBackColor = true;
+            this.CkValidado.CheckedChanged += new System.EventHandler(this.CkValidado_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(581, 18);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(62, 16);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Empresa";
+            // 
+            // CbEmpresa
+            // 
+            this.CbEmpresa.FormattingEnabled = true;
+            this.CbEmpresa.Items.AddRange(new object[] {
+            "Huawei",
+            "Ericsson"});
+            this.CbEmpresa.Location = new System.Drawing.Point(659, 12);
+            this.CbEmpresa.Name = "CbEmpresa";
+            this.CbEmpresa.Size = new System.Drawing.Size(236, 24);
+            this.CbEmpresa.TabIndex = 12;
+            // 
             // FrmVerificaImportacaoPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1291, 548);
+            this.ClientSize = new System.Drawing.Size(1715, 720);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.CbEmpresa);
+            this.Controls.Add(this.CkValidado);
             this.Controls.Add(this.cbDataPesq);
             this.Controls.Add(this.dgDadosPO);
             this.Controls.Add(this.BtnPesquisar);
@@ -227,6 +286,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FrmVerificaImportacaoPO";
             this.Text = "Verifica Importação de PO";
+            this.Activated += new System.EventHandler(this.FrmVerificaImportacaoPO_Activated);
             this.Load += new System.EventHandler(this.FrmImportacaoPO_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).EndInit();
             this.ResumeLayout(false);
@@ -241,13 +301,18 @@
         private System.Windows.Forms.MaskedTextBox mskDataF;
         private System.Windows.Forms.DataGridView dgDadosPO;
         private System.Windows.Forms.Button BtnPesquisar;
+        private System.Windows.Forms.ComboBox cbDataPesq;
         private System.Windows.Forms.DataGridViewTextBoxColumn po_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn DocEntryPO;
         private System.Windows.Forms.DataGridViewTextBoxColumn poNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn DOCTOOBRA;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Empresa;
         private System.Windows.Forms.DataGridViewTextBoxColumn po_lis_DataConfirmacao;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Mensagem;
-        private System.Windows.Forms.ComboBox cbDataPesq;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Validado;
+        private System.Windows.Forms.CheckBox CkValidado;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox CbEmpresa;
     }
 }

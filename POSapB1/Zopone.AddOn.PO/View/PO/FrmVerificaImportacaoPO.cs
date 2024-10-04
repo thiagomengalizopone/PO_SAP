@@ -55,9 +55,10 @@ namespace Zopone.AddOn.PO.View.PO
 
                 string dataInicial = (mskDataI.MaskFull ? Convert.ToDateTime(mskDataI.Text) : DateTime.MinValue).ToString("yyyyMMdd");
                 string dataFinal = (mskDataF.MaskFull ? Convert.ToDateTime(mskDataF.Text) : DateTime.MaxValue).ToString("yyyyMMdd");
+                string IgnorarValidados = CkValidado.Checked ? "Y" : "N";
+                string Empresa = !string.IsNullOrEmpty(CbEmpresa.Text) ? CbEmpresa.Text : "";
 
-
-                string SQL = $@"SP_ZPN_VERIFICAIMPORTARPOHuawei '{dataInicial}', '{dataFinal}', '{tipoDataPEsquisa}'";
+                string SQL = $@"SP_ZPN_VERIFICAIMPORTARPOHuawei '{dataInicial}', '{dataFinal}', '{tipoDataPEsquisa}', '{Empresa}', '{IgnorarValidados}'";
 
                 string pedidoVenda = string.Empty;
 
@@ -125,6 +126,15 @@ namespace Zopone.AddOn.PO.View.PO
 
             FrmPO.MenuPO(DocEntry, IsDraft);
 
+        }
+
+        private void CkValidado_CheckedChanged(object sender, EventArgs e)
+        {
+            PesquisarDados();
+        }
+
+        private void FrmVerificaImportacaoPO_Activated(object sender, EventArgs e)
+        {
         }
     }
 }

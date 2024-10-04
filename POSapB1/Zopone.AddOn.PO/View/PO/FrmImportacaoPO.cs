@@ -116,7 +116,7 @@ namespace Zopone.AddOn.PO.View.PO
                     }
                     catch (Exception ex)
                     {
-                        LogImportacaoErro(dtRegistros, iPedido, ex);
+                        LogImportacaoErro(dtRegistros, iPedido, Empresa, ex);
                     }
                 }
 
@@ -235,17 +235,18 @@ namespace Zopone.AddOn.PO.View.PO
                 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
+                oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusImp").Value = "N";
 
 
                 oPedidoVenda.BPL_IDAssignedToInvoice = bplId;
             }
         }
 
-        private static void LogImportacaoErro(DataTable dtRegistros, int iPedido, Exception ex)
+        private static void LogImportacaoErro(DataTable dtRegistros, int iPedido, string Empresa, Exception ex)
         {
             try
             {
-                string SQL_LOG = $@"ZPN_SP_LOGIMPORTACAOPO {dtRegistros.Rows[iPedido]["po_id"].ToString()}, '{ex.Message.Replace("'", "")}'";
+                string SQL_LOG = $@"ZPN_SP_LOGIMPORTACAOPO {dtRegistros.Rows[iPedido]["po_id"].ToString()}, '{ex.Message.Replace("'", "")}','{Empresa}'";
                 SqlUtils.DoNonQuery(SQL_LOG);
             }
             catch (Exception Ex)

@@ -54,6 +54,11 @@ namespace Zopone.AddOn.PO.Model.SAP
                 valoresValidosStatusFaturamento.Add(new Tuple<string, string>("A", "À Faturar"));
                 valoresValidosStatusFaturamento.Add(new Tuple<string, string>("F", "Liberado para Faturamento"));
 
+                var valoresValidosStatusImportacao = new List<Tuple<string, string>>();
+                valoresValidosStatusImportacao.Add(new Tuple<string, string>("N", "Não validado"));
+                valoresValidosStatusImportacao.Add(new Tuple<string, string>("Y", "Validado"));
+
+
                 DBCreation.CriarCampoUsuario("ORDR", "NroCont", "Número Contrato Cliente", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
                 DBCreation.CriarCampoUsuario("ORDR", "IdPO", "ID Po Z Sistemas", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Quantity, 11, false, null);
                 
@@ -79,6 +84,7 @@ namespace Zopone.AddOn.PO.Model.SAP
 
 
                 DBCreation.CriarCampoUsuario("RDR1", "StatusFat", "Status Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "A", valoresValidosStatusFaturamento);
+                DBCreation.CriarCampoUsuario("RDR1", "StatusImp", "Status Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "", valoresValidosStatusImportacao);
 
                 #endregion
 
