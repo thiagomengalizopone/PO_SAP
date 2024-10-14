@@ -248,7 +248,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
 
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
-                MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "SaldoAberto");
                 MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "TotalDocumento");                
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();

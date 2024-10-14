@@ -196,7 +196,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
 
                     if (oNotaFiscalSaida.Add() != 0)
-                        return $"Erro ao gerar PO {oPedidoVenda.NumAtCard} Linha {LineNum} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
+                        return $"Erro ao gerar pré faturamento de PO - {oPedidoVenda.NumAtCard} Linha {LineNum} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
 
                 }
 
@@ -334,6 +334,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_12").DataBind.Bind("DtPO", "Status");
 
 
+                MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "AlocacaoFAT");
+                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "DescAlocacaoFAT");
+
+
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
                 MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "SaldoAberto");
                 MtPedidos.Columns.Item("Col_15").DataBind.Bind("DtPO", "TotalFaturar");
@@ -341,10 +345,19 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Alocacao");
                 MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "AlocacaoFAT");
                 MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "DescAlocacaoFAT");
-                
+
+                MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "Linha");
+                MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "Obra");
+
+
 
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
+
+                Column oColuna = MtPedidos.Columns.Item("Col_7");
+                oColuna.ChooseFromListUID = "CFL_ALOC";
+                oColuna.ChooseFromListAlias = "Code";
+
 
             }
             catch (Exception Ex)

@@ -1,4 +1,4 @@
-﻿CREATE procedure ZPN_SP_ListaPedidosGerarPreFaturamento
+﻿Create procedure ZPN_SP_ListaPedidosGerarPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -29,15 +29,16 @@ SELECT
 	RDR1."U_itemDescription" "Descricao",
 	RDR1."LineTotal" "Valor",
 	ALOCA.U_Desc "Alocacao",
-	ALOCAFAT."Code" "AlocacaoFAT",
-	ALOCAFAT.U_Desc "DescAlocacaoFAT",
+	ISNULL(ALOCAFAT."Code", '           ') "AlocacaoFAT",
+	ISNULL(ALOCAFAT.U_Desc, '                                              ') "DescAlocacaoFAT",
 	RDR1."ItemCode",
 	RDR1."Dscription", 
 	isnull(FAT."SaldoFaturado",0)"SaldoFaturado",
 	(RDR1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "SaldoAberto",
 	(RDR1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "TotalFaturar",
 	RDR1.U_StatusFat as "Status",
-	0 as "TotalDocumento"
+	0 as "TotalDocumento",
+	RDR1.OcrCode "Obra"
 FROM
 	RDR1 
 	INNER JOIN ORDR ON ORDR."DocEntry" = RDR1."DocEntry"

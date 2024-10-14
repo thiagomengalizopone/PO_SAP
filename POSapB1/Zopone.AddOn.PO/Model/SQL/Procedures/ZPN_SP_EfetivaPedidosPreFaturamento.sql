@@ -45,6 +45,7 @@ FROM
 	INNER JOIN DRF1 ON DRF1.U_BaseEntry = RDR1."DocEntry" and DRF1."U_BaseLine" = RDR1."LineNum"
 	INNER JOIN ODRF ON ODRF."DocEntry" = DRF1."DocEntry"
 WHERE 
+	ODRF."DocStatus" = 'O' AND 
 	ISNULL(DRF1."U_StatusFat",'A') = 'F'
 	AND (isnull(ODRF."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
 	AND DRF1."DocDate" between @DataInicial and @DataFinal

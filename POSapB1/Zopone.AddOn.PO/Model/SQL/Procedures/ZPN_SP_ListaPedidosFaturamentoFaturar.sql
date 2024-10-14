@@ -31,7 +31,7 @@ SELECT
 	RDR1."Dscription", 
 	isnull(FAT."SaldoFaturado",0)"SaldoFaturado",
 	(RDR1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "SaldoAberto",
-	0 "TotalFaturar",
+	0.00000000 "TotalFaturar",
 	RDR1.U_StatusFat as "Status"
 
 FROM
