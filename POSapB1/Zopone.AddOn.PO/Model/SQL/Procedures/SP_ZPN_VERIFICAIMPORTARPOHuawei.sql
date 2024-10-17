@@ -1,4 +1,4 @@
-﻿alter PROCEDURE [dbo].[SP_ZPN_VERIFICAIMPORTARPOHuawei]
+﻿create PROCEDURE [dbo].[SP_ZPN_VERIFICAIMPORTARPOHuawei]
 (
 	@DataInicial datetime,
 	@DataFinal datetime,

@@ -2,7 +2,7 @@
 
 
 
-alter view vw_sp_temp_importarcontratos
+create view vw_sp_temp_importarcontratos
 as
   SELECT top 100
       CONT.contratoid,

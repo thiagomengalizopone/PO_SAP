@@ -30,7 +30,7 @@ namespace Zopone.AddOn.PO.Controller.Localizacao
             
             foreach (DataRow dr in DtResultados.Rows) 
             {
-                CentroCusto.CriaCentroCusto(dr["Location"].ToString(), Dimensao, TipoCentroCusto, "", "", dr["Code"].ToString());
+                CentroCusto.CriaCentroCusto(dr["Location"].ToString(), Dimensao, TipoCentroCusto, "", "", "",dr["Code"].ToString());
             }
         }
     }

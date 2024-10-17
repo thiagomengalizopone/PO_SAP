@@ -1,4 +1,4 @@
-﻿alter function ZPN_FN_RetornaObraPOEricsson
+﻿create function ZPN_FN_RetornaObraPOEricsson
 (
 	@SiteID VARCHAR(100)
 )

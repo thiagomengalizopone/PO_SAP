@@ -25,6 +25,7 @@ namespace Zopone.AddOn.PO
 
             Util.CriarPastaLog();
 
+
             Install.VerificaInstalacaoAddOn();
 
             CentroCustoLocalizacao.CriarCentroCustoLocalizacao();

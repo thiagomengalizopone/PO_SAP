@@ -19,10 +19,21 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 #region Campos AddOn WMS
                 var valoresValidosTipoDocumento = new List<Tuple<string, string>>();
-                valoresValidosTipoDocumento.Add(new Tuple<string, string>("TR", "TR"));
-                valoresValidosTipoDocumento.Add(new Tuple<string, string>("TA", "TA"));
+                valoresValidosTipoDocumento.Add(new Tuple<string, string>("N", "Nenhum"));
+                valoresValidosTipoDocumento.Add(new Tuple<string, string>("TR", "Transferência"));
+                valoresValidosTipoDocumento.Add(new Tuple<string, string>("RA", "Requisição de Almoxarifado"));
 
                 DBCreation.CriarCampoUsuario("ORDR", "ZPN_TipoDocto", "Tipo Documento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresValidosTipoDocumento);
+
+
+                var valoresUtilizacao = new List<Tuple<string, string>>();
+                valoresUtilizacao.Add(new Tuple<string, string>("N ", "Nenhum"));
+                valoresUtilizacao.Add(new Tuple<string, string>("RA", "Requisição de Almoxarifado"));
+                valoresUtilizacao.Add(new Tuple<string, string>("TR", "Transferência"));
+                valoresUtilizacao.Add(new Tuple<string, string>("RO", "Retorno de Obra"));
+
+                DBCreation.CriarCampoUsuario("OUSG", "U_TipopUt", "Tipo Utilização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresUtilizacao);
+
 
                 #endregion
 
@@ -152,6 +163,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 #region Classificação da Obra
                 DBCreation.CriarTabelaUsuario("ZPN_CLASSOB", "Cadastro Class Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "Posicao", "Posição", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
 
                 DBCreation.CriarTabelaUsuario("ZPN_CLASSOBF", "Cadastro Class Obra Filiais", SAPbobsCOM.BoUTBTableType.bott_MasterDataLines);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOBF", "BPLId", "Filial", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
