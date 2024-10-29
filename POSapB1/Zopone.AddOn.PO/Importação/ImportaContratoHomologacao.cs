@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Zopone.AddOn.PO.Helpers;
@@ -50,6 +51,8 @@ namespace Zopone.AddOn.PO.Importação
             {
                 try
                 {
+                    Util.ExibirMensagemStatusBar($"Criando centro de custo {count} de {DtContrato.Rows.Count}");
+
                     count++;
 
                     string CentroCustoRetorno = CentroCusto.CriaCentroCusto(row["Code"].ToString(), Dimensao, TipoCentroCusto, "", "", row["Code"].ToString());
@@ -72,11 +75,16 @@ namespace Zopone.AddOn.PO.Importação
             System.Data.DataTable DtContrato =
                        SqlUtils.ExecuteCommand(@"                                                
                                     SELECT 
-	                                    REFERENCIA, 
-	                                    ABSID,
-	                                    DESCRIPT
+                                        REFERENCIA, 
+                                        ABSID,
+                                        DESCRIPT
                                     FROM
-	                                    vw_tmp_obrasimportar
+                                        vw_tmp_obrasimportar
+                                    where
+	                                    REFERENCIA collate SQL_Latin1_General_CP1_CI_AS NOT IN 
+	                                    (
+		                                    SELECT PrjCode FROM OPRJ where PRjCode = referencia  collate SQL_Latin1_General_CP1_CI_AS
+	                                    );
 
                         ");
 
@@ -89,12 +97,16 @@ namespace Zopone.AddOn.PO.Importação
 
                     UtilProjetos.SalvarProjeto(row["REFERENCIA"].ToString(), row["REFERENCIA"].ToString());
 
+
+                    Util.ExibirMensagemStatusBar($"Importando obra {count} de {DtContrato.Rows.Count}");
+
+
                     //SqlUtils.DoNonQuery($"SP_ZPN_INSEREIMPORTAOBRA2 '{row["REFERENCIA"].ToString()}'");
 
 
                     //SqlUtils.DoNonQuery($"ZPN_SP_PCI_ATUALIZAOBRA '{row["REFERENCIA"].ToString()}', '2024-01-01'");
 
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -113,19 +125,25 @@ namespace Zopone.AddOn.PO.Importação
                                                 SELECT * FROM vw_sp_temp_importarcontratos
                         ");
 
-
+            Int32 rowID = 1;
+            Int32 TotalContrato = DtContrato.Rows.Count;
             foreach (DataRow row in DtContrato.Rows)
             {
                 try
                 {
+                    Util.ExibirMensagemStatusBar($"Importando contrato {rowID} de {TotalContrato}");
+
+
                     // Acessa os valores das colunas usando o nome das colunas
                     ImportaContrato(
                         row["CardCode"].ToString(),
                         Convert.ToDateTime("2024-01-01"),
-                        string.Empty,
+                        row["contratoid"].ToString(),
                         row["referencia"].ToString(),
                         row["descricao"].ToString()
                     );
+
+                    rowID++;
                 }
                 catch (Exception ex)
                 {

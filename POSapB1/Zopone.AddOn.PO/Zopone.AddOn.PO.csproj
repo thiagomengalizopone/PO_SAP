@@ -368,6 +368,8 @@
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOEricsson.sql" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOHuawei.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_STATUSVALIDACAOPEDIDOSPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\vw_tmp_obrasimportar.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\SP_ZPN_INSEREIMPORTAOBRA2.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

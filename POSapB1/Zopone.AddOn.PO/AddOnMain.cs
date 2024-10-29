@@ -25,6 +25,14 @@ namespace Zopone.AddOn.PO
 
             Util.CriarPastaLog();
 
+            #region DEBUG
+            //ImportaContratoHomologacao.ImportaContratoValidacao();
+
+            //ImportaContratoHomologacao.ImportarObrasSAPB1
+            //
+            ImportaContratoHomologacao.criacentrocusto();
+            #endregion
+
 
             Install.VerificaInstalacaoAddOn();
 

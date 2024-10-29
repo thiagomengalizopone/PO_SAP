@@ -1,4 +1,6 @@
 ﻿
+update oprc set U_MM_Filial = 1 where dimcode = 3;
+
 
 
 	update
