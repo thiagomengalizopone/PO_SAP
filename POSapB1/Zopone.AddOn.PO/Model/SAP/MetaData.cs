@@ -32,7 +32,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 valoresUtilizacao.Add(new Tuple<string, string>("TR", "Transferência"));
                 valoresUtilizacao.Add(new Tuple<string, string>("RO", "Retorno de Obra"));
 
-                DBCreation.CriarCampoUsuario("OUSG", "U_TipopUt", "Tipo Utilização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresUtilizacao);
+                DBCreation.CriarCampoUsuario("OUSG", "TipopUt", "Tipo Utilização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresUtilizacao);
 
 
                 #endregion
@@ -339,6 +339,11 @@ namespace Zopone.AddOn.PO.Model.SAP
                 
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
 
+                #endregion
+
+
+                #region OWHS
+                DBCreation.CriarCampoUsuario("OWHS", "CodObra", "Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null, null,  null ,  false);
                 #endregion
 
             }

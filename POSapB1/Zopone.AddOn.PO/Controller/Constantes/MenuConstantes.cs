@@ -32,6 +32,7 @@
         public const string FrmAloca = "FrmAloca";
         public const string FrmClassificacaoObra  = "FrmClassObra";
         public const string FrmParceiroNegocio = "134";
+        public const string FrmDeposito = "62";
     }
 }
 

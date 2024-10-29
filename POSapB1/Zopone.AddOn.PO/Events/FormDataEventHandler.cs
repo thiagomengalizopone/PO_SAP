@@ -5,6 +5,7 @@ using Zopone.AddOn.PO.View.ClassificacaoObra;
 using Zopone.AddOn.PO.View.Contrato;
 using Zopone.AddOn.PO.View.Obra;
 using Zopone.AddOn.PO.View.FrmParceiroNegocio;
+using Zopone.AddOn.PO.View.Deposito;
 
 namespace Zopone.AddOn.PO
 {
@@ -34,6 +35,7 @@ namespace Zopone.AddOn.PO
             {
                 BubbleEvent = Frm134.Interface_FormDataEvent(ref BusinessObjectInfo);
             }
+            
 
         }
     }

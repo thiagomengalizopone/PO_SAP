@@ -1,6 +1,8 @@
-﻿using Zopone.AddOn.PO.Controller.Constantes;
+﻿using SAPbouiCOM;
+using Zopone.AddOn.PO.Controller.Constantes;
 using Zopone.AddOn.PO.View.Config;
 using Zopone.AddOn.PO.View.Contrato;
+using Zopone.AddOn.PO.View.Deposito;
 
 namespace Zopone.AddOn.PO
 {
@@ -23,6 +25,10 @@ namespace Zopone.AddOn.PO
             else if (pVal.FormTypeEx == FormConstantes.FrmConfiguracoesPO)
             {
                 BubbleEvent = FrmConfPO.Interface_FormItemEvent(ref pVal);
+            }
+            else if (pVal.FormTypeEx == FormConstantes.FrmDeposito)
+            {
+                BubbleEvent = Frm62.Interface_FormItemEvent(ref pVal);
             }
         }
     }

@@ -180,6 +180,7 @@
     <Compile Include="View\Config\FrmConfPO.cs" />
     <Compile Include="View\ContratoAlocacao\FrmContAloca.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
+    <Compile Include="View\Deposito\Frm62.cs" />
     <Compile Include="View\Faturamento\FrmEfetivaFaturamento.cs" />
     <Compile Include="View\Faturamento\FrmPreFaturamento.cs" />
     <Compile Include="View\Faturamento\FrmListaFaturamento.cs" />
