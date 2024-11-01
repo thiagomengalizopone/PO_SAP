@@ -27,10 +27,8 @@ namespace Zopone.AddOn.PO
 
             #region DEBUG
             //ImportaContratoHomologacao.ImportaContratoValidacao();
-
-            //ImportaContratoHomologacao.ImportarObrasSAPB1
-            //
-            ImportaContratoHomologacao.criacentrocusto();
+            //ImportaContratoHomologacao.ImportarObrasSAPB1();
+            //ImportaContratoHomologacao.criacentrocusto();
             #endregion
 
 

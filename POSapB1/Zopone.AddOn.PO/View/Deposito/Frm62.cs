@@ -71,9 +71,9 @@ namespace Zopone.AddOn.PO.View.Deposito
                 btnLinked.Item.ToPane = oItemRefEdit.ToPane;
                 btnLinked.Item.Height = 15; // Altura do botão
                 btnLinked.Item.Width = 15; // Largura do botão
-                btnLinked.Item.Left = EdCodigoObra.Item.Left + EdCodigoObra.Item.Width + 5; // Posicionar ao lado do EditText
+                btnLinked.Item.Left = EdCodigoObra.Item.Left + EdCodigoObra.Item.Width + 10; // Posicionar ao lado do EditText
                 btnLinked.Item.Top = EdCodigoObra.Item.Top; // Alinhamento vertical
-
+                btnLinked.PressedAfter += BtnLinked_PressedAfter;
 
                 SAPbouiCOM.ChooseFromListCollection oCFLs = null;
                 SAPbouiCOM.Conditions oCons = null;
@@ -106,6 +106,22 @@ namespace Zopone.AddOn.PO.View.Deposito
             }
             return true;
 
+        }
+
+        private static void BtnLinked_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                Form oForm = Globals.Master.Connection.Interface.Forms.Item(pVal.FormUID);
+                EditText EdCodigoObra = (EditText)oForm.Items.Item("EdObra").Specific;
+
+                if (!string.IsNullOrEmpty(EdCodigoObra.Value))
+                    new FrmObra(EdCodigoObra.Value);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao abrir tela de obra: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
         private static void EdCodigoObra_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)

@@ -647,7 +647,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
                     {
-                        return ValidarDadosObra(businessObjectInfo.FormUID);
+                       // return ValidarDadosObra(businessObjectInfo.FormUID);
                     }
                 }
 
