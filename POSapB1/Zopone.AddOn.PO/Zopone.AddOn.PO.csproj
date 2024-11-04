@@ -371,6 +371,7 @@
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_STATUSVALIDACAOPEDIDOSPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\vw_tmp_obrasimportar.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\SP_ZPN_INSEREIMPORTAOBRA2.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISACLIENTE.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

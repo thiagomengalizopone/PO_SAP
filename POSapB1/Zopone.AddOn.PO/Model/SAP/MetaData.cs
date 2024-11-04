@@ -344,6 +344,8 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 #region OWHS
                 DBCreation.CriarCampoUsuario("OWHS", "CodObra", "Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null, null,  null ,  false);
+                DBCreation.CriarCampoUsuario("OWHS", "Contrato", "Contrato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null, null, null, false);
+
                 #endregion
 
             }

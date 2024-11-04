@@ -47,6 +47,9 @@ namespace Zopone.AddOn.PO.View.PO
                     commandSQL = $"SP_ZPN_PESQUISAETAPA '{txtPesquisar.Text}', '{Parametros[0]}'";
                 else if (TipoPesquisa == "PO")
                     commandSQL = $"ZPN_SP_LISTAPO '{txtPesquisar.Text}'";
+                else if (TipoPesquisa == "CLIENTE")
+                    commandSQL = $"SP_ZPN_PESQUISACLIENTE '{txtPesquisar.Text}'";                
+
                 DataTable result = SqlUtils.ExecuteCommand(commandSQL);
 
                 dgResultado.DataSource = result;
@@ -116,6 +119,11 @@ namespace Zopone.AddOn.PO.View.PO
                 {
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[0].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[8].Value.ToString());
+                }
+                else if (TipoPesquisa == "CLIENTE")
+                {
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[0].Value.ToString());
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[1].Value.ToString());
 
                 }
 
