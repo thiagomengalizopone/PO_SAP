@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="03401a78-9dc4-45ff-91d6-61b61cf34e9d" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://webmg03.seniorcloud.com.br:37101/g5-senior-services/rubi_Syncbr_zopone_integracaoContrato?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="rubi_Syncbr_zopone_integracaoContrato.xsd" MetadataType="Schema" ID="4af8703b-ca98-46d2-8ab5-23460be413e3" SourceId="1" SourceUrl="https://webmg03.seniorcloud.com.br:37101/g5-senior-services/rubi_Syncbr_zopone_integracaoContrato?xsd" />
+    <MetadataFile FileName="g5-senior-services.wsdl" MetadataType="Wsdl" ID="86caa5e7-ec53-408f-b678-e8a491bf1161" SourceId="1" SourceUrl="https://webmg03.seniorcloud.com.br:37101/g5-senior-services/rubi_Syncbr_zopone_integracaoContrato?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

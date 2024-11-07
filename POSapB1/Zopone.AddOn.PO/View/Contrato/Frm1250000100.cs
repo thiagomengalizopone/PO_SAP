@@ -121,15 +121,10 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
 
-
-
                 oStaticText = ((SAPbouiCOM.StaticText)(oItem.Specific));
                 oStaticText.Caption = "Regional";
 
-
                 Util.ComboBoxSetValoresValidosPorSQL(CbRegional, UtilScriptsSQL.SQL_Regionais);
-
-
 
                 Item oFolderRef = oFormContrato.Items.Item("1320000072");
 
@@ -168,8 +163,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 oNewFolder.ClickAfter += ONewFolder_ClickAfter;
 
-
-                 oItemRef = oFormContrato.Items.Item("1250000002");
+                oItemRef = oFormContrato.Items.Item("1250000002");
 
                 oItem = oFormContrato.Items.Add("BtAlocacao", SAPbouiCOM.BoFormItemTypes.it_BUTTON);
                 oItem.Left = oItemRef.Left  + oItemRef.Width + 10;
@@ -182,8 +176,6 @@ namespace Zopone.AddOn.PO.View.Contrato
                 BtAlocacao = ((SAPbouiCOM.Button)(oItem.Specific));
                 BtAlocacao.Caption = "Alocação";
                 BtAlocacao.PressedAfter += BtAlocacao_PressedAfter;
-
-
 
                 oFormContrato.Update();
 
@@ -246,7 +238,42 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 SqlUtils.DoNonQuery(SQL_Query);
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados da tela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
 
+        private static async Task EnviarDadosSeniorAsync(string formUID)
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados Senior!");
+
+                using (var client = new SeniorContrato.rubi_Syncbr_zopone_integracaoContratoClient())
+                {
+                    //Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                    //EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000004").Specific;
+
+                    //string SQL_Query = $"ZPN_SP_PCI_ATUALIZACONTRATO '{oEditContrato.Value}'";
+
+                    //SqlUtils.DoNonQuery(SQL_Query);
+
+                    client.ClientCredentials.UserName.UserName = "integracao";
+                    client.ClientCredentials.UserName.Password = "Senha@2024";
+
+                    var dadosCont = new SeniorContrato.integracaoContratoContratoIn();
+                    dadosCont.codOem = 29;
+                    dadosCont.numCon = "1984";
+                    
+                    SeniorContrato.integracaoContratoContratoOut tempp = client.Contrato("integracao", "Senha@2024", 1, dadosCont);
+
+                    //SqlUtils.DoNonQuery($@"EXEC SP_ZPN_ATUALIZA_LOTEPAGL_STATUS_PAMCARD '{EdCode.Value}', '{DtProc.GetValue("LineId", a)}', '{(!response.executeResponse.@return[0].value.Equals("0") ? "O" : "E")}', '{msgError}', '{viagemId}'");
+
+                }//using
+
+                Util.ExibirMensagemStatusBar($"Atualizando dados Senior - Concluído!");
             }
             catch (Exception Ex)
             {
@@ -315,9 +342,9 @@ namespace Zopone.AddOn.PO.View.Contrato
                     {
                         string FormUID = businessObjectInfo.FormUID;
 
-                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();                        
-
-                     
+                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start(); 
+                        
+                        new Task(() => { EnviarDadosSeniorAsync(FormUID); }).Start();  
                     }
                 }
             }
@@ -329,8 +356,6 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
 
             return true;
-        }
-
-        
+        }        
     }
 }

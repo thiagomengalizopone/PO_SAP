@@ -605,6 +605,26 @@ namespace Zopone.AddOn.PO.View.Obra
             }
         }
 
+        private static async Task EnviarDadosSeniorAsync(string formUID, bool bUpdate)
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados Senior!");
+                //aqui se deve utilizar a seguinte url
+                //Filial o pessoal da Senior ficou de mandar até dia 29/10
+
+                //Form oFormObra = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                //EditText EdCodeObra = (EditText)oFormObra.Items.Item("EdCode").Specific;
+
+                //UtilPCI.EnviarDadosPCIAsync(EdCodeObra.Value, DateTime.Now);
+
+                Util.ExibirMensagemStatusBar($"Atualizando dados Senior - Concluído!");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados da tela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
 
         private static async Task EnviarDadosPCIAsync(string formUID, bool bUpdate)
         {
@@ -636,6 +656,8 @@ namespace Zopone.AddOn.PO.View.Obra
                         string FormUID = businessObjectInfo.FormUID;
                         bool bUpdate = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE;
                         new Task(() => { EnviarDadosPCIAsync(FormUID, bUpdate); }).Start();
+
+                        new Task(() => { EnviarDadosSeniorAsync(FormUID, bUpdate); }).Start();
                     }
                     else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_LOAD)
                     {
@@ -644,7 +666,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 }
                 else
                 {
-
                     if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
                     {
                         return ValidarDadosObra(businessObjectInfo.FormUID);
@@ -659,8 +680,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 return false;
             }
         }
-
-
 
         private static bool ValidarDadosObra(string formUID)
         {
