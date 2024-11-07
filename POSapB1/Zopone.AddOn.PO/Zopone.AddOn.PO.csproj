@@ -59,6 +59,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Build.Framework.17.8.3\lib\net472\Microsoft.Build.Framework.dll</HintPath>
     </Reference>
@@ -80,6 +83,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=110.2.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.110.2.0\lib\net471\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="SAPBusinessOneSDK, Version=1.0.0.1, Culture=neutral, PublicKeyToken=c7c3cb60e45d119f, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -123,10 +129,23 @@
       <HintPath>packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.7.0.2\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Dataflow, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Dataflow.7.0.0\lib\net462\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -174,6 +193,7 @@
     <Compile Include="UtilAddOn\UtilAddOn.cs" />
     <Compile Include="UtilAddOn\Configuracoes.cs" />
     <Compile Include="UtilAddOn\UtilScriptsSQLAddOn.cs" />
+    <Compile Include="UtilAddOn\UtilWarehouses.cs" />
     <Compile Include="View\Alocação\FrmAloca.cs" />
     <Compile Include="View\ClassificacaoObra\FrmClassObra.cs" />
     <Compile Include="View\ConfiguracaoImportWMS\FrmConfigImpWMS.cs" />
@@ -257,7 +277,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\sap.dev.core\sap.dev.core.csproj">
@@ -267,6 +289,10 @@
     <ProjectReference Include="..\..\..\sap.dev.data\sap.dev.data.csproj">
       <Project>{ba20857c-43e9-450a-9776-39f33d939249}</Project>
       <Name>sap.dev.data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\sap.dev.servicelayerCore\sap.dev.servicelayerCore.csproj">
+      <Project>{93499f3c-6f86-4d18-9148-43a50600965c}</Project>
+      <Name>sap.dev.servicelayerCore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -345,7 +371,6 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACONTASRECEBERPAGAMENTO.sql" />
     <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ENVIACONTASRECEBERPAGAMENTO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_INSEREATUALIZAPO.sql" />
     <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_INSEREPO.sql" />
     <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ATUALIZAPO.sql" />
     <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaPOItem.sql" />
@@ -372,6 +397,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\vw_tmp_obrasimportar.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\SP_ZPN_INSEREIMPORTAOBRA2.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISACLIENTE.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CRIADEPOSITORA.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,5 +1,8 @@
 ﻿using sap.dev.core;
+using sap.dev.servicelayer.Model;
 using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -36,6 +39,9 @@ namespace Zopone.AddOn.PO
 
             CentroCustoLocalizacao.CriarCentroCustoLocalizacao();
 
+            NewServiceLayerConnection();
+
+            UtilWarehouses.CriaDepositosRAAsync();
 
             Configuracoes.CarregarConfiguracaoes();
             UtilAddOn.UtilAddOn.CarregarMenus();
@@ -46,6 +52,23 @@ namespace Zopone.AddOn.PO
             Globals.Master.Connection.Interface.ItemEvent += ItemEventHandler.Interface_ItemEvent;
             Globals.Master.Connection.Interface.FormDataEvent += FormDataEventHandler.Interface_FormDataEvent;
             Globals.Master.Connection.Interface.RightClickEvent += RightClickEventHandler.Interface_RightClickEvent;
+        }
+
+        private static void NewServiceLayerConnection()
+        {
+            string serviceLayerUrl = ConfigurationManager.AppSettings["ServiceLayerURL"];
+            string userServiceLayer = ConfigurationManager.AppSettings["UserServiceLayer"];
+            string passwordServiceLayer = ConfigurationManager.AppSettings["PasswordServiceLayer"];
+
+
+            LoginRequest loginRequest = new LoginRequest();
+            loginRequest.UserName = userServiceLayer;
+            loginRequest.Password = passwordServiceLayer;
+            loginRequest.CompanyDB = Globals.Master.Connection.Database.CompanyName;
+            loginRequest.Language = "29";
+
+            Globals.Master.Connection.ServiceLayerConnectionDatabase(serviceLayerUrl, loginRequest);
+
         }
 
         private static Int32 GetDLLVersion()

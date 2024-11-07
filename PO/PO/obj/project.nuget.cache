@@ -1,8 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "H02dq9V1fLPWoRhuk/Z0qEAq+QktcJxYbzMTF79nEE7ltCqKpXhyeoUuiRDy13zsXSiZ7wPgOZLSJ+96Mu7FjQ==",
-  "success": true,
-  "projectFilePath": "C:\\Projetos\\SAP\\PO\\PO\\PO\\PO.csproj",
+  "dgSpecHash": "nBaWV7WFdDovsYIWHgIs4ASTfc99hL+qy1/TGsBZbUBCWtEUeKSZQP9KrUq887a2eYbEA+NwUgR1KVFfmKkbEA==",
+  "success": false,
+  "projectFilePath": "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\PO\\PO\\PO\\PO.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Unable to find project 'C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj'. Check that the project reference is valid and that the project file exists.",
+      "libraryId": "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj",
+      "targetGraphs": [
+        "net7.0-windows7.0"
+      ]
+    }
+  ]
 }
