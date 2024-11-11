@@ -1,8 +1,8 @@
 ﻿using sap.dev.core;
+using sap.dev.core.ApiService;
 using sap.dev.core.Controller;
+using sap.dev.core.DTO;
 using sap.dev.data;
-using sap.dev.servicelayer.Model;
-using sap.dev.servicelayer.ServiceLayer;
 using SAPbobsCOM;
 using System;
 using System.Collections.Generic;
@@ -20,9 +20,9 @@ namespace Zopone.AddOn.PO.UtilAddOn
             try
             {
 
-                WarehousesService warehousesService = new WarehousesService(Globals.Master.Connection.ServiceLayerConnection);
+                Wharehouse wharehouse = new Wharehouse();
 
-                WarehousesSL warehousesSL = new WarehousesSL();
+                DTOWarehousesSL warehousesSL = new DTOWarehousesSL();
 
                 string SQL_Query = $"ZPN_SP_CRIADEPOSITORA";
 
@@ -30,24 +30,24 @@ namespace Zopone.AddOn.PO.UtilAddOn
 
                 foreach (DataRow dr in DtResultados.Rows)
                 {
-                    warehousesSL = new WarehousesSL();
+                    warehousesSL = new DTOWarehousesSL();
 
                     warehousesSL.WarehouseCode = dr["WhsCode"].ToString();
                     warehousesSL.WarehouseName = dr["WhsName"].ToString();
                     warehousesSL.BusinessPlaceID = Convert.ToInt32(dr["BPLId"]);
                     warehousesSL.U_DepositoRA = "Y";
 
-                    await warehousesService.CreateWarehouses(warehousesSL, Globals.Master.Connection.Database.CompanyDB);
+                    await wharehouse.SendWarehouseDataAsync(warehousesSL, Globals.Master.Connection.Database.CompanyDB);
 
                     Util.ExibirMensagemStatusBar($"Criando depósito de RA: {dr["WhsName"].ToString()}");
                 }
 
+                Util.ExibirMensagemStatusBar($"Fim da criação de depósitos!");
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao criar depósitos de RA: {Ex.Message}", SAPbouiCOM.BoMessageTime.bmt_Long, true, Ex);
             }
         }
-
     }
 }
