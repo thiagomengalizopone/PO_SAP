@@ -10,7 +10,7 @@ namespace Zopone.AddOn.PO.Model
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Sequence.ZPN_SEQ_Candidato.sql";
             public const string Descricao = "";
             public const TipoScript Tipo = TipoScript.Sequence;
-            public const Int32 Versao = 2023090801;
+            public const Int32 Versao = 200241112;
         }
          
     }
