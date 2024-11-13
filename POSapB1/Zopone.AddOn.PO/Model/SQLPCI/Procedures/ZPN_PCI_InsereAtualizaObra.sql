@@ -168,4 +168,3 @@ BEGIN
             [obraid] = @obraid;
     END
 END
-GO

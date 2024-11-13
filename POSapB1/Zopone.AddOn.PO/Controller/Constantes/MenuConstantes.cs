@@ -12,6 +12,7 @@
         public const string MnuObra = "MnuObra";
         public const string MnuImportacaoPO = "MnuImpoPO";
         public const string MnuConfImportacaoPO = "MnuConfImpoPO";
+        public const string MnuConfAddOnPO = "MnuConfAddOnPO";
         public const string MnuVerificaImpPO = "MnuVerImpoPO";
         public const string MnuFaturarPO = "MnuFaturarPO";
         public const string MnuPreFaturaPO = "MnuPreFaturaPO";

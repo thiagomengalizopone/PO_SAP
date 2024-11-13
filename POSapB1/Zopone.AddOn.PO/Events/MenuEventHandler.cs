@@ -1,4 +1,5 @@
 ﻿using sap.dev.core;
+using sap.dev.data.WinForms;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -16,7 +17,7 @@ namespace Zopone.AddOn.PO
     public class MenuEventHandler
     {
         private static Thread formThread;
-
+          
         public static void Interface_MenuEvent(ref SAPbouiCOM.MenuEvent pVal, out bool BubbleEvent)
         {
             try
@@ -30,6 +31,12 @@ namespace Zopone.AddOn.PO
                                 new FrmConfPO();
                             }
                             break;
+                        case MenuConstantes.MnuConfAddOnPO:
+                            {
+                                frmCadSenha frmCad = new frmCadSenha();
+                                frmCad.ShowDialog();
+                            }
+                            break; 
                         case MenuConstantes.MnuClassificacaoObra:
                             {
                                 new FrmClassObra();

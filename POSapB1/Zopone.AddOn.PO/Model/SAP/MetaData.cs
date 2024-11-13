@@ -164,10 +164,12 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarTabelaUsuario("ZPN_CLASSOB", "Cadastro Class Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "Posicao", "Posição", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "Sigla", "Sigla", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 20, false, null);
 
                 DBCreation.CriarTabelaUsuario("ZPN_CLASSOBF", "Cadastro Class Obra Filiais", SAPbobsCOM.BoUTBTableType.bott_MasterDataLines);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOBF", "BPLId", "Filial", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOBF", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                
 
                 List<ChildTables> tabelaFilhaClassificacao = new List<ChildTables>();
                 tabelaFilhaClassificacao.Add(new ChildTables("ZPN_CLASSOBF", "ZPN_CLASSOBF"));
@@ -294,9 +296,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 #endregion
 
                 #region CENTRO DE CUSTO
-                DBCreation.CriarCampoUsuario("OPRC", "PCG", "Código da Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 DBCreation.CriarCampoUsuario("OPRC", "CardCode", "Código da Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
-
                 DBCreation.CriarCampoUsuario("OPRC", "Descricao", "Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("OPRC", "MM_Item", "Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("OPRC", "MM_DRZ", "DRZ", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);

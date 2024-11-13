@@ -36,6 +36,14 @@ namespace Zopone.AddOn.PO.Menus
                  null));
 
             listMenu.Add(new Menu(
+              MenuConstantes.MnuConfiguracoes,
+              BoMenuType.mt_STRING,
+              MenuConstantes.MnuConfAddOnPO,
+              "Configuração AddOn PO",
+              17,
+              null));
+
+            listMenu.Add(new Menu(
                  MenuConstantes.MnuConfiguracoes,
                  BoMenuType.mt_STRING,
                  MenuConstantes.MnuConfImportacaoPO,
