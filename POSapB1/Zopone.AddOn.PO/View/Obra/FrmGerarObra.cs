@@ -191,6 +191,12 @@ namespace Zopone.AddOn.PO.View.Obra
 
             MtObras.LoadFromDataSourceEx();
             MtObras.AutoResizeColumns();
+
+            if (USValidou.Value == "E")
+                Util.ExibirMensagemStatusBar("Dados validados com erro. Verifique os dados informados!", BoMessageTime.bmt_Medium, true);
+            else
+                Util.ExibirMensagemStatusBar("Dados validados com sucesso!", BoMessageTime.bmt_Medium, false);
+
         }
 
         private void BtAtualizar_PressedAfter(object sboObject, SBOItemEventArg pVal)

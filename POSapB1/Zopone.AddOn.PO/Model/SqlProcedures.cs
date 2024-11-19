@@ -53,6 +53,20 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
+        public static class SP_ZPN_GeraCodigosObra
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_GeraCodigosObra.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+        public static class ZPN_SP_PCI_ATUALIZAOBRAPCG
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_PCI_ATUALIZAOBRAPCG.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
         public static class SP_ZPN_PESQUISAETAPA
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_PESQUISAETAPA.sql";

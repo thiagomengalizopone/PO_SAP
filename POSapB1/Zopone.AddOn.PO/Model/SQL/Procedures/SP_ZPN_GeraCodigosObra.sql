@@ -27,14 +27,13 @@ SET @Sufixo = substring(cast(YEAR(GETDATE()) as varchar(4)), 3, 2);
 WITH CTE AS (
     SELECT 
         Code,
-        -- Extrai a parte entre o '.' e o '/'
         SUBSTRING(Code, CHARINDEX('.', Code) + 1, 
                   CHARINDEX('/', Code) - CHARINDEX('.', Code) - 1) AS ExtractedValue,
-        -- Extrai o ano após o '/'
         CAST(SUBSTRING(Code, CHARINDEX('/', Code) + 1, LEN(Code)) AS INT) AS YearValue
     FROM 
         "@ZPN_OPRJ"
     WHERE
+		PATINDEX('[A-Za-z][0-9].____/__', "Code") > 0 and
 		LEN(Code) = 10
 )
 

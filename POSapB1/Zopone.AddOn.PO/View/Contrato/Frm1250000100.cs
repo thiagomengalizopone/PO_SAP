@@ -70,26 +70,33 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 Button BtAlocacao;
 
+                int iTop = 205;
+
+                
+
                 oItem = oFormContrato.Items.Add("EdNroRH", SAPbouiCOM.BoFormItemTypes.it_EDIT);
-                oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19;
-                oItem.Width = Width;
+                oItem.Left = 390;
+                oItem.Top = iTop;
+                oItem.Width = 109;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
+                oItem.LinkTo = "StNroRH";
 
                 oEditText = ((SAPbouiCOM.EditText)(oItem.Specific));
                 oEditText.DataBind.SetBound(true, "OOAT", "U_CodigoRH");
 
                 oItemRef = oFormContrato.Items.Item("1250000038");
                 oItem = oFormContrato.Items.Add("StNroRH", SAPbouiCOM.BoFormItemTypes.it_STATIC);
-                oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19;
-                oItem.Width = Width;
+                oItem.Left = 280;
+                oItem.Top = iTop ;
+                oItem.Width = 90;
+                
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
 
+                oItem.LinkTo = "EdNroRH";
 
                 oItemRef = oFormContrato.Items.Item("EdNroRH");
 
@@ -98,13 +105,15 @@ namespace Zopone.AddOn.PO.View.Contrato
 
 
                 oItem = oFormContrato.Items.Add("CbReg", SAPbouiCOM.BoFormItemTypes.it_COMBO_BOX);
-                
-                oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19;
-                oItem.Width = 150;
+
+                oItem.Left = 390;
+                oItem.Top = iTop + 19;
+                oItem.Width = 109;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
+                oItem.LinkTo = "StNroRH";
+
 
                 ComboBox CbRegional = ((SAPbouiCOM.ComboBox)(oItem.Specific));
                 CbRegional.Item.DisplayDesc = true;
@@ -114,13 +123,13 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 oItemRef = oFormContrato.Items.Item("StNroRH");
                 oItem = oFormContrato.Items.Add("StReg", SAPbouiCOM.BoFormItemTypes.it_STATIC);
-                oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19;
-                oItem.Width = 147;
+                oItem.Left = 280;
+                oItem.Top = iTop + 19;
+                oItem.Width = 90;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
-
+                oItem.LinkTo = "CbReg";
 
 
                 oStaticText = ((SAPbouiCOM.StaticText)(oItem.Specific));
@@ -176,8 +185,8 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oItem.Top = oItemRef.Top ;
                 oItem.Width = oItemRef.Width;
                 oItem.Height = oItemRef.Height;
-                oItem.FromPane = oItemRef.FromPane;
-                oItem.ToPane = oItemRef.ToPane;
+                oItem.FromPane = 0;
+                oItem.ToPane = 0;
 
                 BtAlocacao = ((SAPbouiCOM.Button)(oItem.Specific));
                 BtAlocacao.Caption = "Alocação";
