@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://services.senior.com.br" targetNamespace="http://services.senior.com.br" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="integracaoOutraEmpresaOutraEmpresaIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="anaSal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="apeOem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="atiIss" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="capEmp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="cnaPre" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codAtd" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codAti" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codAtu" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codBai" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codCep" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codCid" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codCli" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codEst" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="codEve" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codFor" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codFpa" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codMic" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codOem" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codPai" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codSin" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="colAdm" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="colExe" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="colOpe" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="conSef" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="datInc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dddFax" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="dddTel" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ddiFax" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ddiTel" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="emaEmp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="empCra" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empPro" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empPub" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="endCpl" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="endNum" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="endOem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="estCar" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="faxRam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="fimVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="folAdm" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="folExe" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="folOpe" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="homPag" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="horInc" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="indObr" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="iniVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="insCon" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="insEst" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="insPro" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="intBDC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCAEPF" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="nomOem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numCNO" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="numCer" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="numCgc" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="numFax" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numRam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numTel" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="obsOem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="perCof" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perCsl" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perCsr" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perGco" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perIns" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perIrf" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perIss" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perPis" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perRet" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="pesCo1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="pesCo2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="qtdCan" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="regAns" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="regCod" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="retCof" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="retCsl" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="retCsr" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="retIrf" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="retPis" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="sinEmp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="staBDC" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="TInCon" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="TInPro" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tabEve" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipFat" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipIns" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipLgr" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="tipUso" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ultPes" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="viaCra" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="viaPro" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoOutraEmpresaOutraEmpresaOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codOem" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

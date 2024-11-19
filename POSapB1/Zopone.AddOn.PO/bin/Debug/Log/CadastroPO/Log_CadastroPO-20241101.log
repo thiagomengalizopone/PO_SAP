@@ -21,12 +21,18 @@
    em Zopone.AddOn.PO.Helpers.UtilPCI.<EnviarDadosPCIAsync>d__0.MoveNext() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Helpers\UtilPCI.cs:linha 23';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'zsistema_aceite'.
    em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 57
    em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 85;
+>>>>>>> 7a800f8fe6062440946deef2386438468454e579
 'CadastroPO';'Erro';'Erro ao carregar dados importação PO - ERROR [42S02] [Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'ZPN_VW_STATUSVALIDACAOPEDIDOSPO'.';'System.Data.Odbc.OdbcException (0x80131937): ERROR [42S02] [Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'ZPN_VW_STATUSVALIDACAOPEDIDOSPO'.
    em System.Data.Odbc.OdbcConnection.HandleError(OdbcHandle hrHandle, RetCode retcode)
    em System.Data.Odbc.OdbcCommand.ExecuteReaderObject(CommandBehavior behavior, String method, Boolean needReader, Object[] methodArguments, SQL_API odbcApiMethod)
    em System.Data.Odbc.OdbcCommand.ExecuteReaderObject(CommandBehavior behavior, String method, Boolean needReader)
    em System.Data.Odbc.OdbcCommand.ExecuteReader(CommandBehavior behavior)
+   em sap.dev.data.SqlUtils.ExecuteCommand(String commandoSQL) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 142
+   em Zopone.AddOn.PO.View.PO.FrmVerificaImportacaoPO.PesquisarDados() na C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\View\PO\FrmVerificaImportacaoPO.cs:linha 65';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'ZPN_VW_STATUSVALIDACAOPEDIDOSPO'.
+   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
+   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 85;
    em sap.dev.data.SqlUtils.ExecuteCommand(String commandoSQL) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 148
    em Zopone.AddOn.PO.View.PO.FrmVerificaImportacaoPO.PesquisarDados() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\PO\FrmVerificaImportacaoPO.cs:linha 65';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'ZPN_VW_STATUSVALIDACAOPEDIDOSPO'.
    em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 57
    em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 85;
+>>>>>>> 7a800f8fe6062440946deef2386438468454e579

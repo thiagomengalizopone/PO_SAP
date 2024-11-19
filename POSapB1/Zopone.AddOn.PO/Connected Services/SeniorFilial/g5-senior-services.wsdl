@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://services.senior.com.br" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="g5-senior-services" targetNamespace="http://services.senior.com.br" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="https://webmg03.seniorcloud.com.br:37101/g5-senior-services/rubi_Syncbr_zopone_integracaoFilial?xsd" namespace="http://services.senior.com.br" />
+    </xsd:schema>
+  </types>
+  <message name="Filial">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialIn" />
+  </message>
+  <message name="FilialCNAE">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialCNAEIn" />
+  </message>
+  <message name="FilialCNAEResponse">
+    <part name="result" type="tns:integracaoFilialFilialCNAEOut" />
+  </message>
+  <message name="FilialDARF">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialDARFIn" />
+  </message>
+  <message name="FilialDARFResponse">
+    <part name="result" type="tns:integracaoFilialFilialDARFOut" />
+  </message>
+  <message name="FilialDesoneracao">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialDesoneracaoIn" />
+  </message>
+  <message name="FilialDesoneracaoResponse">
+    <part name="result" type="tns:integracaoFilialFilialDesoneracaoOut" />
+  </message>
+  <message name="FilialFGTS">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialFGTSIn" />
+  </message>
+  <message name="FilialFGTSResponse">
+    <part name="result" type="tns:integracaoFilialFilialFGTSOut" />
+  </message>
+  <message name="FilialGRPS">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialGRPSIn" />
+  </message>
+  <message name="FilialGRPSResponse">
+    <part name="result" type="tns:integracaoFilialFilialGRPSOut" />
+  </message>
+  <message name="FilialHomolognet">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialHomolognetIn" />
+  </message>
+  <message name="FilialHomolognetResponse">
+    <part name="result" type="tns:integracaoFilialFilialHomolognetOut" />
+  </message>
+  <message name="FilialQuitacoes">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialQuitacoesIn" />
+  </message>
+  <message name="FilialQuitacoesResponse">
+    <part name="result" type="tns:integracaoFilialFilialQuitacoesOut" />
+  </message>
+  <message name="FilialResponse">
+    <part name="result" type="tns:integracaoFilialFilialOut" />
+  </message>
+  <message name="FilialTermoQuitacao">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoFilialFilialTermoQuitacaoIn" />
+  </message>
+  <message name="FilialTermoQuitacaoResponse">
+    <part name="result" type="tns:integracaoFilialFilialTermoQuitacaoOut" />
+  </message>
+  <portType name="rubi_Syncbr_zopone_integracaoFilial">
+    <operation name="Filial" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialRequest" message="tns:Filial" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialResponse" message="tns:FilialResponse" />
+    </operation>
+    <operation name="FilialCNAE" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialCNAERequest" message="tns:FilialCNAE" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialCNAEResponse" message="tns:FilialCNAEResponse" />
+    </operation>
+    <operation name="FilialDARF" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialDARFRequest" message="tns:FilialDARF" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialDARFResponse" message="tns:FilialDARFResponse" />
+    </operation>
+    <operation name="FilialDesoneracao" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialDesoneracaoRequest" message="tns:FilialDesoneracao" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialDesoneracaoResponse" message="tns:FilialDesoneracaoResponse" />
+    </operation>
+    <operation name="FilialFGTS" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialFGTSRequest" message="tns:FilialFGTS" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialFGTSResponse" message="tns:FilialFGTSResponse" />
+    </operation>
+    <operation name="FilialGRPS" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialGRPSRequest" message="tns:FilialGRPS" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialGRPSResponse" message="tns:FilialGRPSResponse" />
+    </operation>
+    <operation name="FilialHomolognet" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialHomolognetRequest" message="tns:FilialHomolognet" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialHomolognetResponse" message="tns:FilialHomolognetResponse" />
+    </operation>
+    <operation name="FilialQuitacoes" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialQuitacoesRequest" message="tns:FilialQuitacoes" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialQuitacoesResponse" message="tns:FilialQuitacoesResponse" />
+    </operation>
+    <operation name="FilialTermoQuitacao" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialTermoQuitacaoRequest" message="tns:FilialTermoQuitacao" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoFilial/FilialTermoQuitacaoResponse" message="tns:FilialTermoQuitacaoResponse" />
+    </operation>
+  </portType>
+  <binding name="rubi_Syncbr_zopone_integracaoFilialPortBinding" type="tns:rubi_Syncbr_zopone_integracaoFilial">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="Filial">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+    <operation name="FilialCNAE">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+    <operation name="FilialDARF">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+    <operation name="FilialDesoneracao">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+    <operation name="FilialFGTS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+    <operation name="FilialGRPS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+    <operation name="FilialHomolognet">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+    <operation name="FilialQuitacoes">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+    <operation name="FilialTermoQuitacao">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+  </binding>
+  <service name="g5-senior-services">
+    <port name="rubi_Syncbr_zopone_integracaoFilialPort" binding="tns:rubi_Syncbr_zopone_integracaoFilialPortBinding">
+      <soap:address location="https://webmg03.seniorcloud.com.br:37101/g5-senior-services/rubi_Syncbr_zopone_integracaoFilial" />
+    </port>
+  </service>
+</definitions>

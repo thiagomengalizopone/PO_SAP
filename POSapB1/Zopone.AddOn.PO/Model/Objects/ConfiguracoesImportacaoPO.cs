@@ -21,6 +21,8 @@ namespace Zopone.AddOn.PO.Model.Objects
         public static string CardNamePOEricsson { get; set; }
         public static string TipoDocumentoPO { get; set; }
         public static string Utilizacao { get; set; }
+        public static string SenhaSenior { get; set; }
+        public static string UsuarioSenior { get; set; }
 
 
         public static void CarregarConfiguracoesPO()
@@ -39,7 +41,9 @@ namespace Zopone.AddOn.PO.Model.Objects
                                             ""U_ItemCode"", 
                                             ""U_ItemName"", 
                                             ""U_TipoDoc"",
-                                            ""U_Usage""
+                                            ""U_Usage"",
+                                            ""U_SeSenior"",
+                                            ""U_UsSenior""
                                         FROM
                                             ""@ZPN_CONFPO""
                                         WHERE
@@ -56,7 +60,8 @@ namespace Zopone.AddOn.PO.Model.Objects
                     ItemNamePO = oRecordSet.Fields.Item("U_ItemName").Value.ToString();
                     TipoDocumentoPO = oRecordSet.Fields.Item("U_TipoDoc").Value.ToString();
                     Utilizacao = oRecordSet.Fields.Item("U_Usage").Value.ToString();
-                    
+                    SenhaSenior = oRecordSet.Fields.Item("U_SeSenior").Value.ToString();
+                    UsuarioSenior = oRecordSet.Fields.Item("U_UsSenior").Value.ToString();                    
                 }              
             }
             catch (Exception Ex)
@@ -64,16 +69,5 @@ namespace Zopone.AddOn.PO.Model.Objects
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar configurações PO: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
-
-
     }
-
-
-    
-
-
-
-
-
-
 }

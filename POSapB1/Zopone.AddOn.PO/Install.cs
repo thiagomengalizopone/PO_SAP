@@ -23,6 +23,7 @@ namespace Zopone.AddOn.PO
                         System.Windows.Forms.Application.Exit();
 
                     MetaData.CreateMetaData();
+
                     Instalar.ExecutarScripts(ScriptSQL.RetornaSQLScripts());
 
                     Instalar.ExecutarScriptsAtualizacao();

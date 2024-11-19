@@ -51,10 +51,6 @@ namespace Zopone.AddOn.PO.View.Config
             CarregarCampos();
 
             CarregarDadosConfPO();
-
-
-
-
         }
 
         private void CarregarCampos()

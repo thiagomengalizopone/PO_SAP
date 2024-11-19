@@ -1,4 +1,7 @@
-﻿using sap.dev.core;
+﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using RestSharp;
+using sap.dev.core;
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -10,11 +13,22 @@ using Zopone.AddOn.PO.Importação;
 using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.UtilAddOn;
 using static sap.dev.core.EnumList;
+using System.Text;
+using System.Net.Configuration;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace Zopone.AddOn.PO
 {
     public class AddOnMain
     {
+        public class WareHouse
+        {
+            public string WarehouseCode { get; set; }
+            public string WarehouseName { get; set; }
+            public int BusinessPlaceID { get; set; }
+            public string U_DepositoRA { get; set; }
+        }
+
         public static void Inicializar(string[] aArguments)
         {
             Util.LimparArquivosTEMP();

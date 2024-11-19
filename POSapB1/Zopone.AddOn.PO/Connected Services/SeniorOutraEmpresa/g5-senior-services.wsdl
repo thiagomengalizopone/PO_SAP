@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://services.senior.com.br" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="g5-senior-services" targetNamespace="http://services.senior.com.br" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="https://webmg03.seniorcloud.com.br:37101/g5-senior-services/rubi_Syncbr_zopone_integracaoOutraEmpresa?xsd" namespace="http://services.senior.com.br" />
+    </xsd:schema>
+  </types>
+  <message name="OutraEmpresa">
+    <part name="user" type="xsd:string" />
+    <part name="password" type="xsd:string" />
+    <part name="encryption" type="xsd:int" />
+    <part name="parameters" type="tns:integracaoOutraEmpresaOutraEmpresaIn" />
+  </message>
+  <message name="OutraEmpresaResponse">
+    <part name="result" type="tns:integracaoOutraEmpresaOutraEmpresaOut" />
+  </message>
+  <portType name="rubi_Syncbr_zopone_integracaoOutraEmpresa">
+    <operation name="OutraEmpresa" parameterOrder="user password encryption parameters">
+      <input wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoOutraEmpresa/OutraEmpresaRequest" message="tns:OutraEmpresa" />
+      <output wsam:Action="http://services.senior.com.br/rubi_Syncbr_zopone_integracaoOutraEmpresa/OutraEmpresaResponse" message="tns:OutraEmpresaResponse" />
+    </operation>
+  </portType>
+  <binding name="rubi_Syncbr_zopone_integracaoOutraEmpresaPortBinding" type="tns:rubi_Syncbr_zopone_integracaoOutraEmpresa">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="OutraEmpresa">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://services.senior.com.br" />
+      </output>
+    </operation>
+  </binding>
+  <service name="g5-senior-services">
+    <port name="rubi_Syncbr_zopone_integracaoOutraEmpresaPort" binding="tns:rubi_Syncbr_zopone_integracaoOutraEmpresaPortBinding">
+      <soap:address location="https://webmg03.seniorcloud.com.br:37101/g5-senior-services/rubi_Syncbr_zopone_integracaoOutraEmpresa" />
+    </port>
+  </service>
+</definitions>
