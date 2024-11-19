@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://services.senior.com.br" targetNamespace="http://services.senior.com.br" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="integracaoFilialFilialCNAEIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="atiIrf" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cnaFis" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cnaPre" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="datAlt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="staHis" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialCNAEOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialDARFIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="datDar" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="fceDar" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="recDar" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialDARFOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialDesoneracaoIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="busRec" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="datAlt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="desDis" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="rec13s" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialDesoneracaoOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialFGTSIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="adeSMS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ageFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ageRec" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="banFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="catFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cdrFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cenFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cmpFgt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="debAut" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="empFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="funPro" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="modArq" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="recFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="utiFin" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialFGTSOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialGRPSIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aciTra" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="aplFap" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="cgcCab" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codFpa" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codTer" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="datGrp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="desFol" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="fatFap" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="filEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ob1Grp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ob2Grp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ob3Grp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ob4Grp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="perCon" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perDes" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perIse" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perRed" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perSat" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="perSli" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="proFAP" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="proRAT" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ratNae" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="susFap" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="susRat" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="terSus" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipGrp" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialGRPSOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialHomolognetIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codEnt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codSin" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="entAlf" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numCgc" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="sinPat" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="usaHom" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialHomolognetOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aalPis" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="acvPis" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ageFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="atiIrf" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="atiRai" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="atvFil" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="autExt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="banFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="banFix" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="banHor" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="banPis" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="blqAdm" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cadLau" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cadPPP" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cadRes" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cadRrh" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="catFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cdrFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cenFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cgcAnt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cgcBdc" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cgcCsi" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="chvPix" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="cnaFis" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cnaPre" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="codAge" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codBai" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codBan" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codCep" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codCid" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codEst" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codIdn" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codOem" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codPai" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codSvr" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="conBan" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cpfBdc" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cpfRes" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="cplFil" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ctlFic" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ctlFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="datAEx" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="datCna" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dddFax" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="dddTel" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ddiFax" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ddiTel" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="digBan" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="emaFil" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="empCra" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empFPD" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empLau" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empPPP" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empPcm" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empPro" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="empRrh" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="encAtv" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="encPrv" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="endFil" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="endNum" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="famTra" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="fecHEx" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ferOfD" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ferOfN" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="filCtb" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="filSin" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="fimVig" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="fusMar" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="gerCEs" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="graRis" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="iniAtv" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="iniVig" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="insCei" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="insEst" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="insMun" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="junHor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="jusAss" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="jusCat" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="jusExa" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="jusGer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="limHEx" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="logBdc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="lotBdc" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="mesPer" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="motCgc" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="motEnc" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="mudCgc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="mudEnd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCAEPF" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="natEst" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="nomCom" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nomFil" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numCNO" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="numCgc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="numFax" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numSeg" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numTel" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="parPat" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="perSen" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="pgMDsr" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="proTra" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="razSoc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="recFgt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="regDrt" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="senBdc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="sitOrc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="tabEve" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tabFeD" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tabFeN" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipCae" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipFil" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="tipIns" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipLau" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipLgr" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="tipLot" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipPPP" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipRes" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tipRrh" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tpCtBa" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="tpcPix" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="USU_obra" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ultFic" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="viaCra" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="viaPro" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialQuitacoesIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cmpAlt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="datDec" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="desQui" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="perQui" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="seqQui" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialQuitacoesOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialTermoQuitacaoIn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cmpAlt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="codFil" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="flowInstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flowName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numEmp" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="obsAlt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="perQui" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="integracaoFilialFilialTermoQuitacaoOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

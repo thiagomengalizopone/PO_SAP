@@ -128,6 +128,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "ItemCode", "Código Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "ItemName", "Descrição Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "Usage", "Utilização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
+
                 DBCreation.CriarUDO("ZPN_CONFPO", "ZPN_CONFPO", "ZPN_CONFPO", SAPbobsCOM.BoUDOObjType.boud_MasterData);
                 #endregion
 
@@ -287,7 +288,6 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarUDO("ZPN_OPRJ", "ZPN_OPRJ", "ZPN_OPRJ", SAPbobsCOM.BoUDOObjType.boud_MasterData, TabelasFilhasCandidato);
                 #endregion
 
-
                 #region Regional 
                 DBCreation.CriarCampoUsuario("OLCT", "RegDesc", "Regional Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 
@@ -305,7 +305,6 @@ namespace Zopone.AddOn.PO.Model.SAP
 
 
                 #endregion
-
 
                 #region Campos PCI
 
@@ -344,13 +343,17 @@ namespace Zopone.AddOn.PO.Model.SAP
             }
             else if (Globals.Master.CurrentVersion < 2024060301)
             {
+                #region Campos Senior
 
+                DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "UsSenior", "Usuário Senior", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "SeSenior", "Senha Senior", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
 
+                DBCreation.CriarCampoUsuario("OCRD", "IdSenior", "Cód OEM Senior", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                DBCreation.CriarCampoUsuario("OBPL", "IdSenior", "Campo ID Senior", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 20, false, null);
+
+                #endregion
             }
-
-
         }
-
-
     }
 }

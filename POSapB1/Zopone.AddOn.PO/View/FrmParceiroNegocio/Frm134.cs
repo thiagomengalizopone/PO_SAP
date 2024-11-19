@@ -1,10 +1,14 @@
 ﻿using sap.dev.core;
 using sap.dev.data;
 using sap.dev.ui.Forms;
+using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
 using System.CodeDom.Compiler;
+using System.IO;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.View.Obra;
 
 namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
@@ -27,16 +31,22 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
         {
             try
             {
-                if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD ||
+                if ((businessObjectInfo.EventType == BoEventTypes. et_FORM_DATA_ADD && businessObjectInfo.ActionSuccess) ||
                              businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
                 {
                     if (!businessObjectInfo.BeforeAction)
                     {
+                        if (businessObjectInfo.ActionSuccess)
+                        {
+                            var temppo = "";
+                        }
+
                         string FormUID = businessObjectInfo.FormUID;
+                        bool isAdd = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD;
 
-                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();
+                        //new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();
 
-                        new Task(() => { EnviarDadosSeniorAsync(FormUID); }).Start();
+                        new Task(() => { EnviarDadosSeniorAsync(FormUID, isAdd);  }).Start();
                     }
                 }
 
@@ -70,7 +80,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
             }
         }
 
-        private static async Task EnviarDadosSeniorAsync(string formUID)
+        private static async Task EnviarDadosSeniorAsync(string formUID, bool isAdd)
         {
             try
             {
@@ -78,32 +88,149 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 
                 using (var client = new SeniorOutraEmpresa.rubi_Syncbr_zopone_integracaoOutraEmpresaClient())
                 {
-                    //Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                    Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
                     //EditText EdCode = (EditText)oForm.Items.Item("5").Specific;
+                    string tempppp = ((EditText)oForm.Items.Item("5").Specific).Value;
 
-                    //string SQL_Query = $"ZPN_SP_PCI_ATUALIZACLIENTE '{EdCode.Value}'";
+                    BusinessPartners businessPartner = (BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
 
-                    //SqlUtils.DoNonQueryAsync(SQL_Query);
+                    if (businessPartner.GetByKey(((EditText)oForm.Items.Item("5").Specific).Value))
+                    {                       
+                        client.ClientCredentials.UserName.UserName = ConfiguracoesImportacaoPO.UsuarioSenior;
+                        client.ClientCredentials.UserName.Password = ConfiguracoesImportacaoPO.SenhaSenior;
 
-                    client.ClientCredentials.UserName.UserName = "integracao";
-                    client.ClientCredentials.UserName.Password = "Senha@2024";
+                        SeniorOutraEmpresa.integracaoOutraEmpresaOutraEmpresaIn dadosEmp = new SeniorOutraEmpresa.integracaoOutraEmpresaOutraEmpresaIn();
 
-                    var dadosEmp = new SeniorOutraEmpresa.integracaoOutraEmpresaOutraEmpresaIn();
-                    dadosEmp.nomOem = "Teste Novo";
-                    dadosEmp.empPub = "S";
-                    dadosEmp.conSef = "N";
+                        #region campos informados sim/não
 
-                    SeniorOutraEmpresa.integracaoOutraEmpresaOutraEmpresaOut tempp = client.OutraEmpresa("integracao", "Senha@2024", 1, dadosEmp);
+                        dadosEmp.codOemSpecified = true;
 
-                    //SqlUtils.DoNonQuery($@"EXEC SP_ZPN_ATUALIZA_LOTEPAGL_STATUS_PAMCARD '{EdCode.Value}', '{DtProc.GetValue("LineId", a)}', '{(!response.executeResponse.@return[0].value.Equals("0") ? "O" : "E")}', '{msgError}', '{viagemId}'");
-                     
-                }//using
-               
-                Util.ExibirMensagemStatusBar($"Atualizando dados Senior - Concluído!");
+                        dadosEmp.atiIssSpecified = false;
+                        dadosEmp.cnaPreSpecified = false;
+                        dadosEmp.codAtdSpecified = false;
+                        dadosEmp.codAtiSpecified = false;
+                        dadosEmp.codAtuSpecified = false;
+                        dadosEmp.codBaiSpecified = false;
+                        dadosEmp.codCepSpecified = false;
+                        dadosEmp.codCidSpecified = false;
+                        dadosEmp.codCliSpecified = false;
+                        dadosEmp.codEveSpecified = false;
+                        dadosEmp.codForSpecified = false;
+                        dadosEmp.codFpaSpecified = false;
+                        dadosEmp.codMicSpecified = false;                        
+                        dadosEmp.codPaiSpecified = false;
+                        dadosEmp.codSinSpecified = false;
+                        dadosEmp.colAdmSpecified = false;
+                        dadosEmp.colExeSpecified = false;
+                        dadosEmp.colOpeSpecified = false;
+                        dadosEmp.dddFaxSpecified = false;
+                        dadosEmp.dddTelSpecified = false;
+                        dadosEmp.ddiFaxSpecified = false;
+                        dadosEmp.ddiTelSpecified = false;
+                        dadosEmp.empCraSpecified = false;
+                        dadosEmp.empProSpecified = false;
+                        dadosEmp.estCarSpecified = false;
+                        dadosEmp.folAdmSpecified = false;
+                        dadosEmp.folExeSpecified = false;
+                        dadosEmp.folOpeSpecified = false;
+                        dadosEmp.horIncSpecified = false;
+                        dadosEmp.indObrSpecified = false;
+                        dadosEmp.insConSpecified = false;
+                        dadosEmp.insProSpecified = false;
+                        dadosEmp.NCAEPFSpecified = false;
+                        dadosEmp.numCNOSpecified = false;
+                        dadosEmp.numCerSpecified = false;
+                        dadosEmp.numCgcSpecified = false;
+                        dadosEmp.perCofSpecified = false;
+                        dadosEmp.perCslSpecified = false;
+                        dadosEmp.perCsrSpecified = false;
+                        dadosEmp.perGcoSpecified = false;
+                        dadosEmp.perInsSpecified = false;
+                        dadosEmp.perIrfSpecified = false;
+                        dadosEmp.perIssSpecified = false;
+                        dadosEmp.perPisSpecified = false;
+                        dadosEmp.perRetSpecified = false;
+                        dadosEmp.qtdCanSpecified = false;
+                        dadosEmp.regAnsSpecified = false;
+                        dadosEmp.regCodSpecified = false;
+                        dadosEmp.retCofSpecified = false;
+                        dadosEmp.retCslSpecified = false;
+                        dadosEmp.retCsrSpecified = false;
+                        dadosEmp.retIrfSpecified = false;
+                        dadosEmp.retPisSpecified = false;
+                        dadosEmp.staBDCSpecified = false;
+                        dadosEmp.TInConSpecified = false;
+                        dadosEmp.TInProSpecified = false;
+                        dadosEmp.tabEveSpecified = false;
+                        dadosEmp.tipFatSpecified = false;
+                        dadosEmp.tipInsSpecified = false;
+                        dadosEmp.tipUsoSpecified = false;
+                        dadosEmp.ultPesSpecified = false;
+                        dadosEmp.viaCraSpecified = false;
+                        dadosEmp.viaProSpecified = false;
+
+                        #endregion
+
+                        #region Dados a serem inseridos/atualizados
+
+                        dadosEmp.nomOem = businessPartner.CardName;
+                        dadosEmp.empPub = "N";
+                        dadosEmp.conSef = "S";                        
+
+                        //Aqui definimos se é uma atualização ou inserção na Senior!
+                        if (businessPartner.UserFields.Fields.Item("U_IdSenior").Value.ToString() != "")
+                            dadosEmp.codOem = int.Parse(businessPartner.UserFields.Fields.Item("U_IdSenior").Value.ToString());
+
+                        #endregion
+
+                        //----------------------------------------------------------------------------------------------------------------------------------------------------------------- Aqruivo LOG
+                        // Caminho para salvar o arquivo XML
+                        string filePath = "\\\\srvsb1\\AnexosSAP1\\Anexos\\LOG_INT\\CLIENTE_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xml";
+
+                        // Serializar o array para XML
+                        XmlSerializer serializer = new XmlSerializer(typeof(SeniorOutraEmpresa.integracaoOutraEmpresaOutraEmpresaIn));
+                        using (StreamWriter writer = new StreamWriter(filePath))
+                        {
+                            serializer.Serialize(writer, dadosEmp);
+                        }
+                        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                        SeniorOutraEmpresa.integracaoOutraEmpresaOutraEmpresaOut retorno;
+                        //return;
+                        int loop = 0;
+                        do
+                        {
+                            retorno = client.OutraEmpresa(ConfiguracoesImportacaoPO.UsuarioSenior, ConfiguracoesImportacaoPO.SenhaSenior, 1, dadosEmp);
+
+                            if (loop == 3)
+                                break;
+                            loop++;
+                        //caso o erro seja de credenciais inválidas, tentar 3 vezes antes de gravar o erro!
+                        }while (retorno.erroExecucao != null && retorno.erroExecucao.Contains("Credenciais inválidas"));                        
+                        
+                        if(retorno.erroExecucao != null)                        
+                            throw new Exception("Falha ao integrar dados do PN na Senior, " + retorno.erroExecucao);   
+                        else if (businessPartner.UserFields.Fields.Item("U_IdSenior").Value.ToString().Trim() != retorno.codOem.ToString())
+                        {
+                            businessPartner.UserFields.Fields.Item("U_IdSenior").Value = retorno.codOem.ToString();
+
+                            if (businessPartner.Update() != 0)                            
+                                throw new Exception("Falha na atualização do PN no SAP, " + SAPDbConnection.oCompany.GetLastErrorDescription());                                                            
+                            else
+                            {
+                                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Sucesso, "Dados atualizados na Senior, PN: " + businessPartner.CardCode, new Exception(""));
+                                Util.ExibirMensagemStatusBar("Dados atualizados na Senior com suceso, PN: " + businessPartner.CardCode, BoMessageTime.bmt_Medium);
+                            }
+                        }                        
+                    }
+                    else                    
+                        throw new Exception("Falha ao carregar dados do PN, entre em contato com a equipe de desenvolvimento!");
+                }       
             }
             catch (Exception Ex)
-            {
-                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados da tela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            {    
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, Ex.Message, Ex);
+                Util.ExibirMensagemStatusBar(Ex.Message, BoMessageTime.bmt_Medium, true);
             }
         }
     }

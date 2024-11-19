@@ -19,6 +19,7 @@
       <xs:element minOccurs="0" name="codFor" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="codFpa" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="codMic" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="codOem" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="codPai" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="codSin" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="colAdm" nillable="true" type="xs:int" />
@@ -97,6 +98,7 @@
   </xs:complexType>
   <xs:complexType name="integracaoOutraEmpresaOutraEmpresaOut">
     <xs:sequence>
+      <xs:element minOccurs="0" name="codOem" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="erroExecucao" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="retorno" nillable="true" type="xs:string" />
     </xs:sequence>
