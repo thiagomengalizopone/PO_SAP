@@ -981,7 +981,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                         string FormUID = businessObjectInfo.FormUID;
                         bool bUpdate = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE;
-                        //new Task(() => { EnviarDadosPCIAsync(FormUID, bUpdate); }).Start();
+                        new Task(() => { EnviarDadosPCIAsync(FormUID, bUpdate); }).Start();
 
                         new Task(() => { EnviarDadosSeniorAsync(FormUID, bUpdate); }).Start();
                     }

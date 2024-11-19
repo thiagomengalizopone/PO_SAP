@@ -563,7 +563,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                     {
                         string FormUID = businessObjectInfo.FormUID;
 
-                        //new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start(); 
+                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start(); 
 
                         new Task(() => { EnviarDadosSeniorAsync(FormUID); }).Start();
                     }
