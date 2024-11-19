@@ -138,12 +138,6 @@ C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.CopyComplete
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.exe
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.pdb
-<<<<<<< HEAD
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.View.Faturamento.FrmFaturamento.resources
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Faturamento\FrmListaFaturamento.srf
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Faturamento\FrmPreFaturamento.srf
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Faturamento\FrmEfetivaFaturamento.srf
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Obra\FrmGerarObra.srf
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\zopone.jpg
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ConfiguracaoImportWMS\FrmConfigImpWMS.srf
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Obra\FrmObra.srf
@@ -184,7 +178,6 @@ C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\Sy
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\System.Threading.Tasks.Dataflow.dll
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\System.Threading.Tasks.Extensions.dll
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\System.ValueTuple.dll
-C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\sap.dev.servicelayerCore.dll
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\sap.dev.core.pdb
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\sap.dev.data.pdb
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
@@ -214,11 +207,7 @@ C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\Sy
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\System.Threading.Tasks.Dataflow.xml
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\System.ValueTuple.xml
-C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\sap.dev.servicelayerCore.pdb
-C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\sap.dev.servicelayerCore.dll.config
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.AssemblyReference.cache
-C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.SuggestedBindingRedirects.cache
-C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.exe.config
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.Properties.Resources.resources
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.View.Faturamento.FrmFaturamento.resources
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.View.PO.FrmVerificaImportacaoPO.resources
@@ -230,5 +219,5 @@ C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zo
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.CopyComplete
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.exe
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.pdb
-=======
->>>>>>> 7a800f8fe6062440946deef2386438468454e579
+C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\App.config
+C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\Zopone.AddOn.PO\bin\Debug\sap.dev.core.dll.config
