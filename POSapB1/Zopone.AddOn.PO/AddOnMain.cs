@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using RestSharp;
 using sap.dev.core;
 using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -41,10 +43,8 @@ namespace Zopone.AddOn.PO
 
             #region DEBUG
             //ImportaContratoHomologacao.ImportaContratoValidacao();
-
-            //ImportaContratoHomologacao.ImportarObrasSAPB1
-            //
-            ImportaContratoHomologacao.criacentrocusto();
+            //ImportaContratoHomologacao.ImportarObrasSAPB1();
+            //ImportaContratoHomologacao.criacentrocusto();
             #endregion
 
 
@@ -52,6 +52,7 @@ namespace Zopone.AddOn.PO
 
             CentroCustoLocalizacao.CriarCentroCustoLocalizacao();
 
+            UtilWarehouses.CriaDepositosRAAsync();
 
             Configuracoes.CarregarConfiguracaoes();
             UtilAddOn.UtilAddOn.CarregarMenus();

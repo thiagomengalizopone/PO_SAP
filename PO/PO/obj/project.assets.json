@@ -1,48 +1,32 @@
 {
   "version": 3,
   "targets": {
-    "net7.0-windows7.0": {
-      "sap.dev.core/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/sap.dev.core.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/sap.dev.core.dll": {}
-        }
-      }
-    }
+    "net7.0-windows7.0": {}
   },
-  "libraries": {
-    "sap.dev.core/1.0.0": {
-      "type": "project",
-      "path": "../../../sap.dev.addon/sap.dev.core/sap.dev.core.csproj",
-      "msbuildProject": "../../../sap.dev.addon/sap.dev.core/sap.dev.core.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
     "net7.0-windows7.0": [
-      "sap.dev.core >= 1.0.0"
+      "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\thiago.mengali\\.nuget\\packages\\": {},
+    "C:\\Users\\thiago.martins\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projetos\\SAP\\PO\\PO\\PO\\PO.csproj",
+      "projectUniqueName": "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\PO\\PO\\PO\\PO.csproj",
       "projectName": "PO",
-      "projectPath": "C:\\Projetos\\SAP\\PO\\PO\\PO\\PO.csproj",
-      "packagesPath": "C:\\Users\\thiago.mengali\\.nuget\\packages\\",
-      "outputPath": "C:\\Projetos\\SAP\\PO\\PO\\PO\\obj\\",
+      "projectPath": "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\PO\\PO\\PO\\PO.csproj",
+      "packagesPath": "C:\\Users\\thiago.martins\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\PO\\PO\\PO\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\thiago.mengali\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\thiago.martins\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -57,8 +41,8 @@
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
           "projectReferences": {
-            "C:\\Projetos\\SAP\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj": {
-              "projectPath": "C:\\Projetos\\SAP\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj"
+            "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj": {
+              "projectPath": "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj"
             }
           }
         }
@@ -94,5 +78,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Unable to find project 'C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj'. Check that the project reference is valid and that the project file exists.",
+      "libraryId": "C:\\Users\\thiago.martins\\source\\repos\\sap.dev.addon\\sap.dev.addon\\sap.dev.core\\sap.dev.core.csproj",
+      "targetGraphs": [
+        "net7.0-windows7.0"
+      ]
+    }
+  ]
 }

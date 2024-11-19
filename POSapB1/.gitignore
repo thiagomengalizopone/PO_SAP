@@ -1,0 +1,140 @@
+# Diretórios e arquivos a serem ignorados
+# ---------------------------------------------
+
+# Ignorar tudo dentro de bin, obj e .vs
+bin/
+obj/
+.vs/
+
+# Ignorar arquivos gerados pela build (Debug/Release)
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+
+# Arquivos e diretórios gerados pela build em C++
+ipch/
+*.obj
+*.ilk
+*.pdb
+*.pch
+*.rsp
+*.tlb
+*.tli
+*.tlh
+*.sbr
+*.log
+*.scc
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Arquivos específicos do Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.dotSettings.user
+*.psess
+*.vsp
+*.vspx
+*.sap
+*.vspscc
+*.vssscc
+
+# Arquivos e pastas gerados por ferramentas de build e test
+TestResult.xml
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.pidb
+*.svclog
+*.vsscc
+
+# Outras ferramentas de build
+*.gpState
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+.JustCode
+_TeamCity*
+*.dotCover
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# Arquivos gerados por ferramentas de teste (Chutzpah, NUnit, etc.)
+_Chutzpah*
+*.VisualState.xml
+TestResult.xml
+
+# Arquivos gerados pelo MSBuild ou projetos de C#
+*.tmp
+*.tmp_proj
+*.cache
+node_modules/
+orleans.codegen.cs
+
+# Arquivos e pastas específicos do Azure
+csx/
+*.build.csdef
+ecf/
+rcf/
+ApplicationInsights.config
+
+# Arquivos de publicação
+publish/
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# Pacotes NuGet
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+# Banco de dados SQL Server
+*.mdf
+*.ldf
+
+# Backup e arquivos de upgrade
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# Arquivos de configuração e saída de BI (Business Intelligence)
+*.rdl.data
+*.bim.layout
+*.bim_*.settings
+
+# Arquivos de configuração de Fakes (Microsoft Fakes)
+FakesAssemblies/
+
+# Arquivos temporários do macOS
+._*
+.DS_Store
+
+# Outros arquivos e pastas a serem ignorados
+ClientBin/
+~$*
+*~
+*.dbmdl
+*.dbproj.schemaview
+*.pfx
+*.publishsettings
+orleans.codegen.cs
+
+# Diretórios e arquivos gerados em projetos antigos ou conversões
+Generated_Code/

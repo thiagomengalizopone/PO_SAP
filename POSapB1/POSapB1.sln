@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POSapB1", "POSapB1\POSapB1.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zopone.AddOn.PO", "Zopone.AddOn.PO\Zopone.AddOn.PO.csproj", "{7076AB9B-E4FA-49A8-9443-B031C1B0DDF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sap.dev.core", "..\..\sap.dev.addon\sap.dev.core\sap.dev.core.csproj", "{14C7EDBE-EFEE-43E8-873E-9B7B8C59EB7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sap.dev.core", "..\..\sap.dev.core\sap.dev.core.csproj", "{14C7EDBE-EFEE-43E8-873E-9B7B8C59EB7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sap.dev.data", "..\..\sap.dev.addon\sap.dev.data\sap.dev.data.csproj", "{BA20857C-43E9-450A-9776-39F33D939249}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sap.dev.data", "..\..\sap.dev.data\sap.dev.data.csproj", "{BA20857C-43E9-450A-9776-39F33D939249}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

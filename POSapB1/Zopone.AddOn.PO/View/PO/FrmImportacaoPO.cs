@@ -110,6 +110,10 @@ namespace Zopone.AddOn.PO.View.PO
 
                         if (oPedidoVenda.Add() != 0)
                             throw new Exception($"Pedido: {oPedidoVenda.NumAtCard} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                        else
+                        {
+                            SqlUtils.DoNonQuery($@"DELETE FROM ZPN_LOGIMPORTACAOPO WHERE po_id = {iPedido}");
+                        }
                         
                         DocEntry = Convert.ToInt32(Globals.Master.Connection.Database.GetNewObjectKey());
 

@@ -17,6 +17,8 @@ namespace Zopone.AddOn.PO.Model
         {
             int Count = 0;
 
+            string FileName = string.Empty;
+
             Int32 versaoAddOn = Globals.Master.CurrentVersion;
 
             encoding = Encoding.GetEncoding("utf-8", EncoderFallback.ExceptionFallback, DecoderFallback.ExceptionFallback);
@@ -62,14 +64,26 @@ namespace Zopone.AddOn.PO.Model
             }
             #endregion
 
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceNames = assembly.GetManifestResourceNames();
+
             #region SQL - Procedure                        
             for (int iPos = 0; iPos < SqlProceduresSql.Length; iPos++)
             {
-                SqlScriptsAddOn[Count] = new DTOScript();
-                SqlScriptsAddOn[Count].Tipo = TipoScript.Proc;
-                SqlScriptsAddOn[Count].FileName = SqlProceduresSql[iPos].GetField("Nome")?.GetValue(null).ToString();
-                SqlScriptsAddOn[Count].Bytes = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SqlScriptsAddOn[Count].FileName), encoding);
-                Count++;
+                try
+                {
+                    SqlScriptsAddOn[Count] = new DTOScript();
+                    SqlScriptsAddOn[Count].Tipo = TipoScript.Proc;
+                    SqlScriptsAddOn[Count].FileName = SqlProceduresSql[iPos].GetField("Nome")?.GetValue(null).ToString();
+                    FileName = SqlScriptsAddOn[Count].FileName;
+
+                    SqlScriptsAddOn[Count].Bytes = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SqlScriptsAddOn[Count].FileName), encoding);
+                    Count++;
+                }
+                catch (Exception Ex)
+                {
+                    throw new Exception($"Erro ao executar Script: {FileName} - {Ex.Message}");
+                }
             }
             #endregion
 

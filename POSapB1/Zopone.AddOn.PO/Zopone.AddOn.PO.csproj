@@ -211,12 +211,14 @@
     <Compile Include="UtilAddOn\UtilAddOn.cs" />
     <Compile Include="UtilAddOn\Configuracoes.cs" />
     <Compile Include="UtilAddOn\UtilScriptsSQLAddOn.cs" />
+    <Compile Include="UtilAddOn\UtilWarehouses.cs" />
     <Compile Include="View\Alocação\FrmAloca.cs" />
     <Compile Include="View\ClassificacaoObra\FrmClassObra.cs" />
     <Compile Include="View\ConfiguracaoImportWMS\FrmConfigImpWMS.cs" />
     <Compile Include="View\Config\FrmConfPO.cs" />
     <Compile Include="View\ContratoAlocacao\FrmContAloca.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
+    <Compile Include="View\Deposito\Frm62.cs" />
     <Compile Include="View\Faturamento\FrmEfetivaFaturamento.cs" />
     <Compile Include="View\Faturamento\FrmPreFaturamento.cs" />
     <Compile Include="View\Faturamento\FrmListaFaturamento.cs" />
@@ -338,7 +340,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Model\SQL\Tables\TB_LOGMSG.sql" />
@@ -416,11 +420,10 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACONTASRECEBERPAGAMENTO.sql" />
     <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ENVIACONTASRECEBERPAGAMENTO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_INSEREATUALIZAPO.sql" />
     <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_INSEREPO.sql" />
     <EmbeddedResource Include="Model\SQL\JOB\ZPN_JOB_PCI_ATUALIZAPO.sql" />
-    <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaPOItem.sql" />
-    <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaPO.sql" />
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaPOItem.sql" />
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_SP_PCI_INSEREATUALIZAPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\IMPORTACLASSIFICACAOOBRApci.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\IMPORTAETAPAPCI.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\ATUALIZACLIENTEPCI-SAP.sql" />
@@ -432,9 +435,9 @@
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_GeraCodigosObra.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_GeraProjetoTabelaB1PCI.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_INSEREIMPORTAOBRA.sql" />
-    <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaContrato.sql" />
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaContrato.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_COPIAALOCACAOCONTRATO.sql" />
-    <EmbeddedResource Include="Model\SQL-PCI\Procedures\ZPN_PCI_InsereAtualizaObra.sql" />
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaObra.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ATUALIZAOBRAPCG.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_RetornaProximaAlocacao.sql" />
     <None Include="Connected Services\SeniorContrato\configuration91.svcinfo" />
@@ -460,6 +463,11 @@
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_STATUSVALIDACAOPEDIDOSPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\vw_tmp_obrasimportar.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\SP_ZPN_INSEREIMPORTAOBRA2.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISACLIENTE.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CRIADEPOSITORA.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportacaoEtapaSAPTopEng.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportarContratoTopEng.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportarObraTOPEng.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

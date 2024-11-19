@@ -32,7 +32,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 valoresUtilizacao.Add(new Tuple<string, string>("TR", "Transferência"));
                 valoresUtilizacao.Add(new Tuple<string, string>("RO", "Retorno de Obra"));
 
-                DBCreation.CriarCampoUsuario("OUSG", "U_TipopUt", "Tipo Utilização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresUtilizacao);
+                DBCreation.CriarCampoUsuario("OUSG", "TipopUt", "Tipo Utilização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresUtilizacao);
 
 
                 #endregion
@@ -165,10 +165,12 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarTabelaUsuario("ZPN_CLASSOB", "Cadastro Class Obra", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "Posicao", "Posição", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_CLASSOB", "Sigla", "Sigla", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 20, false, null);
 
                 DBCreation.CriarTabelaUsuario("ZPN_CLASSOBF", "Cadastro Class Obra Filiais", SAPbobsCOM.BoUTBTableType.bott_MasterDataLines);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOBF", "BPLId", "Filial", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_CLASSOBF", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+                
 
                 List<ChildTables> tabelaFilhaClassificacao = new List<ChildTables>();
                 tabelaFilhaClassificacao.Add(new ChildTables("ZPN_CLASSOBF", "ZPN_CLASSOBF"));
@@ -193,6 +195,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Detent", "Detentora", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdDetent", "Id Detentora", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "Regional", "Regional", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "RegionalCompra", "Regional", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "PCG", "PCG", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 30, false, null);
 
                 DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "IdObra", "Id Obra", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
@@ -294,9 +297,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 #endregion
 
                 #region CENTRO DE CUSTO
-                DBCreation.CriarCampoUsuario("OPRC", "PCG", "Código da Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
                 DBCreation.CriarCampoUsuario("OPRC", "CardCode", "Código da Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);
-
                 DBCreation.CriarCampoUsuario("OPRC", "Descricao", "Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("OPRC", "MM_Item", "Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("OPRC", "MM_DRZ", "DRZ", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
@@ -337,6 +338,15 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 
                 DBCreation.CriarCampoUsuario("@ZPN_ALOCA", "IdPCI", "Campo ID PCI", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null);
+
+                #endregion
+
+
+                #region OWHS
+                DBCreation.CriarCampoUsuario("OWHS", "CodObra", "Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 60, false, null, null,  null ,  false);
+                DBCreation.CriarCampoUsuario("OWHS", "Contrato", "Contrato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null, null, null, false);
+                DBCreation.CriarCampoUsuario("OWHS", "DepositoRA", "DepositoRA", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "N", valoresValidosSimNao, null, false);
+                DBCreation.CriarCampoUsuario("OWHS", "Carreg", "Controla Carregamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "N", valoresValidosSimNao, null, false);
 
                 #endregion
 

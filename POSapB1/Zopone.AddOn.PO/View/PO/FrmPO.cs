@@ -445,6 +445,14 @@ namespace Zopone.AddOn.PO.View.Obra
                         CarregarDadosPO(txtCodigo.Text, retornoDados[1] == "D");
                     }
                 }
+                else if (TipoPesquisa == "CLIENTE")
+                {
+                    if (retornoDados.Count != 0)
+                    {
+                        txtCliente.Text = retornoDados[0];
+                        lblCliente.Text = retornoDados[1];                        
+                    }
+                }
             }
             catch (Exception Ex)
             {
