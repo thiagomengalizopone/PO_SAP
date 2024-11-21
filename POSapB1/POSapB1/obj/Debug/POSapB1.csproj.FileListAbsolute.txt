@@ -1,13 +1,3 @@
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\bin\Debug\POSapB1.exe.config
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\bin\Debug\POSapB1.exe
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\bin\Debug\POSapB1.pdb
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\obj\Debug\POSapB1.csproj.AssemblyReference.cache
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\obj\Debug\POSapB1.FrmPO.resources
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\obj\Debug\POSapB1.Properties.Resources.resources
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\obj\Debug\POSapB1.csproj.GenerateResource.cache
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\obj\Debug\POSapB1.csproj.CoreCompileInputs.cache
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\obj\Debug\POSapB1.exe
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\POSapB1\obj\Debug\POSapB1.pdb
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\POSapB1\bin\Debug\POSapB1.exe.config
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\POSapB1\bin\Debug\POSapB1.exe
 C:\Users\thiago.martins\source\repos\PO_SAP\POSapB1\POSapB1\bin\Debug\POSapB1.pdb
