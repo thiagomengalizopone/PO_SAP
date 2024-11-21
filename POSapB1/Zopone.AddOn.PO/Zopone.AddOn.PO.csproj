@@ -368,7 +368,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAETAPA.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRACONTRATO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRAPO.sql" />
     <EmbeddedResource Include="View\Config\FrmConfPO.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -468,6 +468,8 @@
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportacaoEtapaSAPTopEng.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportarContratoTopEng.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportarObraTOPEng.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CENTROCUSTOCLIENTE.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CODIGOCENTROCUSTO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

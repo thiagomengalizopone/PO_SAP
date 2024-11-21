@@ -237,9 +237,9 @@ namespace Zopone.AddOn.PO.View.Contrato
             {
                 throw new Exception($"Erro ao editar dados obras: {Ex.Message}");
             }
-
         }
-        private static async Task EnviarDadosPCIAsync(string formUID)
+
+        private static void EnviarDadosPCIAsync(string formUID)
         {
             try
             {
@@ -258,7 +258,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
         }
 
-        private static async Task EnviarDadosSeniorAsync(string formUID)
+        private static void EnviarDadosSeniorAsync(string formUID)
         {
             try
             {
@@ -545,6 +545,58 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
         }
 
+        private static bool ValidarDadosContrato(string formUID)
+        {
+            try
+            {
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+                ComboBox oCbStatus = (ComboBox)(oFormContrato.Items.Item("1250000036").Specific);
+
+                if (oCbStatus.Value != "A")
+                {
+                    Util.ExibeMensagensDialogoStatusBar("Status do contrato deve ser Autorizado!", BoMessageTime.bmt_Medium, true);
+                    return false;
+                }
+
+                ComboBox oCbMetodo = (ComboBox)(oFormContrato.Items.Item("1320000060").Specific);
+
+                if (oCbMetodo.Value != "M")
+                {
+                    Util.ExibeMensagensDialogoStatusBar("Método de acordo deve ser Monetário!", BoMessageTime.bmt_Medium, true);
+                    return false;
+                }
+
+                Matrix oMtValores = (Matrix)(oFormContrato.Items.Item("1250000045").Specific);
+                bool bMontante = true;
+
+                if (oMtValores.RowCount < 1)
+                    bMontante = false;
+                
+                string valorMontante = Util.MatrixGetValue(oMtValores, 1, "1320000039");
+
+                if (string.IsNullOrEmpty(valorMontante) || Convert.ToDouble(valorMontante.Replace(".", "").Replace(",", ".").Replace("R$ ", "").Trim()) < 999999999999)
+                    bMontante = false;
+
+                if (!bMontante)
+                {
+                    Util.ExibeMensagensDialogoStatusBar("Necessário adicionar no montante de valores um valor superior a R$ 999.999.999.999,99!", BoMessageTime.bmt_Medium, true);
+                    return false;
+                }
+
+
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao validar dados de contrato: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                return false;
+            }
+            return true;
+        }
+
+     
+
         internal static bool Interface_FormDataEvent(ref BusinessObjectInfo businessObjectInfo)
         {
             try
@@ -563,9 +615,13 @@ namespace Zopone.AddOn.PO.View.Contrato
                     {
                         string FormUID = businessObjectInfo.FormUID;
 
-                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start(); 
 
+                        EnviarDadosPCIAsync(FormUID); 
                         new Task(() => { EnviarDadosSeniorAsync(FormUID); }).Start();
+                    }
+                    else
+                    {
+                        return ValidarDadosContrato(businessObjectInfo.FormUID);
                     }
                 }
             }
@@ -578,5 +634,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
             return true;
         }
+
+      
     }
 }

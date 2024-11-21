@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ZPN_SP_LISTAPO
+﻿CREATE PROCEDURE SP_ZPN_PESQUISAPO
 (
 	@CampoPesquisa varchar(50)
 )
@@ -19,7 +19,7 @@ FROM
 	ORDR  T0 
 	INNER JOIN RDR1 T1 ON T1."DocEntry"				= T0."DocEntry"
 	INNER JOIN OBPL	   ON OBPL."BplID"				= T0.BPLId
-	INNER JOIN OPRJ    ON OPRJ."PrjCode"			= T1.Project
+	LEFT JOIN OPRJ    ON OPRJ."PrjCode"			= T1.Project
 WHERE	
 	T0."DocStatus"						= 'O' AND
 	T0."ObjType"							= '17' and

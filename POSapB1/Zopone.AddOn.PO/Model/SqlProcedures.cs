@@ -155,9 +155,9 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
-        public static class ZPN_SP_LISTAPO
+        public static class SP_ZPN_PESQUISAPO
         {
-            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_LISTAPO.sql";
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_PESQUISAPO.sql";
             public const string Descricao = "";
             public const TipoScript Tipo = TipoScript.Proc;
             public const Int32 Versao = 2024111201;

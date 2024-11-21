@@ -38,15 +38,19 @@ namespace Zopone.AddOn.PO.View.PO
             {
                 string commandSQL = string.Empty;
 
-
                 if (TipoPesquisa == "OBRA")
+                {
+                    if (Parametros.Count > 0 && string.IsNullOrEmpty(txtPesquisar.Text))
+                        txtPesquisar.Text = Parametros[0];
+
                     commandSQL = $"SP_ZPN_PESQUISAOBRA '{txtPesquisar.Text}'";
+                }
                 else if (TipoPesquisa == "CANDIDATO")
                     commandSQL = $"SP_ZPN_PESQUISAOBRACANDIDATO '{txtPesquisar.Text}', '{Parametros[0]}'";
                 else if (TipoPesquisa == "ITEMFAT")
                     commandSQL = $"SP_ZPN_PESQUISAETAPA '{txtPesquisar.Text}', '{Parametros[0]}'";
                 else if (TipoPesquisa == "PO")
-                    commandSQL = $"ZPN_SP_LISTAPO '{txtPesquisar.Text}'";
+                    commandSQL = $"SP_ZPN_PESQUISAPO '{txtPesquisar.Text}'";
                 else if (TipoPesquisa == "CLIENTE")
                     commandSQL = $"SP_ZPN_PESQUISACLIENTE '{txtPesquisar.Text}'";                
 

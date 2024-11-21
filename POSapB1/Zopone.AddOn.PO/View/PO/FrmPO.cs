@@ -3,6 +3,7 @@ using sap.dev.data;
 using SAPbobsCOM;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Drawing;
 using System.Linq;
@@ -375,6 +376,10 @@ namespace Zopone.AddOn.PO.View.Obra
                     parametro.Add(txtObra.Text);
 
                 }
+                else if (tipoPesquisa == "OBRA")
+                {
+                    parametro.Add(txtObra.Text);
+                }
 
 
                 FrmPesquisa frmPesq = new FrmPesquisa(TipoPesquisa, parametro);
@@ -450,7 +455,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     if (retornoDados.Count != 0)
                     {
                         txtCliente.Text = retornoDados[0];
-                        lblCliente.Text = retornoDados[1];                        
+                        lblCliente.Text = retornoDados[1];
                     }
                 }
             }
@@ -591,7 +596,15 @@ namespace Zopone.AddOn.PO.View.Obra
                     if (!oPedidoVenda.GetByKey(Convert.ToInt32(txtCodigo.Text)))
                         throw new Exception($"Erro ao pesquisar Pedido: {txtNroNF.Text}");
 
-                    bExistePedido = true;
+
+                    if (oPedidoVenda.CardCode != linesPO[0].U_CardCode)
+                    {
+                        CancelarPedidoVenda(oPedidoVenda);
+                        oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
+                        bExistePedido = false;
+                    }
+                    else
+                        bExistePedido = true;
                 }
                 else
                 {
@@ -693,6 +706,24 @@ namespace Zopone.AddOn.PO.View.Obra
 
         }
 
+        private void CancelarPedidoVenda(Documents oPedidoVenda)
+        {
+            try
+            {
+                oPedidoVenda.NumAtCard = string.Empty;
+
+                if (oPedidoVenda.Update() !=0)
+                    throw new Exception(Globals.Master.Connection.Database.GetLastErrorDescription());
+
+                if (oPedidoVenda.Cancel() != 0)
+                    throw new Exception(Globals.Master.Connection.Database.GetLastErrorDescription());
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception($"Erro ao salvar pedido de Vendas - PO Cliente - {Ex.Message}");
+            }
+        }
+
         private static async Task EnviarDadosPCIAsync(string Docentry)
         {
             try
@@ -767,5 +798,17 @@ namespace Zopone.AddOn.PO.View.Obra
                 txtAnexo.Text = fileNameAnexo;
         }
 
+        private void txtObra_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                PesquisarDados("OBRA");
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show($"Erro ao pesquisar obra: {Ex.Message}", "Erro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.Cancel = true;
+            }
+        }
     }
 }

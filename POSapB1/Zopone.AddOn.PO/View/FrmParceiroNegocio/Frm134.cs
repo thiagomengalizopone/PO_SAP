@@ -44,7 +44,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                         string FormUID = businessObjectInfo.FormUID;
                         bool isAdd = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD;
 
-                        new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start();
+                        EnviarDadosPCIAsync(FormUID);
 
                         new Task(() => { EnviarDadosSeniorAsync(FormUID, isAdd);  }).Start();
                     }
@@ -59,7 +59,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
             }
         }
 
-        private static async Task EnviarDadosPCIAsync(string formUID)
+        private static void EnviarDadosPCIAsync(string formUID)
         {
             try
             {
