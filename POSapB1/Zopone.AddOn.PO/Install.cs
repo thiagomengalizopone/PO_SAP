@@ -1,5 +1,6 @@
 ﻿using sap.dev.core;
 using sap.dev.core.MetaData;
+using sap.dev.data;
 using System;
 using Zopone.AddOn.PO.Controller.Localizacao;
 using Zopone.AddOn.PO.Model;
@@ -18,6 +19,9 @@ namespace Zopone.AddOn.PO
                 if (Globals.Master.CurrentVersion < Globals.Master.AddOnVersion)
                 {
                     CreateMetaData.CriarMetaDataCore();
+
+
+                    AtualizaCampoUrln8n();
 
                     if (SenhaBD.VerificaSenhaBD())
                         System.Windows.Forms.Application.Exit();
@@ -39,6 +43,16 @@ namespace Zopone.AddOn.PO
             }
         }
 
+        private static void AtualizaCampoUrln8n()
+        {
+            try
+            {
+                SqlUtils.DoNonQuery(@"UPDATE ""@ZPN_SETUP"" SET U_URLn8n = 'http://192.168.9.1:5678' WHERE ISNULL(U_URLn8n,'') =  ''");
+            }
+            catch
+            {
 
+            }
+        }
     }
 }

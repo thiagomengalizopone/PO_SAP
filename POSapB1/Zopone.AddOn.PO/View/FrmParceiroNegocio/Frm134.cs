@@ -1,4 +1,6 @@
 ﻿using sap.dev.core;
+using sap.dev.core.ApiService_n8n;
+using sap.dev.core.DTO;
 using sap.dev.data;
 using sap.dev.ui.Forms;
 using SAPbobsCOM;
@@ -44,6 +46,8 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                         string FormUID = businessObjectInfo.FormUID;
                         bool isAdd = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD;
 
+                        GerarCentroCusto(FormUID);
+
                         EnviarDadosPCIAsync(FormUID);
 
                         new Task(() => { EnviarDadosSeniorAsync(FormUID, isAdd);  }).Start();
@@ -57,6 +61,31 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao salvar registro: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
                 return false;
             }
+        }
+
+        private static void GerarCentroCusto(string formUID)
+        {
+            try
+            {
+                Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                DBDataSource oDBParceiroNegocio = oForm.DataSources.DBDataSources.Item("OCRD");
+
+                if (oDBParceiroNegocio.GetValue("CardType", 0).ToString() != "C")
+                    return;
+
+                Util.ExibirMensagemStatusBar($"Gerando centro de Custo para o PN!");
+
+                DTOCriaCentroCusto dTOCriaCentroCusto = new DTOCriaCentroCusto() { CardCode = oDBParceiroNegocio.GetValue("CardCode", 0).ToString(), CompanyDB = Globals.Master.Connection.Database.CompanyDB };
+
+                CriaCentroCusto.CriaCentroCustSAP(dTOCriaCentroCusto);
+
+                Util.ExibirMensagemStatusBar($"Centro de custo gerado!");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar centro de custo: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+
         }
 
         private static void EnviarDadosPCIAsync(string formUID)
