@@ -20,7 +20,8 @@ FROM
 	INNER JOIN RDR1 T1 ON T1."DocEntry"				= T0."DocEntry"
 	INNER JOIN OBPL	   ON OBPL."BplID"				= T0.BPLId
 	LEFT JOIN OPRJ    ON OPRJ."PrjCode"			= T1.Project
-WHERE	
+WHERE
+	isnull(T0.NumAtCard,'') <> ''			  AND
 	T0."DocStatus"						= 'O' AND
 	T0."ObjType"							= '17' and
 	cast(T0."DocEntry" as varchar(10))		like '%' + @CampoPesquisa + '%' OR 

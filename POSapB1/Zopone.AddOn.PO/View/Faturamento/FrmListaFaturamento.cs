@@ -4,7 +4,7 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
-
+using Zopone.AddOn.PO.View.Obra;
 
 namespace Zopone.AddOn.PO.View.Faturamento
 {
@@ -43,12 +43,33 @@ namespace Zopone.AddOn.PO.View.Faturamento
             MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
             MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
 
+            MtPedidos.DoubleClickAfter += MtPedidos_DoubleClickAfter;
+
             MtPedidos.AutoResizeColumns();
+
+            CarregarDadosFaturamentoFaturar();
 
             oForm.Visible = true;
 
 
 
+        }
+
+        private void MtPedidos_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (pVal.Row < 1)
+                    return;
+
+                string DocEntry = DtPesquisa.GetValue("Pedido", pVal.Row-1).ToString();
+
+                FrmPO.MenuPO(DocEntry, false);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao abrir PO - {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
         private void MtPedidos_ValidateBefore(object sboObject, SBOItemEventArg pVal, out bool BubbleEvent)

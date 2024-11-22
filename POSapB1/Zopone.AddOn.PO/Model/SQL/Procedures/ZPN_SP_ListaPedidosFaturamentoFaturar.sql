@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ZPN_SP_ListaPedidosFaturamentoFaturar
+﻿create PROCEDURE ZPN_SP_ListaPedidosFaturamentoFaturar
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -39,8 +39,9 @@ FROM
 	INNER JOIN ORDR ON ORDR."DocEntry" = RDR1."DocEntry"
 	LEFT JOIN ZPN_VW_TotalFaturadoPedido FAT ON FAT.U_BaseEntry = RDR1."DocEntry" AND FAT.U_BaseLine = RDR1.LineNum
 
-WHERE 
-	ISNULL(RDR1."U_StatusFat",'A') = 'A'
+WHERE
+	ISNULL(RDR1.U_Bloqueado,'N') <> 'Y'
+	AND ISNULL(RDR1."U_StatusFat",'A') = 'A'
 	AND (isnull(ORDR."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
 	AND ORDR."DocDate" between @DataInicial and @DataFinal
 ORDER BY
