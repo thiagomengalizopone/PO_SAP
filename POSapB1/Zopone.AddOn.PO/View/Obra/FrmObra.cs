@@ -612,12 +612,18 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
+                Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+                EditText oEdRua = (EditText)oForm.Items.Item("EdRuaOb").Specific;
+                EditText oEdCidade = (EditText)oForm.Items.Item("EdCidadeD").Specific;
+
+                if (string.IsNullOrEmpty(oEdRua.Value) || string.IsNullOrEmpty(oEdCidade.Value))
+                    return;
+
                 Util.ExibirMensagemStatusBar($"Atualizando dados Senior!");
 
                 using (var client = new SeniorFilial.rubi_Syncbr_zopone_integracaoFilialClient())
                 {
-                    Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
-
                     System.Data.DataTable Contrato = SqlUtils.ExecuteCommand("SELECT " +
                         "T1.DocEntry AS FILIAL, " +           //pos 0
                         "T1.Code AS RSOCIAL, " +              //pos 1
@@ -947,8 +953,7 @@ namespace Zopone.AddOn.PO.View.Obra
             }
             catch (Exception Ex)
             {
-                Util.GravarLog(EnumList.EnumAddOn.GestaoContratos, EnumList.TipoMensagem.Erro, Ex.Message, Ex);
-                Util.ExibirMensagemStatusBar(Ex.Message, BoMessageTime.bmt_Medium, true);
+                Util.ExibirMensagemStatusBar($"Erro ao enviar dados Senior: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }           
         }
 
@@ -973,7 +978,7 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 if (!businessObjectInfo.BeforeAction)
                 {
-                    if ((businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE))
+                    if (businessObjectInfo.ActionSuccess && (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE))
                     {
                         SalvarProjeto(businessObjectInfo.FormUID);
 
@@ -981,7 +986,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                         string FormUID = businessObjectInfo.FormUID;
                         bool bUpdate = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE;
-                        new Task(() => { EnviarDadosPCIAsync(FormUID, bUpdate); }).Start();
+                        EnviarDadosPCIAsync(FormUID, bUpdate);
 
                         new Task(() => { EnviarDadosSeniorAsync(FormUID, bUpdate); }).Start();
                     }
@@ -994,7 +999,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 {
                     if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
                     {
-                       // return ValidarDadosObra(businessObjectInfo.FormUID);
+                       return ValidarDadosObra(businessObjectInfo.FormUID);
                     }
                 }
 
@@ -1022,9 +1027,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (string.IsNullOrEmpty(oDB.GetValue("U_BPLId", 0)))
                     MensagemErro += "\n Obrigatório selecionar Filial";
-
-                if (string.IsNullOrEmpty(oDB.GetValue("U_ClassOb", 0)))
-                    MensagemErro += "\n Obrigatório selecionar Classificação da Obra";
 
                 if (string.IsNullOrEmpty(oDB.GetValue("U_Regional", 0)))
                     MensagemErro += "\n Obrigatório selecionar Regional";

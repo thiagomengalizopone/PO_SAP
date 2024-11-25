@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POSapB1", "POSapB1\POSapB1.csproj", "{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zopone.AddOn.PO", "Zopone.AddOn.PO\Zopone.AddOn.PO.csproj", "{7076AB9B-E4FA-49A8-9443-B031C1B0DDF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sap.dev.core", "..\..\sap.dev.core\sap.dev.core.csproj", "{14C7EDBE-EFEE-43E8-873E-9B7B8C59EB7D}"
@@ -21,18 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Debug|x64.Build.0 = Debug|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Debug|x86.Build.0 = Debug|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Release|x64.ActiveCfg = Release|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Release|x64.Build.0 = Release|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Release|x86.ActiveCfg = Release|Any CPU
-		{8A0D3B5F-E921-4CDD-817D-9CF2721EC487}.Release|x86.Build.0 = Release|Any CPU
 		{7076AB9B-E4FA-49A8-9443-B031C1B0DDF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7076AB9B-E4FA-49A8-9443-B031C1B0DDF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7076AB9B-E4FA-49A8-9443-B031C1B0DDF9}.Debug|x64.ActiveCfg = Debug|Any CPU

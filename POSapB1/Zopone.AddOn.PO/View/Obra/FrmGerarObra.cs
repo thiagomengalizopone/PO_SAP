@@ -144,6 +144,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 }
                 else
                 {
+                    DtObras.SetValue("Cliente", iRow, string.Empty);
+                    DtObras.SetValue("IdCliente", iRow, string.Empty);
                     ErroValida += "Cliente não encontrado | ";
                 }
 
@@ -158,6 +160,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 }
                 else
                 {
+                    DtObras.SetValue("IdRegional", iRow, string.Empty);
                     ErroValida += "Regional não encontrada | ";
                 }
 
@@ -171,6 +174,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 }
                 else
                 {
+                    DtObras.SetValue("IdContrato", iRow, string.Empty);
+
                     ErroValida += "Contrato não encontrado | ";
                 }
 
@@ -267,8 +272,8 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (USValidou.ValueEx == "E")
                 {
-                    if (!Util.RetornarDialogo("Linhas com erro serão ignoradas! Deseja prosseguir mesmo assim?"))
-                        return;
+                    Util.ExibeMensagensDialogoStatusBar("Verifique e corrija as linhas com erro antes de prosseguir!", BoMessageTime.bmt_Medium, true);
+                    return;
                 }
 
                 if (!Util.RetornarDialogo("Deseja gerar as obras no SAP B1? \n Obras já geradas, serão ignoradas!"))

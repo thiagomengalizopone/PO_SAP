@@ -21,13 +21,6 @@ namespace Zopone.AddOn.PO
 {
     public class AddOnMain
     {
-        public class WareHouse
-        {
-            public string WarehouseCode { get; set; }
-            public string WarehouseName { get; set; }
-            public int BusinessPlaceID { get; set; }
-            public string U_DepositoRA { get; set; }
-        }
 
         public static void Inicializar(string[] aArguments)
         {
@@ -47,7 +40,7 @@ namespace Zopone.AddOn.PO
             //ImportaContratoHomologacao.criacentrocusto();
             #endregion
 
-
+            
             Install.VerificaInstalacaoAddOn();
 
             CentroCustoLocalizacao.CriarCentroCustoLocalizacao();
