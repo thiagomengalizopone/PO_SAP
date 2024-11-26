@@ -212,7 +212,7 @@
     <Compile Include="UtilAddOn\Configuracoes.cs" />
     <Compile Include="UtilAddOn\UtilScriptsSQLAddOn.cs" />
     <Compile Include="UtilAddOn\UtilWarehouses.cs" />
-    <Compile Include="View\Alocação\FrmAloca.cs" />
+    <Compile Include="View\Alocacao\FrmAloca.cs" />
     <Compile Include="View\ClassificacaoObra\FrmClassObra.cs" />
     <Compile Include="View\ConfiguracaoImportWMS\FrmConfigImpWMS.cs" />
     <Compile Include="View\Config\FrmConfPO.cs" />
@@ -363,7 +363,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAOBRA.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAOBRACANDIDATO.sql" />
-    <EmbeddedResource Include="View\Alocação\FrmAloca.srf">
+    <EmbeddedResource Include="View\Alocacao\FrmAloca.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAETAPA.sql" />

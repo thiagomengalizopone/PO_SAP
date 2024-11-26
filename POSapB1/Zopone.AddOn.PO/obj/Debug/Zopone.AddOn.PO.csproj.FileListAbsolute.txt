@@ -224,7 +224,6 @@ C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\zopone.jpg
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ConfiguracaoImportWMS\FrmConfigImpWMS.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Obra\FrmObra.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ClassificacaoObra\FrmClassObra.srf
-C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Alocação\FrmAloca.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Config\FrmConfPO.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ContratoAlocacao\FrmContAloca.srf
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Faturamento\FrmListaFaturamento.srf
@@ -303,3 +302,4 @@ C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.csproj.CopyComplete
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.exe
 C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.pdb
+C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Alocacao\FrmAloca.srf

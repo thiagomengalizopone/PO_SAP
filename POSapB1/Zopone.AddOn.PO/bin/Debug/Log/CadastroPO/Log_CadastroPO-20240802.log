@@ -1,6 +1,0 @@
-'CadastroPO';'Erro';'Erro ao abrir menu Item - Invalid item  [66000-3]. Form Unique Id: '1579098704', Item Unique Id: 'EdItemCode'';'System.Runtime.InteropServices.COMException (0xFFFFE4A7): Item - Invalid item  [66000-3]. Form Unique Id: '1579098704', Item Unique Id: 'EdItemCode'
-   em SAPbouiCOM.ItemsClass.Item(Object Index)
-   em Zopone.AddOn.PO.View.Alocação.FrmAloca..ctor() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\View\Alocação\FrmAloca.cs:linha 28
-   em Zopone.AddOn.PO.MenuEventHandler.Interface_MenuEvent(MenuEvent& pVal, Boolean& BubbleEvent) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Events\MenuEventHandler.cs:linha 38';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near '1579098704'.
-   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 28
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;

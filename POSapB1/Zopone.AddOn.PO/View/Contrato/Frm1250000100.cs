@@ -8,7 +8,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Zopone.AddOn.PO.Model.Objects;
-using Zopone.AddOn.PO.View.Alocação;
+using Zopone.AddOn.PO.View.Alocacao;
 using Zopone.AddOn.PO.View.ContratoAlocacao;
 using Zopone.AddOn.PO.View.Obra;
 

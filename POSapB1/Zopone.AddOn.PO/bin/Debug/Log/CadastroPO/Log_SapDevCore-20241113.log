@@ -1,5 +1,0 @@
-'SapDevCore';'Erro';'Erro ao exibir msg: Falha na chamada de sistema. (Exceção de HRESULT: 0x80010100 (RPC_E_SYS_CALL_FAILED))';'System.Runtime.InteropServices.COMException (0x80010100): Falha na chamada de sistema. (Exceção de HRESULT: 0x80010100 (RPC_E_SYS_CALL_FAILED))
-   em SAPbouiCOM.ApplicationClass.SetStatusBarMessage(String Text, BoMessageTime Seconds, Boolean IsError)
-   em sap.dev.core.Util.ExibirMensagemStatusBar(String aMensagem, BoMessageTime aDuracao, Boolean aErro, Exception ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 156';'UserName'; System.Runtime.InteropServices.COMException (0x80010100): Falha na chamada de sistema. (Exceção de HRESULT: 0x80010100 (RPC_E_SYS_CALL_FAILED))
-   em SAPbobsCOM.ICompany.get_UserName()
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 85;

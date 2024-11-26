@@ -1,7 +1,0 @@
-'AddOnUtilitarios';'Erro';'Erro ao iniciar AddOn';'System.Runtime.InteropServices.COMException (0x800706BE): Falha na chamada de procedimento remoto. (Exceção de HRESULT: 0x800706BE)
-   em SAPbouiCOM.FormsClass.GetFormByTypeAndCount(Int32 Type, Int32 Count)
-   em Zopone.AddOn.PO.UtilAddOn.UtilAddOn.CarregarMenus() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\UtilAddOn\UtilAddOn.cs:linha 10
-   em Zopone.AddOn.PO.AddOnMain.Inicializar(String[] aArguments) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\AddOnMain.cs:linha 35
-   em Zopone.AddOn.PO.Program.Main(String[] aArguments) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Program.cs:linha 23';'UserName'; System.Runtime.InteropServices.COMException (0x800706BA): O servidor RPC não está disponível. (Exceção de HRESULT: 0x800706BA)
-   em SAPbobsCOM.ICompany.get_UserName()
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 81;

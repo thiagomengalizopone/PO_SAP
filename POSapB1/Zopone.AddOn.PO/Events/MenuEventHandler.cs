@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using Zopone.AddOn.PO.Controller.Constantes;
-using Zopone.AddOn.PO.View.Alocação;
+using Zopone.AddOn.PO.View.Alocacao;
 using Zopone.AddOn.PO.View.ClassificacaoObra;
 using Zopone.AddOn.PO.View.Config;
 using Zopone.AddOn.PO.View.Faturamento;

@@ -1,6 +1,6 @@
 ﻿using sap.dev.core.Controller;
 using Zopone.AddOn.PO.Controller.Constantes;
-using Zopone.AddOn.PO.View.Alocação;
+using Zopone.AddOn.PO.View.Alocacao;
 using Zopone.AddOn.PO.View.ClassificacaoObra;
 using Zopone.AddOn.PO.View.Contrato;
 using Zopone.AddOn.PO.View.Obra;
