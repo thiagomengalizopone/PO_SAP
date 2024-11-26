@@ -213,6 +213,8 @@ namespace Zopone.AddOn.PO.View.Contrato
                 Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
                 try
                 {
+                    oFormContrato.Freeze(true);
+
                     Item oItemGridObra = oFormContrato.Items.Item("GdObras");
                     Item oItemGridRef = oFormContrato.Items.Item("1250000044");
 
@@ -226,18 +228,18 @@ namespace Zopone.AddOn.PO.View.Contrato
                     oItemAloca.Top = oFormContrato.Items.Item("1250000002").Top;
                     oItemAloca.Left = oFormContrato.Items.Item("1250000002").Left + oFormContrato.Items.Item("1250000002").Width +5;
 
-                    Item oItem = oFormContrato.Items.Item(1250000043);
+                    Item oItem = oFormContrato.Items.Item("1250000043");
                     oItem.Top = oItem.Top + 40;
 
-                    oItem = oFormContrato.Items.Item(1250000044);
+                    oItem = oFormContrato.Items.Item("1250000044");
                     oItem.Top = oItem.Top + 40;
                     oItem.Height = oItem.Height - 40;
 
-                    oItem = oFormContrato.Items.Item(1320000055);
+                    oItem = oFormContrato.Items.Item("1320000055");
                     int iLeftLabel = oItem.Left;
                     int iTopLabel = oItem.Top;
 
-                    oItem = oFormContrato.Items.Item(1320000056);
+                    oItem = oFormContrato.Items.Item("1320000056");
                     int iLeftText = oItem.Left;
                     int iTopText = oItem.Top;
 
@@ -253,7 +255,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                     oItem.Left = iLeftText;                    
 
                     iTopLabel += 17;
-                    iTopLabel += 17;
+                    iTopText += 17;
 
                     oItem = oFormContrato.Items.Item("StReg");
                     oItem.Top = iTopLabel;
@@ -263,12 +265,15 @@ namespace Zopone.AddOn.PO.View.Contrato
                     oItem.Top = iTopText;
                     oItem.Left = iLeftText;
 
-
-
-
                 }
-                catch
-                { }
+                catch(Exception Ex)
+                {
+                    Util.GravarLog( EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro,  Ex.Message, Ex);
+                }
+                finally
+                {
+                    oFormContrato.Freeze(false);
+                }
             }
             catch (Exception Ex)
             {
@@ -569,7 +574,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                         }
                     }
                     else
-                        throw new Exception("Falha ao carregar dados do Contrato, entre em contato com a equipe de desenvolvimento!" + SAPDbConnection.oCompany.GetLastErrorDescription());
+                        throw new Exception("Falha ao enviar dados para o Senior, entre em contato com a equipe de desenvolvimento!" + SAPDbConnection.oCompany.GetLastErrorDescription());
                 }
             }
             catch (Exception Ex)
@@ -690,11 +695,16 @@ namespace Zopone.AddOn.PO.View.Contrato
                 {
                     if (!businessObjectInfo.BeforeAction)
                     {
-                        string FormUID = businessObjectInfo.FormUID;
+
+                        if (businessObjectInfo.ActionSuccess)
+                        {
+
+                            string FormUID = businessObjectInfo.FormUID;
 
 
-                        EnviarDadosPCIAsync(FormUID); 
-                        new Task(() => { EnviarDadosSeniorAsync(FormUID); }).Start();
+                            EnviarDadosPCIAsync(FormUID);
+                            new Task(() => { EnviarDadosSeniorAsync(FormUID); }).Start();
+                        }
                     }
                     else
                     {
