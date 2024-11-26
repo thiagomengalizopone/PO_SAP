@@ -47,6 +47,8 @@ namespace Zopone.AddOn.PO.View.PO
                 pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso,  out dtRegistros);
 
                 DtRegistros = dtRegistros;
+
+                txtTotalReg.Text = DtRegistros.Rows.Count.ToString();
             }
             catch (Exception Ex)
             {

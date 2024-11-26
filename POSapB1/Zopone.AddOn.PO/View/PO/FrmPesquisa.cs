@@ -145,5 +145,13 @@ namespace Zopone.AddOn.PO.View.PO
         {
             SelecionarDados();
         }
+
+        private void FrmPesquisa_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelecionarDados();
+            }
+        }
     }
 }

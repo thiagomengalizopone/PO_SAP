@@ -1,4 +1,4 @@
-﻿create PROCEDURE [dbo].[SP_ZPN_VERIFICAIMPORTARPOHuawei]
+﻿CREATE PROCEDURE SP_ZPN_VERIFICAIMPORTARPO
 (
 	@DataInicial datetime,
 	@DataFinal datetime,
@@ -10,7 +10,7 @@ as
 BEGIN
 
 
--- SP_ZPN_VERIFICAIMPORTARPOHuawei '2024-07-19', '2024-07-19'
+-- SP_ZPN_VERIFICAIMPORTARPO '2024-07-19', '2024-07-19'
 	SELECT DISTINCT
 		CAST(ORDR.U_IdPO AS NUMERIC)  [po_id],
 		ORDR.DocEntry as "DocEntryPO",
@@ -19,7 +19,8 @@ BEGIN
 		ORDR.DocDate,
 		'Pedido' "Status",
 		LOGPO.MensagemLog "Mensagem",
-		CASE WHEN ISNULL(DOCPO.U_IdPO,0) > 0 THEN 'LINHAS SEM OBRA' ELSE '' END 'DOCTOOBRA'
+		CASE WHEN ISNULL(DOCPO.U_IdPO,0) > 0 THEN 'LINHAS SEM OBRA' ELSE '' END 'DOCTOOBRA',
+		isnull(STAT.Validado,'')  as "Validado"
 	FROM 
 		ORDR
 		INNER JOIN ZPN_VW_STATUSVALIDACAOPEDIDOSPO STAT ON STAT.DocEntry = ORDR.DocEntry
@@ -27,7 +28,9 @@ BEGIN
 		LEFT JOIN ZPN_VW_DOCUMENTOSSEMOBRA    DOCPO ON DOCPO.U_IdPO = ORDR.U_IdPO AND
 													   DOCPO."DocEntry" = ORDR."DocEntry" and DOCPO."ObjType" = ORDR."ObjType"  AND
 													   DOCPO."Documento" = 'P'
+		LEFT JOIN ZPN_VW_PONaoValidada PONV			ON PONV."DocEntry" = ORDR.DocEntry
 	where 
+		isnull(ORDR.NumAtCard,'') <> '' and 
 		(isnull(@IgnorarValidado,'') = 'N' OR (@IgnorarValidado = 'Y' AND isnull(STAT.Validado,'') = 'N' ))  AND
 		(isnull(@Empresa,'') = '' or ORDR.CardName like '%' + @Empresa + '%') AND
 		ISNULL(ORDR.U_IdPO,0) > 0 AND 
@@ -48,7 +51,8 @@ BEGIN
 		LOGPO.DataLog DocDate,
 		'Erro de importação' "Status",
 		LOGPO.MensagemLog "Mensagem",
-		'' 'DOCTOOBRA'
+		'' 'DOCTOOBRA',
+		'N'  as "Validado"
 	FROM 
 		ZPN_LOGIMPORTACAOPO LOGPO
 		LEFT JOIN ODRF  ON LOGPO.po_id = ODRF.U_IdPO 

@@ -50,6 +50,8 @@
             this.CkValidado = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.CbEmpresa = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtTotalReg = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -269,11 +271,32 @@
             this.CbEmpresa.Size = new System.Drawing.Size(236, 24);
             this.CbEmpresa.TabIndex = 12;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(1417, 716);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(121, 16);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Total de Registros:";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // txtTotalReg
+            // 
+            this.txtTotalReg.Enabled = false;
+            this.txtTotalReg.Location = new System.Drawing.Point(1574, 714);
+            this.txtTotalReg.Name = "txtTotalReg";
+            this.txtTotalReg.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txtTotalReg.Size = new System.Drawing.Size(129, 22);
+            this.txtTotalReg.TabIndex = 15;
+            // 
             // FrmVerificaImportacaoPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1715, 720);
+            this.ClientSize = new System.Drawing.Size(1715, 742);
+            this.Controls.Add(this.txtTotalReg);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.CbEmpresa);
             this.Controls.Add(this.CkValidado);
@@ -285,6 +308,7 @@
             this.Controls.Add(this.mskDataI);
             this.Controls.Add(this.label1);
             this.Name = "FrmVerificaImportacaoPO";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Verifica Importação de PO";
             this.Activated += new System.EventHandler(this.FrmVerificaImportacaoPO_Activated);
             this.Load += new System.EventHandler(this.FrmImportacaoPO_Load);
@@ -314,5 +338,7 @@
         private System.Windows.Forms.CheckBox CkValidado;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox CbEmpresa;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtTotalReg;
     }
 }

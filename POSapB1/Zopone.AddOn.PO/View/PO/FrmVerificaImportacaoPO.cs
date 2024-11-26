@@ -58,7 +58,7 @@ namespace Zopone.AddOn.PO.View.PO
                 string IgnorarValidados = CkValidado.Checked ? "Y" : "N";
                 string Empresa = !string.IsNullOrEmpty(CbEmpresa.Text) ? CbEmpresa.Text : "";
 
-                string SQL = $@"SP_ZPN_VERIFICAIMPORTARPOHuawei '{dataInicial}', '{dataFinal}', '{tipoDataPEsquisa}', '{Empresa}', '{IgnorarValidados}'";
+                string SQL = $@"SP_ZPN_VERIFICAIMPORTARPO '{dataInicial}', '{dataFinal}', '{tipoDataPEsquisa}', '{Empresa}', '{IgnorarValidados}'";
 
                 string pedidoVenda = string.Empty;
 
@@ -73,12 +73,18 @@ namespace Zopone.AddOn.PO.View.PO
                     if (
                         (dgDadosPO.Rows[iRow].Cells["po_id"].Value != null && !string.IsNullOrEmpty(dgDadosPO.Rows[iRow].Cells["po_id"].Value.ToString()))
                         &&
+                        (
                         (dgDadosPO.Rows[iRow].Cells["DOCTOOBRA"].Value != null && !string.IsNullOrEmpty(dgDadosPO.Rows[iRow].Cells["DOCTOOBRA"].Value.ToString()))
+                        ||
+                        (dgDadosPO.Rows[iRow].Cells["Validado"].Value.ToString() != "Y")
+                        )
                         )
                     {
                         dgDadosPO.Rows[iRow].DefaultCellStyle.BackColor = Color.OrangeRed;
                     }
                 }
+
+                txtTotalReg.Text = dtRegistros.Rows.Count.ToString();
 
             }
             catch (Exception Ex)
@@ -126,6 +132,7 @@ namespace Zopone.AddOn.PO.View.PO
 
             FrmPO.MenuPO(DocEntry, IsDraft);
 
+            PesquisarDados();
         }
 
         private void CkValidado_CheckedChanged(object sender, EventArgs e)
@@ -135,6 +142,11 @@ namespace Zopone.AddOn.PO.View.PO
 
         private void FrmVerificaImportacaoPO_Activated(object sender, EventArgs e)
         {
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

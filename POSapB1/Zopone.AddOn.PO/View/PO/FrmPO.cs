@@ -43,9 +43,9 @@ namespace Zopone.AddOn.PO.View.Obra
             DocEntryPO = docEntryPO;
             IsDraft = isDraft;
 
-            formThread = new Thread(new ThreadStart(OpenFormPO));
-            formThread.SetApartmentState(ApartmentState.STA);
-            formThread.Start();
+            FrmPO form = new FrmPO();
+
+            form.ShowDialog();
         }
 
         private static void OpenFormPO()
@@ -109,13 +109,11 @@ namespace Zopone.AddOn.PO.View.Obra
 
             RowIndexEdit = -1;
 
-            //this.WindowState = FormWindowState.Minimized;
-            //this.Show();
-            //this.WindowState = FormWindowState.Normal;
-
             this.TopMost = true;
             this.BringToFront();
             this.TopMost = false;
+
+            txtNroPedido.Focus();
 
         }
 
@@ -244,6 +242,15 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (string.IsNullOrEmpty(txtObra.Text))
                     return;
 
+                double dblTotalPO = Math.Round(Convert.ToDouble(txtValorPO.Text), 2);
+                double dblTotalLinhasPO = Math.Round(linesPO.Sum(item => item.U_Valor), 2);
+
+                if (dblTotalLinhasPO >= dblTotalPO  || (dblTotalLinhasPO + Convert.ToDouble(txtValor.Text) > dblTotalPO))
+                {
+                    MessageBox.Show("Não é possível adicionar novas linhas. Total das linhas não pode ser maior que total da PO!");
+                    return;
+                }
+
                 LinePO oLinePO = new LinePO()
                 {
                     LineNum = LineNumEdit,
@@ -282,6 +289,15 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 RowIndexEdit = -1;
                 LineNumEdit = -1;
+
+                dblTotalPO = Math.Round(Convert.ToDouble(txtValorPO.Text), 2);
+                dblTotalLinhasPO = Math.Round(linesPO.Sum(item => item.U_Valor), 2);
+
+                if (dblTotalPO == dblTotalLinhasPO)
+                {
+                    SalvarPO();
+                }
+
             }
             catch (Exception Ex)
             {
@@ -311,6 +327,8 @@ namespace Zopone.AddOn.PO.View.Obra
                     DgItensPO.Rows[iRow].DefaultCellStyle.BackColor = Color.OrangeRed;
                 }
             }
+
+            txtTotalPO.Text = Math.Round(linesPO.Sum(item => item.U_Valor), 2).ToString();
         }
 
         private void LimparLinhaPO()
@@ -516,7 +534,24 @@ namespace Zopone.AddOn.PO.View.Obra
 
         private void BtSalvar_Click(object sender, EventArgs e)
         {
-            SalvarPO();
+            SalvarPO();            
+        }
+
+        private void LimparTelaPO()
+        {
+
+            LimparLinhaPO();
+            linesPO = new List<LinePO>();
+
+            foreach (Control controle in this.Controls)
+            {
+                if (controle is TextBox)
+                {
+                    (controle as TextBox).Clear();
+                }
+            }
+
+            CarregarMatrixPO();
         }
 
         private void CarregarDadosLinhaPO(int rowIndex)
@@ -561,11 +596,9 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                if (MessageBox.Show("Deseja salvar a PO?", "Atenção!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                    return;
 
-                double dblTotalPO = Convert.ToDouble(txtValorPO.Text);
-                double dblTotalLinhasPO = linesPO.Sum(item => item.U_Valor);
+                double dblTotalPO = Math.Round(Convert.ToDouble(txtValorPO.Text), 2);
+                double dblTotalLinhasPO = Math.Round(linesPO.Sum(item => item.U_Valor), 2);
 
                 if (dblTotalPO != dblTotalLinhasPO)
                 {
@@ -694,7 +727,8 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 MessageBox.Show("PO salva com sucesso!");
 
-
+                if (!bExistePedido)
+                    LimparTelaPO();
 
             }
             catch (Exception Ex)
@@ -808,6 +842,19 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 MessageBox.Show($"Erro ao pesquisar obra: {Ex.Message}", "Erro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 e.Cancel = true;
+            }
+        }
+
+        private void BtCancelar_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+        }
+
+        private void FrmPO_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.SelectNextControl(this.ActiveControl, !e.Shift, true, true, true);
             }
         }
     }

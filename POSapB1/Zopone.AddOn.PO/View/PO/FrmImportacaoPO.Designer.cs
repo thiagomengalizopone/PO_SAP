@@ -44,6 +44,8 @@
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mensagem = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BtnPesquisar = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtTotalReg = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -132,7 +134,7 @@
             this.dgDadosPO.Name = "dgDadosPO";
             this.dgDadosPO.RowHeadersWidth = 51;
             this.dgDadosPO.RowTemplate.Height = 24;
-            this.dgDadosPO.Size = new System.Drawing.Size(1230, 637);
+            this.dgDadosPO.Size = new System.Drawing.Size(1230, 608);
             this.dgDadosPO.TabIndex = 8;
             // 
             // Importar
@@ -203,11 +205,31 @@
             this.BtnPesquisar.UseVisualStyleBackColor = true;
             this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(922, 699);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(121, 16);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Total de Registros:";
+            // 
+            // txtTotalReg
+            // 
+            this.txtTotalReg.Enabled = false;
+            this.txtTotalReg.Location = new System.Drawing.Point(1049, 693);
+            this.txtTotalReg.Name = "txtTotalReg";
+            this.txtTotalReg.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txtTotalReg.Size = new System.Drawing.Size(193, 22);
+            this.txtTotalReg.TabIndex = 11;
+            // 
             // FrmImportacaoPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1256, 750);
+            this.Controls.Add(this.txtTotalReg);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.BtnPesquisar);
             this.Controls.Add(this.dgDadosPO);
             this.Controls.Add(this.pbProgresso);
@@ -219,6 +241,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.BtImportar);
             this.Name = "FrmImportacaoPO";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Importação de PO";
             this.Load += new System.EventHandler(this.FrmImportacaoPO_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgDadosPO)).EndInit();
@@ -245,5 +268,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn po_lis_DataConfirmacao;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Mensagem;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtTotalReg;
     }
 }

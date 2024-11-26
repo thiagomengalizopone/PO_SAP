@@ -42,6 +42,11 @@ namespace Zopone.AddOn.PO.View.Contrato
                     {
                         PosicionaTela(pVal.FormUID);
                     }
+                    else if (pVal.EventType == BoEventTypes.et_FORM_RESIZE)
+                    {
+                        FormAutoResize(pVal.FormUID);
+                    }
+
                 }
 
                 return true;
@@ -192,10 +197,82 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 oFormContrato.Update();
 
+                FormAutoResize(formUID);
+
             }
             catch (Exception Ex)
             {
                 throw new Exception($"Erro ao abrir tela: {Ex.Message}");
+            }
+        }
+
+        private static void FormAutoResize(string formUID)
+        {
+            try
+            {
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                try
+                {
+                    Item oItemGridObra = oFormContrato.Items.Item("GdObras");
+                    Item oItemGridRef = oFormContrato.Items.Item("1250000044");
+
+                    oItemGridObra.Top = oFormContrato.Items.Item("1250000031").Top;
+                    oItemGridObra.Left = oItemGridRef.Left;
+                    oItemGridObra.Width = oItemGridRef.Width;
+                    oItemGridObra.Height = oItemGridRef.Height;
+
+                    Item oItemAloca = oFormContrato.Items.Item("BtAlocacao");
+
+                    oItemAloca.Top = oFormContrato.Items.Item("1250000002").Top;
+                    oItemAloca.Left = oFormContrato.Items.Item("1250000002").Left + oFormContrato.Items.Item("1250000002").Width +5;
+
+                    Item oItem = oFormContrato.Items.Item(1250000043);
+                    oItem.Top = oItem.Top + 40;
+
+                    oItem = oFormContrato.Items.Item(1250000044);
+                    oItem.Top = oItem.Top + 40;
+                    oItem.Height = oItem.Height - 40;
+
+                    oItem = oFormContrato.Items.Item(1320000055);
+                    int iLeftLabel = oItem.Left;
+                    int iTopLabel = oItem.Top;
+
+                    oItem = oFormContrato.Items.Item(1320000056);
+                    int iLeftText = oItem.Left;
+                    int iTopText = oItem.Top;
+
+                    iTopLabel += 17;
+                    iTopText += 17;
+
+                    oItem = oFormContrato.Items.Item("StNroRH");
+                    oItem.Top = iTopLabel;
+                    oItem.Left = iLeftLabel;
+
+                    oItem = oFormContrato.Items.Item("EdNroRH");
+                    oItem.Top = iTopText;
+                    oItem.Left = iLeftText;                    
+
+                    iTopLabel += 17;
+                    iTopLabel += 17;
+
+                    oItem = oFormContrato.Items.Item("StReg");
+                    oItem.Top = iTopLabel;
+                    oItem.Left = iLeftLabel;
+
+                    oItem = oFormContrato.Items.Item("CbReg");
+                    oItem.Top = iTopText;
+                    oItem.Left = iLeftText;
+
+
+
+
+                }
+                catch
+                { }
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao posicionar form: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
 

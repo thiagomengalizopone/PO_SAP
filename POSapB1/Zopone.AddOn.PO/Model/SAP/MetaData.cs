@@ -23,8 +23,20 @@ namespace Zopone.AddOn.PO.Model.SAP
                 valoresValidosTipoDocumento.Add(new Tuple<string, string>("TR", "Transferência"));
                 valoresValidosTipoDocumento.Add(new Tuple<string, string>("RA", "Requisição de Almoxarifado"));
 
+                var documentoImportado = new List<Tuple<string, string>>();
+                documentoImportado.Add(new Tuple<string, string>("E", "Ericsson"));
+                documentoImportado.Add(new Tuple<string, string>("H", "Huawei"));
+                documentoImportado.Add(new Tuple<string, string>(".", "Nenhum"));
+
+                var documentoValidado = new List<Tuple<string, string>>();
+                documentoValidado.Add(new Tuple<string, string>("Y", "Sim"));
+                documentoValidado.Add(new Tuple<string, string>("N", "Não"));
+
+
                 DBCreation.CriarCampoUsuario("ORDR", "ZPN_TipoDocto", "Tipo Documento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresValidosTipoDocumento);
 
+                DBCreation.CriarCampoUsuario("ORDR", "ZPN_TipoImport", "Tipo Importação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, documentoImportado);
+                DBCreation.CriarCampoUsuario("RDR1", "ZPN_Validado", "Validado Importação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, "N", documentoValidado);
 
                 var valoresUtilizacao = new List<Tuple<string, string>>();
                 valoresUtilizacao.Add(new Tuple<string, string>("N ", "Nenhum"));

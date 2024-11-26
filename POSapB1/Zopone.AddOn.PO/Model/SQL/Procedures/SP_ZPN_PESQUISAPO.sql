@@ -24,13 +24,14 @@ WHERE
 	isnull(T0.NumAtCard,'') <> ''			  AND
 	T0."DocStatus"						= 'O' AND
 	T0."ObjType"							= '17' and
-	cast(T0."DocEntry" as varchar(10))		like '%' + @CampoPesquisa + '%' OR 
+
+	(cast(T0."DocEntry" as varchar(10))		like '%' + @CampoPesquisa + '%' OR 
 	cast(T0."DocNum"  as varchar(10))		like '%' + @CampoPesquisa + '%' OR  
 	T0.NumAtCard							like '%' + @CampoPesquisa + '%' OR  
 	T0."U_NroCont"							like '%' + @CampoPesquisa + '%' OR  
 	OBPL."BplName"							like '%' + @CampoPesquisa + '%' OR  
 	cast(T0.DocDueDate  as varchar(10))	    like '%' + @CampoPesquisa + '%' OR  
 	OPRJ."PrjCode"							like '%' + @CampoPesquisa + '%' OR  
-	OPRJ."PrjName"							like '%' + @CampoPesquisa + '%' ;
+	OPRJ."PrjName"							like '%' + @CampoPesquisa + '%' );
 
 

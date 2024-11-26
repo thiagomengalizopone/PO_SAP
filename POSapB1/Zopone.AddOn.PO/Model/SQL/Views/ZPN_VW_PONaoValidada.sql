@@ -1,0 +1,10 @@
+﻿
+CREATE VIEW ZPN_VW_PONaoValidada
+as 
+
+SELECT
+	DISTINCT RDR1."DocEntry"
+FROM
+	RDR1 
+WHERE 
+	ISNULL(U_ZPN_Validado,'N') = 'N'

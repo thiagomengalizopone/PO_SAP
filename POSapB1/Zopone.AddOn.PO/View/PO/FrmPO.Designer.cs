@@ -36,9 +36,9 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPO));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -119,6 +119,8 @@ namespace Zopone.AddOn.PO.View.Obra
             this.CbStatus = new System.Windows.Forms.ComboBox();
             this.BtPesqPO = new System.Windows.Forms.Button();
             this.BtAnexo = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.txtTotalPO = new System.Windows.Forms.TextBox();
             this.gbItens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -232,7 +234,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // gbItens
             // 
+            this.gbItens.Controls.Add(this.label23);
             this.gbItens.Controls.Add(this.label22);
+            this.gbItens.Controls.Add(this.txtTotalPO);
             this.gbItens.Controls.Add(this.txtNroCont);
             this.gbItens.Controls.Add(this.label21);
             this.gbItens.Controls.Add(this.txtDescItemPO);
@@ -297,7 +301,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtNroCont.Location = new System.Drawing.Point(686, 140);
             this.txtNroCont.Name = "txtNroCont";
             this.txtNroCont.Size = new System.Drawing.Size(81, 22);
-            this.txtNroCont.TabIndex = 61;
+            this.txtNroCont.TabIndex = 17;
             // 
             // label21
             // 
@@ -314,7 +318,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtDescItemPO.Location = new System.Drawing.Point(9, 250);
             this.txtDescItemPO.Name = "txtDescItemPO";
             this.txtDescItemPO.Size = new System.Drawing.Size(1004, 22);
-            this.txtDescItemPO.TabIndex = 59;
+            this.txtDescItemPO.TabIndex = 21;
             // 
             // label16
             // 
@@ -331,7 +335,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtInfoSitePO.Location = new System.Drawing.Point(9, 305);
             this.txtInfoSitePO.Name = "txtInfoSitePO";
             this.txtInfoSitePO.Size = new System.Drawing.Size(1004, 22);
-            this.txtInfoSitePO.TabIndex = 57;
+            this.txtInfoSitePO.TabIndex = 22;
             // 
             // cbBloqueado
             // 
@@ -388,17 +392,18 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtCancelar.Location = new System.Drawing.Point(90, 529);
             this.BtCancelar.Name = "BtCancelar";
             this.BtCancelar.Size = new System.Drawing.Size(75, 23);
-            this.BtCancelar.TabIndex = 53;
+            this.BtCancelar.TabIndex = 25;
             this.BtCancelar.Text = "Cancelar";
             this.BtCancelar.UseVisualStyleBackColor = true;
             this.BtCancelar.Click += new System.EventHandler(this.BtCancelar_Click);
+            this.BtCancelar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BtCancelar_KeyDown);
             // 
             // BtSalvar
             // 
             this.BtSalvar.Location = new System.Drawing.Point(9, 529);
             this.BtSalvar.Name = "BtSalvar";
             this.BtSalvar.Size = new System.Drawing.Size(75, 23);
-            this.BtSalvar.TabIndex = 52;
+            this.BtSalvar.TabIndex = 24;
             this.BtSalvar.Text = "Salvar";
             this.BtSalvar.UseVisualStyleBackColor = true;
             this.BtSalvar.Click += new System.EventHandler(this.BtSalvar_Click);
@@ -409,7 +414,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.lblItemFat.ForeColor = System.Drawing.Color.Red;
             this.lblItemFat.Location = new System.Drawing.Point(686, 92);
             this.lblItemFat.Name = "lblItemFat";
-            this.lblItemFat.Size = new System.Drawing.Size(419, 22);
+            this.lblItemFat.Size = new System.Drawing.Size(408, 22);
             this.lblItemFat.TabIndex = 50;
             this.lblItemFat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -449,7 +454,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.mskDataFaturamento.Mask = "99/99/9999";
             this.mskDataFaturamento.Name = "mskDataFaturamento";
             this.mskDataFaturamento.Size = new System.Drawing.Size(100, 22);
-            this.mskDataFaturamento.TabIndex = 16;
+            this.mskDataFaturamento.TabIndex = 15;
             this.mskDataFaturamento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // mskDataSol
@@ -466,21 +471,21 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtAdicionar.Location = new System.Drawing.Point(1019, 304);
             this.BtAdicionar.Name = "BtAdicionar";
             this.BtAdicionar.Size = new System.Drawing.Size(75, 23);
-            this.BtAdicionar.TabIndex = 20;
+            this.BtAdicionar.TabIndex = 23;
             this.BtAdicionar.Text = "Adicionar";
             this.BtAdicionar.UseVisualStyleBackColor = true;
             this.BtAdicionar.Click += new System.EventHandler(this.BtAdicionar_Click);
             // 
             // DgItensPO
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.DgItensPO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgItensPO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Obra,
@@ -502,24 +507,24 @@ namespace Zopone.AddOn.PO.View.Obra
             this.U_DescItemFat,
             this.U_Bloqueado,
             this.Contrato});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle11;
             this.DgItensPO.Location = new System.Drawing.Point(6, 334);
             this.DgItensPO.Name = "DgItensPO";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.DgItensPO.RowHeadersWidth = 51;
             this.DgItensPO.RowTemplate.Height = 24;
             this.DgItensPO.Size = new System.Drawing.Size(1093, 177);
@@ -739,7 +744,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtNroNF.Location = new System.Drawing.Point(580, 140);
             this.txtNroNF.Name = "txtNroNF";
             this.txtNroNF.Size = new System.Drawing.Size(100, 22);
-            this.txtNroNF.TabIndex = 17;
+            this.txtNroNF.TabIndex = 16;
             this.txtNroNF.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label17
@@ -764,6 +769,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.CbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbTipo.FormattingEnabled = true;
+            this.CbTipo.ItemHeight = 16;
             this.CbTipo.Location = new System.Drawing.Point(223, 138);
             this.CbTipo.Name = "CbTipo";
             this.CbTipo.Size = new System.Drawing.Size(121, 24);
@@ -926,13 +932,31 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtAnexo.UseVisualStyleBackColor = true;
             this.BtAnexo.Click += new System.EventHandler(this.BtAnexo_Click);
             // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(878, 536);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(60, 16);
+            this.label23.TabIndex = 59;
+            this.label23.Text = "Total PO";
+            // 
+            // txtTotalPO
+            // 
+            this.txtTotalPO.Enabled = false;
+            this.txtTotalPO.Location = new System.Drawing.Point(944, 530);
+            this.txtTotalPO.Name = "txtTotalPO";
+            this.txtTotalPO.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txtTotalPO.Size = new System.Drawing.Size(155, 22);
+            this.txtTotalPO.TabIndex = 58;
+            // 
             // FrmPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(1132, 843);
+            this.ClientSize = new System.Drawing.Size(1132, 849);
             this.Controls.Add(this.BtAnexo);
             this.Controls.Add(this.BtPesqPO);
             this.Controls.Add(this.CbStatus);
@@ -952,11 +976,13 @@ namespace Zopone.AddOn.PO.View.Obra
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCodigo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "FrmPO";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Detalhe PO";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmPO_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmPO_KeyDown);
             this.gbItens.ResumeLayout(false);
             this.gbItens.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).EndInit();
@@ -1047,6 +1073,8 @@ namespace Zopone.AddOn.PO.View.Obra
         private DataGridViewTextBoxColumn U_DescItemFat;
         private DataGridViewCheckBoxColumn U_Bloqueado;
         private DataGridViewTextBoxColumn Contrato;
+        private Label label23;
+        private TextBox txtTotalPO;
     }
 }
 

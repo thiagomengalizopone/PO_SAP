@@ -212,7 +212,7 @@
             <File FileName="zopone.jpg">
               <Actions />
             </File>
-            <File FileName="View\Alocacao\FrmAloca.srf">
+            <File FileName="View\Alocação\FrmAloca.srf">
               <Actions />
             </File>
             <File FileName="View\ClassificacaoObra\FrmClassObra.srf">
@@ -429,7 +429,7 @@
             <File FileName="zopone.jpg">
               <Actions />
             </File>
-            <File FileName="View\Alocacao\FrmAloca.srf">
+            <File FileName="View\Alocação\FrmAloca.srf">
               <Actions />
             </File>
             <File FileName="View\ClassificacaoObra\FrmClassObra.srf">
