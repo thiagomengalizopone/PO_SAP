@@ -363,7 +363,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                         "FROM OOAT T1 " +                        
                         "INNER JOIN OCRD T2 ON T1.BpCode = T2.CardCode " +
                         "JOIN OBPL T3 ON T3.MainBPL = 'Y' " +
-                        "WHERE AbsID = '" + ((EditText)oForm.Items.Item("1250000004").Specific).Value + "'");
+                        $"WHERE AbsID = '{AbsIdContrato}'");
 
                     if (Contrato.Rows.Count > 0)
                     {
