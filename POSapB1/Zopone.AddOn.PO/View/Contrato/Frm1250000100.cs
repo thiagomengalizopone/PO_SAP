@@ -79,7 +79,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 int iTop = 205;
 
-                
+
 
                 oItem = oFormContrato.Items.Add("EdNroRH", SAPbouiCOM.BoFormItemTypes.it_EDIT);
                 oItem.Left = 390;
@@ -96,9 +96,9 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oItemRef = oFormContrato.Items.Item("1250000038");
                 oItem = oFormContrato.Items.Add("StNroRH", SAPbouiCOM.BoFormItemTypes.it_STATIC);
                 oItem.Left = 280;
-                oItem.Top = iTop ;
+                oItem.Top = iTop;
                 oItem.Width = 90;
-                
+
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
@@ -226,7 +226,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                     Item oItemAloca = oFormContrato.Items.Item("BtAlocacao");
 
                     oItemAloca.Top = oFormContrato.Items.Item("1250000002").Top;
-                    oItemAloca.Left = oFormContrato.Items.Item("1250000002").Left + oFormContrato.Items.Item("1250000002").Width +5;
+                    oItemAloca.Left = oFormContrato.Items.Item("1250000002").Left + oFormContrato.Items.Item("1250000002").Width + 5;
 
                     Item oItem = oFormContrato.Items.Item("1250000043");
                     oItem.Top = oItem.Top + 40;
@@ -252,7 +252,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                     oItem = oFormContrato.Items.Item("EdNroRH");
                     oItem.Top = iTopText;
-                    oItem.Left = iLeftText;                    
+                    oItem.Left = iLeftText;
 
                     iTopLabel += 17;
                     iTopText += 17;
@@ -266,9 +266,9 @@ namespace Zopone.AddOn.PO.View.Contrato
                     oItem.Left = iLeftText;
 
                 }
-                catch(Exception Ex)
+                catch (Exception Ex)
                 {
-                    Util.GravarLog( EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro,  Ex.Message, Ex);
+                    Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, Ex.Message, Ex);
                 }
                 finally
                 {
@@ -340,7 +340,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
         }
 
-        private static void EnviarDadosSeniorAsync(string formUID)
+        private static void EnviarDadosSeniorAsync(string formUID, bool Add)
         {
             try
             {
@@ -348,7 +348,14 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 using (var client = new SeniorContrato.rubi_Syncbr_zopone_integracaoContratoClient())
                 {
-                    Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);                    
+                    Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+                    string AbsIdContrato = string.Empty;
+
+                    if (Add)
+                        AbsIdContrato = SqlUtils.GetValue("SELECT MAX(AbsID) FROM OOAT");                             
+                    else
+                        AbsIdContrato = ((EditText)oForm.Items.Item("1250000004").Specific).Value.ToString();
 
                     System.Data.DataTable Contrato = SqlUtils.ExecuteCommand("SELECT " +
                         "T1.BpCode, " +     //pos 0
@@ -360,7 +367,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                         "T1.Remarks, " +    //pos 6  
                         "T3.U_IdSenior, " + //pos 7
                         "T1.AbsID " +       //pos 8
-                        "FROM OOAT T1 " +                        
+                        "FROM OOAT T1 " +
                         "INNER JOIN OCRD T2 ON T1.BpCode = T2.CardCode " +
                         "JOIN OBPL T3 ON T3.MainBPL = 'Y' " +
                         $"WHERE AbsID = '{AbsIdContrato}'");
@@ -512,7 +519,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                         dadosContrato.codOemSpecified = true;
                         dadosContrato.empResSpecified = true;
 
-                        dadosContrato.cadResSpecified = false;  
+                        dadosContrato.cadResSpecified = false;
                         dadosContrato.numLocSpecified = false;
                         dadosContrato.tabOrgSpecified = false;
                         dadosContrato.tclResSpecified = false;
@@ -522,14 +529,14 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                         #region Dados a serem inseridos/atualizados
 
-                        dadosContrato.codOem = int.Parse(IdSeniorPN);                       
+                        dadosContrato.codOem = int.Parse(IdSeniorPN);
                         dadosContrato.datIni = DateTime.Parse(Contrato.Rows[0][3].ToString()).ToString("dd-MM-yyyy");
                         dadosContrato.datFim = DateTime.Parse(Contrato.Rows[0][4].ToString()).ToString("dd-MM-yyyy");
                         dadosContrato.empRes = int.Parse(Contrato.Rows[0][7].ToString().Trim());
                         dadosContrato.numCon = Contrato.Rows[0][8].ToString();
                         dadosContrato.desCon = Contrato.Rows[0][5].ToString();
                         dadosContrato.obsCon = Contrato.Rows[0][6].ToString();
-                        
+
                         dadosContrato.valCon = 1;
                         dadosContrato.tclRes = 1;
                         dadosContrato.tabOrg = 1;
@@ -574,7 +581,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                         }
                     }
                     else
-                        throw new Exception("Falha ao enviar dados para o Senior, entre em contato com a equipe de desenvolvimento!" + SAPDbConnection.oCompany.GetLastErrorDescription());
+                        throw new Exception("Falha ao integrar dados do Contrato na Senior, entre em contato com a equipe de desenvolvimento!" + SAPDbConnection.oCompany.GetLastErrorDescription());
                 }
             }
             catch (Exception Ex)
@@ -654,7 +661,7 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 if (oMtValores.RowCount < 1)
                     bMontante = false;
-                
+
                 string valorMontante = Util.MatrixGetValue(oMtValores, 1, "1320000039");
 
                 if (string.IsNullOrEmpty(valorMontante) || Convert.ToDouble(valorMontante.Replace(".", "").Replace(",", ".").Replace("R$ ", "").Trim()) < 999999999999)
@@ -677,7 +684,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             return true;
         }
 
-     
+
 
         internal static bool Interface_FormDataEvent(ref BusinessObjectInfo businessObjectInfo)
         {
@@ -698,12 +705,12 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                         if (businessObjectInfo.ActionSuccess)
                         {
-
+                            bool bAdd = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD;
                             string FormUID = businessObjectInfo.FormUID;
 
 
                             EnviarDadosPCIAsync(FormUID);
-                            new Task(() => { EnviarDadosSeniorAsync(FormUID); }).Start();
+                            new Task(() => { EnviarDadosSeniorAsync(FormUID, bAdd); }).Start();
                         }
                     }
                     else
@@ -722,6 +729,6 @@ namespace Zopone.AddOn.PO.View.Contrato
             return true;
         }
 
-      
+
     }
 }
