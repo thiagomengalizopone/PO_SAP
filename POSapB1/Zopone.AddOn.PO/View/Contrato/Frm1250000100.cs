@@ -340,6 +340,16 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
         }
 
+        static int GetMonthsDifference(DateTime start, DateTime end)
+        {
+            // Calcula a diferença total de anos e meses
+            int yearDifference = end.Year - start.Year;
+            int monthDifference = end.Month - start.Month;
+
+            // Soma os meses totais (anos * 12 + meses)
+            return (yearDifference * 12) + monthDifference;
+        }
+
         private static void EnviarDadosSeniorAsync(string formUID, bool Add)
         {
             try
@@ -358,23 +368,25 @@ namespace Zopone.AddOn.PO.View.Contrato
                         AbsIdContrato = ((EditText)oForm.Items.Item("1250000004").Specific).Value.ToString();
 
                     System.Data.DataTable Contrato = SqlUtils.ExecuteCommand("SELECT " +
-                        "T1.BpCode, " +     //pos 0
-                        "T2.U_IdSenior, " + //pos 1                        
-                        "T1.CntctCode, " +  //pos 2
-                        "T1.StartDate, " +  //pos 3
-                        "T1.EndDate, " +    //pos 4
-                        "T1.Descript, " +   //pos 5
-                        "T1.Remarks, " +    //pos 6  
-                        "T3.U_IdSenior, " + //pos 7
-                        "T1.AbsID " +       //pos 8
-                        "FROM OOAT T1 " +
+                        "T1.BpCode AS CardCode, " +     
+                        "T2.U_IdSenior AS CodPnSenior, " +                        
+                        "T1.CntctCode AS numContrato, " +  
+                        "T1.StartDate AS datIni, " +  
+                        "T1.EndDate AS datFim, " +    
+                        "T1.Descript AS desCon, " +   
+                        "T1.Remarks AS obsCon, " +     
+                        "T3.U_IdSenior AS empRes, " + 
+                        "T1.AbsID AS numCon, " +      
+                        "T4.PlanAmtLC AS PlanTotal " +  
+                        "FROM OOAT T1 " +                        
                         "INNER JOIN OCRD T2 ON T1.BpCode = T2.CardCode " +
                         "JOIN OBPL T3 ON T3.MainBPL = 'Y' " +
+                        "JOIN OAT1 T4 ON T1.AbsID = T4.AgrNo " +
                         $"WHERE AbsID = '{AbsIdContrato}'");
 
                     if (Contrato.Rows.Count > 0)
                     {
-                        string IdSeniorPN = Contrato.Rows[0][1].ToString().Trim();
+                        string IdSeniorPN = Contrato.Rows[0]["CodPnSenior"].ToString().Trim();
 
                         #region cadastro de PN
                         if (IdSeniorPN.Equals(""))
@@ -385,7 +397,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                             {
                                 BusinessPartners businessPartner = (BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
 
-                                if (businessPartner.GetByKey(Contrato.Rows[0][0].ToString()))
+                                if (businessPartner.GetByKey(Contrato.Rows[0]["CardCode"].ToString()))
                                 {
                                     client.ClientCredentials.UserName.UserName = ConfiguracoesImportacaoPO.UsuarioSenior;
                                     client.ClientCredentials.UserName.Password = ConfiguracoesImportacaoPO.SenhaSenior;
@@ -396,24 +408,28 @@ namespace Zopone.AddOn.PO.View.Contrato
                                     //if (businessPartner.UserFields.Fields.Item("U_IdSenior").Value.ToString() != "")
                                     //    dadosEmpCont.codOem = int.Parse(businessPartner.UserFields.Fields.Item("U_IdSenior").Value.ToString());
 
-                                    #region campos informados sim/não
+                                    #region campos informados sim/não                                                                       
 
-                                    dadosEmpCont.codOemSpecified = false;
-
+                                    dadosEmpCont.codOemSpecified = true;
+                                    dadosEmpCont.codPaiSpecified = true;
+                                    dadosEmpCont.codCepSpecified = true;
+                                    dadosEmpCont.tipInsSpecified = true;
+                                    
+                                    dadosEmpCont.insConSpecified = false;
+                                    dadosEmpCont.numCgcSpecified = false;
+                                    
                                     dadosEmpCont.atiIssSpecified = false;
                                     dadosEmpCont.cnaPreSpecified = false;
                                     dadosEmpCont.codAtdSpecified = false;
                                     dadosEmpCont.codAtiSpecified = false;
                                     dadosEmpCont.codAtuSpecified = false;
                                     dadosEmpCont.codBaiSpecified = false;
-                                    dadosEmpCont.codCepSpecified = false;
                                     dadosEmpCont.codCidSpecified = false;
                                     dadosEmpCont.codCliSpecified = false;
                                     dadosEmpCont.codEveSpecified = false;
                                     dadosEmpCont.codForSpecified = false;
                                     dadosEmpCont.codFpaSpecified = false;
                                     dadosEmpCont.codMicSpecified = false;
-                                    dadosEmpCont.codPaiSpecified = false;
                                     dadosEmpCont.codSinSpecified = false;
                                     dadosEmpCont.colAdmSpecified = false;
                                     dadosEmpCont.colExeSpecified = false;
@@ -430,12 +446,10 @@ namespace Zopone.AddOn.PO.View.Contrato
                                     dadosEmpCont.folOpeSpecified = false;
                                     dadosEmpCont.horIncSpecified = false;
                                     dadosEmpCont.indObrSpecified = false;
-                                    dadosEmpCont.insConSpecified = false;
                                     dadosEmpCont.insProSpecified = false;
                                     dadosEmpCont.NCAEPFSpecified = false;
                                     dadosEmpCont.numCNOSpecified = false;
                                     dadosEmpCont.numCerSpecified = false;
-                                    dadosEmpCont.numCgcSpecified = false;
                                     dadosEmpCont.perCofSpecified = false;
                                     dadosEmpCont.perCslSpecified = false;
                                     dadosEmpCont.perCsrSpecified = false;
@@ -458,7 +472,6 @@ namespace Zopone.AddOn.PO.View.Contrato
                                     dadosEmpCont.TInProSpecified = false;
                                     dadosEmpCont.tabEveSpecified = false;
                                     dadosEmpCont.tipFatSpecified = false;
-                                    dadosEmpCont.tipInsSpecified = false;
                                     dadosEmpCont.tipUsoSpecified = false;
                                     dadosEmpCont.ultPesSpecified = false;
                                     dadosEmpCont.viaCraSpecified = false;
@@ -470,7 +483,23 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                                     dadosEmpCont.nomOem = businessPartner.CardName;
                                     dadosEmpCont.empPub = "N";
-                                    dadosEmpCont.conSef = "S";
+                                    dadosEmpCont.conSef = "N";
+                                    dadosEmpCont.codPai = 1;//1 = Brasil
+                                    dadosEmpCont.apeOem = businessPartner.CardForeignName.Length > 40 ? businessPartner.CardForeignName.Substring(0, 39) : businessPartner.CardForeignName;
+                                    dadosEmpCont.codCep = int.Parse(businessPartner.ZipCode.Replace("-", ""));
+                                    //dadosEmpCont.endNum = businessPartner.EDocStreetNumber;
+                                    dadosEmpCont.endOem = businessPartner.Address;
+                                    dadosEmpCont.numTel = businessPartner.Phone1;
+                                    dadosEmpCont.emaEmp = businessPartner.EmailAddress;
+                                    //Erro no campo abaixo, foi criado como int e o formato não comporta o tamanho do CNPJ!
+                                    //dadosEmpCont.numCgc = int.Parse(businessPartner.FiscalTaxID.TaxId0.Replace(".", "").Replace("-", "").Replace("/", ""));
+                                    dadosEmpCont.tipIns = (businessPartner.FiscalTaxID.TaxId4 != null && businessPartner.FiscalTaxID.TaxId4.Trim().Length > 0) ? 3 : 1; //1 = CNPJ | 3 = CPF
+                                    dadosEmpCont.iniVal = businessPartner.ValidFrom.Year != 1899 ? businessPartner.ValidFrom.ToString("dd/MM/yyyy") : "";
+                                    dadosEmpCont.fimVal = businessPartner.ValidFrom.Year != 1899 ? businessPartner.ValidTo.ToString("dd/MM/yyyy") : "";
+                                    dadosEmpCont.insEst = businessPartner.FiscalTaxID.TaxId1;
+                                    dadosEmpCont.codEst = businessPartner.Addresses.State;
+                                    dadosEmpCont.endNum = businessPartner.Addresses.StreetNo;
+                                    dadosEmpCont.endCpl = businessPartner.Addresses.BuildingFloorRoom;
 
                                     #endregion
 
@@ -517,27 +546,29 @@ namespace Zopone.AddOn.PO.View.Contrato
                         #region campos informados sim/não
 
                         dadosContrato.codOemSpecified = true;
-                        dadosContrato.empResSpecified = true;
+                        dadosContrato.empResSpecified = true;                        
+                        dadosContrato.valConSpecified = true;
 
-                        dadosContrato.cadResSpecified = false;
-                        dadosContrato.numLocSpecified = false;
                         dadosContrato.tabOrgSpecified = false;
-                        dadosContrato.tclResSpecified = false;
-                        dadosContrato.valConSpecified = false;
+                        dadosContrato.cadResSpecified = false;  
+                        dadosContrato.numLocSpecified = false;                        
+                        dadosContrato.tclResSpecified = false;                        
 
                         #endregion
 
                         #region Dados a serem inseridos/atualizados
 
-                        dadosContrato.codOem = int.Parse(IdSeniorPN);
-                        dadosContrato.datIni = DateTime.Parse(Contrato.Rows[0][3].ToString()).ToString("dd-MM-yyyy");
-                        dadosContrato.datFim = DateTime.Parse(Contrato.Rows[0][4].ToString()).ToString("dd-MM-yyyy");
-                        dadosContrato.empRes = int.Parse(Contrato.Rows[0][7].ToString().Trim());
-                        dadosContrato.numCon = Contrato.Rows[0][8].ToString();
-                        dadosContrato.desCon = Contrato.Rows[0][5].ToString();
-                        dadosContrato.obsCon = Contrato.Rows[0][6].ToString();
+                        dadosContrato.codOem = int.Parse(IdSeniorPN);                       
+                        dadosContrato.datIni = DateTime.Parse(Contrato.Rows[0]["datIni"].ToString()).ToString("dd/MM/yyyy");
+                        dadosContrato.datFim = DateTime.Parse(Contrato.Rows[0]["datFim"].ToString()).ToString("dd/MM/yyyy");
+                        dadosContrato.empRes = int.Parse(Contrato.Rows[0]["empRes"].ToString().Trim());
+                        dadosContrato.numCon = Contrato.Rows[0]["numCon"].ToString();
+                        dadosContrato.desCon = Contrato.Rows[0]["desCon"].ToString();
+                        dadosContrato.obsCon = Contrato.Rows[0]["obsCon"].ToString() + " - Valor Total Planejado: " + double.Parse(Contrato.Rows[0]["PlanTotal"].ToString()).ToString("C");
 
-                        dadosContrato.valCon = 1;
+                        int meses = GetMonthsDifference(DateTime.Parse(Contrato.Rows[0]["datIni"].ToString()), DateTime.Parse(Contrato.Rows[0]["datFim"].ToString()));
+
+                        dadosContrato.valCon = double.Parse(Contrato.Rows[0]["PlanTotal"].ToString()) / meses;
                         dadosContrato.tclRes = 1;
                         dadosContrato.tabOrg = 1;
                         dadosContrato.numLoc = 1;
@@ -576,8 +607,8 @@ namespace Zopone.AddOn.PO.View.Contrato
                             throw new Exception("Falha ao integrar dados do Contrato na Senior, " + retorno.erroExecucao);
                         else
                         {
-                            Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Sucesso, "Dados atualizados na Senior, Contrato: " + Contrato.Rows[0][2].ToString(), new Exception(""));
-                            Util.ExibirMensagemStatusBar("Dados atualizados na Senior com suceso, Contrato: " + Contrato.Rows[0][2].ToString(), BoMessageTime.bmt_Medium);
+                            Util.GravarLog(EnumList.EnumAddOn.GestaoContratos, EnumList.TipoMensagem.Sucesso, "Dados atualizados na Senior, Contrato: " + Contrato.Rows[0]["numContrato"].ToString(), new Exception(""));
+                            Util.ExibirMensagemStatusBar("Dados atualizados na Senior com suceso, Contrato: " + Contrato.Rows[0]["numCon"].ToString(), BoMessageTime.bmt_Medium);
                         }
                     }
                     else
