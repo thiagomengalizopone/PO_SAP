@@ -40,17 +40,26 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                     {
                         if (businessObjectInfo.ActionSuccess)
                         {
-                            var temppo = "";
+                            string CardCode = string.Empty;
+                            bool isAdd = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD;
+
+                            Form oForm = Globals.Master.Connection.Interface.Forms.Item(businessObjectInfo.FormUID);
+
+                            if (isAdd)
+                            {
+                                CardCode = SqlUtils.GetValue(@"SELECT TOP 1 ""CardCode"" FROM OCRD ORDER BY ""DocEntry"" DESC ");
+                            }
+                            else
+                            {
+                                CardCode = ((EditText)oForm.Items.Item("5").Specific).Value;
+                            }
+
+                            GerarCentroCusto(CardCode);
+
+                            EnviarDadosPCIAsync(CardCode);
+
+                            new Task(() => { EnviarDadosSeniorAsync(CardCode); }).Start();
                         }
-
-                        string FormUID = businessObjectInfo.FormUID;
-                        bool isAdd = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD;
-
-                        GerarCentroCusto(FormUID);
-
-                        EnviarDadosPCIAsync(FormUID);
-
-                        new Task(() => { EnviarDadosSeniorAsync(FormUID, isAdd);  }).Start();
                     }
                 }
 
@@ -63,19 +72,13 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
             }
         }
 
-        private static void GerarCentroCusto(string formUID)
+        private static void GerarCentroCusto(string CardCode)
         {
             try
             {
-                Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                DBDataSource oDBParceiroNegocio = oForm.DataSources.DBDataSources.Item("OCRD");
-
-                if (oDBParceiroNegocio.GetValue("CardType", 0).ToString() != "C")
-                    return;
-
                 Util.ExibirMensagemStatusBar($"Gerando centro de Custo para o PN!");
 
-                DTOCriaCentroCusto dTOCriaCentroCusto = new DTOCriaCentroCusto() { CardCode = oDBParceiroNegocio.GetValue("CardCode", 0).ToString(), CompanyDB = Globals.Master.Connection.Database.CompanyDB };
+                DTOCriaCentroCusto dTOCriaCentroCusto = new DTOCriaCentroCusto() { CardCode = CardCode, CompanyDB = Globals.Master.Connection.Database.CompanyDB };
 
                 CriaCentroCusto.CriaCentroCustSAP(dTOCriaCentroCusto);
 
@@ -88,16 +91,13 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 
         }
 
-        private static void EnviarDadosPCIAsync(string formUID)
+        private static void EnviarDadosPCIAsync(string CardCode)
         {
             try
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
-                Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                EditText EdCode = (EditText)oForm.Items.Item("5").Specific;
-
-                string SQL_Query = $"ZPN_SP_PCI_ATUALIZACLIENTE '{EdCode.Value}'";
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZACLIENTE '{CardCode}'";
 
                 SqlUtils.DoNonQueryAsync(SQL_Query);
 
@@ -109,7 +109,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
             }
         }
 
-        private static async Task EnviarDadosSeniorAsync(string formUID, bool isAdd)
+        private static async Task EnviarDadosSeniorAsync(string CardCode)
         {
             try
             {
@@ -117,13 +117,11 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 
                 using (var client = new SeniorOutraEmpresa.rubi_Syncbr_zopone_integracaoOutraEmpresaClient())
                 {
-                    Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                    //EditText EdCode = (EditText)oForm.Items.Item("5").Specific;
-                    string tempppp = ((EditText)oForm.Items.Item("5").Specific).Value;
+                
 
                     BusinessPartners businessPartner = (BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
 
-                    if (businessPartner.GetByKey(((EditText)oForm.Items.Item("5").Specific).Value))
+                    if (businessPartner.GetByKey(CardCode))
                     {
                         //businessPartner.SaveXML(@"C:\Temp\pn.xml");
 

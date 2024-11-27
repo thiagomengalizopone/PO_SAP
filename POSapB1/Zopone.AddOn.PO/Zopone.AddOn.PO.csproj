@@ -488,10 +488,10 @@
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportacaoEtapaSAPTopEng.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportarContratoTopEng.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportarObraTOPEng.sql" />
-    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_RET_OBRA_SAP.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CENTROCUSTOCLIENTE.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CODIGOCENTROCUSTO.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_PONaoValidada.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_RET_OBRA_SAP.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

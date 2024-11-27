@@ -321,15 +321,13 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
         }
 
-        private static void EnviarDadosPCIAsync(string formUID)
+        private static void EnviarDadosPCIAsync(string AbsIdContrato)
         {
             try
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
-                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000004").Specific;
 
-                string SQL_Query = $"ZPN_SP_PCI_ATUALIZACONTRATO '{oEditContrato.Value}'";
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZACONTRATO '{AbsIdContrato}'";
 
                 SqlUtils.DoNonQuery(SQL_Query);
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
@@ -350,7 +348,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             return (yearDifference * 12) + monthDifference;
         }
 
-        private static void EnviarDadosSeniorAsync(string formUID, bool Add)
+        private static void EnviarDadosSeniorAsync(string AbsIdContrato)
         {
             try
             {
@@ -358,15 +356,6 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 using (var client = new SeniorContrato.rubi_Syncbr_zopone_integracaoContratoClient())
                 {
-                    Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
-
-                    string AbsIdContrato = string.Empty;
-
-                    if (Add)
-                        AbsIdContrato = SqlUtils.GetValue("SELECT MAX(AbsID) FROM OOAT");                             
-                    else
-                        AbsIdContrato = ((EditText)oForm.Items.Item("1250000004").Specific).Value.ToString();
-
                     System.Data.DataTable Contrato = SqlUtils.ExecuteCommand("SELECT " +
                         "T1.BpCode AS CardCode, " +     
                         "T2.U_IdSenior AS CodPnSenior, " +                        
@@ -737,11 +726,19 @@ namespace Zopone.AddOn.PO.View.Contrato
                         if (businessObjectInfo.ActionSuccess)
                         {
                             bool bAdd = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD;
-                            string FormUID = businessObjectInfo.FormUID;
+                            
+                            Form oForm = Globals.Master.Connection.Interface.Forms.Item(businessObjectInfo.FormUID);
+
+                            string AbsIdContrato = string.Empty;
+
+                            if (bAdd)
+                                AbsIdContrato = SqlUtils.GetValue("SELECT MAX(AbsID) FROM OOAT");
+                            else
+                                AbsIdContrato = ((EditText)oForm.Items.Item("1250000004").Specific).Value.ToString();
 
 
-                            EnviarDadosPCIAsync(FormUID);
-                            new Task(() => { EnviarDadosSeniorAsync(FormUID, bAdd); }).Start();
+                            EnviarDadosPCIAsync(AbsIdContrato);
+                            new Task(() => { EnviarDadosSeniorAsync(AbsIdContrato); }).Start();
                         }
                     }
                     else

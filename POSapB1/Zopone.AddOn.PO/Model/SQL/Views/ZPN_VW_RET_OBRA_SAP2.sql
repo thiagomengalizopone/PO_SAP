@@ -1,4 +1,4 @@
-﻿create VIEW [dbo].[ZPN_VW_RET_OBRA_SAP]
+﻿CREATE VIEW [dbo].[ZPN_VW_RET_OBRA_SAP]
 AS
 SELECT 
 T2.U_IdSenior AS numEmp, 
@@ -31,13 +31,10 @@ T2.TaxIdNum AS numCgc,
 '11' AS fusMar,
                            
 T2.BPLName AS    NOMEFIL,  
-ISNULL(T4.U_IdSenior, T6.U_IdSenior) AS CDSRPN,                        
-ISNULL(T4.CardCode, T6.CardCode) AS CARDCD,                        
+T4.U_IdSenior AS CDSRPN,                        
+T1.U_CardCode AS CARDCD,                        
 ISNULL(T1.U_EnSen, 'N') AS ENVIOUSENIOR    
 FROM [@ZPN_OPRJ] T1 
 INNER JOIN OBPL T2 ON T1.U_BPLId = T2.BPLId 
 LEFT JOIN OCNT T3 ON T1.U_Cidade = T3.AbsId 
-LEFT JOIN OCRD T4 ON T1.U_CardCode = T4.CardCode
-LEFT JOIN OOAT T5 ON T5.AbsID = T1.U_CodContrato
-LEFT JOIN OCRD T6 ON T6.cARDcODE = T5.BpCode
-
+JOIN OCRD T4 ON T1.U_CardCode = T4.CardCode
