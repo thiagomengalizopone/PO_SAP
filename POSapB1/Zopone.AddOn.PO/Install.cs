@@ -38,7 +38,5 @@ namespace Zopone.AddOn.PO
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao instalador AddOn: {Ex.Message}", SAPbouiCOM.BoMessageTime.bmt_Long, true);
             }
         }
-
-
     }
 }

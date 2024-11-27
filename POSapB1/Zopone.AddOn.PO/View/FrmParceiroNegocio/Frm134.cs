@@ -95,7 +95,11 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                     BusinessPartners businessPartner = (BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
 
                     if (businessPartner.GetByKey(((EditText)oForm.Items.Item("5").Specific).Value))
-                    {                       
+                    {
+                        //businessPartner.SaveXML(@"C:\Temp\pn.xml");
+
+                        //businessPartner.coun
+
                         client.ClientCredentials.UserName.UserName = ConfiguracoesImportacaoPO.UsuarioSenior;
                         client.ClientCredentials.UserName.Password = ConfiguracoesImportacaoPO.SenhaSenior;
 
@@ -104,21 +108,25 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                         #region campos informados sim/não
 
                         dadosEmp.codOemSpecified = true;
+                        dadosEmp.codPaiSpecified = true;
+                        dadosEmp.codCepSpecified = true;
+                        dadosEmp.tipInsSpecified = true;
+
+                        dadosEmp.insConSpecified = false;
+                        dadosEmp.numCgcSpecified = false;
 
                         dadosEmp.atiIssSpecified = false;
                         dadosEmp.cnaPreSpecified = false;
                         dadosEmp.codAtdSpecified = false;
                         dadosEmp.codAtiSpecified = false;
                         dadosEmp.codAtuSpecified = false;
-                        dadosEmp.codBaiSpecified = false;
-                        dadosEmp.codCepSpecified = false;
+                        dadosEmp.codBaiSpecified = false;                        
                         dadosEmp.codCidSpecified = false;
                         dadosEmp.codCliSpecified = false;
                         dadosEmp.codEveSpecified = false;
                         dadosEmp.codForSpecified = false;
                         dadosEmp.codFpaSpecified = false;
-                        dadosEmp.codMicSpecified = false;                        
-                        dadosEmp.codPaiSpecified = false;
+                        dadosEmp.codMicSpecified = false;
                         dadosEmp.codSinSpecified = false;
                         dadosEmp.colAdmSpecified = false;
                         dadosEmp.colExeSpecified = false;
@@ -135,12 +143,10 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                         dadosEmp.folOpeSpecified = false;
                         dadosEmp.horIncSpecified = false;
                         dadosEmp.indObrSpecified = false;
-                        dadosEmp.insConSpecified = false;
                         dadosEmp.insProSpecified = false;
                         dadosEmp.NCAEPFSpecified = false;
                         dadosEmp.numCNOSpecified = false;
-                        dadosEmp.numCerSpecified = false;
-                        dadosEmp.numCgcSpecified = false;
+                        dadosEmp.numCerSpecified = false;                        
                         dadosEmp.perCofSpecified = false;
                         dadosEmp.perCslSpecified = false;
                         dadosEmp.perCsrSpecified = false;
@@ -162,8 +168,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                         dadosEmp.TInConSpecified = false;
                         dadosEmp.TInProSpecified = false;
                         dadosEmp.tabEveSpecified = false;
-                        dadosEmp.tipFatSpecified = false;
-                        dadosEmp.tipInsSpecified = false;
+                        dadosEmp.tipFatSpecified = false;                        
                         dadosEmp.tipUsoSpecified = false;
                         dadosEmp.ultPesSpecified = false;
                         dadosEmp.viaCraSpecified = false;
@@ -175,7 +180,23 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 
                         dadosEmp.nomOem = businessPartner.CardName;
                         dadosEmp.empPub = "N";
-                        dadosEmp.conSef = "S";                        
+                        dadosEmp.conSef = "N";
+                        dadosEmp.codPai = 1;//1 = Brasil
+                        dadosEmp.apeOem = businessPartner.CardForeignName.Length > 40 ? businessPartner.CardForeignName.Substring(0, 39) : businessPartner.CardForeignName;
+                        dadosEmp.codCep = int.Parse(businessPartner.ZipCode.Replace("-",""));
+                        //dadosEmp.endNum = businessPartner.EDocStreetNumber;
+                        dadosEmp.endOem = businessPartner.Address;
+                        dadosEmp.numTel = businessPartner.Phone1;
+                        dadosEmp.emaEmp = businessPartner.EmailAddress;
+                        //Erro no campo abaixo, foi criado como int e o formato não comporta o tamanho do CNPJ!
+                        //dadosEmp.numCgc = int.Parse(businessPartner.FiscalTaxID.TaxId0.Replace(".", "").Replace("-", "").Replace("/", ""));
+                        dadosEmp.tipIns = (businessPartner.FiscalTaxID.TaxId4 != null && businessPartner.FiscalTaxID.TaxId4.Trim().Length > 0) ? 3 : 1; //1 = CNPJ | 3 = CPF
+                        dadosEmp.iniVal = businessPartner.ValidFrom.Year != 1899 ? businessPartner.ValidFrom.ToString("dd/MM/yyyy") : "";
+                        dadosEmp.fimVal = businessPartner.ValidFrom.Year != 1899 ? businessPartner.ValidTo.ToString("dd/MM/yyyy")   : "";
+                        dadosEmp.insEst = businessPartner.FiscalTaxID.TaxId1;
+                        dadosEmp.codEst = businessPartner.Addresses.State;
+                        dadosEmp.endNum = businessPartner.Addresses.StreetNo;
+                        dadosEmp.endCpl = businessPartner.Addresses.BuildingFloorRoom;
 
                         //Aqui definimos se é uma atualização ou inserção na Senior!
                         if (businessPartner.UserFields.Fields.Item("U_IdSenior").Value.ToString() != "")
@@ -201,11 +222,10 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                         do
                         {
                             retorno = client.OutraEmpresa(ConfiguracoesImportacaoPO.UsuarioSenior, ConfiguracoesImportacaoPO.SenhaSenior, 1, dadosEmp);
-
+                            //caso o erro seja de credenciais inválidas, tentar 3 vezes antes de gravar o erro!
                             if (loop == 3)
                                 break;
-                            loop++;
-                        //caso o erro seja de credenciais inválidas, tentar 3 vezes antes de gravar o erro!
+                            loop++;                        
                         }while (retorno.erroExecucao != null && retorno.erroExecucao.Contains("Credenciais inválidas"));                        
                         
                         if(retorno.erroExecucao != null)                        
@@ -215,13 +235,11 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                             businessPartner.UserFields.Fields.Item("U_IdSenior").Value = retorno.codOem.ToString();
 
                             if (businessPartner.Update() != 0)                            
-                                throw new Exception("Falha na atualização do PN no SAP, " + SAPDbConnection.oCompany.GetLastErrorDescription());                                                            
-                            else
-                            {
-                                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Sucesso, "Dados atualizados na Senior, PN: " + businessPartner.CardCode, new Exception(""));
-                                Util.ExibirMensagemStatusBar("Dados atualizados na Senior com suceso, PN: " + businessPartner.CardCode, BoMessageTime.bmt_Medium);
-                            }
-                        }                        
+                                throw new Exception("Falha na atualização do PN no SAP, " + SAPDbConnection.oCompany.GetLastErrorDescription());   
+                        }
+
+                        Util.GravarLog(EnumList.EnumAddOn.GestaoContratos, EnumList.TipoMensagem.Sucesso, "Dados atualizados na Senior, PN: " + businessPartner.CardCode, new Exception(""));
+                        Util.ExibirMensagemStatusBar("Dados atualizados na Senior com suceso, PN: " + businessPartner.CardCode, BoMessageTime.bmt_Medium);
                     }
                     else                    
                         throw new Exception("Falha ao carregar dados do PN, entre em contato com a equipe de desenvolvimento!");
@@ -229,7 +247,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
             }
             catch (Exception Ex)
             {    
-                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, Ex.Message, Ex);
+                Util.GravarLog(EnumList.EnumAddOn.GestaoContratos, EnumList.TipoMensagem.Erro, Ex.Message, Ex);
                 Util.ExibirMensagemStatusBar(Ex.Message, BoMessageTime.bmt_Medium, true);
             }
         }

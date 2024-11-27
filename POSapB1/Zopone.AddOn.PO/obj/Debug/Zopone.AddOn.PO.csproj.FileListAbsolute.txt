@@ -225,7 +225,6 @@ C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ConfiguracaoImportWMS\FrmConfigImpWMS.srf
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Obra\FrmObra.srf
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ClassificacaoObra\FrmClassObra.srf
-C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Alocação\FrmAloca.srf
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Config\FrmConfPO.srf
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug\View\ContratoAlocacao\FrmContAloca.srf
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Faturamento\FrmListaFaturamento.srf
@@ -303,3 +302,4 @@ C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\obj\Debug
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.A.FA60A4CB.Up2Date
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.exe
 C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\obj\Debug\Zopone.AddOn.PO.pdb
+C:\Users\THIAGO.MARTINS\source\repos\PO_SAPNew\POSapB1\Zopone.AddOn.PO\bin\Debug\View\Alocacao\FrmAloca.srf
