@@ -35,10 +35,10 @@ namespace Zopone.AddOn.PO.View.Obra
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPO));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,7 +53,9 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label2 = new System.Windows.Forms.Label();
             this.txtAnexo = new System.Windows.Forms.TextBox();
             this.gbItens = new System.Windows.Forms.GroupBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.txtTotalPO = new System.Windows.Forms.TextBox();
             this.txtNroCont = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.txtDescItemPO = new System.Windows.Forms.TextBox();
@@ -119,8 +121,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.CbStatus = new System.Windows.Forms.ComboBox();
             this.BtPesqPO = new System.Windows.Forms.Button();
             this.BtAnexo = new System.Windows.Forms.Button();
-            this.label23 = new System.Windows.Forms.Label();
-            this.txtTotalPO = new System.Windows.Forms.TextBox();
+            this.BtDel = new System.Windows.Forms.Button();
             this.gbItens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -212,13 +213,14 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtDescricao.Location = new System.Drawing.Point(12, 94);
             this.txtDescricao.Multiline = true;
             this.txtDescricao.Name = "txtDescricao";
-            this.txtDescricao.Size = new System.Drawing.Size(906, 92);
+            this.txtDescricao.Size = new System.Drawing.Size(906, 68);
             this.txtDescricao.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 195);
+            this.label2.Enabled = false;
+            this.label2.Location = new System.Drawing.Point(12, 180);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 16);
             this.label2.TabIndex = 18;
@@ -227,13 +229,14 @@ namespace Zopone.AddOn.PO.View.Obra
             // txtAnexo
             // 
             this.txtAnexo.Enabled = false;
-            this.txtAnexo.Location = new System.Drawing.Point(12, 217);
+            this.txtAnexo.Location = new System.Drawing.Point(12, 202);
             this.txtAnexo.Name = "txtAnexo";
             this.txtAnexo.Size = new System.Drawing.Size(906, 22);
             this.txtAnexo.TabIndex = 6;
             // 
             // gbItens
             // 
+            this.gbItens.Controls.Add(this.BtDel);
             this.gbItens.Controls.Add(this.label23);
             this.gbItens.Controls.Add(this.label22);
             this.gbItens.Controls.Add(this.txtTotalPO);
@@ -278,13 +281,22 @@ namespace Zopone.AddOn.PO.View.Obra
             this.gbItens.Controls.Add(this.txtCandidato);
             this.gbItens.Controls.Add(this.label8);
             this.gbItens.Controls.Add(this.txtObra);
-            this.gbItens.Location = new System.Drawing.Point(12, 249);
+            this.gbItens.Location = new System.Drawing.Point(12, 230);
             this.gbItens.Name = "gbItens";
-            this.gbItens.Size = new System.Drawing.Size(1105, 573);
+            this.gbItens.Size = new System.Drawing.Size(1105, 592);
             this.gbItens.TabIndex = 21;
             this.gbItens.TabStop = false;
             this.gbItens.Text = "Itens - PO";
             this.gbItens.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(878, 536);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(60, 16);
+            this.label23.TabIndex = 59;
+            this.label23.Text = "Total PO";
             // 
             // label22
             // 
@@ -294,6 +306,15 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label22.Size = new System.Drawing.Size(82, 16);
             this.label22.TabIndex = 62;
             this.label22.Text = "Nro Contrato";
+            // 
+            // txtTotalPO
+            // 
+            this.txtTotalPO.Enabled = false;
+            this.txtTotalPO.Location = new System.Drawing.Point(944, 530);
+            this.txtTotalPO.Name = "txtTotalPO";
+            this.txtTotalPO.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txtTotalPO.Size = new System.Drawing.Size(155, 22);
+            this.txtTotalPO.TabIndex = 58;
             // 
             // txtNroCont
             // 
@@ -432,9 +453,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.lblObra.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblObra.ForeColor = System.Drawing.Color.Red;
-            this.lblObra.Location = new System.Drawing.Point(237, 45);
+            this.lblObra.Location = new System.Drawing.Point(259, 46);
             this.lblObra.Name = "lblObra";
-            this.lblObra.Size = new System.Drawing.Size(285, 22);
+            this.lblObra.Size = new System.Drawing.Size(253, 22);
             this.lblObra.TabIndex = 48;
             this.lblObra.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.lblObra.Click += new System.EventHandler(this.lblObra_Click);
@@ -468,24 +489,24 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // BtAdicionar
             // 
-            this.BtAdicionar.Location = new System.Drawing.Point(1019, 304);
+            this.BtAdicionar.Image = ((System.Drawing.Image)(resources.GetObject("BtAdicionar.Image")));
+            this.BtAdicionar.Location = new System.Drawing.Point(1038, 11);
             this.BtAdicionar.Name = "BtAdicionar";
-            this.BtAdicionar.Size = new System.Drawing.Size(75, 23);
+            this.BtAdicionar.Size = new System.Drawing.Size(27, 28);
             this.BtAdicionar.TabIndex = 23;
-            this.BtAdicionar.Text = "Adicionar";
             this.BtAdicionar.UseVisualStyleBackColor = true;
             this.BtAdicionar.Click += new System.EventHandler(this.BtAdicionar_Click);
             // 
             // DgItensPO
             // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DgItensPO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgItensPO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Obra,
@@ -507,24 +528,24 @@ namespace Zopone.AddOn.PO.View.Obra
             this.U_DescItemFat,
             this.U_Bloqueado,
             this.Contrato});
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle2;
             this.DgItensPO.Location = new System.Drawing.Point(6, 334);
             this.DgItensPO.Name = "DgItensPO";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.DgItensPO.RowHeadersWidth = 51;
             this.DgItensPO.RowTemplate.Height = 24;
             this.DgItensPO.Size = new System.Drawing.Size(1093, 177);
@@ -925,30 +946,22 @@ namespace Zopone.AddOn.PO.View.Obra
             // BtAnexo
             // 
             this.BtAnexo.Image = ((System.Drawing.Image)(resources.GetObject("BtAnexo.Image")));
-            this.BtAnexo.Location = new System.Drawing.Point(924, 215);
+            this.BtAnexo.Location = new System.Drawing.Point(924, 198);
             this.BtAnexo.Name = "BtAnexo";
             this.BtAnexo.Size = new System.Drawing.Size(28, 28);
             this.BtAnexo.TabIndex = 57;
             this.BtAnexo.UseVisualStyleBackColor = true;
             this.BtAnexo.Click += new System.EventHandler(this.BtAnexo_Click);
             // 
-            // label23
+            // BtDel
             // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(878, 536);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(60, 16);
-            this.label23.TabIndex = 59;
-            this.label23.Text = "Total PO";
-            // 
-            // txtTotalPO
-            // 
-            this.txtTotalPO.Enabled = false;
-            this.txtTotalPO.Location = new System.Drawing.Point(944, 530);
-            this.txtTotalPO.Name = "txtTotalPO";
-            this.txtTotalPO.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txtTotalPO.Size = new System.Drawing.Size(155, 22);
-            this.txtTotalPO.TabIndex = 58;
+            this.BtDel.Image = ((System.Drawing.Image)(resources.GetObject("BtDel.Image")));
+            this.BtDel.Location = new System.Drawing.Point(1071, 11);
+            this.BtDel.Name = "BtDel";
+            this.BtDel.Size = new System.Drawing.Size(27, 28);
+            this.BtDel.TabIndex = 63;
+            this.BtDel.UseVisualStyleBackColor = true;
+            this.BtDel.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // FrmPO
             // 
@@ -1075,6 +1088,7 @@ namespace Zopone.AddOn.PO.View.Obra
         private DataGridViewTextBoxColumn Contrato;
         private Label label23;
         private TextBox txtTotalPO;
+        private Button BtDel;
     }
 }
 

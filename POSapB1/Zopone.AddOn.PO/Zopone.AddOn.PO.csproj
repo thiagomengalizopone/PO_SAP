@@ -478,6 +478,8 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="iconadd.png" />
+    <Content Include="icondelete.png" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOEricsson.sql" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOHuawei.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_STATUSVALIDACAOPEDIDOSPO.sql" />
@@ -492,6 +494,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CODIGOCENTROCUSTO.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_PONaoValidada.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_RET_OBRA_SAP.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_POSITE.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -499,6 +502,14 @@
   <ItemGroup>
     <Folder Include="Faturamento\" />
     <Folder Include="Model\Senior\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\SeniorContrato\" />
+    <WCFMetadataStorage Include="Connected Services\SeniorFilial\" />
+    <WCFMetadataStorage Include="Connected Services\SeniorOutraEmpresa\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\sap.dev.core\sap.dev.core.csproj">
@@ -509,14 +520,6 @@
       <Project>{ba20857c-43e9-450a-9776-39f33d939249}</Project>
       <Name>sap.dev.data</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\SeniorContrato\" />
-    <WCFMetadataStorage Include="Connected Services\SeniorFilial\" />
-    <WCFMetadataStorage Include="Connected Services\SeniorOutraEmpresa\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.2.2146\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets" Condition="Exists('packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.2.2146\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets')" />

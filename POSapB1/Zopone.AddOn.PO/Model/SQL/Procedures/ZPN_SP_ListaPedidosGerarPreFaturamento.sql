@@ -46,8 +46,9 @@ FROM
 	LEFT JOIN "@ZPN_ALOCA" ALOCA    ON ALOCA."Code" = RDR1.U_ItemFat 
 	LEFT JOIN "@ZPN_ALOCA" ALOCAFAT ON ALOCAFAT."Code" = ALOCA.U_EtapaFat
 WHERE 
-	ISNULL(RDR1.U_Bloqueado,'N') <> 'Y' 
-	AND isnull(FAT."SaldoFaturado",0) < RDR1."LineTotal" and
+	ISNULL(RDR1.U_Bloqueado,'N') <> 'Y'  AND
+	ISNULL(ORDR.NumAtCard,'') <> ''  AND
+	 isnull(FAT."SaldoFaturado",0) < RDR1."LineTotal" and
 	ISNULL(RDR1."U_StatusFat",'A') = 'F'
 	AND (isnull(ORDR."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
 	AND ORDR."DocDate" between @DataInicial and @DataFinal

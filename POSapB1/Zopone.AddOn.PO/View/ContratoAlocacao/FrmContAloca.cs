@@ -38,7 +38,6 @@ namespace Zopone.AddOn.PO.View.ContratoAlocacao
             EdCont.Item.AffectsFormMode = false;
 
             StCont = (StaticText)oForm.Items.Item("StCont").Specific;
-
            
             MtAlocacao.ChooseFromListAfter += MtAlocacao_ChooseFromListAfter;
             MtAlocacao.AutoResizeColumns();
@@ -47,9 +46,7 @@ namespace Zopone.AddOn.PO.View.ContratoAlocacao
 
             CarregarDadosAlocacao(Code);
 
-
             oForm.Visible = true;
-
         }
 
         private void BtCopiar_PressedAfter(object sboObject, SBOItemEventArg pVal)

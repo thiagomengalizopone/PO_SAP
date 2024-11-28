@@ -42,6 +42,8 @@ namespace Zopone.AddOn.PO
 
             
             Install.VerificaInstalacaoAddOn();
+            
+            Instalar.ExecutaScriptsAtualizacaoCampos();
 
             CentroCustoLocalizacao.CriarCentroCustoLocalizacao();
 

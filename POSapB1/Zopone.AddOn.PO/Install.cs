@@ -30,8 +30,6 @@ namespace Zopone.AddOn.PO
 
                     Instalar.ExecutarScripts(ScriptSQL.RetornaSQLScripts());
 
-                    Instalar.ExecutarScriptsAtualizacao();
-
                     Instalar.AtualizarVersaoAtual();
 
                     Util.ExibeMensagensDialogoStatusBar("AddOn Atualizado para a versão mais recente.");

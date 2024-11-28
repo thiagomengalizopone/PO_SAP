@@ -44,7 +44,7 @@ namespace Zopone.AddOn.PO.View.PO
             {
                 DataTable dtRegistros = new DataTable();
                 IPesquisaService pesquisaService = PesquisaServiceFactory.CreatePesquisaService(CbEmpresa.Text);
-                pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso,  out dtRegistros);
+                pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso, out dtRegistros);
 
                 DtRegistros = dtRegistros;
 
@@ -116,7 +116,7 @@ namespace Zopone.AddOn.PO.View.PO
                         {
                             SqlUtils.DoNonQuery($@"DELETE FROM ZPN_LOGIMPORTACAOPO WHERE po_id = {iPedido}");
                         }
-                        
+
                         DocEntry = Convert.ToInt32(Globals.Master.Connection.Database.GetNewObjectKey());
 
                     }
@@ -153,13 +153,11 @@ namespace Zopone.AddOn.PO.View.PO
         private static void PopulatePedidoVenda(DataTable dtRegistros, int iPedido, SAPbobsCOM.Documents oPedidoVenda, int bplId, string Empresa)
         {
             oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePOHawuey;
-#if DEBUG
+
             oPedidoVenda.DocDate = DateTime.Now;
-#else
-            oPedidoVenda.DocDate = Convert.ToDateTime(dtRegistros.Rows[iPedido]["po_lis_DataConfirmacao"]);
-#endif 
+
             oPedidoVenda.DocDueDate = oPedidoVenda.DocDate;
-            oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString();
+            oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString().Replace("_", "-");
             oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value = Convert.ToDouble(dtRegistros.Rows[iPedido]["po_id"]);
 
             string SQL = string.Empty;
@@ -181,13 +179,9 @@ namespace Zopone.AddOn.PO.View.PO
 
             for (int iPedidoLinha = 0; iPedidoLinha < dtRegistrosItens.Rows.Count; iPedidoLinha++)
             {
-
-                if (Empresa == "Huawei")
+                if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString()))
                 {
-                    if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString()))
-                    {
-                        oPedidoVenda.CardCode = dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString();
-                    }
+                    oPedidoVenda.CardCode = dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString();
                 }
 
                 if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
@@ -238,7 +232,7 @@ namespace Zopone.AddOn.PO.View.PO
                     oPedidoVenda.Lines.FreeText = dtRegistrosItens.Rows[iPedidoLinha]["SITE"].ToString();
                 }
 
-                
+
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusImp").Value = "N";
@@ -263,7 +257,7 @@ namespace Zopone.AddOn.PO.View.PO
 
         private static void HandleImportacaoException(string empresa, Exception ex)
         {
-            string mensagemErro = $"Erro ao importar dados PO {empresa} - {ex.Message}".Replace("'", "") ;
+            string mensagemErro = $"Erro ao importar dados PO {empresa} - {ex.Message}".Replace("'", "");
             MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, ex);
         }

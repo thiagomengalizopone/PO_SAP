@@ -737,6 +737,8 @@ namespace Zopone.AddOn.PO.View.Contrato
                                 AbsIdContrato = ((EditText)oForm.Items.Item("1250000004").Specific).Value.ToString();
 
 
+                            CriaContratoAlocacaoItem(AbsIdContrato);
+
                             EnviarDadosPCIAsync(AbsIdContrato);
                             new Task(() => { EnviarDadosSeniorAsync(AbsIdContrato); }).Start();
                         }
@@ -757,6 +759,16 @@ namespace Zopone.AddOn.PO.View.Contrato
             return true;
         }
 
-
+        private static void CriaContratoAlocacaoItem(string absIdContrato)
+        {
+            try
+            {
+                SqlUtils.DoNonQuery($"SP_ZPN_CRIAALOCACAOCONTRATO {absIdContrato}");
+            }
+            catch (Exception Ex)
+            {
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, $"Erro ao criar alocação contrato: {absIdContrato} - {Ex.Message}", Ex);
+            }
+        }
     }
 }

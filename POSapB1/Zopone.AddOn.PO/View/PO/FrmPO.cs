@@ -21,6 +21,7 @@ namespace Zopone.AddOn.PO.View.Obra
     {
         public static string TipoPesquisa { get; set; }
         public List<LinePO> linesPO = new List<LinePO>();
+        public List<Int32> linesPODeleted = new List<Int32>();
         public Int32 BPLId { get; set; }
         public Int32 RowIndexEdit { get; set; }
         public Int32 LineNumEdit { get; set; }
@@ -232,56 +233,102 @@ namespace Zopone.AddOn.PO.View.Obra
 
         private void BtAdicionar_Click(object sender, EventArgs e)
         {
-            AdicionarItemGrid();
+            AdicionarRemoverItemGrid();
         }
 
-        private void AdicionarItemGrid()
+        private void DeletaLinhaPO()
         {
             try
             {
-                if (string.IsNullOrEmpty(txtObra.Text))
+                if (DgItensPO.SelectedRows.Count == 0)
                     return;
 
-                double dblTotalPO = Math.Round(Convert.ToDouble(txtValorPO.Text), 2);
-                double dblTotalLinhasPO = Math.Round(linesPO.Sum(item => item.U_Valor), 2);
+                if (MessageBox.Show("Deseja remover a linha selecionada da PO?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
 
-                if (dblTotalLinhasPO >= dblTotalPO  || (dblTotalLinhasPO + Convert.ToDouble(txtValor.Text) > dblTotalPO))
+                RowIndexEdit = DgItensPO.SelectedRows[0].Index;
+                LineNumEdit = linesPO[RowIndexEdit].LineNum;
+
+                string mensagem = $"Usuário {Globals.Master.Connection.Database.UserName} removeu a linha {LineNumEdit} da PO {txtNroPedido.Text}";
+
+                AdicionarRemoverItemGrid(true);
+
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Alerta, mensagem);
+
+            }
+            catch (Exception Ex)
+            {
+                string mensagemErro = $"Erro ao excluir linha da PO: {Ex.Message}";
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+                MessageBox.Show(mensagemErro);
+            }
+        }
+
+        private void AdicionarRemoverItemGrid(bool remover = false)
+        {
+            try
+            {
+                double dblTotalPO = 0;
+                double dblTotalLinhasPO = 0;
+
+                if (!remover)
                 {
-                    MessageBox.Show("Não é possível adicionar novas linhas. Total das linhas não pode ser maior que total da PO!");
-                    return;
+
+                    dblTotalPO = Math.Round(Convert.ToDouble(txtValorPO.Text), 2);
+                    dblTotalLinhasPO = Math.Round(linesPO.Sum(item => item.U_Valor), 2);
+
+                    if (RowIndexEdit >= 0)
+                        dblTotalLinhasPO -= linesPO[RowIndexEdit].U_Valor;
+
+                    if (dblTotalLinhasPO >= dblTotalPO || (dblTotalLinhasPO + Convert.ToDouble(txtValor.Text) > dblTotalPO))
+                    {
+                        MessageBox.Show("Não é possível adicionar novas linhas. Total das linhas não pode ser maior que total da PO!");
+                        return;
+                    }
                 }
 
-                LinePO oLinePO = new LinePO()
+                if (!remover)
                 {
-                    LineNum = LineNumEdit,
-                    U_PrjCode = txtObra.Text,
-                    U_Candidato = txtCandidato.Text,
-                    U_CardCode = txtCliente.Text,
-                    U_CardName = lblCliente.Text,
-                    U_Item = txtItem.Text,
-                    U_ItemFat = txtItemFaturamento.Text,
-                    U_DescItemFat = lblItemFat.Text,
-                    U_Parcela = txtParcela.Text,
-                    U_Valor = Convert.ToDouble(txtValor.Text),
-                    U_Tipo = CbTipo.Text,
-                    U_DataFat = mskDataFaturamento.MaskFull ? Convert.ToDateTime(mskDataFaturamento.Text) : (DateTime?)null,
-                    U_NroNF = txtNroNF.Text,
-                    U_DataSol = mskDataSol.MaskFull ? Convert.ToDateTime(mskDataSol.Text) : (DateTime?)null,
-                    U_Obs = txtObservacao.Text,
-                    U_Bloqueado = cbBloqueado.Checked,
-                    U_itemDescription = txtDescItemPO.Text,
-                    U_manSiteInfo = txtInfoSitePO.Text,
-                    AgrNo = !string.IsNullOrEmpty(txtNroCont.Text) ? Convert.ToInt32(txtNroCont.Text) : 0,
-                    CostingCode = PCG,
-                    CostingCode2 = OBRA,
-                    CostingCode3 = REGIONAL
+                    LinePO oLinePO = new LinePO()
+                    {
+                        LineNum = LineNumEdit,
+                        U_PrjCode = txtObra.Text,
+                        U_Candidato = txtCandidato.Text,
+                        U_CardCode = txtCliente.Text,
+                        U_CardName = lblCliente.Text,
+                        U_Item = txtItem.Text,
+                        U_ItemFat = txtItemFaturamento.Text,
+                        U_DescItemFat = lblItemFat.Text,
+                        U_Parcela = txtParcela.Text,
+                        U_Valor = Convert.ToDouble(txtValor.Text),
+                        U_Tipo = CbTipo.Text,
+                        U_DataFat = mskDataFaturamento.MaskFull ? Convert.ToDateTime(mskDataFaturamento.Text) : (DateTime?)null,
+                        U_NroNF = txtNroNF.Text,
+                        U_DataSol = mskDataSol.MaskFull ? Convert.ToDateTime(mskDataSol.Text) : (DateTime?)null,
+                        U_Obs = txtObservacao.Text,
+                        U_Bloqueado = cbBloqueado.Checked,
+                        U_itemDescription = txtDescItemPO.Text,
+                        U_manSiteInfo = txtInfoSitePO.Text,
+                        AgrNo = !string.IsNullOrEmpty(txtNroCont.Text) ? Convert.ToInt32(txtNroCont.Text) : 0,
+                        CostingCode = PCG,
+                        CostingCode2 = OBRA,
+                        CostingCode3 = REGIONAL
 
-                };
+                    };
 
-                if (RowIndexEdit < 0)
-                    linesPO.Add(oLinePO);
+
+                    if (RowIndexEdit < 0)
+                        linesPO.Add(oLinePO);
+                    else
+                        linesPO[RowIndexEdit] = oLinePO;
+                }
                 else
-                    linesPO[RowIndexEdit] = oLinePO;
+                {
+                    linesPO.Remove(linesPO[RowIndexEdit]);
+
+                    linesPODeleted.Add(LineNumEdit);
+                }
+
 
                 CarregarMatrixPO();
 
@@ -509,7 +556,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
         private void txtObservacao_Validated(object sender, EventArgs e)
         {
-            AdicionarItemGrid();
+            AdicionarRemoverItemGrid();
         }
 
         private void lblObra_Click(object sender, EventArgs e)
@@ -534,7 +581,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
         private void BtSalvar_Click(object sender, EventArgs e)
         {
-            SalvarPO();            
+            SalvarPO();
         }
 
         private void LimparTelaPO()
@@ -610,7 +657,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
 
                 if (!string.IsNullOrEmpty(txtItem.Text))
-                    AdicionarItemGrid();
+                    AdicionarRemoverItemGrid();
 
 
 
@@ -708,6 +755,13 @@ namespace Zopone.AddOn.PO.View.Obra
                         oPedidoVenda.Lines.AgreementNo = linePO.AgrNo;
                 }
 
+                foreach (int LineNum in  linesPODeleted)
+                {
+                    oPedidoVenda.Lines.SetCurrentLine(LineNum);
+                    oPedidoVenda.Lines.Delete();
+
+                }
+
                 if (bExistePedido)
                 {
 
@@ -746,7 +800,7 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 oPedidoVenda.NumAtCard = string.Empty;
 
-                if (oPedidoVenda.Update() !=0)
+                if (oPedidoVenda.Update() != 0)
                     throw new Exception(Globals.Master.Connection.Database.GetLastErrorDescription());
 
                 if (oPedidoVenda.Cancel() != 0)
@@ -847,7 +901,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
         private void BtCancelar_KeyDown(object sender, KeyEventArgs e)
         {
-            
+
         }
 
         private void FrmPO_KeyDown(object sender, KeyEventArgs e)
@@ -857,5 +911,12 @@ namespace Zopone.AddOn.PO.View.Obra
                 this.SelectNextControl(this.ActiveControl, !e.Shift, true, true, true);
             }
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            DeletaLinhaPO();
+        }
+
+
     }
 }
