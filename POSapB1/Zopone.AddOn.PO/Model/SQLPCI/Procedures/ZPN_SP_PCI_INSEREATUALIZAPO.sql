@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_PCI_INSEREATUALIZAPO (@DocEntry int)
+﻿CREATE PROCEDURE ZPN_SP_PCI_INSEREATUALIZAPO (@DocEntry int)
 AS
 BEGIN
 
@@ -239,7 +239,7 @@ BEGIN
                END,
                CRD8.U_IdPCI,
                ALOC.U_IdPCI,
-               RDR1.FreeTxt,
+               RDR1.U_itemDescription,
                RDR1.DocEntry,
 			   RDR1.LineNum,
                NULL,

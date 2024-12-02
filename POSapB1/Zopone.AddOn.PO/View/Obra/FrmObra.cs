@@ -583,6 +583,10 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (aEvent.SelectedObjects == null)
                     return;
 
+                if (pVal.ItemUID != "CFL_Contr")
+                    return;
+
+
                 string CodeContrato = Convert.ToString(aEvent.SelectedObjects.GetValue("Number", 0));
                 string DescContrato = Convert.ToString(aEvent.SelectedObjects.GetValue("Descript", 0));
 
