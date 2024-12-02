@@ -3,15 +3,17 @@
 
 SELECT 
 	POList.po_id,
-	POList.shipmentnum,
+	POList.poLineNum,
+
+	
 	CASE 
-        WHEN CHARINDEX('<!>', manufactureSiteInfo, CHARINDEX('<!>', manufactureSiteInfo) + 1) > 0
-             AND CHARINDEX('_', manufactureSiteInfo + ' ') > CHARINDEX('<!>', manufactureSiteInfo, CHARINDEX('<!>', manufactureSiteInfo) + 1) 
+        WHEN CHARINDEX('<!>', replace(manufactureSiteInfo, 'PIN_',''), CHARINDEX('<!>', replace(manufactureSiteInfo, 'PIN_','')) + 1) > 0
+             AND CHARINDEX('_', replace(manufactureSiteInfo, 'PIN_','') + ' ') > CHARINDEX('<!>', replace(manufactureSiteInfo, 'PIN_',''), CHARINDEX('<!>', replace(manufactureSiteInfo, 'PIN_','')) + 1) 
         THEN 
             SUBSTRING(
-                manufactureSiteInfo, 
-                CHARINDEX('<!>', manufactureSiteInfo, CHARINDEX('<!>', manufactureSiteInfo) + 1) + 3, 
-                CHARINDEX('_', manufactureSiteInfo + ' ') - CHARINDEX('<!>', manufactureSiteInfo, CHARINDEX('<!>', manufactureSiteInfo) + 1) - 3
+                replace(manufactureSiteInfo, 'PIN_',''), 
+                CHARINDEX('<!>', replace(manufactureSiteInfo, 'PIN_',''), CHARINDEX('<!>', replace(manufactureSiteInfo, 'PIN_','')) + 1) + 3, 
+                CHARINDEX('_', replace(manufactureSiteInfo, 'PIN_','') + ' ') - CHARINDEX('<!>', replace(manufactureSiteInfo, 'PIN_',''), CHARINDEX('<!>', replace(manufactureSiteInfo, 'PIN_','')) + 1) - 3
             )
         ELSE 
             NULL

@@ -28,7 +28,7 @@ BEGIN
 	FROM 
 		 [192.168.8.241,15050].Zopone.dbo.POList POList
 		INNER JOIN [192.168.8.241,15050].[Zopone].dbo.PO PO ON PO.po_id = POList.po_id
-		left join ZPN_VW_POSITE POSITE on POSITE.[po_id] =  PO.[po_id] and POSITE.[shipmentNum] = POList.[shipmentNum]
+		left join ZPN_VW_POSITE POSITE on POSITE.[po_id] =  PO.[po_id] and POSITE.poLineNum = POList.poLineNum
 		LEFT join "@ZPN_OPRJ" on dbo.ZPN_FN_RetornaObraPOHuawei(polist.manufactureSiteInfo) = "@ZPN_OPRJ"."Code"
 		LEFT JOIN OPRC ON OPRC."U_Obra" = "@ZPN_OPRJ"."Code" AND OPRC."DimCode" = 2
 		LEFT JOIN OOAT ON OOAT."AbsId" = "@ZPN_OPRJ".U_CodContrato

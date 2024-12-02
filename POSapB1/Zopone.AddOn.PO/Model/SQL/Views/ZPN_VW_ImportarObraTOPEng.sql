@@ -1,9 +1,8 @@
-﻿CREATE VIEW ZPN_VW_ImportarObraTOPEng
+﻿Create VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
 as
 
 
-
-select
+select 
 	OBR_002 "Code",
 	isnull(OBR_029,OBR_002) "Name",
 	OOAT.AbsID "U_CodContrato",
@@ -47,7 +46,7 @@ select
 from 	
 	SQL_TOPENG.TOPENG.DBO.Obras 
 	INNER JOIN SQL_TOPENG.TOPENG.DBO.Contrato on Contrato.CTR_001 = Obras.CTR_001
-	INNER JOIN ooat ON OOAT.Descript = Contrato.CTR_002 COLLATE SQL_Latin1_General_CP850_CI_AS
+	LEFT JOIN ooat ON OOAT.Descript = Contrato.CTR_002 COLLATE SQL_Latin1_General_CP850_CI_AS
 	INNER JOIN SQL_TOPENG.TOPENG.DBO.Pessoa ON Pessoa.PES_001 = Obras.PES_001
 	INNER JOIN OCRD ON OCRD."CardCode" =   'C' + right('000000' + CAST(PESSOA.PES_057 AS VARCHAR(10)), 6)
 	LEFT JOIN SQL_TOPENG.[DBMULTSOFT].DBO.cidade ON CIDADE.CID_001 = obras.cid_001
@@ -62,13 +61,26 @@ from
 	LEFT JOIN OPRC OPRC_OBRA ON OPRC_OBRA.PrcCode = TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',0,8))  COLLATE SQL_Latin1_General_CP850_CI_AS
 	inner join obpl on obpl.BPLId = 1
 WHERE
+	("@ZPN_OPRJ"."Code" is null  OR isnull("@ZPN_OPRJ".U_IdSite,'') = '' )and 
 	
-	OBRAS.OBR_011 IN (1, 2, 5 ,6) AND 
+
 	(obras.OBR_006 is null or 
-	obras.OBR_006 >= '2024-11-13')  
+	obras.OBR_006 >= '2024-11-13')  and 
+	Obras.OBR_002 in (
+	(SELECT DISTINCT
+		obras2.OBR_002
+	FROM 
+		SQL_TOPENG.TOPENG.DBO.PO 
+		INNER JOIN SQL_TOPENG.TOPENG.DBO.PO_Itens ON PO_ITENS.PO_001 = PO.PO_001
+		inner join SQL_TOPENG.TOPENG.DBO.Obras obras2 on obras2.OBR_001 = PO_ITENS.OBR_001
+	WHERE 
+		PO.PO_010 >= '2022-01-01')
 
+		)
 
 	
 	
+
+GO
 
 
