@@ -3,6 +3,7 @@ using Zopone.AddOn.PO.Controller.Constantes;
 using Zopone.AddOn.PO.View.Config;
 using Zopone.AddOn.PO.View.Contrato;
 using Zopone.AddOn.PO.View.Deposito;
+using Zopone.AddOn.PO.View.Obra;
 
 namespace Zopone.AddOn.PO
 {
@@ -29,6 +30,10 @@ namespace Zopone.AddOn.PO
             else if (pVal.FormTypeEx == FormConstantes.FrmDeposito)
             {
                 BubbleEvent = Frm62.Interface_FormItemEvent(ref pVal);
+            }
+            else if (pVal.FormTypeEx == FormConstantes.FrmGerarObra)
+            {
+                BubbleEvent = FrmGerarObra.Interface_FormItemEvent(ref pVal);
             }
         }
     }

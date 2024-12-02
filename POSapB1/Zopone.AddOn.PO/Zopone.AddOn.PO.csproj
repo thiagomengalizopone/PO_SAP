@@ -495,6 +495,7 @@
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_PONaoValidada.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_RET_OBRA_SAP.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_POSITE.sql" />
+    <EmbeddedResource Include="Model\SQL\Tables\ZPN_GERAROBRA.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
