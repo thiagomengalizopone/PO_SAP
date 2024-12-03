@@ -38,7 +38,7 @@ SELECT
 	CASE WHEN ISNULL(CRD7.TaxId0,'') <> '' THEN CRD7.TaxId0 ELSE CRD7.TaxId4 end,
 	CASE WHEN ISNULL(CRD7.TaxId1,'') <> '' THEN CRD7.TaxId5 ELSE CRD7.TaxId4 end,
 	isnull(ocrd.DateFrom, getdate()) ,
-	isnull(ocrd.U_IdZSistemas,0)
+	isnull(ocrd.U_IdZSistemas, 0)
 	
 FROM	
 	CRD7

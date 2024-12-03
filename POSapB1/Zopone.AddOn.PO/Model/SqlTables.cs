@@ -47,6 +47,16 @@ namespace Zopone.AddOn.PO.Model
             public const TipoScript Tipo = TipoScript.Table;
             public const Int32 Versao = 2024111201;
         }
+
+        public static class ZPN_IMPFATURAMENTOHUAWEI
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Tables.ZPN_IMPFATURAMENTOHUAWEI.sql";
+            public const string Descricao = "Tabela de Importação de Faturamento Huawei";
+            public const TipoScript Tipo = TipoScript.Table;
+            public const Int32 Versao = 2024111201;
+        }
+
         
+
     }
 }

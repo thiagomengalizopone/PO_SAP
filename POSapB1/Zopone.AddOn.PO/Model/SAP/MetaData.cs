@@ -144,6 +144,22 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarUDO("ZPN_CONFPO", "ZPN_CONFPO", "ZPN_CONFPO", SAPbobsCOM.BoUDOObjType.boud_MasterData);
                 #endregion
 
+                #region Configurações PO
+                DBCreation.CriarTabelaUsuario("ZPN_PARAMPO", "Cadastro Configurações PO", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "NumeroPO", "Tipo Documento PO", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresTipoDocumentoPO);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "NumeroLinha", "Número Linha", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "QtdeFat", "Quantidade Faturada", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "CodigoServ", "Código Serviço", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "Item", "Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "QtdeFat", "Qtde Faturada", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "ValorUnit", "Valor Unitario", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "ValorTot", "Valor Total", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "QtdeFat", "Qtde Faturada", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+
+
+                DBCreation.CriarUDO("ZPN_PARAMPO", "ZPN_PARAMPO", "ZPN_PARAMPO", SAPbobsCOM.BoUDOObjType.boud_MasterData);
+                #endregion
+
                 #region Alocação
                 var valoresValidosClassificacao = new List<Tuple<string, string>>();
                 valoresValidosClassificacao.Add(new Tuple<string, string>("C", "Contrato"));

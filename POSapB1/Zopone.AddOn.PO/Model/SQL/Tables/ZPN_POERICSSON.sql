@@ -2,6 +2,7 @@
 (
 	NomeArquivo varchar(200),
 	PO NUMERIC,
+	Obra varchar(20),
 	ITEM VARCHAR(5),
 	Codigo varchar(20),
 	Descricao varchar(150),

@@ -4,7 +4,9 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
-
+using System.IO;
+using System.Threading;
+using Zopone.AddOn.PO.Model.Objects;
 
 namespace Zopone.AddOn.PO.View.Faturamento
 {
@@ -17,6 +19,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
         Matrix MtPedidos { get; set; }
 
         Button BtPesquisar { get; set; }
+        Button BtImportarFaturamento { get; set; }
+
+
 
         Button BtEnviarFaturamento { get; set; }
 
@@ -36,9 +41,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
             BtPesquisar = (Button)oForm.Items.Item("BtPesq").Specific;
             BtPesquisar.PressedAfter += BtPesquisar_PressedAfter;
 
-
             BtEnviarFaturamento = (Button)oForm.Items.Item("BtEnv").Specific;
             BtEnviarFaturamento.PressedAfter += BtPreFaturamento_PressedAfter;
+
+            BtImportarFaturamento = (Button)oForm.Items.Item("BtImpFat").Specific;
+            BtImportarFaturamento.PressedAfter += BtImportarFaturamento_PressedAfter;
 
             MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
             MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
@@ -48,6 +55,99 @@ namespace Zopone.AddOn.PO.View.Faturamento
             oForm.Visible = true;
 
 
+
+        }
+
+        private void BtImportarFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                ImportarArquivoFaturamento();
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao importar faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+
+        private void ImportarArquivoFaturamento()
+        {
+            string fileNameAnexo = string.Empty;
+
+            // Cria uma nova thread STA
+            Thread thread = new Thread(() =>
+            {
+                using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
+                {
+                    openFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                    openFileDialog.Title = "Selecione um arquivo CSV";
+
+                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        fileNameAnexo = openFileDialog.FileName;
+                    }
+                }
+            });
+
+            // Define a thread para ser do tipo STA
+            thread.SetApartmentState(ApartmentState.STA);
+
+            // Inicia a thread
+            thread.Start();
+
+            // Aguarda a thread terminar
+            thread.Join();
+
+            if (!string.IsNullOrEmpty(fileNameAnexo))
+            {
+                using (var arquivoImportacaoFaturamentoHuawei = new StreamReader(fileNameAnexo))
+                {
+                    var linesArquivoFaturamentoHuawei = arquivoImportacaoFaturamentoHuawei.ReadToEnd().Split(new char[] { '\n' });
+                    var count = linesArquivoFaturamentoHuawei.Length;
+
+                    string SQL = string.Empty;
+
+                    SqlUtils.DoNonQuery("TRUNCATE TABLE ZPN_IMPFATURAMENTOHUAWEI");
+
+
+                    for (int iPos = 0; iPos < linesArquivoFaturamentoHuawei.Length; iPos++)
+                    {
+                        try
+                        {
+                            Util.ExibirMensagemStatusBar($"Leitura de arquivo, linha {iPos}");
+
+                            var valores = linesArquivoFaturamentoHuawei[iPos].Split(';');
+
+                            if (string.IsNullOrEmpty(valores[0]) || valores[1] == "poLineLocationId")
+                                continue;
+
+
+                            SQL = $@"ZPN_SP_IMPFATURAMENTOHUAWEI 
+                                            '{fileNameAnexo}',
+                                            '{valores[ConfiguracoesImportacaoPO.NumeroPO].Trim()}', 
+                                            '{valores[ConfiguracoesImportacaoPO.NumeroLinha].Trim()}', 
+                                            {valores[ConfiguracoesImportacaoPO.QuantidadeFaturada].Trim()},
+                                            '{valores[ConfiguracoesImportacaoPO.CodigoServico].Trim()}', 
+                                            '{valores[ConfiguracoesImportacaoPO.Item].Trim()}', 
+                                            {valores[ConfiguracoesImportacaoPO.ValorUnitario].Trim()}, 
+                                            {valores[ConfiguracoesImportacaoPO.ValorUnitario].Trim()}";
+
+
+                            SqlUtils.DoNonQuery(SQL);
+                        }
+                        catch (Exception Ex)
+                        {
+                            string erro = $"Erro ao importar linha {iPos + 1} do arquivo: {Ex.Message}!";
+                            throw new Exception(erro);
+                        }
+                    }
+
+                    Util.ExibirMensagemStatusBar($"Fim da Leitura de arquivo, gerando faturamento.");
+
+
+                }
+            }
 
         }
 
@@ -76,7 +176,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao validar dados coluna: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
                 BubbleEvent = false;
-            }            
+            }
         }
 
         private void BtPreFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
@@ -89,12 +189,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.FlushToDataSource();
 
                 string MensagemErro = string.Empty;
-                
+
                 for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
                 {
                     if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
                     {
-                        MensagemErro += EfetivarDocumentoFaturamento(iRow);                     
+                        MensagemErro += EfetivarDocumentoFaturamento(iRow);
                     }
                 }
 
@@ -125,11 +225,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Esboco", iRow));
 
                 SAPbobsCOM.Documents oEsbocoNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-               
+
                 if (oEsbocoNotaFiscalSaida.GetByKey(DocEntry))
                 {
                     if (oEsbocoNotaFiscalSaida.SaveDraftToDocument() != 0)
-                        return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} Linha {iRow+1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
+                        return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} Linha {iRow + 1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
 
 
                     oEsbocoNotaFiscalSaida.GetByKey(DocEntry);
@@ -150,7 +250,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
-            
+
 
             return string.Empty;
         }
@@ -161,7 +261,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             try
             {
                 if (pVal.ColUID == "Col_8")
-                    SelecionaAtividadeServico(pVal.Row-1);
+                    SelecionaAtividadeServico(pVal.Row - 1);
             }
             catch (Exception Ex)
             {
@@ -193,9 +293,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     Util.ExibeMensagensDialogoStatusBar($"Não há serviço cadastrado com o código {Atividade}");
                     return;
                 }
-                
+
                 DtPesquisa.SetValue("Selecionar", row, "Y");
-                DtPesquisa.SetValue("ItemCode", row, dtRegistrosItens.Rows[0]["ItemCode"].ToString()   );
+                DtPesquisa.SetValue("ItemCode", row, dtRegistrosItens.Rows[0]["ItemCode"].ToString());
                 DtPesquisa.SetValue("Dscription", row, dtRegistrosItens.Rows[0]["ItemName"].ToString());
 
                 MtPedidos.LoadFromDataSourceEx();
@@ -211,7 +311,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-               CarregarDadosFaturamentoFaturar();
+                CarregarDadosFaturamentoFaturar();
             }
             catch (Exception Ex)
             {
@@ -235,7 +335,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
-                
+
                 MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
                 MtPedidos.Columns.Item("Col_5").DataBind.Bind("DtPO", "Valor");
@@ -248,7 +348,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
 
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
-                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "TotalDocumento");                
+                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "TotalDocumento");
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
 

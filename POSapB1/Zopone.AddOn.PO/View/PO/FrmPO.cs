@@ -660,7 +660,6 @@ namespace Zopone.AddOn.PO.View.Obra
                     AdicionarRemoverItemGrid();
 
 
-
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
 
 
@@ -818,6 +817,8 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
+
+                SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}");
 
                 string SQL_Query = $"ZPN_SP_PCI_INSEREATUALIZAPO '{Docentry}'";
 

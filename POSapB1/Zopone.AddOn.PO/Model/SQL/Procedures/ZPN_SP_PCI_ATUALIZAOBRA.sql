@@ -203,7 +203,12 @@ BEGIN
 
 
 		if (isnull(@obraid,'') = '') begin
-			set @obraid = newid();
+
+       		select @obraid = isnull(max(obraid),'') from [LINKZCLOUD].[zsistema_aceite].[dbo].obra where [referencia] = @referencia;
+
+            if (@obraid = '') begin
+			    set @obraid = newid();
+            end;
 		end;
 
 		BEGIN TRY

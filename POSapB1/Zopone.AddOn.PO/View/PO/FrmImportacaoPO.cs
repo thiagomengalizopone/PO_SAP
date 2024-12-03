@@ -4,6 +4,7 @@ using SAPbobsCOM;
 using System;
 using System.Data;
 using System.IO;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ namespace Zopone.AddOn.PO.View.PO
         public FrmImportacaoPO()
         {
             InitializeComponent();
+            DtRegistros = new DataTable();
         }
 
         internal static void MenuImpPO()
@@ -28,12 +30,19 @@ namespace Zopone.AddOn.PO.View.PO
             formThread = new Thread(OpenFormImportacaoPO);
             formThread.SetApartmentState(ApartmentState.STA);
             formThread.Start();
+
         }
 
         private static void OpenFormImportacaoPO() => Application.Run(new FrmImportacaoPO());
 
         private void BtImportar_Click(object sender, EventArgs e)
         {
+            if (DtRegistros.Rows.Count == 0)
+            {
+                MessageBox.Show("Não há PO's para importar. Selecione a empresa antes de importar!");
+                return;
+            }
+
             IImportacaoService importacaoService = ImportacaoServiceFactory.CreateImportacaoService(CbEmpresa.Text);
             importacaoService.Importar(DtRegistros, BPLId, pbProgresso, dgDadosPO, CbEmpresa.Text);
         }
@@ -42,6 +51,13 @@ namespace Zopone.AddOn.PO.View.PO
         {
             try
             {
+                if (string.IsNullOrEmpty(CbEmpresa.Text))
+                {
+                    MessageBox.Show("Selecione a empresa para prosseguir com a importação!");
+                    return;
+                }
+
+
                 DataTable dtRegistros = new DataTable();
                 IPesquisaService pesquisaService = PesquisaServiceFactory.CreatePesquisaService(CbEmpresa.Text);
                 pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso, out dtRegistros);
@@ -219,24 +235,17 @@ namespace Zopone.AddOn.PO.View.PO
 
                     if (!string.IsNullOrEmpty(CodeAloca))
                         oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value = CodeAloca;
-
-
-
-
                 }
 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
 
                 if (Empresa == "Ericsson")
-                {
                     oPedidoVenda.Lines.FreeText = dtRegistrosItens.Rows[iPedidoLinha]["SITE"].ToString();
-                }
 
 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusImp").Value = "N";
-
 
                 oPedidoVenda.BPL_IDAssignedToInvoice = bplId;
             }
@@ -365,27 +374,46 @@ namespace Zopone.AddOn.PO.View.PO
 
                             var valores = linesArquivoEricsson[iPos].Split(';');
 
-                            if (valores.Length == 13)
+                            if (valores.Length == 14)
                             {
-                                if (Int64.TryParse(valores[2].Trim(), out Int64 PO))
+                                if (Int64.TryParse(valores[5].Trim(), out Int64 PO))
                                 {
+                                    /*
+                                     	@NomeArquivo varchar(200),
+                                     	@PO numeric,
+                                        @ITEM VARCHAR(5),
+	                                    @Codigo varchar(20),
+	                                    @Descricao varchar(150),
+	                                    @Qtde  decimal(16, 4),
+	                                    @Site varchar(20),
+	                                    @Municipio varchar(100),
+	                                    @Piece decimal(16, 4),
+	                                    @NBM varchar(20),
+	                                    @Importado varchar(10)
+
+                                     */
+
                                     SQL = $@"ZPN_SP_POERICSSON 
                                                         '{fileNameAnexo}',
                                                         {PO}, 
-                                                        '{valores[3].Trim()}', 
-                                                        '{valores[4].Trim()}', 
-                                                        '{valores[5].Trim()}', 
-                                                        {valores[6].Trim().Replace(".", "").Replace(",", ".")}, 
+                                                        '{valores[2].Trim()}', 
+                                                        '{valores[6].Trim()}', 
                                                         '{valores[7].Trim()}', 
                                                         '{valores[8].Trim()}', 
-                                                        {valores[9].Trim().Replace(".", "").Replace(",", ".")}, 
-                                                        '{valores[10].Trim()}', 
+                                                        {valores[9].Trim().Replace(".", "").Replace(",", ".").Replace("R$", "").Trim()}, 
+                                                        '{valores[3].Trim()}', 
+                                                        '{valores[4].Trim()}', 
+                                                        {valores[10].Trim().Replace(".", "").Replace(",", ".").Replace("R$", "").Trim()}, 
+                                                        '{valores[11].Trim()}', 
                                                         'N' ";
 
                                     SqlUtils.DoNonQuery(SQL);
                                 }
                             }
                         }
+
+
+
 
                         SQL = $@"SP_ZPN_IMPORTARPOERICSSON";
 

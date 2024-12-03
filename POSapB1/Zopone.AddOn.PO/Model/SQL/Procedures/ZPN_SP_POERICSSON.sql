@@ -1,9 +1,8 @@
-﻿
-
-create PROCEDURE ZPN_SP_POERICSSON
+﻿create PROCEDURE ZPN_SP_POERICSSON
 (
 	@NomeArquivo varchar(200),
 	@PO numeric,
+	@Obra varchar(20),
 	@ITEM VARCHAR(5),
 	@Codigo varchar(20),
 	@Descricao varchar(150),
@@ -23,6 +22,7 @@ BEGIN
 			(
 				NomeArquivo,
 				PO,
+				Obra,
 				ITEM,
 				Codigo,
 				Descricao,
@@ -37,6 +37,7 @@ BEGIN
 			(
 				@NomeArquivo,
 				@PO,
+				@Obra,
 				@ITEM,
 				@Codigo,
 				@Descricao,

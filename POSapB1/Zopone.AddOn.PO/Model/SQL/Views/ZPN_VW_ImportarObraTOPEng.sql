@@ -1,4 +1,4 @@
-﻿Create VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
+﻿CREATE VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
 as
 
 
@@ -41,7 +41,7 @@ select
 	CASE WHEN isnull(OPRC_OBRA.PrcCode,'') = '' then 'N' else 'Y' end "CentroCustoObra",
 	obpl.BPLId "U_BPLId",
 	OBPL.BPLName "U_BPLName",
-	TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',0,8))   CenterCode
+	TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',1,8))   CenterCode
 
 from 	
 	SQL_TOPENG.TOPENG.DBO.Obras 
@@ -58,11 +58,11 @@ from
 	LEFT JOIN OPRC OPRC_COMPRA ON OPRC_COMPRA.PrcName = REGIONAL.FIL_002 collate SQL_Latin1_General_CP850_CI_AS and OPRC.DimCode = 3
 	LEFT JOIN "@ZPN_OPRJ" ON "@ZPN_OPRJ".Code = obras.OBR_002 collate Latin1_General_CI_AI
 	LEFT JOIN OPRJ ON OPRJ.PrjCode = obras.OBR_002 collate Latin1_General_CI_AI
-	LEFT JOIN OPRC OPRC_OBRA ON OPRC_OBRA.PrcCode = TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',0,8))  COLLATE SQL_Latin1_General_CP850_CI_AS
+	LEFT JOIN OPRC OPRC_OBRA ON OPRC_OBRA.PrcCode = TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',1,8))   COLLATE SQL_Latin1_General_CP850_CI_AS
 	inner join obpl on obpl.BPLId = 1
 WHERE
-	("@ZPN_OPRJ"."Code" is null  OR isnull("@ZPN_OPRJ".U_IdSite,'') = '' )and 
 	
+
 
 	(obras.OBR_006 is null or 
 	obras.OBR_006 >= '2024-11-13')  and 
@@ -79,8 +79,3 @@ WHERE
 		)
 
 	
-	
-
-GO
-
-

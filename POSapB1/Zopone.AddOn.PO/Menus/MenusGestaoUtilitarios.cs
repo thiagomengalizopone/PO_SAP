@@ -46,6 +46,14 @@ namespace Zopone.AddOn.PO.Menus
             listMenu.Add(new Menu(
                  MenuConstantes.MnuConfiguracoes,
                  BoMenuType.mt_STRING,
+                 MenuConstantes.MnuConfImpFatPO,
+                 "Configuração Importação Faturamento PO",
+                 17,
+                 null));
+
+            listMenu.Add(new Menu(
+                 MenuConstantes.MnuConfiguracoes,
+                 BoMenuType.mt_STRING,
                  MenuConstantes.MnuConfImportacaoPO,
                  "Configuração Importação PO",
                  17,

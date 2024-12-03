@@ -51,11 +51,11 @@
             // 
             // BtImportar
             // 
-            this.BtImportar.Location = new System.Drawing.Point(1167, 45);
+            this.BtImportar.Location = new System.Drawing.Point(1049, 45);
             this.BtImportar.Name = "BtImportar";
-            this.BtImportar.Size = new System.Drawing.Size(75, 23);
+            this.BtImportar.Size = new System.Drawing.Size(193, 23);
             this.BtImportar.TabIndex = 0;
-            this.BtImportar.Text = "Importar";
+            this.BtImportar.Text = "Importar PO para o SAP";
             this.BtImportar.UseVisualStyleBackColor = true;
             this.BtImportar.Click += new System.EventHandler(this.BtImportar_Click);
             // 
@@ -199,9 +199,9 @@
             // 
             this.BtnPesquisar.Location = new System.Drawing.Point(332, 42);
             this.BtnPesquisar.Name = "BtnPesquisar";
-            this.BtnPesquisar.Size = new System.Drawing.Size(94, 23);
+            this.BtnPesquisar.Size = new System.Drawing.Size(162, 23);
             this.BtnPesquisar.TabIndex = 9;
-            this.BtnPesquisar.Text = "Pesquisar";
+            this.BtnPesquisar.Text = "Nova Importação";
             this.BtnPesquisar.UseVisualStyleBackColor = true;
             this.BtnPesquisar.Click += new System.EventHandler(this.BtnPesquisar_Click);
             // 
