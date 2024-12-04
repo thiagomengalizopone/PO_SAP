@@ -47,6 +47,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
             BtImportarFaturamento = (Button)oForm.Items.Item("BtImpFat").Specific;
             BtImportarFaturamento.PressedAfter += BtImportarFaturamento_PressedAfter;
 
+            BtImportarFaturamento.Item.Visible = false;
+
             MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
             MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
 
@@ -340,7 +342,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
                 MtPedidos.Columns.Item("Col_5").DataBind.Bind("DtPO", "Valor");
                 MtPedidos.Columns.Item("Col_6").DataBind.Bind("DtPO", "Esboco");
-                MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "NF");
+                
                 MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "ItemCode");
                 MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "Dscription");
 
@@ -348,7 +350,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
 
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
-                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "TotalDocumento");
+                
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
 

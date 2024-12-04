@@ -439,6 +439,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 else if (tipoPesquisa == "ITEMFAT")
                 {
                     parametro.Add(txtObra.Text);
+                    parametro.Add(txtItemFaturamento.Text);
 
                 }
                 else if (tipoPesquisa == "OBRA")
@@ -466,6 +467,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         PCG = string.Empty;
                         OBRA = string.Empty;
                         REGIONAL = string.Empty;
+                        txtObra.Focus();
                     }
                     else
                     {
@@ -482,6 +484,8 @@ namespace Zopone.AddOn.PO.View.Obra
                         PCG = retornoDados[6];
                         OBRA = retornoDados[7];
                         REGIONAL = retornoDados[8];
+
+                        txtCandidato.Focus();   
                     }
                 }
                 else if (TipoPesquisa == "CANDIDATO")
@@ -498,11 +502,13 @@ namespace Zopone.AddOn.PO.View.Obra
 
                         txtItemFaturamento.Text = string.Empty;
                         lblItemFat.Text = string.Empty;
+                        txtItemFaturamento.Focus();
                     }
                     else
                     {
                         txtItemFaturamento.Text = retornoDados[0];
                         lblItemFat.Text = retornoDados[1];
+                        txtParcela.Focus();
                     }
                 }
                 else if (TipoPesquisa == "PO")
@@ -643,6 +649,13 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
+                if (string.IsNullOrEmpty(txtNroPedido.Text))
+                {
+                    MessageBox.Show("Não há número de pedido digitado!");
+                    txtNroPedido.Focus();
+                    return;
+                }
+
 
                 double dblTotalPO = Math.Round(Convert.ToDouble(txtValorPO.Text), 2);
                 double dblTotalLinhasPO = Math.Round(linesPO.Sum(item => item.U_Valor), 2);
@@ -891,7 +904,35 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                PesquisarDados("OBRA");
+                bool pesquisaObra = true;
+                if (!string.IsNullOrEmpty(txtObra.Text))
+                {
+                    string SQL_CONSULTA = $"SP_ZPN_PESQUISAOBRA '{txtObra.Text}'";
+
+                    DataTable dgResultado = SqlUtils.ExecuteCommand(SQL_CONSULTA);
+
+                    if (dgResultado.Rows.Count == 1)
+                    {
+                        txtObra.Text = dgResultado.Rows[0][0].ToString();//obra
+                        lblObra.Text = dgResultado.Rows[0][1].ToString();//desc obra
+                        txtCliente.Text = dgResultado.Rows[0][5].ToString();//código cliente
+                        lblCliente.Text = dgResultado.Rows[0][6].ToString();//cliente
+                        BPLId = Convert.ToInt32(dgResultado.Rows[0][8].ToString());
+                        txtNroCont.Text = dgResultado.Rows[0][10].ToString();
+                        PCG =  dgResultado.Rows[0][11].ToString();
+                        OBRA = dgResultado.Rows[0][12].ToString();
+                        REGIONAL = dgResultado.Rows[0][13].ToString();
+
+                        pesquisaObra = false;
+
+                        txtCandidato.Focus();
+                    }
+                }
+
+                if (pesquisaObra)
+                {
+                    PesquisarDados("OBRA");
+                }
             }
             catch (Exception Ex)
             {
@@ -948,6 +989,34 @@ namespace Zopone.AddOn.PO.View.Obra
                 MessageBox.Show($"PO {txtNroPedido.Text} já existe no sistema!");
 
             return bExistente;
+        }
+
+        private void txtItemFaturamento_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            bool pesquisaEtapa = true;
+
+
+            if (!string.IsNullOrEmpty(txtObra.Text))
+            {
+                string SQL_CONSULTA = $"SP_ZPN_PESQUISAETAPA '{txtItemFaturamento.Text}', '{txtObra.Text}'";
+
+                DataTable dgResultado = SqlUtils.ExecuteCommand(SQL_CONSULTA);
+
+                if (dgResultado.Rows.Count == 1)
+                {
+                    txtItemFaturamento.Text = dgResultado.Rows[0][0].ToString();
+                    lblItemFat.Text = dgResultado.Rows[0][1].ToString();
+
+                    pesquisaEtapa = false;
+
+                    txtParcela.Focus();
+                }
+            }
+
+            if (pesquisaEtapa)
+            {
+                PesquisarDados("ITEMFAT");
+            }
         }
     }
 }

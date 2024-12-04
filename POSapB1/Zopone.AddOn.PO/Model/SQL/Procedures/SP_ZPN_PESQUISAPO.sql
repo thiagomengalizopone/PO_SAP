@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SP_ZPN_PESQUISAPO
+﻿create PROCEDURE SP_ZPN_PESQUISAPO
 (
 	@CampoPesquisa varchar(50)
 )
@@ -22,7 +22,6 @@ FROM
 	LEFT JOIN OPRJ    ON OPRJ."PrjCode"			= T1.Project
 WHERE
 	isnull(T0.NumAtCard,'') <> ''			  AND
-	T0."DocStatus"						= 'O' AND
 	T0."ObjType"							= '17' and
 
 	(cast(T0."DocEntry" as varchar(10))		like '%' + @CampoPesquisa + '%' OR 
@@ -32,6 +31,8 @@ WHERE
 	OBPL."BplName"							like '%' + @CampoPesquisa + '%' OR  
 	cast(T0.DocDueDate  as varchar(10))	    like '%' + @CampoPesquisa + '%' OR  
 	OPRJ."PrjCode"							like '%' + @CampoPesquisa + '%' OR  
-	OPRJ."PrjName"							like '%' + @CampoPesquisa + '%' );
+	OPRJ."PrjName"							like '%' + @CampoPesquisa + '%' )
+ORDER BY
+	T0."DocEntry" DESC;
 
 

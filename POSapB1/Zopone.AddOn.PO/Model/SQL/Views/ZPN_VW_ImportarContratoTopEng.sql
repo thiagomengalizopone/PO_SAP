@@ -9,7 +9,7 @@ as
 	Contrato.CTR_002 Description,
 	Contrato.CTR_002 Remarks,
 	
-	Contrato.CTR_003 "StartDate",
+	isnull(Contrato.CTR_003,'2024-01-01') "StartDate",
 	ISNULL(Contrato.CTR_004,'2034-11-12') "EndDate",
 	OLCT."Code" "U_Regional",
 	'asApproved' "Status",
@@ -26,6 +26,7 @@ as
 	INNER JOIN SQL_TOPENG.TOPENG.DBO.PESSOA on PESSOA.PES_001 = CONTRATO.PES_001
 	INNER JOIN OCRD ON OCRD."CardCode" =   'C' + right('000000' + CAST(PESSOA.PES_057 AS VARCHAR(10)), 6)
 WHERE 
+	(Contrato.CTR_004 is null or Contrato.CTR_004>= '2024-01-01')  and 
 	Contrato.EMP_001 = 74 
 	AND 
 		Contrato.CTR_002 NOT IN 

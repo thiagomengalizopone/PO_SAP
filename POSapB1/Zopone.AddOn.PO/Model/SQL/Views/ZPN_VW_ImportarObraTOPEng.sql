@@ -1,4 +1,4 @@
-﻿CREATE VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
+﻿ALTER VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
 as
 
 
@@ -61,21 +61,14 @@ from
 	LEFT JOIN OPRC OPRC_OBRA ON OPRC_OBRA.PrcCode = TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',1,8))   COLLATE SQL_Latin1_General_CP850_CI_AS
 	inner join obpl on obpl.BPLId = 1
 WHERE
-	
-
-
+	OBR_011 <> 7 and 
+	(obras.OBR_002 like '%/24' or 
+	obras.OBR_002 like '%/23' or 
+	obras.OBR_002 like '%/22' )
+	and 
 	(obras.OBR_006 is null or 
-	obras.OBR_006 >= '2024-11-13')  and 
-	Obras.OBR_002 in (
-	(SELECT DISTINCT
-		obras2.OBR_002
-	FROM 
-		SQL_TOPENG.TOPENG.DBO.PO 
-		INNER JOIN SQL_TOPENG.TOPENG.DBO.PO_Itens ON PO_ITENS.PO_001 = PO.PO_001
-		inner join SQL_TOPENG.TOPENG.DBO.Obras obras2 on obras2.OBR_001 = PO_ITENS.OBR_001
-	WHERE 
-		PO.PO_010 >= '2022-01-01')
-
-		)
-
 	
+	
+	obras.OBR_006 >= '2024-01-01' 
+	)
+		

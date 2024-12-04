@@ -848,6 +848,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtItemFaturamento.Name = "txtItemFaturamento";
             this.txtItemFaturamento.Size = new System.Drawing.Size(211, 22);
             this.txtItemFaturamento.TabIndex = 11;
+            this.txtItemFaturamento.Validating += new System.ComponentModel.CancelEventHandler(this.txtItemFaturamento_Validating);
             // 
             // label11
             // 
