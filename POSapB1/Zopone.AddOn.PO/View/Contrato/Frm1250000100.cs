@@ -46,6 +46,13 @@ namespace Zopone.AddOn.PO.View.Contrato
                     {
                         FormAutoResize(pVal.FormUID);
                     }
+                    if (pVal.EventType == BoEventTypes.et_ITEM_PRESSED)
+                    {
+                        if (pVal.ItemUID == "BtAlocacao")
+                        {
+                            AbrirTelaAlocacao(pVal.FormUID);
+                        }
+                    }
 
                 }
 
@@ -193,7 +200,6 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 BtAlocacao = ((SAPbouiCOM.Button)(oItem.Specific));
                 BtAlocacao.Caption = "Alocação";
-                BtAlocacao.PressedAfter += BtAlocacao_PressedAfter;
 
                 oFormContrato.Update();
 
@@ -281,11 +287,11 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
         }
 
-        private static void BtAlocacao_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        private static void AbrirTelaAlocacao(string FormUID)
         {
             try
             {
-                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(pVal.FormUID);
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(FormUID);
 
                 if (oFormContrato.Mode != BoFormMode.fm_OK_MODE)
                 {

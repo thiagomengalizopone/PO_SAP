@@ -918,6 +918,36 @@ namespace Zopone.AddOn.PO.View.Obra
             DeletaLinhaPO();
         }
 
+        private void txtNroPedido_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(txtNroPedido.Text))
+                    e.Cancel = ValidaNumeroPOExistente();
+            }
+            catch (Exception Ex)
+            {
+                string Mensagem = $"Erro ao validar Número de PO: {Ex.Message}";
 
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, Mensagem, Ex);
+                MessageBox.Show(Mensagem, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool ValidaNumeroPOExistente()
+        {
+            string sql = $"SELECT 1 FROM ORDR WHERE Canceled <> 'Y' and NumAtCard = '{txtNroPedido.Text.Trim()}'";
+
+            if (!string.IsNullOrEmpty(txtCodigo.Text))
+                sql += $" AND DocNum <> {txtCodigo.Text}";
+
+
+            bool bExistente = SqlUtils.ExistemRegistros(sql) ;
+
+            if (bExistente)
+                MessageBox.Show($"PO {txtNroPedido.Text} já existe no sistema!");
+
+            return bExistente;
+        }
     }
 }

@@ -35,10 +35,10 @@ namespace Zopone.AddOn.PO.View.Obra
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPO));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPO));
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,6 +53,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label2 = new System.Windows.Forms.Label();
             this.txtAnexo = new System.Windows.Forms.TextBox();
             this.gbItens = new System.Windows.Forms.GroupBox();
+            this.BtDel = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.txtTotalPO = new System.Windows.Forms.TextBox();
@@ -121,7 +122,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.CbStatus = new System.Windows.Forms.ComboBox();
             this.BtPesqPO = new System.Windows.Forms.Button();
             this.BtAnexo = new System.Windows.Forms.Button();
-            this.BtDel = new System.Windows.Forms.Button();
             this.gbItens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -158,6 +158,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtNroPedido.Name = "txtNroPedido";
             this.txtNroPedido.Size = new System.Drawing.Size(305, 22);
             this.txtNroPedido.TabIndex = 1;
+            this.txtNroPedido.Validating += new System.ComponentModel.CancelEventHandler(this.txtNroPedido_Validating);
             // 
             // label4
             // 
@@ -288,6 +289,16 @@ namespace Zopone.AddOn.PO.View.Obra
             this.gbItens.TabStop = false;
             this.gbItens.Text = "Itens - PO";
             this.gbItens.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // BtDel
+            // 
+            this.BtDel.Image = ((System.Drawing.Image)(resources.GetObject("BtDel.Image")));
+            this.BtDel.Location = new System.Drawing.Point(1071, 11);
+            this.BtDel.Name = "BtDel";
+            this.BtDel.Size = new System.Drawing.Size(27, 28);
+            this.BtDel.TabIndex = 63;
+            this.BtDel.UseVisualStyleBackColor = true;
+            this.BtDel.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // label23
             // 
@@ -952,16 +963,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtAnexo.TabIndex = 57;
             this.BtAnexo.UseVisualStyleBackColor = true;
             this.BtAnexo.Click += new System.EventHandler(this.BtAnexo_Click);
-            // 
-            // BtDel
-            // 
-            this.BtDel.Image = ((System.Drawing.Image)(resources.GetObject("BtDel.Image")));
-            this.BtDel.Location = new System.Drawing.Point(1071, 11);
-            this.BtDel.Name = "BtDel";
-            this.BtDel.Size = new System.Drawing.Size(27, 28);
-            this.BtDel.TabIndex = 63;
-            this.BtDel.UseVisualStyleBackColor = true;
-            this.BtDel.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // FrmPO
             // 

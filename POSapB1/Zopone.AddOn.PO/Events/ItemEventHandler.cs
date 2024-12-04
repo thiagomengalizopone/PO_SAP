@@ -35,6 +35,10 @@ namespace Zopone.AddOn.PO
             {
                 BubbleEvent = FrmGerarObra.Interface_FormItemEvent(ref pVal);
             }
+            else if (pVal.FormTypeEx == FormConstantes.FrmContratoGuardaChuvas)
+            {
+                BubbleEvent = Frm1250000100.Interface_FormItemEvent(ref pVal);
+            }
         }
     }
 }
