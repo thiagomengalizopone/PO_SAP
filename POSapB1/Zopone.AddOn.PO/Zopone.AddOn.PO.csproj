@@ -482,6 +482,7 @@
     <Content Include="iconadd.png" />
     <Content Include="icondelete.png" />
     <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaPO.sql" />
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaContasReceber.sql" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOEricsson.sql" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOHuawei.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_STATUSVALIDACAOPEDIDOSPO.sql" />
