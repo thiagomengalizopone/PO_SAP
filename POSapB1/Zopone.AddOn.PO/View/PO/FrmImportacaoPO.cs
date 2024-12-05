@@ -245,6 +245,7 @@ namespace Zopone.AddOn.PO.View.PO
 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
+                oPedidoVenda.Lines.UserFields.Fields.Item("U_DescCont").Value = dtRegistrosItens.Rows[iPedidoLinha]["descricaoContrato"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusImp").Value = "N";
 
                 oPedidoVenda.BPL_IDAssignedToInvoice = bplId;

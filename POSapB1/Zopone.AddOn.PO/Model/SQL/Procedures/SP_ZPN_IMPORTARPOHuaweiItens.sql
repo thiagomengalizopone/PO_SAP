@@ -24,7 +24,7 @@ BEGIN
 		,"@ZPN_OPRJ".[U_Regional] "Regional"
 		,OPRC."PrcCode" "Obra"
 		,isnull(OOAT.BpCode,'') "CardCode"
-
+		,isnull(OOAT.Descript,'') "DescContrato"
 	FROM 
 		 [192.168.8.241,15050].Zopone.dbo.POList POList
 		INNER JOIN [192.168.8.241,15050].[Zopone].dbo.PO PO ON PO.po_id = POList.po_id

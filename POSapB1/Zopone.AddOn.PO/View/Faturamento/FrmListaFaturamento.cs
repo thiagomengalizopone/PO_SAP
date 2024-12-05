@@ -177,6 +177,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_itemDescription").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Atividade").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Atividade").Value;
+                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescCont").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_DescCont").Value;
 
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseEntry").Value = oPedidoVenda.DocEntry;
                     oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseLine").Value = oPedidoVenda.Lines.LineNum;
