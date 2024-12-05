@@ -26,6 +26,14 @@ namespace Zopone.AddOn.PO.Model
             public const TipoScript Tipo = TipoScript.Table;
             public const Int32 Versao = 2024111201;
         }
+        public static class ZPN_CONTASRECEBERPCI
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Tables.ZPN_CONTASRECEBERPCI.sql";
+            public const string Descricao = "Tabela de log de Mensagens do AddOn";
+            public const TipoScript Tipo = TipoScript.Table;
+            public const Int32 Versao = 2024111201;
+        }
+
         public static class ZPN_LOGIMPORTACAOPO
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Tables.ZPN_LOGIMPORTACAOPO.sql";

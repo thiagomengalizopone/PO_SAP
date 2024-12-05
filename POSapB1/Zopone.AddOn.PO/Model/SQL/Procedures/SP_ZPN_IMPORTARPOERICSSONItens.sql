@@ -27,7 +27,7 @@ BEGIN
 		,OPRJ_INST.[U_Regional] "Regional"
 		,OPRC."PrcCode" "Obra"
 		,isnull(OPRJ_INST."U_CardCode",'') "CardCode"
-		,isnull(OOAT.Descript,'') "DescContrato"
+		,isnull(OOAT.Descript,'') descricaoContrato
 
 	from 
 		ZPN_POERICSSON PO

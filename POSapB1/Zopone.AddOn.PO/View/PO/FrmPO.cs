@@ -801,7 +801,11 @@ namespace Zopone.AddOn.PO.View.Obra
                     txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();
                 }
 
-                new Task(() => { EnviarDadosPCIAsync(txtCodigo.Text); }).Start();
+                string CodigoPO = txtCodigo.Text;
+
+
+
+                new Task(() => { EnviarDadosPCIAsync(CodigoPO); }).Start();
 
                 if (!bExistePedido)
                     LimparTelaPO();
