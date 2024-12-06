@@ -4,11 +4,12 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using Zopone.AddOn.PO.Controller.Constantes;
-using Zopone.AddOn.PO.View.Alocação;
+using Zopone.AddOn.PO.View.Alocacao;
 using Zopone.AddOn.PO.View.ClassificacaoObra;
 using Zopone.AddOn.PO.View.Config;
 using Zopone.AddOn.PO.View.Faturamento;
 using Zopone.AddOn.PO.View.Obra;
+using Zopone.AddOn.PO.View.ParametrosPO;
 using Zopone.AddOn.PO.View.PO;
 
 
@@ -40,6 +41,11 @@ namespace Zopone.AddOn.PO
                         case MenuConstantes.MnuClassificacaoObra:
                             {
                                 new FrmClassObra();
+                            }
+                            break;
+                        case MenuConstantes.MnuConfImpFatPO:
+                            {
+                                FrmParamPO paramPO = new FrmParamPO();
                             }
                             break;
                         case MenuConstantes.MnuAlocacao:

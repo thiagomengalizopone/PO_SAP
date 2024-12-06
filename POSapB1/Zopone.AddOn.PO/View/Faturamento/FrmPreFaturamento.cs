@@ -167,6 +167,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     oNotaFiscalSaida.Lines.Quantity = 1;
                     oNotaFiscalSaida.Lines.LineTotal = TotalLinha;
                     oNotaFiscalSaida.Lines.Usage = oPedidoVenda.Lines.Usage;
+                    oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(oPedidoVenda.Lines.Usage);
+                    oNotaFiscalSaida.Lines.TaxCode = "1556-001";
                     oNotaFiscalSaida.Lines.ProjectCode = oPedidoVenda.Lines.ProjectCode;
                     oNotaFiscalSaida.Lines.COGSCostingCode = oPedidoVenda.Lines.COGSCostingCode;
                     oNotaFiscalSaida.Lines.COGSCostingCode2 = oPedidoVenda.Lines.COGSCostingCode2;
@@ -228,10 +230,22 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     string Code = Convert.ToString(aEvent.SelectedObjects.GetValue("Code", 0));
                     string Descricao = Convert.ToString(aEvent.SelectedObjects.GetValue("U_Desc", 0));
 
-
-                    
                     DtPesquisa.SetValue("AlocacaoFAT", row, Code);
                     DtPesquisa.SetValue("DescAlocacaoFAT", row, Descricao);
+
+                    string SQL_PESQUISA = string.Empty;
+
+                    SQL_PESQUISA = $"SELECT isnull(max(T0.[U_Perc]),0) FROM [dbo].[@ZPN_ALOCA]  T0 WHERE T0.[Code] = '{Code}'";
+
+                    double dblPercentualFaturamento = Convert.ToDouble(SqlUtils.GetValue(SQL_PESQUISA));
+
+                    if (dblPercentualFaturamento > 0)
+                    {
+                        double dblSaldoAberto = Convert.ToDouble(DtPesquisa.GetValue("SaldoAberto", row));
+
+                        DtPesquisa.SetValue("TotalFaturar", row, (dblSaldoAberto * dblPercentualFaturamento / 100));
+                    }
+
 
                     MtPedidos.LoadFromDataSourceEx();
                 }

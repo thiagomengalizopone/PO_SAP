@@ -1,4 +1,4 @@
-﻿Create PROCEDURE SP_ZPN_IMPORTARPOERICSSONItens
+﻿create PROCEDURE SP_ZPN_IMPORTARPOERICSSONItens
 (	
 	@po_id Numeric
 )
@@ -31,7 +31,7 @@ BEGIN
 		ZPN_POERICSSON PO
 		LEFT JOIN ORDR ON ORDR."NumAtCard" = cast(PO.PO as varchar(50))
 		LEFT JOIN ODRF ON ODRF."NumAtCard" = cast(PO.PO as varchar(50))
-		LEFT join "@ZPN_OPRJ" OPRJ_INST on OPRJ_INST.Code = dbo.ZPN_FN_RetornaObraPOEricsson(PO.Site )
+		LEFT join "@ZPN_OPRJ" OPRJ_INST on OPRJ_INST.Code = dbo.ZPN_FN_RetornaObraPOEricsson(PO.Site, PO.Obra )
 		LEFT JOIN OPRC ON OPRC."U_Obra" = OPRJ_INST."Code"  AND OPRC."DimCode" = 2
 	where 
 		PO.PO = @po_id

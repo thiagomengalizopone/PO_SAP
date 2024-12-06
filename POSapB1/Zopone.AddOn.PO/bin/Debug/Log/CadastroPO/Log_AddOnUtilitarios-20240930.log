@@ -1,8 +1,0 @@
-'AddOnUtilitarios';'Erro';'Erro ao iniciar AddOn';'System.Runtime.InteropServices.COMException (0xFFFFFFFF): CServiceData::SetPropertyValueString failed; Value too long in property 'CenterCode' of 'ProfitCenter'
-   em SAPbobsCOM.IProfitCenter.set_CenterCode(String pbstrRsltVal)
-   em sap.dev.core.Controller.CentroCusto.CriaCentroCusto(String CenterName, Int32 Dimensao, String TipoCentroCusto, String CardCode, String CardName, String Obra, String CodeLocalizacao) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Controller\CentroCusto.cs:linha 48
-   em Zopone.AddOn.PO.Controller.Localizacao.CentroCustoObra.CriarCentroCustoObra() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Controller\CentroCusto\CentroCustoObra.cs:linha 51
-   em Zopone.AddOn.PO.AddOnMain.Inicializar(String[] aArguments) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\AddOnMain.cs:linha 30
-   em Zopone.AddOn.PO.Program.Main(String[] aArguments) na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Program.cs:linha 23';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'CenterCode'.
-   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 84;

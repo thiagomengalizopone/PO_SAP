@@ -1,6 +1,0 @@
-'GestaoContratos';'Sucesso';'Dados atualizados na Senior, PN: C000064';'';'UserName'; System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 86;
-'GestaoContratos';'Erro';'Falha ao integrar dados do Contrato na Senior, Ocorreu um erro ao executar o serviço "Inserção do cadastro de Contrato": ERRO: Código da Empresa Contratada (Campo: CodOem) não informado.';'';'UserName'; System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 86;
-'GestaoContratos';'Erro';'Item - Invalid item  [66000-3]. Form Unique Id: '816751432', Item Unique Id: 'EDCode'';'';'UserName'; System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 86;

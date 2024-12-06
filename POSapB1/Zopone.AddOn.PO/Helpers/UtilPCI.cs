@@ -20,9 +20,17 @@ namespace Zopone.AddOn.PO.Helpers
 
                 string SQL_Query = $"ZPN_SP_PCI_ATUALIZAOBRA '{CodeObra}', '{dataCriacao.ToString("yyyyMMdd")}'";
 
-                await SqlUtils.DoNonQueryAsync(SQL_Query);
+                string erro_obra = SqlUtils.GetValue(SQL_Query);
 
-                Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+                if (!string.IsNullOrEmpty(erro_obra))
+                {
+                    Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, erro_obra);
+                    Util.ExibeMensagensDialogoStatusBar(erro_obra);
+                }
+                else
+                {
+                    Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+                }
             }
             catch (Exception Ex)
             {

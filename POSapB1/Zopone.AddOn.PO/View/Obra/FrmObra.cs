@@ -81,7 +81,7 @@ namespace Zopone.AddOn.PO.View.Obra
         public Grid GdListPO { get; set; }
         public DateTime DtListPO { get; set; }
 
-        public Folder Abas {  get; set; }
+        public Folder Abas { get; set; }
 
         #endregion
 
@@ -130,7 +130,7 @@ namespace Zopone.AddOn.PO.View.Obra
             GdListPO.DoubleClickAfter += GdListPO_DoubleClickAfter;
 
             Abas = (Folder)oForm.Items.Item("Item_5").Specific;
-            Abas.Select();           
+            Abas.Select();
 
             #region Aba Candidato
             EdIdent = (EditText)oForm.Items.Item("EdIdent").Specific;
@@ -159,7 +159,7 @@ namespace Zopone.AddOn.PO.View.Obra
             CbEstadoCandidato = (ComboBox)oForm.Items.Item("CbEstC").Specific;
 
             EdCidadeCandidato = (EditText)oForm.Items.Item("EdCidadC").Specific;
-           
+
             EdCidadeCandidatoDescricao = (EditText)oForm.Items.Item("EdCidadDC").Specific;
             EdCidadeCandidatoDescricao.ChooseFromListBefore += EdCidadeCandidatoDescricao_ChooseFromListBefore;
             EdCidadeCandidatoDescricao.ChooseFromListAfter += EdCidadeCandidatoDescricao_ChooseFromListAfter;
@@ -303,7 +303,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 DBObraCandidato.SetValue("U_IdDetentora", RowId, EdIdDete.Value);
                 DBObraCandidato.SetValue("U_Pais", RowId, CbPaisCandidato.Value);
                 DBObraCandidato.SetValue("U_Estado", RowId, CbEstadoCandidato?.Value);
-                
+
                 DBObraCandidato.SetValue("U_Cidade", RowId, EdCidadeCandidato.Value);
                 DBObraCandidato.SetValue("U_CidadeDesc", RowId, EdCidadeCandidatoDescricao.Value);
 
@@ -532,7 +532,7 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 var cfl = oCfLs.Item("CFL_Cidad");
 
-                if (cfl.GetConditions().Count== 0)
+                if (cfl.GetConditions().Count == 0)
                 {
                     cfl.SetConditions(CriaCondicoesCidade(CbEstado.Value));
                 }
@@ -583,6 +583,10 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (aEvent.SelectedObjects == null)
                     return;
 
+                if (pVal.ItemUID != "CFL_Contr")
+                    return;
+
+
                 string CodeContrato = Convert.ToString(aEvent.SelectedObjects.GetValue("Number", 0));
                 string DescContrato = Convert.ToString(aEvent.SelectedObjects.GetValue("Descript", 0));
 
@@ -610,25 +614,34 @@ namespace Zopone.AddOn.PO.View.Obra
             }
         }
 
-        private static async Task EnviarDadosSeniorAsync(string formUID, bool bUpdate)
+        private static async Task EnviarDadosSeniorAsync(string CodContrato)
         {
             /* Aqui ficou definido que não precisaremos avisar ao usuário caso a integração com a Senior não ocorra, pois o N8N irá varrer as tabelas por registros pendentes.
              */
             try
             {
-                Util.ExibirMensagemStatusBar($"Atualizando dados Senior!");
 
                 using (var client = new SeniorFilial.rubi_Syncbr_zopone_integracaoFilialClient())
                 {
-                    Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                    string query = @"SELECT numEmp,codFil,razSoc,nomFil,endFil,endNum,codPai,codEst,codCid,codBai,codCep,tipFil,natEst,tipIns,numCgc,
-                                    insEst,atiIrf,atiRai,motEnc,autExt,fecHEx,junHor,parPat,sitOrc,ctlFic,pgMDsr,fusMar,NOMEFIL,CDSRPN,CARDCD,ENVIOUSENIOR  
-                                    FROM [ZPN_VW_RET_OBRA_SAP] WHERE razSoc = '" + ((EditText)oForm.Items.Item("EdCode").Specific).Value + "'";
+
+                    string query = $@"SELECT 
+                                        numEmp,codFil,razSoc,nomFil,endFil,endNum,codPai,codEst,codCid,codBai,codCep,tipFil,natEst,tipIns,numCgc,
+                                        insEst,atiIrf,atiRai,motEnc,autExt,fecHEx,junHor,parPat,sitOrc,ctlFic,pgMDsr,fusMar,NOMEFIL,CDSRPN,CARDCD,ENVIOUSENIOR  
+                                    FROM 
+                                        [ZPN_VW_RET_OBRA_SAP] 
+                                    WHERE 
+                                        isnull(codCid,'') <> '' and 
+                                        isnull(endFil,'') <> '' and 
+                                        isnull(codBai,'') <> '' and 
+                                        isnull(codCep,'') <> '' and 
+                                        razSoc = '{CodContrato}'";
 
                     System.Data.DataTable Contrato = SqlUtils.ExecuteCommand(query);
 
                     if (Contrato.Rows.Count > 0)
-                    {    
+                    {
+                        Util.ExibirMensagemStatusBar($"Atualizando dados Senior!");
+
                         string IdSenior = Contrato.Rows[0]["CDSRPN"].ToString().Trim();
 
                         #region cadastro de PN
@@ -652,15 +665,15 @@ namespace Zopone.AddOn.PO.View.Obra
                                     //    dadosEmpCont.codOem = int.Parse(businessPartner.UserFields.Fields.Item("U_IdSenior").Value.ToString());
 
                                     #region campos informados sim/não
-                                    
+
                                     dadosEmpCont.codOemSpecified = true;
                                     dadosEmpCont.codPaiSpecified = true;
                                     dadosEmpCont.codCepSpecified = true;
                                     dadosEmpCont.tipInsSpecified = true;
-                                    
+
                                     dadosEmpCont.insConSpecified = false;
                                     dadosEmpCont.numCgcSpecified = false;
-                                    
+
                                     dadosEmpCont.atiIssSpecified = false;
                                     dadosEmpCont.cnaPreSpecified = false;
                                     dadosEmpCont.codAtdSpecified = false;
@@ -806,7 +819,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                         dadosFilial.aalPisSpecified = false;
                         dadosFilial.acvPisSpecified = false;
-                        dadosFilial.ageFgtSpecified = false;                        
+                        dadosFilial.ageFgtSpecified = false;
                         dadosFilial.banFgtSpecified = false;
                         dadosFilial.banHorSpecified = false;
                         dadosFilial.banPisSpecified = false;
@@ -820,11 +833,11 @@ namespace Zopone.AddOn.PO.View.Obra
                         dadosFilial.cenFgtSpecified = false;
                         dadosFilial.cgcAntSpecified = false;
                         dadosFilial.cgcBdcSpecified = false;
-                        dadosFilial.cgcCsiSpecified = false;                        
-                        dadosFilial.codAgeSpecified = false;                        
-                        dadosFilial.codBanSpecified = false;                        
+                        dadosFilial.cgcCsiSpecified = false;
+                        dadosFilial.codAgeSpecified = false;
+                        dadosFilial.codBanSpecified = false;
                         dadosFilial.codIdnSpecified = false;
-                        dadosFilial.codOemSpecified = false;                       
+                        dadosFilial.codOemSpecified = false;
                         dadosFilial.codSvrSpecified = false;
                         dadosFilial.conBanSpecified = false;
                         dadosFilial.cpfBdcSpecified = false;
@@ -842,27 +855,27 @@ namespace Zopone.AddOn.PO.View.Obra
                         dadosFilial.empPPPSpecified = false;
                         dadosFilial.empPcmSpecified = false;
                         dadosFilial.empProSpecified = false;
-                        dadosFilial.empRrhSpecified = false;                        
+                        dadosFilial.empRrhSpecified = false;
                         dadosFilial.famTraSpecified = false;
                         dadosFilial.ferOfDSpecified = false;
                         dadosFilial.ferOfNSpecified = false;
-                        dadosFilial.filCtbSpecified = false;                        
+                        dadosFilial.filCtbSpecified = false;
                         dadosFilial.graRisSpecified = false;
                         dadosFilial.insCeiSpecified = false;
                         dadosFilial.limHExSpecified = false;
                         dadosFilial.lotBdcSpecified = false;
                         dadosFilial.mesPerSpecified = false;
-                        dadosFilial.motCgcSpecified = false;                        
-                        dadosFilial.NCAEPFSpecified = false;                        
-                        dadosFilial.numCNOSpecified = false;                        
-                        dadosFilial.perSenSpecified = false;                        
+                        dadosFilial.motCgcSpecified = false;
+                        dadosFilial.NCAEPFSpecified = false;
+                        dadosFilial.numCNOSpecified = false;
+                        dadosFilial.perSenSpecified = false;
                         dadosFilial.proTraSpecified = false;
                         dadosFilial.recFgtSpecified = false;
                         dadosFilial.regDrtSpecified = false;
                         dadosFilial.tabEveSpecified = false;
                         dadosFilial.tabFeDSpecified = false;
                         dadosFilial.tabFeNSpecified = false;
-                        dadosFilial.tipCaeSpecified = false;                        
+                        dadosFilial.tipCaeSpecified = false;
                         dadosFilial.tipLauSpecified = false;
                         dadosFilial.tipLotSpecified = false;
                         dadosFilial.tipPPPSpecified = false;
@@ -888,11 +901,11 @@ namespace Zopone.AddOn.PO.View.Obra
                         dadosFilial.codEst = Contrato.Rows[0]["codEst"].ToString().Trim();
                         dadosFilial.codCid = Contrato.Rows[0]["codCid"].ToString().Trim().Length > 0 ? int.Parse(Contrato.Rows[0]["codCid"].ToString().Trim()) : 0;
                         dadosFilial.codBai = int.Parse(Contrato.Rows[0]["codBai"].ToString().Trim());//Código do bairro dentro da Senior
-                        dadosFilial.codCep = Contrato.Rows[0]["codCep"].ToString().Trim().Length > 0 ? int.Parse(Contrato.Rows[0]["codCep"].ToString().Trim().Replace("-", "")) : 0;                        
+                        dadosFilial.codCep = Contrato.Rows[0]["codCep"].ToString().Trim().Length > 0 ? int.Parse(Contrato.Rows[0]["codCep"].ToString().Trim().Replace("-", "")) : 0;
                         dadosFilial.tipFil = Contrato.Rows[0]["tipFil"].ToString().Trim();//O = Obra //Tipo Filial (M,F,O,T, C, D)
                         dadosFilial.natEst = int.Parse(Contrato.Rows[0]["natEst"].ToString().Trim());//Natureza Jurídica RAIS // 2062 - Sociedade Empresária Limitada
                         dadosFilial.tipIns = int.Parse(Contrato.Rows[0]["tipIns"].ToString().Trim());//Tipo de Inscrição da Filial // 1 - CNPJ | 2 - CEI | 3 - CPF
-                        dadosFilial.numCgc = Contrato.Rows[0]["numCgc"].ToString().Trim().Replace(".","").Replace("-","").Replace("/","");
+                        dadosFilial.numCgc = Contrato.Rows[0]["numCgc"].ToString().Trim().Replace(".", "").Replace("-", "").Replace("/", "");
                         dadosFilial.insEst = Contrato.Rows[0]["insEst"].ToString().Trim();
                         dadosFilial.atiIrf = int.Parse(Contrato.Rows[0]["atiIrf"].ToString().Trim());//CNAE Fiscal
                         dadosFilial.atiRai = int.Parse(Contrato.Rows[0]["atiRai"].ToString().Trim());//Código Nacional de Atividade Econômica
@@ -939,29 +952,23 @@ namespace Zopone.AddOn.PO.View.Obra
                         {
                             Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Sucesso, "Dados atualizados na Senior, Obra: " + Contrato.Rows[0]["razSoc"].ToString(), new Exception(""));
                             Util.ExibirMensagemStatusBar("Dados atualizados na Senior com suceso, Obra: " + Contrato.Rows[0]["razSoc"].ToString(), BoMessageTime.bmt_Medium);
-                            if(Contrato.Rows[0][19].ToString().Equals("N"))
+                            if (Contrato.Rows[0][19].ToString().Equals("N"))
                                 SqlUtils.DoNonQuery("UPDATE [@ZPN_OPRJ] SET U_EnSen = 'Y' WHERE DocEntry = '" + Contrato.Rows[0]["codFil"] + "'");
                         }
                     }
-                    else
-                        throw new Exception("Falha ao carregar dados da Obra, entre em contato com a equipe de desenvolvimento!" + SAPDbConnection.oCompany.GetLastErrorDescription());
                 }
             }
             catch (Exception Ex)
             {
-                Util.GravarLog(EnumList.EnumAddOn.GestaoContratos, EnumList.TipoMensagem.Erro, Ex.Message, Ex);
-              //Util.ExibirMensagemStatusBar(Ex.Message, BoMessageTime.bmt_Medium, true);
-            }           
+                Util.ExibirMensagemStatusBar($"Erro ao enviar dados Senior: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
-        private static async Task EnviarDadosPCIAsync(string formUID, bool bUpdate)
+        private static async Task EnviarDadosPCIAsync(string CodeObra)
         {
             try
             {
-                Form oFormObra = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                EditText EdCodeObra = (EditText)oFormObra.Items.Item("EdCode").Specific;
-
-                UtilPCI.EnviarDadosPCIAsync(EdCodeObra.Value, DateTime.Now);
+                UtilPCI.EnviarDadosPCIAsync(CodeObra, DateTime.Now);
             }
             catch (Exception Ex)
             {
@@ -975,17 +982,29 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 if (!businessObjectInfo.BeforeAction)
                 {
-                    if ((businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE))
+                    if (businessObjectInfo.ActionSuccess && (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE))
                     {
                         SalvarProjeto(businessObjectInfo.FormUID);
 
                         SalvarCentroCusto(businessObjectInfo.FormUID);
 
-                        string FormUID = businessObjectInfo.FormUID;
                         bool bUpdate = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE;
-                        //new Task(() => { EnviarDadosPCIAsync(FormUID, bUpdate); }).Start();
 
-                        new Task(() => { EnviarDadosSeniorAsync(FormUID, bUpdate); }).Start();
+                        Form oFormObra = Globals.Master.Connection.Interface.Forms.Item(businessObjectInfo.FormUID);
+                        string codeObra = string.Empty;
+                        if (bUpdate)
+                        {
+                            EditText EdCodeObra = (EditText)oFormObra.Items.Item("EdCode").Specific;
+                            codeObra = EdCodeObra.Value;
+                        }
+                        else
+                        {
+                            codeObra = SqlUtils.GetValue(@"SELECT top 1 ""Code"" FROM ""@ZPN_OPRJ"" ORDER BY ""DocEntry"" desc ");
+                        }
+
+                        EnviarDadosPCIAsync(codeObra);
+
+                        new Task(() => { EnviarDadosSeniorAsync(codeObra); }).Start();
                     }
                     else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_LOAD)
                     {
@@ -996,7 +1015,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 {
                     if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
                     {
-                       // return ValidarDadosObra(businessObjectInfo.FormUID);
+                        return ValidarDadosObra(businessObjectInfo.FormUID);
                     }
                 }
 
@@ -1024,9 +1043,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (string.IsNullOrEmpty(oDB.GetValue("U_BPLId", 0)))
                     MensagemErro += "\n Obrigatório selecionar Filial";
-
-                if (string.IsNullOrEmpty(oDB.GetValue("U_ClassOb", 0)))
-                    MensagemErro += "\n Obrigatório selecionar Classificação da Obra";
 
                 if (string.IsNullOrEmpty(oDB.GetValue("U_Regional", 0)))
                     MensagemErro += "\n Obrigatório selecionar Regional";
@@ -1088,7 +1104,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
             Int32 Dimensao = Convert.ToInt32(SqlUtils.GetValue(@"SELECT Max(T0.""DimCode"") FROM ODIM T0 WHERE T0.""DimDesc"" = 'OBRA'"));
             string TipoCentroCusto = SqlUtils.GetValue(@"SELECT maX(CctCode) FROM OCCT WHERE CctName = 'Receitas'");
-            string CentroCustoRetorno = CentroCusto.CriaCentroCusto(EdDescObra.Value, Dimensao, TipoCentroCusto, "", "", EdCodeObra.Value);
+            string CentroCustoRetorno = CentroCusto.CriaCentroCusto(EdCodeObra.Value, Dimensao, TipoCentroCusto, "", "", EdCodeObra.Value);
 
             string SqL_UPDATE = $@"UPDATE ""@ZPN_OPRJ"" SET ""U_PCG"" = '{CentroCustoRetorno}' WHERE ""Code"" =  '{EdCodeObra.Value}'";
 

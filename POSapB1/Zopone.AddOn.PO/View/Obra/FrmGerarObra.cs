@@ -60,6 +60,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
         }
 
+
         private void MtObras_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)
         {
             try
@@ -67,11 +68,11 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (pVal.Row == 0)
                     return;
 
-                string CodigoObra = DtObras.GetValue("CodObra", pVal.Row-1).ToString().Trim();
+                string CodigoObra = DtObras.GetValue("CodObra", pVal.Row - 1).ToString().Trim();
 
                 if (string.IsNullOrEmpty(CodigoObra))
                     return;
-                
+
                 var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
 
                 oRecordSet.DoQuery($@"SELECT 1 FROM ""@ZPN_OPRJ"" WHERE ""Code"" = '{CodigoObra}' ");
@@ -144,6 +145,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 }
                 else
                 {
+                    DtObras.SetValue("Cliente", iRow, string.Empty);
+                    DtObras.SetValue("IdCliente", iRow, string.Empty);
                     ErroValida += "Cliente não encontrado | ";
                 }
 
@@ -158,6 +161,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 }
                 else
                 {
+                    DtObras.SetValue("IdRegional", iRow, string.Empty);
                     ErroValida += "Regional não encontrada | ";
                 }
 
@@ -171,6 +175,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 }
                 else
                 {
+                    DtObras.SetValue("IdContrato", iRow, string.Empty);
+
                     ErroValida += "Contrato não encontrado | ";
                 }
 
@@ -191,12 +197,22 @@ namespace Zopone.AddOn.PO.View.Obra
 
             MtObras.LoadFromDataSourceEx();
             MtObras.AutoResizeColumns();
+
+            if (USValidou.Value == "E")
+                Util.ExibirMensagemStatusBar("Dados validados com erro. Verifique os dados informados!", BoMessageTime.bmt_Medium, true);
+            else
+                Util.ExibirMensagemStatusBar("Dados validados com sucesso!", BoMessageTime.bmt_Medium, false);
+
         }
 
         private void BtAtualizar_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
             try
             {
+
+                if (!ValidarUsuarioObra())
+                    return;
+
                 if (!Util.RetornarDialogo("Deseja gerar os códigos em tela? \n A tabela abaixo será limpa e criada novamente!"))
                     return;
 
@@ -207,7 +223,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar códigos te obra - {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
-
 
 
 
@@ -261,8 +276,8 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (USValidou.ValueEx == "E")
                 {
-                    if (!Util.RetornarDialogo("Linhas com erro serão ignoradas! Deseja prosseguir mesmo assim?"))
-                        return;
+                    Util.ExibeMensagensDialogoStatusBar("Verifique e corrija as linhas com erro antes de prosseguir!", BoMessageTime.bmt_Medium, true);
+                    return;
                 }
 
                 if (!Util.RetornarDialogo("Deseja gerar as obras no SAP B1? \n Obras já geradas, serão ignoradas!"))
@@ -277,7 +292,9 @@ namespace Zopone.AddOn.PO.View.Obra
                 SqlUtils.DoNonQuery($"ZPN_SP_PCI_ATUALIZAOBRAPCG '', '{DateTime.Now.ToString("yyyy-MM-dd")}'");
 
                 Util.ExibeMensagensDialogoStatusBar($"Fim da geração de obras!");
-                
+
+                FinalizarGerarObras();
+
                 USValidou.ValueEx = string.Empty;
 
             }
@@ -287,6 +304,42 @@ namespace Zopone.AddOn.PO.View.Obra
                     Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_RollBack);
 
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar Obras: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+
+        private bool ValidarUsuarioObra()
+        {
+            try
+            {
+                string Usuario = SqlUtils.GetValue("SELECT maX(Usuario) FROM ZPN_GERAROBRA");
+
+                if (!string.IsNullOrEmpty(Usuario))
+                {
+                    Util.ExibeMensagensDialogoStatusBar($"ATENÇÃO: Usuário {Usuario} trabalhando com a tela. Aguarde o usuário fechar a tela para prosseguir!");
+                    return false;
+                }
+
+                SqlUtils.DoNonQuery($"INSERT INTO ZPN_GERAROBRA (Usuario, Hora) values ('{Globals.Master.Connection.Database.UserName}', Getdate());");
+
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao validar usuários Gerar Obra: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                return false;
+            }
+
+        }
+
+        private static void FinalizarGerarObras()
+        {
+            try
+            {
+                SqlUtils.DoNonQuery($"delete from ZPN_GERAROBRA where Usuario = '{Globals.Master.Connection.Database.UserName}'");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao validar liberar tela Gerar Obra: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
 
@@ -340,6 +393,20 @@ namespace Zopone.AddOn.PO.View.Obra
 
         }
 
+        internal static bool Interface_FormItemEvent(ref ItemEvent pVal)
+        {
+            try
+            {
+                if (pVal.EventType == BoEventTypes.et_FORM_CLOSE && !pVal.BeforeAction && pVal.ActionSuccess)
+                    FinalizarGerarObras();
+            }
+            catch (Exception ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao executar eventos Gerar Obra: {ex.Message}", BoMessageTime.bmt_Medium, true, ex);
+                return false;
+            }
 
+            return true;
+        }
     }
 }

@@ -23,8 +23,20 @@ namespace Zopone.AddOn.PO.Model.SAP
                 valoresValidosTipoDocumento.Add(new Tuple<string, string>("TR", "Transferência"));
                 valoresValidosTipoDocumento.Add(new Tuple<string, string>("RA", "Requisição de Almoxarifado"));
 
+                var documentoImportado = new List<Tuple<string, string>>();
+                documentoImportado.Add(new Tuple<string, string>("E", "Ericsson"));
+                documentoImportado.Add(new Tuple<string, string>("H", "Huawei"));
+                documentoImportado.Add(new Tuple<string, string>(".", "Nenhum"));
+
+                var documentoValidado = new List<Tuple<string, string>>();
+                documentoValidado.Add(new Tuple<string, string>("Y", "Sim"));
+                documentoValidado.Add(new Tuple<string, string>("N", "Não"));
+
+
                 DBCreation.CriarCampoUsuario("ORDR", "ZPN_TipoDocto", "Tipo Documento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, valoresValidosTipoDocumento);
 
+                DBCreation.CriarCampoUsuario("ORDR", "ZPN_TipoImport", "Tipo Importação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, null, documentoImportado);
+                DBCreation.CriarCampoUsuario("RDR1", "ZPN_Validado", "Validado Importação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 2, false, "N", documentoValidado);
 
                 var valoresUtilizacao = new List<Tuple<string, string>>();
                 valoresUtilizacao.Add(new Tuple<string, string>("N ", "Nenhum"));
@@ -130,6 +142,22 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "Usage", "Utilização", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false, null);
 
                 DBCreation.CriarUDO("ZPN_CONFPO", "ZPN_CONFPO", "ZPN_CONFPO", SAPbobsCOM.BoUDOObjType.boud_MasterData);
+                #endregion
+
+                #region Configurações PO
+                DBCreation.CriarTabelaUsuario("ZPN_PARAMPO", "Cadastro Configurações PO", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "NumeroPO", "Tipo Documento PO", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, null, valoresTipoDocumentoPO);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "NumeroLinha", "Número Linha", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "QtdeFat", "Quantidade Faturada", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "CodigoServ", "Código Serviço", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "Item", "Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "QtdeFat", "Qtde Faturada", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "ValorUnit", "Valor Unitario", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "ValorTot", "Valor Total", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("@ZPN_PARAMPO", "QtdeFat", "Qtde Faturada", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+
+
+                DBCreation.CriarUDO("ZPN_PARAMPO", "ZPN_PARAMPO", "ZPN_PARAMPO", SAPbobsCOM.BoUDOObjType.boud_MasterData);
                 #endregion
 
                 #region Alocação

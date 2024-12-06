@@ -1,9 +1,8 @@
-﻿CREATE VIEW ZPN_VW_ImportarObraTOPEng
+﻿ALTER VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
 as
 
 
-
-select
+select 
 	OBR_002 "Code",
 	isnull(OBR_029,OBR_002) "Name",
 	OOAT.AbsID "U_CodContrato",
@@ -42,12 +41,12 @@ select
 	CASE WHEN isnull(OPRC_OBRA.PrcCode,'') = '' then 'N' else 'Y' end "CentroCustoObra",
 	obpl.BPLId "U_BPLId",
 	OBPL.BPLName "U_BPLName",
-	TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',0,8))   CenterCode
+	TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',1,8))   CenterCode
 
 from 	
 	SQL_TOPENG.TOPENG.DBO.Obras 
 	INNER JOIN SQL_TOPENG.TOPENG.DBO.Contrato on Contrato.CTR_001 = Obras.CTR_001
-	INNER JOIN ooat ON OOAT.Descript = Contrato.CTR_002 COLLATE SQL_Latin1_General_CP850_CI_AS
+	LEFT JOIN ooat ON OOAT.Descript = Contrato.CTR_002 COLLATE SQL_Latin1_General_CP850_CI_AS
 	INNER JOIN SQL_TOPENG.TOPENG.DBO.Pessoa ON Pessoa.PES_001 = Obras.PES_001
 	INNER JOIN OCRD ON OCRD."CardCode" =   'C' + right('000000' + CAST(PESSOA.PES_057 AS VARCHAR(10)), 6)
 	LEFT JOIN SQL_TOPENG.[DBMULTSOFT].DBO.cidade ON CIDADE.CID_001 = obras.cid_001
@@ -59,16 +58,17 @@ from
 	LEFT JOIN OPRC OPRC_COMPRA ON OPRC_COMPRA.PrcName = REGIONAL.FIL_002 collate SQL_Latin1_General_CP850_CI_AS and OPRC.DimCode = 3
 	LEFT JOIN "@ZPN_OPRJ" ON "@ZPN_OPRJ".Code = obras.OBR_002 collate Latin1_General_CI_AI
 	LEFT JOIN OPRJ ON OPRJ.PrjCode = obras.OBR_002 collate Latin1_General_CI_AI
-	LEFT JOIN OPRC OPRC_OBRA ON OPRC_OBRA.PrcCode = TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',0,8))  COLLATE SQL_Latin1_General_CP850_CI_AS
+	LEFT JOIN OPRC OPRC_OBRA ON OPRC_OBRA.PrcCode = TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',1,8))   COLLATE SQL_Latin1_General_CP850_CI_AS
 	inner join obpl on obpl.BPLId = 1
 WHERE
-	
-	OBRAS.OBR_011 IN (1, 2, 5 ,6) AND 
+	OBR_011 <> 7 and 
+	(obras.OBR_002 like '%/24' or 
+	obras.OBR_002 like '%/23' or 
+	obras.OBR_002 like '%/22' )
+	and 
 	(obras.OBR_006 is null or 
-	obras.OBR_006 >= '2024-11-13')  
-
-
 	
 	
-
-
+	obras.OBR_006 >= '2024-01-01' 
+	)
+		

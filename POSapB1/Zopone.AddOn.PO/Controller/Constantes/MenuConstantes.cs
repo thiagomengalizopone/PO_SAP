@@ -12,6 +12,7 @@
         public const string MnuObra = "MnuObra";
         public const string MnuImportacaoPO = "MnuImpoPO";
         public const string MnuConfImportacaoPO = "MnuConfImpoPO";
+        public const string MnuConfImpFatPO = "MnuConfImpFatPO";
         public const string MnuConfAddOnPO = "MnuConfAddOnPO";
         public const string MnuVerificaImpPO = "MnuVerImpoPO";
         public const string MnuFaturarPO = "MnuFaturarPO";
@@ -34,6 +35,8 @@
         public const string FrmClassificacaoObra  = "FrmClassObra";
         public const string FrmParceiroNegocio = "134";
         public const string FrmDeposito = "62";
+        public const string FrmGerarObra = "FrmGerarObra";
+        public const string FrmParametrosImportacao = "FrmParamImp";
     }
 }
 

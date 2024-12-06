@@ -4,6 +4,7 @@ using SAPbobsCOM;
 using System;
 using System.Data;
 using System.IO;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ namespace Zopone.AddOn.PO.View.PO
         public FrmImportacaoPO()
         {
             InitializeComponent();
+            DtRegistros = new DataTable();
         }
 
         internal static void MenuImpPO()
@@ -28,12 +30,19 @@ namespace Zopone.AddOn.PO.View.PO
             formThread = new Thread(OpenFormImportacaoPO);
             formThread.SetApartmentState(ApartmentState.STA);
             formThread.Start();
+
         }
 
         private static void OpenFormImportacaoPO() => Application.Run(new FrmImportacaoPO());
 
         private void BtImportar_Click(object sender, EventArgs e)
         {
+            if (DtRegistros.Rows.Count == 0)
+            {
+                MessageBox.Show("Não há PO's para importar. Selecione a empresa antes de importar!");
+                return;
+            }
+
             IImportacaoService importacaoService = ImportacaoServiceFactory.CreateImportacaoService(CbEmpresa.Text);
             importacaoService.Importar(DtRegistros, BPLId, pbProgresso, dgDadosPO, CbEmpresa.Text);
         }
@@ -42,11 +51,20 @@ namespace Zopone.AddOn.PO.View.PO
         {
             try
             {
+                if (string.IsNullOrEmpty(CbEmpresa.Text))
+                {
+                    MessageBox.Show("Selecione a empresa para prosseguir com a importação!");
+                    return;
+                }
+
+
                 DataTable dtRegistros = new DataTable();
                 IPesquisaService pesquisaService = PesquisaServiceFactory.CreatePesquisaService(CbEmpresa.Text);
-                pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso,  out dtRegistros);
+                pesquisaService.Pesquisar(mskDataI, mskDataF, dgDadosPO, pbProgresso, out dtRegistros);
 
                 DtRegistros = dtRegistros;
+
+                txtTotalReg.Text = DtRegistros.Rows.Count.ToString();
             }
             catch (Exception Ex)
             {
@@ -114,7 +132,7 @@ namespace Zopone.AddOn.PO.View.PO
                         {
                             SqlUtils.DoNonQuery($@"DELETE FROM ZPN_LOGIMPORTACAOPO WHERE po_id = {iPedido}");
                         }
-                        
+
                         DocEntry = Convert.ToInt32(Globals.Master.Connection.Database.GetNewObjectKey());
 
                     }
@@ -151,13 +169,11 @@ namespace Zopone.AddOn.PO.View.PO
         private static void PopulatePedidoVenda(DataTable dtRegistros, int iPedido, SAPbobsCOM.Documents oPedidoVenda, int bplId, string Empresa)
         {
             oPedidoVenda.CardCode = ConfiguracoesImportacaoPO.CardCodePOHawuey;
-#if DEBUG
+
             oPedidoVenda.DocDate = DateTime.Now;
-#else
-            oPedidoVenda.DocDate = Convert.ToDateTime(dtRegistros.Rows[iPedido]["po_lis_DataConfirmacao"]);
-#endif 
+
             oPedidoVenda.DocDueDate = oPedidoVenda.DocDate;
-            oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString();
+            oPedidoVenda.NumAtCard = dtRegistros.Rows[iPedido]["poNumber"].ToString().Replace("_", "-");
             oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value = Convert.ToDouble(dtRegistros.Rows[iPedido]["po_id"]);
 
             string SQL = string.Empty;
@@ -179,13 +195,9 @@ namespace Zopone.AddOn.PO.View.PO
 
             for (int iPedidoLinha = 0; iPedidoLinha < dtRegistrosItens.Rows.Count; iPedidoLinha++)
             {
-
-                if (Empresa == "Huawei")
+                if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString()))
                 {
-                    if (!string.IsNullOrEmpty(dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString()))
-                    {
-                        oPedidoVenda.CardCode = dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString();
-                    }
+                    oPedidoVenda.CardCode = dtRegistrosItens.Rows[iPedidoLinha]["CardCode"].ToString();
                 }
 
                 if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
@@ -223,24 +235,17 @@ namespace Zopone.AddOn.PO.View.PO
 
                     if (!string.IsNullOrEmpty(CodeAloca))
                         oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value = CodeAloca;
-
-
-
-
                 }
 
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value = dtRegistrosItens.Rows[iPedidoLinha]["ITEM"].ToString();
 
                 if (Empresa == "Ericsson")
-                {
                     oPedidoVenda.Lines.FreeText = dtRegistrosItens.Rows[iPedidoLinha]["SITE"].ToString();
-                }
 
-                
+
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value = dtRegistrosItens.Rows[iPedidoLinha]["itemDescription"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = dtRegistrosItens.Rows[iPedidoLinha]["manufactureSiteInfo"].ToString();
                 oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusImp").Value = "N";
-
 
                 oPedidoVenda.BPL_IDAssignedToInvoice = bplId;
             }
@@ -261,7 +266,7 @@ namespace Zopone.AddOn.PO.View.PO
 
         private static void HandleImportacaoException(string empresa, Exception ex)
         {
-            string mensagemErro = $"Erro ao importar dados PO {empresa} - {ex.Message}".Replace("'", "") ;
+            string mensagemErro = $"Erro ao importar dados PO {empresa} - {ex.Message}".Replace("'", "");
             MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, ex);
         }
@@ -369,27 +374,46 @@ namespace Zopone.AddOn.PO.View.PO
 
                             var valores = linesArquivoEricsson[iPos].Split(';');
 
-                            if (valores.Length == 13)
+                            if (valores.Length == 14)
                             {
-                                if (Int64.TryParse(valores[2].Trim(), out Int64 PO))
+                                if (Int64.TryParse(valores[5].Trim(), out Int64 PO))
                                 {
+                                    /*
+                                     	@NomeArquivo varchar(200),
+                                     	@PO numeric,
+                                        @ITEM VARCHAR(5),
+	                                    @Codigo varchar(20),
+	                                    @Descricao varchar(150),
+	                                    @Qtde  decimal(16, 4),
+	                                    @Site varchar(20),
+	                                    @Municipio varchar(100),
+	                                    @Piece decimal(16, 4),
+	                                    @NBM varchar(20),
+	                                    @Importado varchar(10)
+
+                                     */
+
                                     SQL = $@"ZPN_SP_POERICSSON 
                                                         '{fileNameAnexo}',
                                                         {PO}, 
-                                                        '{valores[3].Trim()}', 
-                                                        '{valores[4].Trim()}', 
-                                                        '{valores[5].Trim()}', 
-                                                        {valores[6].Trim().Replace(".", "").Replace(",", ".")}, 
+                                                        '{valores[2].Trim()}', 
+                                                        '{valores[6].Trim()}', 
                                                         '{valores[7].Trim()}', 
                                                         '{valores[8].Trim()}', 
-                                                        {valores[9].Trim().Replace(".", "").Replace(",", ".")}, 
-                                                        '{valores[10].Trim()}', 
+                                                        {valores[9].Trim().Replace(".", "").Replace(",", ".").Replace("R$", "").Trim()}, 
+                                                        '{valores[3].Trim()}', 
+                                                        '{valores[4].Trim()}', 
+                                                        {valores[10].Trim().Replace(".", "").Replace(",", ".").Replace("R$", "").Trim()}, 
+                                                        '{valores[11].Trim()}', 
                                                         'N' ";
 
                                     SqlUtils.DoNonQuery(SQL);
                                 }
                             }
                         }
+
+
+
 
                         SQL = $@"SP_ZPN_IMPORTARPOERICSSON";
 

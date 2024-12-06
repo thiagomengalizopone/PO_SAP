@@ -8,7 +8,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Zopone.AddOn.PO.Model.Objects;
-using Zopone.AddOn.PO.View.Alocação;
+using Zopone.AddOn.PO.View.Alocacao;
 using Zopone.AddOn.PO.View.ContratoAlocacao;
 using Zopone.AddOn.PO.View.Obra;
 
@@ -42,6 +42,18 @@ namespace Zopone.AddOn.PO.View.Contrato
                     {
                         PosicionaTela(pVal.FormUID);
                     }
+                    else if (pVal.EventType == BoEventTypes.et_FORM_RESIZE)
+                    {
+                        FormAutoResize(pVal.FormUID);
+                    }
+                    if (pVal.EventType == BoEventTypes.et_ITEM_PRESSED)
+                    {
+                        if (pVal.ItemUID == "BtAlocacao")
+                        {
+                            AbrirTelaAlocacao(pVal.FormUID);
+                        }
+                    }
+
                 }
 
                 return true;
@@ -72,26 +84,33 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 Button BtAlocacao;
 
+                int iTop = 205;
+
+
+
                 oItem = oFormContrato.Items.Add("EdNroRH", SAPbouiCOM.BoFormItemTypes.it_EDIT);
-                oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19;
-                oItem.Width = Width;
+                oItem.Left = 390;
+                oItem.Top = iTop;
+                oItem.Width = 109;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
+                oItem.LinkTo = "StNroRH";
 
                 oEditText = ((SAPbouiCOM.EditText)(oItem.Specific));
                 oEditText.DataBind.SetBound(true, "OOAT", "U_CodigoRH");
 
                 oItemRef = oFormContrato.Items.Item("1250000038");
                 oItem = oFormContrato.Items.Add("StNroRH", SAPbouiCOM.BoFormItemTypes.it_STATIC);
-                oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19;
-                oItem.Width = Width;
+                oItem.Left = 280;
+                oItem.Top = iTop;
+                oItem.Width = 90;
+
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
 
+                oItem.LinkTo = "EdNroRH";
 
                 oItemRef = oFormContrato.Items.Item("EdNroRH");
 
@@ -101,12 +120,14 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 oItem = oFormContrato.Items.Add("CbReg", SAPbouiCOM.BoFormItemTypes.it_COMBO_BOX);
 
-                oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19;
-                oItem.Width = 150;
+                oItem.Left = 390;
+                oItem.Top = iTop + 19;
+                oItem.Width = 109;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
+                oItem.LinkTo = "StNroRH";
+
 
                 ComboBox CbRegional = ((SAPbouiCOM.ComboBox)(oItem.Specific));
                 CbRegional.Item.DisplayDesc = true;
@@ -116,12 +137,14 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 oItemRef = oFormContrato.Items.Item("StNroRH");
                 oItem = oFormContrato.Items.Add("StReg", SAPbouiCOM.BoFormItemTypes.it_STATIC);
-                oItem.Left = oItemRef.Left;
-                oItem.Top = oItemRef.Top + 19;
-                oItem.Width = 147;
+                oItem.Left = 280;
+                oItem.Top = iTop + 19;
+                oItem.Width = 90;
                 oItem.Height = oItemRef.Height;
                 oItem.FromPane = oItemRef.FromPane;
                 oItem.ToPane = oItemRef.ToPane;
+                oItem.LinkTo = "CbReg";
+
 
                 oStaticText = ((SAPbouiCOM.StaticText)(oItem.Specific));
                 oStaticText.Caption = "Regional";
@@ -172,14 +195,15 @@ namespace Zopone.AddOn.PO.View.Contrato
                 oItem.Top = oItemRef.Top;
                 oItem.Width = oItemRef.Width;
                 oItem.Height = oItemRef.Height;
-                oItem.FromPane = oItemRef.FromPane;
-                oItem.ToPane = oItemRef.ToPane;
+                oItem.FromPane = 0;
+                oItem.ToPane = 0;
 
                 BtAlocacao = ((SAPbouiCOM.Button)(oItem.Specific));
                 BtAlocacao.Caption = "Alocação";
-                BtAlocacao.PressedAfter += BtAlocacao_PressedAfter;
 
                 oFormContrato.Update();
+
+                FormAutoResize(formUID);
 
             }
             catch (Exception Ex)
@@ -188,11 +212,86 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
         }
 
-        private static void BtAlocacao_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        private static void FormAutoResize(string formUID)
         {
             try
             {
-                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(pVal.FormUID);
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                try
+                {
+                    oFormContrato.Freeze(true);
+
+                    Item oItemGridObra = oFormContrato.Items.Item("GdObras");
+                    Item oItemGridRef = oFormContrato.Items.Item("1250000044");
+
+                    oItemGridObra.Top = oFormContrato.Items.Item("1250000031").Top;
+                    oItemGridObra.Left = oItemGridRef.Left;
+                    oItemGridObra.Width = oItemGridRef.Width;
+                    oItemGridObra.Height = oItemGridRef.Height;
+
+                    Item oItemAloca = oFormContrato.Items.Item("BtAlocacao");
+
+                    oItemAloca.Top = oFormContrato.Items.Item("1250000002").Top;
+                    oItemAloca.Left = oFormContrato.Items.Item("1250000002").Left + oFormContrato.Items.Item("1250000002").Width + 5;
+
+                    Item oItem = oFormContrato.Items.Item("1250000043");
+                    oItem.Top = oItem.Top + 40;
+
+                    oItem = oFormContrato.Items.Item("1250000044");
+                    oItem.Top = oItem.Top + 40;
+                    oItem.Height = oItem.Height - 40;
+
+                    oItem = oFormContrato.Items.Item("1320000055");
+                    int iLeftLabel = oItem.Left;
+                    int iTopLabel = oItem.Top;
+
+                    oItem = oFormContrato.Items.Item("1320000056");
+                    int iLeftText = oItem.Left;
+                    int iTopText = oItem.Top;
+
+                    iTopLabel += 17;
+                    iTopText += 17;
+
+                    oItem = oFormContrato.Items.Item("StNroRH");
+                    oItem.Top = iTopLabel;
+                    oItem.Left = iLeftLabel;
+
+                    oItem = oFormContrato.Items.Item("EdNroRH");
+                    oItem.Top = iTopText;
+                    oItem.Left = iLeftText;
+
+                    iTopLabel += 17;
+                    iTopText += 17;
+
+                    oItem = oFormContrato.Items.Item("StReg");
+                    oItem.Top = iTopLabel;
+                    oItem.Left = iLeftLabel;
+
+                    oItem = oFormContrato.Items.Item("CbReg");
+                    oItem.Top = iTopText;
+                    oItem.Left = iLeftText;
+
+                }
+                catch (Exception Ex)
+                {
+                    Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, Ex.Message, Ex);
+                }
+                finally
+                {
+                    oFormContrato.Freeze(false);
+                }
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao posicionar form: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+
+        private static void AbrirTelaAlocacao(string FormUID)
+        {
+            try
+            {
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(FormUID);
 
                 if (oFormContrato.Mode != BoFormMode.fm_OK_MODE)
                 {
@@ -226,17 +325,15 @@ namespace Zopone.AddOn.PO.View.Contrato
             {
                 throw new Exception($"Erro ao editar dados obras: {Ex.Message}");
             }
-
         }
-        private static async Task EnviarDadosPCIAsync(string formUID)
+
+        private static void EnviarDadosPCIAsync(string AbsIdContrato)
         {
             try
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
-                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
-                EditText oEditContrato = (EditText)oFormContrato.Items.Item("1250000004").Specific;
 
-                string SQL_Query = $"ZPN_SP_PCI_ATUALIZACONTRATO '{oEditContrato.Value}'";
+                string SQL_Query = $"ZPN_SP_PCI_ATUALIZACONTRATO '{AbsIdContrato}'";
 
                 SqlUtils.DoNonQuery(SQL_Query);
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
@@ -257,7 +354,7 @@ namespace Zopone.AddOn.PO.View.Contrato
             return (yearDifference * 12) + monthDifference;
         }
 
-        private static async Task EnviarDadosSeniorAsync(string formUID)
+        private static void EnviarDadosSeniorAsync(string AbsIdContrato)
         {
             try
             {
@@ -265,8 +362,6 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 using (var client = new SeniorContrato.rubi_Syncbr_zopone_integracaoContratoClient())
                 {
-                    Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);                    
-
                     System.Data.DataTable Contrato = SqlUtils.ExecuteCommand("SELECT " +
                         "T1.BpCode AS CardCode, " +     
                         "T2.U_IdSenior AS CodPnSenior, " +                        
@@ -282,7 +377,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                         "INNER JOIN OCRD T2 ON T1.BpCode = T2.CardCode " +
                         "JOIN OBPL T3 ON T3.MainBPL = 'Y' " +
                         "JOIN OAT1 T4 ON T1.AbsID = T4.AgrNo " +
-                        "WHERE AbsID = '" + ((EditText)oForm.Items.Item("1250000004").Specific).Value + "'");
+                        $"WHERE AbsID = '{AbsIdContrato}'");
 
                     if (Contrato.Rows.Count > 0)
                     {
@@ -512,7 +607,7 @@ namespace Zopone.AddOn.PO.View.Contrato
                         }
                     }
                     else
-                        throw new Exception("Falha ao carregar dados do Contrato, entre em contato com a equipe de desenvolvimento!" + SAPDbConnection.oCompany.GetLastErrorDescription());
+                        throw new Exception("Falha ao integrar dados do Contrato na Senior, entre em contato com a equipe de desenvolvimento!" + SAPDbConnection.oCompany.GetLastErrorDescription());
                 }
             }
             catch (Exception Ex)
@@ -565,6 +660,58 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
         }
 
+        private static bool ValidarDadosContrato(string formUID)
+        {
+            try
+            {
+                Form oFormContrato = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+                ComboBox oCbStatus = (ComboBox)(oFormContrato.Items.Item("1250000036").Specific);
+
+                if (oCbStatus.Value != "A")
+                {
+                    Util.ExibeMensagensDialogoStatusBar("Status do contrato deve ser Autorizado!", BoMessageTime.bmt_Medium, true);
+                    return false;
+                }
+
+                ComboBox oCbMetodo = (ComboBox)(oFormContrato.Items.Item("1320000060").Specific);
+
+                if (oCbMetodo.Value != "M")
+                {
+                    Util.ExibeMensagensDialogoStatusBar("Método de acordo deve ser Monetário!", BoMessageTime.bmt_Medium, true);
+                    return false;
+                }
+
+                Matrix oMtValores = (Matrix)(oFormContrato.Items.Item("1250000045").Specific);
+                bool bMontante = true;
+
+                if (oMtValores.RowCount < 1)
+                    bMontante = false;
+
+                string valorMontante = Util.MatrixGetValue(oMtValores, 1, "1320000039");
+
+                if (string.IsNullOrEmpty(valorMontante) || Convert.ToDouble(valorMontante.Replace(".", "").Replace(",", ".").Replace("R$ ", "").Trim()) < 999999999999)
+                    bMontante = false;
+
+                if (!bMontante)
+                {
+                    Util.ExibeMensagensDialogoStatusBar("Necessário adicionar no montante de valores um valor superior a R$ 999.999.999.999,99!", BoMessageTime.bmt_Medium, true);
+                    return false;
+                }
+
+
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao validar dados de contrato: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                return false;
+            }
+            return true;
+        }
+
+
+
         internal static bool Interface_FormDataEvent(ref BusinessObjectInfo businessObjectInfo)
         {
             try
@@ -581,11 +728,30 @@ namespace Zopone.AddOn.PO.View.Contrato
                 {
                     if (!businessObjectInfo.BeforeAction)
                     {
-                        string FormUID = businessObjectInfo.FormUID;
 
-                        //new Task(() => { EnviarDadosPCIAsync(FormUID); }).Start(); 
+                        if (businessObjectInfo.ActionSuccess)
+                        {
+                            bool bAdd = businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD;
+                            
+                            Form oForm = Globals.Master.Connection.Interface.Forms.Item(businessObjectInfo.FormUID);
 
-                        new Task(() => { EnviarDadosSeniorAsync(FormUID); }).Start();
+                            string AbsIdContrato = string.Empty;
+
+                            if (bAdd)
+                                AbsIdContrato = SqlUtils.GetValue("SELECT MAX(AbsID) FROM OOAT");
+                            else
+                                AbsIdContrato = ((EditText)oForm.Items.Item("1250000004").Specific).Value.ToString();
+
+
+                            CriaContratoAlocacaoItem(AbsIdContrato);
+
+                            EnviarDadosPCIAsync(AbsIdContrato);
+                            new Task(() => { EnviarDadosSeniorAsync(AbsIdContrato); }).Start();
+                        }
+                    }
+                    else
+                    {
+                        return ValidarDadosContrato(businessObjectInfo.FormUID);
                     }
                 }
             }
@@ -597,6 +763,18 @@ namespace Zopone.AddOn.PO.View.Contrato
             }
 
             return true;
+        }
+
+        private static void CriaContratoAlocacaoItem(string absIdContrato)
+        {
+            try
+            {
+                SqlUtils.DoNonQuery($"SP_ZPN_CRIAALOCACAOCONTRATO {absIdContrato}");
+            }
+            catch (Exception Ex)
+            {
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, $"Erro ao criar alocação contrato: {absIdContrato} - {Ex.Message}", Ex);
+            }
         }
     }
 }

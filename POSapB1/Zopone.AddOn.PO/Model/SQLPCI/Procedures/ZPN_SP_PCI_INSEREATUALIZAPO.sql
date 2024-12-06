@@ -8,6 +8,7 @@ BEGIN
 	
 
 
+
         DECLARE @UltimaData date;
         DECLARE @UltimaHora int;
 
@@ -17,33 +18,23 @@ BEGIN
         set @UltimaDataExec = getdate();
         set @UltimaHoraExec = cast(replace(CONVERT(varchar(8), getdate(), 108), ':', '') as int);
 
+
         SELECT @UltimaData = ISNULL(MAX(DataExecutado), '2024-01-01'),
                @UltimaHora = ISNULL(MAX(HoraExecutado), 0)
         FROM ZPN_INTEGRAPCI
         WHERE ObjType = '17';
 
 
-        IF EXISTS
-        (
-            SELECT *
-            FROM tempdb.sys.tables
-            WHERE NAME LIKE '#TempPO%'
-                  AND TYPE = 'U'
-        )
+        IF OBJECT_ID('tempdb..#TempPO') IS NOT NULL
         BEGIN
-            drop table #TempPO;
+            DROP TABLE #TempPO;
         END
 
-        IF EXISTS
-        (
-            SELECT *
-            FROM tempdb.sys.tables
-            WHERE NAME LIKE '#POItensTemp%'
-                  AND TYPE = 'U'
-        )
+        IF OBJECT_ID('tempdb..#POItensTemp') IS NOT NULL
         BEGIN
-            drop table #POItensTemp;
+            DROP TABLE #POItensTemp;
         END
+
 
         CREATE TABLE #TempPO
 		(
@@ -155,17 +146,42 @@ BEGIN
         DECLARE @contratocliente NVARCHAR(MAX);
         DECLARE @codigo int;
 
+            DECLARE @poitemid varchar(150);
+
+
+
+            DECLARE @item NVARCHAR(MAX);
+
+            DECLARE @obraid varchar(150);
+            DECLARE @percentualparcela DECIMAL(18, 2);
+            DECLARE @datalancamento DATETIME;
+            DECLARE @datafaturamento DATETIME;
+            DECLARE @numeronotafiscal NVARCHAR(MAX);
+
+            DECLARE @tipo CHAR(1);
+            DECLARE @clienteid varchar(150);
+            DECLARE @etapaid varchar(150);
+            DECLARE @observacao NVARCHAR(MAX);
+		    declare @LineNum int;
+
+            DECLARE @obracandidatoid varchar(150);
+
         -- Contar o número de registros
+        DECLARE @CountPO INT;
+
         DECLARE @Count INT;
-        SELECT @Count = COUNT(*)
+        
+        
+        SELECT @CountPO = COUNT(*)
         FROM #TempPO;
 
         -- Inicializar o índice
         DECLARE @Index INT;
-        SET @Index = 1;
+        DECLARE @IndexPO INT;
+        SET @IndexPO = 1;
 
         -- Loop para processar os registros
-        WHILE @Index <= @Count
+        WHILE @IndexPO <= @CountPO
         BEGIN
             -- Buscar os dados da tabela temporária para o índice atual
             SELECT @poid = poid,
@@ -193,11 +209,10 @@ BEGIN
                        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum
                 FROM #TempPO
             ) AS Temp
-            WHERE RowNum = @Index;
+            WHERE RowNum = @IndexPO;
 
 			if (@poid = '') begin
 				set @poid = newid();
-				update ordr set U_IdPCI = @poid where DocEntry = @codigo;
 			end;
 
             exec [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaPO @poid,
@@ -211,12 +226,9 @@ BEGIN
                                                                                @contratocliente,
                                                                                @codigo;
 
-            -- Incrementar o índice
-            SET @Index = @Index + 1;
-        END
+          
 
-        -- Excluir a tabela temporária
-        DROP TABLE #TempPO;
+
 
         INSERT INTO #POItensTemp
         SELECT isnull(RDR1.U_IdPCI,''),
@@ -239,7 +251,7 @@ BEGIN
                END,
                CRD8.U_IdPCI,
                ALOC.U_IdPCI,
-               RDR1.FreeTxt,
+               RDR1.U_itemDescription,
                RDR1.DocEntry,
 			   RDR1.LineNum,
                NULL,
@@ -269,117 +281,127 @@ BEGIN
                          )
                   );
 
-        -- Variáveis para armazenar os dados
-        DECLARE @poitemid varchar(150);
+            -- Variáveis para armazenar os dados
+            SET @poitemid = ''
 
 
 
-        DECLARE @item NVARCHAR(MAX);
+            SET @item = ''
 
-        DECLARE @obraid varchar(150);
-        DECLARE @percentualparcela DECIMAL(18, 2);
-        DECLARE @datalancamento DATETIME;
-        DECLARE @datafaturamento DATETIME;
-        DECLARE @numeronotafiscal NVARCHAR(MAX);
+            SET @obraid = ''
+            SET @percentualparcela =0;
+            SET @datalancamento = NULL;
+            SET @datafaturamento = NULL;
+            SET @numeronotafiscal = '';
 
-        DECLARE @tipo CHAR(1);
-        DECLARE @clienteid varchar(150);
-        DECLARE @etapaid varchar(150);
-        DECLARE @observacao NVARCHAR(MAX);
-		declare @LineNum int;
+            SET @tipo= '';
+            SET @clienteid = '';
+            SET @etapaid = '';
+            SET @observacao = '';
+		    SET @LineNum =0;
 
-        DECLARE @obracandidatoid varchar(150);
+            SET @obracandidatoid = '';
 
-        -- Contar o número de registros
+            -- Contar o número de registros
 
-        SELECT @Count = COUNT(*)
-        FROM #POItensTemp;
+            SELECT @Count = COUNT(*)
+            FROM #POItensTemp;
 
-        -- Inicializar o índice
+            -- Inicializar o índice
 
-        SET @Index = 1;
+            SET @Index = 1;
 
-        -- Loop para processar os registros
-        WHILE @Index <= @Count
-        BEGIN
-            -- Buscar os dados da tabela temporária para o índice atual
-            SELECT @poitemid = poitemid,
-                   @gestatus = gestatus,
-                   @gedataacao = gedataacao,
-                   @gecontaidacao = gecontaidacao,
-                   @item = item,
-                   @poid = poid,
-                   @obraid = obraid,
-                   @percentualparcela = percentualparcela,
-                   @datalancamento = datalancamento,
-                   @datafaturamento = datafaturamento,
-                   @numeronotafiscal = numeronotafiscal,
-                   @valor = valor,
-                   @tipo = tipo,
-                   @clienteid = clienteid,
-                   @etapaid = etapaid,
-                   @observacao = observacao,
-                   @codigo = codigo,
-				   @LineNum = LineNum,
-                   @descricao = descricao,
-                   @obracandidatoid = obracandidatoid
-            FROM
-            (
-                SELECT poitemid,
-                       gestatus,
-                       gedataacao,
-                       gecontaidacao,
-                       item,
-                       poid,
-                       obraid,
-                       percentualparcela,
-                       datalancamento,
-                       datafaturamento,
-                       numeronotafiscal,
-                       valor,
-                       tipo,
-                       clienteid,
-                       etapaid,
-                       observacao,
-                       codigo,
-					   LineNum,
-                       descricao,
-                       obracandidatoid,
-                       ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum
-                FROM #POItensTemp
-            ) AS Temp
-            WHERE RowNum = @Index;
+            -- Loop para processar os registros
+            WHILE @Index <= @Count
+            BEGIN
+                -- Buscar os dados da tabela temporária para o índice atual
+                SELECT @poitemid = poitemid,
+                       @gestatus = gestatus,
+                       @gedataacao = gedataacao,
+                       @gecontaidacao = gecontaidacao,
+                       @item = item,
+                       @obraid = obraid,
+                       @percentualparcela = percentualparcela,
+                       @datalancamento = datalancamento,
+                       @datafaturamento = datafaturamento,
+                       @numeronotafiscal = numeronotafiscal,
+                       @valor = valor,
+                       @tipo = tipo,
+                       @clienteid = clienteid,
+                       @etapaid = etapaid,
+                       @observacao = observacao,
+                       @codigo = codigo,
+				       @LineNum = LineNum,
+                       @descricao = descricao,
+                       @obracandidatoid = obracandidatoid
+                FROM
+                (
+                    SELECT poitemid,
+                           gestatus,
+                           gedataacao,
+                           gecontaidacao,
+                           item,
+                           obraid,
+                           percentualparcela,
+                           datalancamento,
+                           datafaturamento,
+                           numeronotafiscal,
+                           valor,
+                           tipo,
+                           clienteid,
+                           etapaid,
+                           observacao,
+                           codigo,
+					       LineNum,
+                           descricao,
+                           obracandidatoid,
+                           ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum
+                    FROM #POItensTemp
+                ) AS Temp
+                WHERE RowNum = @Index;
 
-			if (@poitemid = '')
-			begin
-				set @poitemid = NEWID();
-				UPDATE RDR1 SET U_IdPCI = @poitemid where DocEntry = @codigo and LineNum = @LineNum;
-			end;
+			    if (@poitemid = '')
+			    begin
+				    set @poitemid = NEWID();
+			    end;
 			   
 
-            -- Inserir os dados na tabela final
-            exec [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaPOItem @poitemid,
-                                                                                   @gestatus,
-                                                                                   @gedataacao,
-                                                                                   @item,
-                                                                                   @poid,
-                                                                                   @obraid,
-                                                                                   @percentualparcela,
-                                                                                   @datalancamento,
-                                                                                   @datafaturamento,
-                                                                                   @numeronotafiscal,
-                                                                                   @valor,
-                                                                                   @tipo,
-                                                                                   @clienteid,
-                                                                                   @etapaid,
-                                                                                   @observacao,
-                                                                                   @codigo,
-                                                                                   @descricao,
-                                                                                   @obracandidatoid;
+                -- Inserir os dados na tabela final
+                exec [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaPOItem @poitemid,
+                                                                                       @gestatus,
+                                                                                       @gedataacao,
+                                                                                       @item,
+                                                                                       @poid,
+                                                                                       @obraid,
+                                                                                       @percentualparcela,
+                                                                                       @datalancamento,
+                                                                                       @datafaturamento,
+                                                                                       @numeronotafiscal,
+                                                                                       @valor,
+                                                                                       @tipo,
+                                                                                       @clienteid,
+                                                                                       @etapaid,
+                                                                                       @observacao,
+                                                                                       @codigo,
+                                                                                       @descricao,
+                                                                                       @obracandidatoid;
+
+			    UPDATE RDR1 SET U_IdPCI = @poitemid where DocEntry = @codigo and LineNum = @LineNum;
+
+
+                -- Incrementar o índice
+                SET @Index = @Index + 1;
+            END
+
+          update ordr set U_IdPCI = @poid where DocEntry = @codigo;
+
 
             -- Incrementar o índice
-            SET @Index = @Index + 1;
+            SET @IndexPO = @IndexPO + 1;
         END
+
+                -- Excluir a tabela temporária
+        DROP TABLE #TempPO;
 
         -- Excluir a tabela temporária
         DROP TABLE #POItensTemp;
@@ -398,8 +420,6 @@ BEGIN
             ('17', @UltimaDataExec, @UltimaHoraExec);
 
         END;
-
-
 
     END TRY
     BEGIN CATCH

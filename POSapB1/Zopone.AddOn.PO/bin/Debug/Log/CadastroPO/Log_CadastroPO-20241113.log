@@ -1,6 +1,0 @@
-'CadastroPO';'Sucesso';'Dados atualizados na Senior, PN: 000142';'';'UserName'; System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 86;
-'CadastroPO';'Sucesso';'Dados atualizados na Senior, PN: 000203';'';'UserName'; System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 86;
-'CadastroPO';'Sucesso';'Dados atualizados na Senior, Contrato: 39';'';'UserName'; System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Users\thiago.martins\source\repos\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 86;

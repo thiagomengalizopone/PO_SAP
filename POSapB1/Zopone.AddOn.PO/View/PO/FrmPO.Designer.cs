@@ -53,7 +53,10 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label2 = new System.Windows.Forms.Label();
             this.txtAnexo = new System.Windows.Forms.TextBox();
             this.gbItens = new System.Windows.Forms.GroupBox();
+            this.BtDel = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.txtTotalPO = new System.Windows.Forms.TextBox();
             this.txtNroCont = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.txtDescItemPO = new System.Windows.Forms.TextBox();
@@ -155,6 +158,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtNroPedido.Name = "txtNroPedido";
             this.txtNroPedido.Size = new System.Drawing.Size(305, 22);
             this.txtNroPedido.TabIndex = 1;
+            this.txtNroPedido.Validating += new System.ComponentModel.CancelEventHandler(this.txtNroPedido_Validating);
             // 
             // label4
             // 
@@ -210,13 +214,14 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtDescricao.Location = new System.Drawing.Point(12, 94);
             this.txtDescricao.Multiline = true;
             this.txtDescricao.Name = "txtDescricao";
-            this.txtDescricao.Size = new System.Drawing.Size(906, 92);
+            this.txtDescricao.Size = new System.Drawing.Size(906, 68);
             this.txtDescricao.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 195);
+            this.label2.Enabled = false;
+            this.label2.Location = new System.Drawing.Point(12, 180);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 16);
             this.label2.TabIndex = 18;
@@ -225,14 +230,17 @@ namespace Zopone.AddOn.PO.View.Obra
             // txtAnexo
             // 
             this.txtAnexo.Enabled = false;
-            this.txtAnexo.Location = new System.Drawing.Point(12, 217);
+            this.txtAnexo.Location = new System.Drawing.Point(12, 202);
             this.txtAnexo.Name = "txtAnexo";
             this.txtAnexo.Size = new System.Drawing.Size(906, 22);
             this.txtAnexo.TabIndex = 6;
             // 
             // gbItens
             // 
+            this.gbItens.Controls.Add(this.BtDel);
+            this.gbItens.Controls.Add(this.label23);
             this.gbItens.Controls.Add(this.label22);
+            this.gbItens.Controls.Add(this.txtTotalPO);
             this.gbItens.Controls.Add(this.txtNroCont);
             this.gbItens.Controls.Add(this.label21);
             this.gbItens.Controls.Add(this.txtDescItemPO);
@@ -274,13 +282,32 @@ namespace Zopone.AddOn.PO.View.Obra
             this.gbItens.Controls.Add(this.txtCandidato);
             this.gbItens.Controls.Add(this.label8);
             this.gbItens.Controls.Add(this.txtObra);
-            this.gbItens.Location = new System.Drawing.Point(12, 249);
+            this.gbItens.Location = new System.Drawing.Point(12, 230);
             this.gbItens.Name = "gbItens";
-            this.gbItens.Size = new System.Drawing.Size(1105, 621);
+            this.gbItens.Size = new System.Drawing.Size(1105, 592);
             this.gbItens.TabIndex = 21;
             this.gbItens.TabStop = false;
             this.gbItens.Text = "Itens - PO";
             this.gbItens.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // BtDel
+            // 
+            this.BtDel.Image = ((System.Drawing.Image)(resources.GetObject("BtDel.Image")));
+            this.BtDel.Location = new System.Drawing.Point(1071, 11);
+            this.BtDel.Name = "BtDel";
+            this.BtDel.Size = new System.Drawing.Size(27, 28);
+            this.BtDel.TabIndex = 63;
+            this.BtDel.UseVisualStyleBackColor = true;
+            this.BtDel.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(878, 536);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(60, 16);
+            this.label23.TabIndex = 59;
+            this.label23.Text = "Total PO";
             // 
             // label22
             // 
@@ -291,13 +318,22 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label22.TabIndex = 62;
             this.label22.Text = "Nro Contrato";
             // 
+            // txtTotalPO
+            // 
+            this.txtTotalPO.Enabled = false;
+            this.txtTotalPO.Location = new System.Drawing.Point(944, 530);
+            this.txtTotalPO.Name = "txtTotalPO";
+            this.txtTotalPO.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.txtTotalPO.Size = new System.Drawing.Size(155, 22);
+            this.txtTotalPO.TabIndex = 58;
+            // 
             // txtNroCont
             // 
             this.txtNroCont.Enabled = false;
             this.txtNroCont.Location = new System.Drawing.Point(686, 140);
             this.txtNroCont.Name = "txtNroCont";
             this.txtNroCont.Size = new System.Drawing.Size(81, 22);
-            this.txtNroCont.TabIndex = 61;
+            this.txtNroCont.TabIndex = 17;
             // 
             // label21
             // 
@@ -314,7 +350,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtDescItemPO.Location = new System.Drawing.Point(9, 250);
             this.txtDescItemPO.Name = "txtDescItemPO";
             this.txtDescItemPO.Size = new System.Drawing.Size(1004, 22);
-            this.txtDescItemPO.TabIndex = 59;
+            this.txtDescItemPO.TabIndex = 21;
             // 
             // label16
             // 
@@ -331,7 +367,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtInfoSitePO.Location = new System.Drawing.Point(9, 305);
             this.txtInfoSitePO.Name = "txtInfoSitePO";
             this.txtInfoSitePO.Size = new System.Drawing.Size(1004, 22);
-            this.txtInfoSitePO.TabIndex = 57;
+            this.txtInfoSitePO.TabIndex = 22;
             // 
             // cbBloqueado
             // 
@@ -366,7 +402,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // button3
             // 
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Location = new System.Drawing.Point(203, 42);
+            this.button3.Location = new System.Drawing.Point(225, 42);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(28, 28);
             this.button3.TabIndex = 54;
@@ -376,7 +412,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // BtPesqObra
             // 
             this.BtPesqObra.Image = ((System.Drawing.Image)(resources.GetObject("BtPesqObra.Image")));
-            this.BtPesqObra.Location = new System.Drawing.Point(88, 40);
+            this.BtPesqObra.Location = new System.Drawing.Point(110, 40);
             this.BtPesqObra.Name = "BtPesqObra";
             this.BtPesqObra.Size = new System.Drawing.Size(28, 28);
             this.BtPesqObra.TabIndex = 24;
@@ -385,20 +421,21 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // BtCancelar
             // 
-            this.BtCancelar.Location = new System.Drawing.Point(87, 579);
+            this.BtCancelar.Location = new System.Drawing.Point(90, 529);
             this.BtCancelar.Name = "BtCancelar";
             this.BtCancelar.Size = new System.Drawing.Size(75, 23);
-            this.BtCancelar.TabIndex = 53;
+            this.BtCancelar.TabIndex = 25;
             this.BtCancelar.Text = "Cancelar";
             this.BtCancelar.UseVisualStyleBackColor = true;
             this.BtCancelar.Click += new System.EventHandler(this.BtCancelar_Click);
+            this.BtCancelar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BtCancelar_KeyDown);
             // 
             // BtSalvar
             // 
-            this.BtSalvar.Location = new System.Drawing.Point(6, 579);
+            this.BtSalvar.Location = new System.Drawing.Point(9, 529);
             this.BtSalvar.Name = "BtSalvar";
             this.BtSalvar.Size = new System.Drawing.Size(75, 23);
-            this.BtSalvar.TabIndex = 52;
+            this.BtSalvar.TabIndex = 24;
             this.BtSalvar.Text = "Salvar";
             this.BtSalvar.UseVisualStyleBackColor = true;
             this.BtSalvar.Click += new System.EventHandler(this.BtSalvar_Click);
@@ -409,7 +446,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.lblItemFat.ForeColor = System.Drawing.Color.Red;
             this.lblItemFat.Location = new System.Drawing.Point(686, 92);
             this.lblItemFat.Name = "lblItemFat";
-            this.lblItemFat.Size = new System.Drawing.Size(419, 22);
+            this.lblItemFat.Size = new System.Drawing.Size(408, 22);
             this.lblItemFat.TabIndex = 50;
             this.lblItemFat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -427,9 +464,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.lblObra.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblObra.ForeColor = System.Drawing.Color.Red;
-            this.lblObra.Location = new System.Drawing.Point(237, 45);
+            this.lblObra.Location = new System.Drawing.Point(259, 46);
             this.lblObra.Name = "lblObra";
-            this.lblObra.Size = new System.Drawing.Size(285, 22);
+            this.lblObra.Size = new System.Drawing.Size(253, 22);
             this.lblObra.TabIndex = 48;
             this.lblObra.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.lblObra.Click += new System.EventHandler(this.lblObra_Click);
@@ -449,7 +486,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.mskDataFaturamento.Mask = "99/99/9999";
             this.mskDataFaturamento.Name = "mskDataFaturamento";
             this.mskDataFaturamento.Size = new System.Drawing.Size(100, 22);
-            this.mskDataFaturamento.TabIndex = 16;
+            this.mskDataFaturamento.TabIndex = 15;
             this.mskDataFaturamento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // mskDataSol
@@ -463,11 +500,11 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // BtAdicionar
             // 
-            this.BtAdicionar.Location = new System.Drawing.Point(1019, 304);
+            this.BtAdicionar.Image = ((System.Drawing.Image)(resources.GetObject("BtAdicionar.Image")));
+            this.BtAdicionar.Location = new System.Drawing.Point(1038, 11);
             this.BtAdicionar.Name = "BtAdicionar";
-            this.BtAdicionar.Size = new System.Drawing.Size(75, 23);
-            this.BtAdicionar.TabIndex = 20;
-            this.BtAdicionar.Text = "Adicionar";
+            this.BtAdicionar.Size = new System.Drawing.Size(27, 28);
+            this.BtAdicionar.TabIndex = 23;
             this.BtAdicionar.UseVisualStyleBackColor = true;
             this.BtAdicionar.Click += new System.EventHandler(this.BtAdicionar_Click);
             // 
@@ -522,7 +559,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.DgItensPO.RowHeadersWidth = 51;
             this.DgItensPO.RowTemplate.Height = 24;
-            this.DgItensPO.Size = new System.Drawing.Size(1093, 236);
+            this.DgItensPO.Size = new System.Drawing.Size(1093, 177);
             this.DgItensPO.TabIndex = 21;
             this.DgItensPO.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgItensPO_CellContentClick);
             this.DgItensPO.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgItensPO_CellDoubleClick);
@@ -739,7 +776,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtNroNF.Location = new System.Drawing.Point(580, 140);
             this.txtNroNF.Name = "txtNroNF";
             this.txtNroNF.Size = new System.Drawing.Size(100, 22);
-            this.txtNroNF.TabIndex = 17;
+            this.txtNroNF.TabIndex = 16;
             this.txtNroNF.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label17
@@ -764,6 +801,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.CbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbTipo.FormattingEnabled = true;
+            this.CbTipo.ItemHeight = 16;
             this.CbTipo.Location = new System.Drawing.Point(223, 138);
             this.CbTipo.Name = "CbTipo";
             this.CbTipo.Size = new System.Drawing.Size(121, 24);
@@ -810,6 +848,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.txtItemFaturamento.Name = "txtItemFaturamento";
             this.txtItemFaturamento.Size = new System.Drawing.Size(211, 22);
             this.txtItemFaturamento.TabIndex = 11;
+            this.txtItemFaturamento.Validating += new System.ComponentModel.CancelEventHandler(this.txtItemFaturamento_Validating);
             // 
             // label11
             // 
@@ -846,7 +885,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(119, 22);
+            this.label9.Location = new System.Drawing.Point(141, 22);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(69, 16);
             this.label9.TabIndex = 25;
@@ -854,7 +893,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // txtCandidato
             // 
-            this.txtCandidato.Location = new System.Drawing.Point(122, 45);
+            this.txtCandidato.Location = new System.Drawing.Point(144, 45);
             this.txtCandidato.Name = "txtCandidato";
             this.txtCandidato.Size = new System.Drawing.Size(82, 22);
             this.txtCandidato.TabIndex = 8;
@@ -873,9 +912,10 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.txtObra.Location = new System.Drawing.Point(6, 45);
             this.txtObra.Name = "txtObra";
-            this.txtObra.Size = new System.Drawing.Size(81, 22);
+            this.txtObra.Size = new System.Drawing.Size(100, 22);
             this.txtObra.TabIndex = 7;
             this.txtObra.TextChanged += new System.EventHandler(this.txtObra_TextChanged);
+            this.txtObra.Validating += new System.ComponentModel.CancelEventHandler(this.txtObra_Validating);
             // 
             // mskDATA
             // 
@@ -918,7 +958,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // BtAnexo
             // 
             this.BtAnexo.Image = ((System.Drawing.Image)(resources.GetObject("BtAnexo.Image")));
-            this.BtAnexo.Location = new System.Drawing.Point(924, 215);
+            this.BtAnexo.Location = new System.Drawing.Point(924, 198);
             this.BtAnexo.Name = "BtAnexo";
             this.BtAnexo.Size = new System.Drawing.Size(28, 28);
             this.BtAnexo.TabIndex = 57;
@@ -931,7 +971,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(1132, 882);
+            this.ClientSize = new System.Drawing.Size(1132, 849);
             this.Controls.Add(this.BtAnexo);
             this.Controls.Add(this.BtPesqPO);
             this.Controls.Add(this.CbStatus);
@@ -950,11 +990,14 @@ namespace Zopone.AddOn.PO.View.Obra
             this.Controls.Add(this.txtNroPedido);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCodigo);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "FrmPO";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Detalhe PO";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmPO_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmPO_KeyDown);
             this.gbItens.ResumeLayout(false);
             this.gbItens.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).EndInit();
@@ -1045,6 +1088,9 @@ namespace Zopone.AddOn.PO.View.Obra
         private DataGridViewTextBoxColumn U_DescItemFat;
         private DataGridViewCheckBoxColumn U_Bloqueado;
         private DataGridViewTextBoxColumn Contrato;
+        private Label label23;
+        private TextBox txtTotalPO;
+        private Button BtDel;
     }
 }
 

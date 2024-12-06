@@ -38,15 +38,30 @@ namespace Zopone.AddOn.PO.View.PO
             {
                 string commandSQL = string.Empty;
 
-
                 if (TipoPesquisa == "OBRA")
+                {
+                    if (Parametros.Count > 0 && string.IsNullOrEmpty(txtPesquisar.Text) && !string.IsNullOrEmpty(Parametros[0]))
+                    {
+                        txtPesquisar.Text = Parametros[0];
+                        Parametros[0] = string.Empty;
+                    }
+
                     commandSQL = $"SP_ZPN_PESQUISAOBRA '{txtPesquisar.Text}'";
+                }
                 else if (TipoPesquisa == "CANDIDATO")
                     commandSQL = $"SP_ZPN_PESQUISAOBRACANDIDATO '{txtPesquisar.Text}', '{Parametros[0]}'";
                 else if (TipoPesquisa == "ITEMFAT")
+                {
+                    if (Parametros.Count > 0 && string.IsNullOrEmpty(txtPesquisar.Text) && !string.IsNullOrEmpty(Parametros[0]))
+                    {
+                        txtPesquisar.Text = Parametros[1];
+                        Parametros[1] = string.Empty;
+                    }
+
                     commandSQL = $"SP_ZPN_PESQUISAETAPA '{txtPesquisar.Text}', '{Parametros[0]}'";
+                }
                 else if (TipoPesquisa == "PO")
-                    commandSQL = $"ZPN_SP_LISTAPO '{txtPesquisar.Text}'";
+                    commandSQL = $"SP_ZPN_PESQUISAPO '{txtPesquisar.Text}'";
                 else if (TipoPesquisa == "CLIENTE")
                     commandSQL = $"SP_ZPN_PESQUISACLIENTE '{txtPesquisar.Text}'";                
 
@@ -140,6 +155,14 @@ namespace Zopone.AddOn.PO.View.PO
         private void dgResultado_DoubleClick(object sender, EventArgs e)
         {
             SelecionarDados();
+        }
+
+        private void FrmPesquisa_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelecionarDados();
+            }
         }
     }
 }

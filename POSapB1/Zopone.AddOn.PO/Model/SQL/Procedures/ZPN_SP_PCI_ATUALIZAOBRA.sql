@@ -44,6 +44,9 @@ BEGIN
         @gedarquivoid VARCHAR(250),
         @gedpastaid VARCHAR(250);
 
+	declare @erro_obra  VARCHAR(max) = '';
+
+
     -- Verifica e remove a tabela temporária se já existir
     IF EXISTS (SELECT * FROM tempdb.sys.tables 
                WHERE NAME LIKE '#TempObra%' AND TYPE = 'U')
@@ -200,53 +203,68 @@ BEGIN
 
 
 		if (isnull(@obraid,'') = '') begin
-			set @obraid = newid();
-			update "@ZPN_OPRJ" set U_IdPCI = @obraid where "Code" = @referencia;
+
+       		select @obraid = isnull(max(obraid),'') from [LINKZCLOUD].[zsistema_aceite].[dbo].obra where [referencia] = @referencia;
+
+            if (@obraid = '') begin
+			    set @obraid = newid();
+            end;
 		end;
 
-        -- Chama a procedure para inserir/atualizar a obra
-        EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].[ZPN_PCI_InsereAtualizaObra]
-            @obraid,
-            @gestatus,
-            @gedataacao,
-            @gecontaidacao,
-            @obraclassificacaoid,
-            @referencia,
-            @longitude,
-            @bairro,
-            @realizadotermino,
-            @realizadoinicio,
-            @altitude,
-            @cep,
-            @complemento,
-            @contratoid,
-            @datacadastro,
-            @endereco,
-            @filialid,
-            @latitude,
-            @localizacao,
-            @numero,
-            @previsaoinicio,
-            @previsaotermino,
-            @visualizarpci,
-            @detentora,
-            @equipamento,
-            @historicoavaliacoes,
-            @iddetentora,
-            @idsite,
-            @tipo,
-            @situacao,
-            @cidade,
-            @estado,
-            @dataatualizacao,
-            @situacaopci,
-            @observacaomontagemform,
-            @gedarquivoid,
-            @gedpastaid;
+		BEGIN TRY
+
+			-- Chama a procedure para inserir/atualizar a obra
+			EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].[ZPN_PCI_InsereAtualizaObra]
+				@obraid,
+				@gestatus,
+				@gedataacao,
+				@gecontaidacao,
+				@obraclassificacaoid,
+				@referencia,
+				@longitude,
+				@bairro,
+				@realizadotermino,
+				@realizadoinicio,
+				@altitude,
+				@cep,
+				@complemento,
+				@contratoid,
+				@datacadastro,
+				@endereco,
+				@filialid,
+				@latitude,
+				@localizacao,
+				@numero,
+				@previsaoinicio,
+				@previsaotermino,
+				@visualizarpci,
+				@detentora,
+				@equipamento,
+				@historicoavaliacoes,
+				@iddetentora,
+				@idsite,
+				@tipo,
+				@situacao,
+				@cidade,
+				@estado,
+				@dataatualizacao,
+				@situacaopci,
+				@observacaomontagemform,
+				@gedarquivoid,
+				@gedpastaid;
+
+			update "@ZPN_OPRJ" set U_IdPCI = @obraid where "Code" = @referencia;
+
+		END TRY
+		BEGIN CATCH
+			select @erro_obra = @erro_obra + ' Erro ao enviar Obra ' + @referencia + ' '  + ERROR_MESSAGE() + '\n' ;
+		END CATCH
 
         SET @Counter = @Counter + 1;
     END;
 
     -- Limpa a tabela temporária
     DROP TABLE #TempObra;
+
+	select @erro_obra "erro";
 END;

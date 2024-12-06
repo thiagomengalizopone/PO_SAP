@@ -21,6 +21,14 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
+        public static class ZPN_SP_RetornaProximaAlocacao
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_RetornaProximaAlocacao.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+        
         public static class SP_ZPN_IMPORTARPOERICSSON
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_IMPORTARPOERICSSON.sql";
@@ -53,6 +61,20 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
+        public static class SP_ZPN_GeraCodigosObra
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_GeraCodigosObra.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+        public static class ZPN_SP_PCI_ATUALIZAOBRAPCG
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_PCI_ATUALIZAOBRAPCG.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
         public static class SP_ZPN_PESQUISAETAPA
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_PESQUISAETAPA.sql";
@@ -77,9 +99,9 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
-        public static class SP_ZPN_VERIFICAIMPORTARPOHuawei
+        public static class SP_ZPN_VERIFICAIMPORTARPO
         {
-            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_VERIFICAIMPORTARPOHuawei.sql";
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_VERIFICAIMPORTARPO.sql";
             public const string Descricao = "";
             public const TipoScript Tipo = TipoScript.Proc;
             public const Int32 Versao = 2024111201;
@@ -141,9 +163,9 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
-        public static class ZPN_SP_LISTAPO
+        public static class SP_ZPN_PESQUISAPO
         {
-            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_LISTAPO.sql";
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_PESQUISAPO.sql";
             public const string Descricao = "";
             public const TipoScript Tipo = TipoScript.Proc;
             public const Int32 Versao = 2024111201;
@@ -205,6 +227,7 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
+        /*
         public static class ZPN_SP_PCI_ATUALIZAOBRACANDIDATO
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_PCI_ATUALIZAOBRACANDIDATO.sql";
@@ -212,6 +235,7 @@ namespace Zopone.AddOn.PO.Model
             public const TipoScript Tipo = TipoScript.Proc;
             public const Int32 Versao = 2024111201;
         }
+        */
 
         public static class ZPN_SP_PCI_ATUALIZAOBRACLASSIFICACAO
         {

@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_PCI_ATUALIZACONTRATO
+﻿CREATE PROCEDURE ZPN_SP_PCI_ATUALIZACONTRATO
 (
 	@AbsID INT
 )
@@ -22,16 +22,25 @@ declare 	 @contratoid varchar(200),
 	 @codigo INT;
 
 
+	 select @contratoid = isnull(max(U_IdPCI),'')  from ooat where absid = @AbsID;
 
-	UPDATE OOAT
-		SET 
-			U_IdPCI = newid()
-	FROM 
-		OOAT
-	WHERE
-		ISNULL(OOAT.U_IdPCI,'') = '' AND
-		(@AbsID = OOAT.AbsId OR ISNULL (@AbsID,0) = 0 ) ;
+	if (@contratoid = '')
+	begin 
+		select @contratoid = isnull(max(contratoid),'') from [LINKZCLOUD].[zsistema_aceite].[dbo].contrato where [referencia] = @referencia;
 
+		if (@contratoid = '') begin
+			set @contratoid = newid();
+		end;
+
+		UPDATE OOAT
+			SET 
+				U_IdPCI = @contratoid
+		FROM 
+			OOAT
+		WHERE
+			ISNULL(OOAT.U_IdPCI,'') = '' AND
+			(@AbsID = OOAT.AbsId OR ISNULL (@AbsID,0) = 0 ) ;
+	end;
 
      
 	 SELECT top 1
@@ -76,12 +85,6 @@ declare 	 @contratoid varchar(200),
 			@datacadastro,
 			@codigo;
 	end;
-
-
-
-
-
-
 
 
 

@@ -1,9 +1,0 @@
-'CadastroPO';'Erro';'Erro ao atualizar dados de obra: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Could not find stored procedure 'zsistema_aceite.dbo.ZPN_PCI_InsereAtualizaObra'.';'System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Could not find stored procedure 'zsistema_aceite.dbo.ZPN_PCI_InsereAtualizaObra'.
-   em sap.dev.data.SqlUtils.<DoNonQueryAsync>d__0.MoveNext() na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 32
---- Fim do rastreamento de pilha do local anterior onde a exceção foi gerada ---
-   em System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   em System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   em System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   em Zopone.AddOn.PO.Helpers.UtilPCI.<EnviarDadosPCIAsync>d__0.MoveNext() na C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Helpers\UtilPCI.cs:linha 23';'UserName'; System.Exception: ERROR [42000] [Microsoft][ODBC SQL Server Driver][SQL Server]Incorrect syntax near 'zsistema_aceite'.
-   em sap.dev.data.SqlUtils.DoNonQuery(String aSql) na C:\Projetos\SAP\sap.dev.addon\sap.dev.data\SqlUtils.cs:linha 55
-   em sap.dev.core.Util.GravarLog(EnumAddOn addOn, TipoMensagem tipoMsg, String mensagem, Exception Ex) na C:\Projetos\SAP\sap.dev.addon\sap.dev.core\Util\Util.cs:linha 85;

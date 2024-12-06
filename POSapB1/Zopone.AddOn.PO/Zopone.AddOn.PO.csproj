@@ -252,6 +252,7 @@
     <Compile Include="View\ObraProjeto\Frm711.cs" />
     <Compile Include="View\Obra\FrmGerarObra.cs" />
     <Compile Include="View\Obra\FrmObra.cs" />
+    <Compile Include="View\ParametrosPO\FrmParamPO.cs" />
     <Compile Include="View\PO\FrmVerificaImportacaoPO.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -388,7 +389,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAETAPA.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRACONTRATO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LISTAOBRAPO.sql" />
     <EmbeddedResource Include="View\Config\FrmConfPO.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -398,7 +399,7 @@
     <EmbeddedResource Include="Model\SQL\Tables\ZPN_LOGIMPORTACAOPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_LOGIMPORTACAOPO.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_LISTALOGIMPORTACAOPO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_VERIFICAIMPORTARPOHuawei.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_VERIFICAIMPORTARPO.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_DOCUMENTOSSEMOBRA.sql" />
     <EmbeddedResource Include="Model\SQL\Tables\ZPN_POERICSSON.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_POERICSSON.sql" />
@@ -478,6 +479,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="iconadd.png" />
+    <Content Include="icondelete.png" />
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaPO.sql" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOEricsson.sql" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOHuawei.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_STATUSVALIDACAOPEDIDOSPO.sql" />
@@ -488,7 +492,19 @@
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportacaoEtapaSAPTopEng.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportarContratoTopEng.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_ImportarObraTOPEng.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CENTROCUSTOCLIENTE.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CODIGOCENTROCUSTO.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_PONaoValidada.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_RET_OBRA_SAP.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_POSITE.sql" />
+    <EmbeddedResource Include="Model\SQL\Tables\ZPN_GERAROBRA.sql" />
+    <EmbeddedResource Include="View\ParametrosPO\FrmParamPO.srf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQL\Tables\ZPN_IMPFATURAMENTOHUAWEI.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_IMPFATURAMENTOHUAWEI.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\VW_ZPN_TOTALFATURADOPOTOPENG.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_VERIFICACADASTROPCI.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -498,22 +514,22 @@
     <Folder Include="Model\Senior\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\sap.dev.addon\sap.dev.core\sap.dev.core.csproj">
-      <Project>{14c7edbe-efee-43e8-873e-9b7b8c59eb7d}</Project>
-      <Name>sap.dev.core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\sap.dev.addon\sap.dev.data\sap.dev.data.csproj">
-      <Project>{ba20857c-43e9-450a-9776-39f33d939249}</Project>
-      <Name>sap.dev.data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\SeniorContrato\" />
     <WCFMetadataStorage Include="Connected Services\SeniorFilial\" />
     <WCFMetadataStorage Include="Connected Services\SeniorOutraEmpresa\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\sap.dev.core\sap.dev.core.csproj">
+      <Project>{14c7edbe-efee-43e8-873e-9b7b8c59eb7d}</Project>
+      <Name>sap.dev.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\sap.dev.data\sap.dev.data.csproj">
+      <Project>{ba20857c-43e9-450a-9776-39f33d939249}</Project>
+      <Name>sap.dev.data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.2.2146\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets" Condition="Exists('packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.2.2146\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets')" />

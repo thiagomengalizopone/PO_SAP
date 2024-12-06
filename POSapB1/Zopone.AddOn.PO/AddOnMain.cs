@@ -21,13 +21,6 @@ namespace Zopone.AddOn.PO
 {
     public class AddOnMain
     {
-        public class WareHouse
-        {
-            public string WarehouseCode { get; set; }
-            public string WarehouseName { get; set; }
-            public int BusinessPlaceID { get; set; }
-            public string U_DepositoRA { get; set; }
-        }
 
         public static void Inicializar(string[] aArguments)
         {
@@ -47,12 +40,12 @@ namespace Zopone.AddOn.PO
             //ImportaContratoHomologacao.criacentrocusto();
             #endregion
 
-
+            
             Install.VerificaInstalacaoAddOn();
+            
+            Instalar.ExecutaScriptsAtualizacaoCampos();
 
-            CentroCustoLocalizacao.CriarCentroCustoLocalizacao();
-
-            UtilWarehouses.CriaDepositosRAAsync();
+            CentroCustoLocalizacao.CriarCentroCustoLocalizacao();            
 
             Configuracoes.CarregarConfiguracaoes();
             UtilAddOn.UtilAddOn.CarregarMenus();
@@ -63,6 +56,8 @@ namespace Zopone.AddOn.PO
             Globals.Master.Connection.Interface.ItemEvent += ItemEventHandler.Interface_ItemEvent;
             Globals.Master.Connection.Interface.FormDataEvent += FormDataEventHandler.Interface_FormDataEvent;
             Globals.Master.Connection.Interface.RightClickEvent += RightClickEventHandler.Interface_RightClickEvent;
+
+            UtilWarehouses.CriaDepositosRAAsync();
         }
 
         private static Int32 GetDLLVersion()

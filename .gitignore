@@ -138,3 +138,4 @@ orleans.codegen.cs
 
 # Diretórios e arquivos gerados em projetos antigos ou conversões
 Generated_Code/
+/POSapB1/.vs/POSapB1/v17/.suo

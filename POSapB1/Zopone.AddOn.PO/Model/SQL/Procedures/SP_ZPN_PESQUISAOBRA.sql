@@ -7,7 +7,7 @@ BEGIN
     -- Trim whitespace from the input parameter
     SET @CampoPesquisa = TRIM(@CampoPesquisa);
 
-    SELECT TOP 100
+    SELECT TOP 500
         OPRJ.PrjCode AS "Código Obra",
         OPRJ.PrjName AS "Obra",
         ZPN_PRJ.U_IdSite AS "Id Site",
@@ -41,5 +41,5 @@ BEGIN
 		OCRD.CardCode LIKE '%' + @CampoPesquisa + '%' OR 
         OCRD.CardName LIKE '%' + @CampoPesquisa + '%' 
     ORDER BY
-        OPRJ.PrjName;
+        OPRJ.PrjCode;
 END

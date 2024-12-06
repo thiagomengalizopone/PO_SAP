@@ -99,12 +99,15 @@
             this.Controls.Add(this.dgResultado);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtPesquisar);
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmPesquisa";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pesquisa";
             this.Load += new System.EventHandler(this.FrmPesquisa_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmPesquisa_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dgResultado)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

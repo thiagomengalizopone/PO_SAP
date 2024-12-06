@@ -1,0 +1,148 @@
+ O volume na unidade C n∆o tem nome.
+ O N£mero de SÇrie do Volume Ç C8B2-638E
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601
+
+26/11/2024  09:15    <DIR>          .
+26/11/2024  09:15    <DIR>          ..
+26/11/2024  09:03            18.287 Faturamento.ard
+26/11/2024  09:15                 0 file.txt
+26/11/2024  09:14    <DIR>          X64Client
+               2 arquivo(s)         18.287 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+19/11/2024  18:21             2.908 App.config
+31/10/2023  12:00            26.904 Microsoft.Bcl.AsyncInterfaces.dll
+31/10/2023  12:00            31.280 Microsoft.Bcl.AsyncInterfaces.xml
+19/10/2023  17:53           401.168 Microsoft.Build.Framework.dll
+19/10/2023  17:53           200.604 Microsoft.Build.Framework.pdb
+19/10/2023  17:53           557.952 Microsoft.Build.Framework.xml
+19/10/2023  17:54         1.406.640 Microsoft.Build.Tasks.Core.dll
+19/10/2023  17:54           418.784 Microsoft.Build.Tasks.Core.pdb
+19/10/2023  17:54         1.099.135 Microsoft.Build.Tasks.Core.xml
+19/10/2023  17:53           365.320 Microsoft.Build.Utilities.Core.dll
+19/10/2023  17:53           116.376 Microsoft.Build.Utilities.Core.pdb
+19/10/2023  17:53           595.833 Microsoft.Build.Utilities.Core.xml
+22/10/2021  20:47           129.128 Microsoft.IO.Redist.dll
+22/10/2021  20:47           116.711 Microsoft.IO.Redist.xml
+19/10/2023  17:53            30.384 Microsoft.NET.StringTools.dll
+19/10/2023  17:53             8.892 Microsoft.NET.StringTools.pdb
+19/10/2023  17:53            26.696 Microsoft.NET.StringTools.xml
+08/03/2023  04:09           711.952 Newtonsoft.Json.dll
+08/03/2023  04:05           713.541 Newtonsoft.Json.xml
+04/10/2024  08:49           212.992 RestSharp.dll
+04/10/2024  08:49           174.014 RestSharp.xml
+26/11/2024  08:46            57.856 sap.dev.core.dll
+08/11/2024  11:11               453 sap.dev.core.dll.config
+26/11/2024  08:46           142.848 sap.dev.core.pdb
+26/11/2024  08:46            23.040 sap.dev.data.dll
+26/11/2024  08:46            50.688 sap.dev.data.pdb
+13/09/2023  05:54         5.654.016 SAPBusinessOneSDK.dll
+19/02/2020  07:05            20.856 System.Buffers.dll
+19/02/2020  07:05             3.481 System.Buffers.xml
+18/10/2022  13:25           198.784 System.Collections.Immutable.dll
+10/10/2022  19:07           485.858 System.Collections.Immutable.xml
+18/10/2022  13:34            91.264 System.Configuration.ConfigurationManager.dll
+18/10/2022  13:34            49.034 System.Configuration.ConfigurationManager.xml
+08/05/2022  00:31           142.240 System.Memory.dll
+08/05/2022  00:31            13.950 System.Memory.xml
+15/05/2018  10:29           115.856 System.Numerics.Vectors.dll
+15/05/2018  10:29           183.484 System.Numerics.Vectors.xml
+18/10/2022  13:37            61.568 System.Resources.Extensions.dll
+18/10/2022  13:37            27.501 System.Resources.Extensions.xml
+22/10/2021  20:40            18.024 System.Runtime.CompilerServices.Unsafe.dll
+19/10/2021  04:14            20.529 System.Runtime.CompilerServices.Unsafe.xml
+22/10/2021  20:45            35.952 System.Security.AccessControl.dll
+19/10/2021  04:14           231.631 System.Security.AccessControl.xml
+18/10/2022  13:34            30.328 System.Security.Permissions.dll
+18/10/2022  13:34             8.987 System.Security.Permissions.xml
+19/10/2020  15:46            18.312 System.Security.Principal.Windows.dll
+09/10/2020  17:10            90.968 System.Security.Principal.Windows.xml
+31/10/2023  12:00            79.024 System.Text.Encodings.Web.dll
+18/09/2023  20:26            63.180 System.Text.Encodings.Web.xml
+13/06/2024  16:41           643.864 System.Text.Json.dll
+18/09/2023  20:26           537.044 System.Text.Json.xml
+18/10/2022  13:40           181.376 System.Threading.Tasks.Dataflow.dll
+10/10/2022  19:07           201.954 System.Threading.Tasks.Dataflow.xml
+19/02/2020  07:05            25.984 System.Threading.Tasks.Extensions.dll
+19/02/2020  07:05            10.147 System.Threading.Tasks.Extensions.xml
+15/05/2018  10:29            25.232 System.ValueTuple.dll
+15/05/2018  10:29               142 System.ValueTuple.xml
+26/11/2024  09:14    <DIR>          View
+26/11/2024  08:46           789.504 Zopone.AddOn.PO.exe
+19/11/2024  18:21             2.908 Zopone.AddOn.PO.exe.config
+26/11/2024  08:46           863.744 Zopone.AddOn.PO.pdb
+18/09/2024  15:40            25.974 zopone.jpg
+              61 arquivo(s)     18.574.799 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client\View
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+26/11/2024  09:14    <DIR>          Alocaáao
+26/11/2024  09:14    <DIR>          ClassificacaoObra
+26/11/2024  09:14    <DIR>          Config
+26/11/2024  09:14    <DIR>          ConfiguracaoImportWMS
+26/11/2024  09:14    <DIR>          ContratoAlocacao
+26/11/2024  09:14    <DIR>          Faturamento
+26/11/2024  09:14    <DIR>          Obra
+               0 arquivo(s)              0 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client\View\Alocaáao
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+16/09/2024  14:48            27.802 FrmAloca.srf
+               1 arquivo(s)         27.802 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client\View\ClassificacaoObra
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+12/08/2024  11:21            11.084 FrmClassObra.srf
+               1 arquivo(s)         11.084 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client\View\Config
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+19/11/2024  18:21            21.998 FrmConfPO.srf
+               1 arquivo(s)         21.998 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client\View\ConfiguracaoImportWMS
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+06/06/2024  15:43            14.052 FrmConfigImpWMS.srf
+               1 arquivo(s)         14.052 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client\View\ContratoAlocacao
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+25/09/2024  17:57            13.082 FrmContAloca.srf
+               1 arquivo(s)         13.082 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client\View\Faturamento
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+14/10/2024  18:02            21.056 FrmEfetivaFaturamento.srf
+22/11/2024  15:40            22.416 FrmListaFaturamento.srf
+14/10/2024  18:02            24.974 FrmPreFaturamento.srf
+               3 arquivo(s)         68.446 bytes
+
+ Pasta de C:\Projetos\SAP\sap.dev.addon\PO\POSapB1\Zopone.AddOn.PO\Instalador\Faturamento2024112601\X64Client\View\Obra
+
+26/11/2024  09:14    <DIR>          .
+26/11/2024  09:14    <DIR>          ..
+27/09/2024  10:13            17.024 FrmGerarObra.srf
+25/11/2024  15:39           151.800 FrmObra.srf
+               2 arquivo(s)        168.824 bytes
+
+     Total de Arquivos na Lista:
+              73 arquivo(s)     18.918.374 bytes
+              29 pasta(s)   158.403.338.240 bytes dispon°veis

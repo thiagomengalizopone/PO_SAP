@@ -8,17 +8,15 @@ namespace Zopone.AddOn.PO
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] aArguments)
         {
             try
             {
-                //System.Windows.Forms.Application.ThreadException += new
-                //System.Threading.ThreadExceptionEventHandler(Util.Application_ThreadException);
 
                 System.Windows.Forms.Application.SetUnhandledExceptionMode(System.Windows.Forms.UnhandledExceptionMode.CatchException);
 
                 AppDomain currentDomain = AppDomain.CurrentDomain;
-                //currentDomain.UnhandledException += new UnhandledExceptionEventHandler(Util.MyHandlerUnhandledException);
 
                 AddOnMain.Inicializar(aArguments);
                 System.Windows.Forms.Application.Run();

@@ -5,7 +5,7 @@ using SAPbouiCOM;
 using System;
 using System.Threading.Tasks;
 
-namespace Zopone.AddOn.PO.View.Alocação
+namespace Zopone.AddOn.PO.View.Alocacao
 {
     public class FrmAloca : FormSDK
     {
