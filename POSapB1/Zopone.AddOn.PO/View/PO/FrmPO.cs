@@ -738,21 +738,17 @@ namespace Zopone.AddOn.PO.View.Obra
                 oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
                 oPedidoVenda.Comments = txtObservacao.Text;
 
-
-                if (linesPODeleted.Count > 0)
+                for (int iRow = oPedidoVenda.Lines.Count - 1; iRow >= 0; iRow--)
                 {
-                    for (int iRow = oPedidoVenda.Lines.Count-1; iRow >= 0; iRow --)
-                    {
-                        oPedidoVenda.Lines.SetCurrentLine(iRow);
-                        oPedidoVenda.Lines.Delete();
-                    }
+                    oPedidoVenda.Lines.SetCurrentLine(iRow);
+                    oPedidoVenda.Lines.Delete();
                 }
 
                 foreach (var linePO in linesPO)
                 {
                     if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
                         oPedidoVenda.Lines.Add();
-                    
+
                     oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                     oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
                     oPedidoVenda.Lines.Quantity = 1;
@@ -793,7 +789,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     }
                 }
 
-                
+
 
                 if (bExistePedido)
                 {
@@ -822,11 +818,11 @@ namespace Zopone.AddOn.PO.View.Obra
                 linesPODeleted = new List<int>();
 
                 lblMensagemTela.Text = "PO Salva com sucesso!";
-                lblMensagemTela.Font = new Font(lblMensagemTela.Font, FontStyle.Bold);  
-                lblMensagemTela.ForeColor = Color.Black;  
+                lblMensagemTela.Font = new Font(lblMensagemTela.Font, FontStyle.Bold);
+                lblMensagemTela.ForeColor = Color.Black;
 
             }
-            catch (Exception Ex)            
+            catch (Exception Ex)
             {
                 string mensagemErro = $"Erro ao salvar PO: {Ex.Message}";
 
