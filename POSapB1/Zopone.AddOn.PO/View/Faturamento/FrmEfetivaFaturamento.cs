@@ -15,6 +15,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         EditText EdDataI { get; set; }
         EditText EdDataF { get; set; }
         EditText EdPO { get; set; }
+        EditText EdCliente { get; set; }
         DataTable DtPesquisa { get; set; }
         Matrix MtPedidos { get; set; }
 
@@ -33,6 +34,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdDataI = (EditText)oForm.Items.Item("EdDataI").Specific;
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
+
+            EdCliente = (EditText)oForm.Items.Item("EdCliente").Specific;            
 
             MtPedidos = (Matrix)oForm.Items.Item("MtPed").Specific;
 
@@ -337,6 +340,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
+
+                MtPedidos.Columns.Item("CardCode").DataBind.Bind("DtPO", "CardCode");
+                MtPedidos.Columns.Item("CardName").DataBind.Bind("DtPO", "CardName");                
 
                 MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");

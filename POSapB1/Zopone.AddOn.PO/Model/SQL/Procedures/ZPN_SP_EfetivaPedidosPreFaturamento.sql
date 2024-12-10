@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿Create PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -24,6 +24,8 @@ SELECT
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
 	ORDR."NumAtCard" "PO",
+	ODRF."CardCode",
+	ODRF."CardName",
 	DRF1."LineNum" "Linha",
 	DRF1."U_Item" "Item",
 	DRF1."U_Atividade" "Atividade",

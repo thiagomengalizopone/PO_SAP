@@ -90,8 +90,8 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("RDR1", "CardCode", "Projeto", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 40, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "CardName", "Projeto Descrição", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "Item", "Item", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("RDR1", "ItemFat", "Item Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
-                DBCreation.CriarCampoUsuario("RDR1", "DescItemFat", "Desc Item Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "ItemFat", "Cód. Alocação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("RDR1", "DescItemFat", "Alocação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "Parcela", "Parcela", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "Tipo", "Tipo", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("RDR1", "DataLanc", "Data Lançamento", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
@@ -111,6 +111,11 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("RDR1", "StatusFat", "Status Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "A", valoresValidosStatusFaturamento);
                 DBCreation.CriarCampoUsuario("RDR1", "StatusImp", "Status Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "", valoresValidosStatusImportacao);
 
+                #endregion
+
+                #region ParcelasDOcumento
+                DBCreation.CriarCampoUsuario("INV6", "ItemFat", "Cód. Alocação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("INV6", "DescItemFat", "Alocação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 #endregion
 
                 #region ALOCAÇÃO OBRA                
