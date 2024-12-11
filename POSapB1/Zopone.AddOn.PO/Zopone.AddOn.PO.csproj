@@ -249,6 +249,7 @@
       <DependentUpon>FrmFaturamento.cs</DependentUpon>
     </Compile>
     <Compile Include="View\FrmParceiroNegocio\Frm134.cs" />
+    <Compile Include="View\NotaFiscal\Frm65021.cs" />
     <Compile Include="View\ObraProjeto\Frm711.cs" />
     <Compile Include="View\Obra\FrmGerarObra.cs" />
     <Compile Include="View\Obra\FrmObra.cs" />

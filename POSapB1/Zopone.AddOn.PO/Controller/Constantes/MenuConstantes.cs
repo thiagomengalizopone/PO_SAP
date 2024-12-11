@@ -37,6 +37,7 @@
         public const string FrmDeposito = "62";
         public const string FrmGerarObra = "FrmGerarObra";
         public const string FrmParametrosImportacao = "FrmParamImp";
+        public const string FrmParcelasNotaFiscal = "65021";
     }
 }
 

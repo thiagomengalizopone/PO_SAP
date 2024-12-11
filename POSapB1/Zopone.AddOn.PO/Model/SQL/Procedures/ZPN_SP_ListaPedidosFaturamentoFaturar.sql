@@ -40,9 +40,10 @@ FROM
 	LEFT JOIN ZPN_VW_TotalFaturadoPedido FAT ON FAT.U_BaseEntry = RDR1."DocEntry" AND FAT.U_BaseLine = RDR1.LineNum
 
 WHERE
+	isnull(ORDR."NumAtCard",'') <> '' and 
 	ISNULL(RDR1.U_Bloqueado,'N') <> 'Y'
 	AND ISNULL(RDR1."U_StatusFat",'A') = 'A'
-	AND (isnull(ORDR."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
+	AND (isnull(ORDR."NumAtCard",'') = @NumAtCard or isnull(@NumAtCard,'') = '')
 	AND ORDR."DocDate" between @DataInicial and @DataFinal
 ORDER BY
 	ORDR."DocDate", ORDR."DocNum", RDR1."LineNum";

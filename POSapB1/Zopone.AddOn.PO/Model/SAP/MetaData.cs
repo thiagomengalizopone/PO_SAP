@@ -116,6 +116,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 #region ParcelasDOcumento
                 DBCreation.CriarCampoUsuario("INV6", "ItemFat", "Cód. Alocação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 DBCreation.CriarCampoUsuario("INV6", "DescItemFat", "Alocação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
+                DBCreation.CriarCampoUsuario("INV6", "Project", "Cód. Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 150, false, null);
                 #endregion
 
                 #region ParcelasDOcumento
