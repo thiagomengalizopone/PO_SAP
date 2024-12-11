@@ -59,29 +59,18 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                 {
                     SAPbouiCOM.DataTable oDataTable = null;
                     oDataTable = oCFLEvento.SelectedObjects;
-                    string val = null;
-                    try
-                    {
-                        Matrix oMtParcelas = (Matrix)oForm.Items.Item("3").Specific;
 
-                        string Code = Convert.ToString(oDataTable.GetValue("Code", 0));
-                        string Descricao = Convert.ToString(oDataTable.GetValue("U_Desc", 0));
+                    Matrix oMtParcelas = (Matrix)oForm.Items.Item("3").Specific;
 
-                        EditText oEditText = (SAPbouiCOM.EditText)oMtParcelas.Columns.Item("U_DescItemFat").Cells.Item(1).Specific;
-                        oEditText.Value = Descricao;
+                    string Code = Convert.ToString(oDataTable.GetValue("Code", 0));
+                    string Descricao = Convert.ToString(oDataTable.GetValue("U_Desc", 0));
 
-                        oEditText = (SAPbouiCOM.EditText)oMtParcelas.Columns.Item("U_ItemFat").Cells.Item(1).Specific;
-                        oEditText.Value = Code;
-                    }
-                    catch (Exception ex)
-                    {
+                    EditText oEditText = (SAPbouiCOM.EditText)oMtParcelas.Columns.Item("U_DescItemFat").Cells.Item(1).Specific;
+                    oEditText.Value = Descricao;
 
-                    }
+                    oEditText = (SAPbouiCOM.EditText)oMtParcelas.Columns.Item("U_ItemFat").Cells.Item(1).Specific;
+                    oEditText.Value = Code;
                 }
-
-                
-
-
             }
             catch (Exception Ex)
             {
