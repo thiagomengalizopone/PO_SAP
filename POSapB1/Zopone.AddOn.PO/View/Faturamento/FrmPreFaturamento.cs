@@ -211,6 +211,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
                 SAPbobsCOM.Documents oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                
+                oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+                Int32 PedidoVendaDocEntry = 0;
+                string Obra = string.Empty;
+                string ItemCodeFaturamento = string.Empty;
 
                 for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
                 {
@@ -228,6 +234,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             string Atividade = DtPesquisa.GetValue("Atividade", iRow).ToString();
                             double TotalLinha = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", iRow));
 
+
                             string ItemFaturamento = DtPesquisa.GetValue("AlocacaoFAT", iRow).ToString();
                             string DescItemFaturamento = DtPesquisa.GetValue("DescAlocacaoFAT", iRow).ToString();
 
@@ -236,26 +243,39 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             if (!oPedidoVenda.GetByKey(DocEntry))
                                 throw new Exception($"Pedido de venda (PO) não encontrado: {DocEntry}");
 
-                            oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                            if (string.IsNullOrEmpty(Obra))
+                            {
+                                Obra = oPedidoVenda.Lines.ProjectCode;
+                                PedidoVendaDocEntry = oPedidoVenda.DocEntry;
+                                ItemCodeFaturamento = ItemCode;
+                            }
+
+                            if (Obra != oPedidoVenda.Lines.ProjectCode || oPedidoVenda.DocEntry != PedidoVendaDocEntry || ItemCode != ItemCodeFaturamento)
+                            {
+                                if (oNotaFiscalSaida.Add() != 0)
+                                    throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                                oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                                oNotaFiscalSaida.CardCode = string.Empty;
+                                oNotaFiscalSaida.Lines.LineTotal = 0;
+                                oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value = string.Empty;
+                            }
+
 
                             oNotaFiscalSaida.DocObjectCodeEx = "13";
                             oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
                             oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
                             oNotaFiscalSaida.BPL_IDAssignedToInvoice = oPedidoVenda.BPL_IDAssignedToInvoice;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_IdPO").Value = oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value;
-                            oNotaFiscalSaida.UserFields.Fields.Item("U_IdPCI").Value = oPedidoVenda.UserFields.Fields.Item("U_IdPCI").Value;
+
                             oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
-                            oNotaFiscalSaida.UserFields.Fields.Item("U_IdPCI").Value = oPedidoVenda.UserFields.Fields.Item("U_IdPCI").Value;
 
                             oPedidoVenda.Lines.SetCurrentLine(LineNum);
 
-                            if (!string.IsNullOrEmpty(oNotaFiscalSaida.Lines.ItemCode))
-                                oNotaFiscalSaida.Lines.Add();
-
                             oNotaFiscalSaida.Lines.ItemCode = ItemCode;
                             oNotaFiscalSaida.Lines.Quantity = 1;
-                            oNotaFiscalSaida.Lines.LineTotal = TotalLinha;
+                            oNotaFiscalSaida.Lines.LineTotal += TotalLinha;
                             oNotaFiscalSaida.Lines.Usage = oPedidoVenda.Lines.Usage;
                             oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(oPedidoVenda.Lines.Usage);
                             oNotaFiscalSaida.Lines.TaxCode = "1556-001"; // Temporário até definição do imposto
@@ -264,29 +284,26 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.Lines.COGSCostingCode2 = oPedidoVenda.Lines.COGSCostingCode2;
                             oNotaFiscalSaida.Lines.COGSCostingCode3 = oPedidoVenda.Lines.COGSCostingCode3;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Candidato").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value;
-                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value;
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value += ($" {oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString()}");
 
-                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value = ItemFaturamento;
+
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value =  ItemFaturamento;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescItemFat").Value = DescItemFaturamento;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Atividade").Value = Atividade;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_StatusFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusFat").Value;
-                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_IdPCI").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_IdPCI").Value;
-
-                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseEntry").Value = oPedidoVenda.DocEntry;
-                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseLine").Value = oPedidoVenda.Lines.LineNum;
+                            
                             oNotaFiscalSaida.DocumentReferences.ReferencedDocEntry = oPedidoVenda.DocEntry;
                             oNotaFiscalSaida.DocumentReferences.ReferencedObjectType = ReferencedObjectTypeEnum.rot_SalesOrder;
-
-                            if (oNotaFiscalSaida.Add() != 0)
-                                throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
-
+                            oNotaFiscalSaida.DocumentReferences.Remark += ($" {oPedidoVenda.Lines.LineNum.ToString()} ");
                         }
                     }
                 }
 
-
-
-
+                if (!string.IsNullOrEmpty(oNotaFiscalSaida.CardCode))
+                {
+                    if (oNotaFiscalSaida.Add() != 0)
+                        throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                }
             }
             catch (Exception Ex)
             {

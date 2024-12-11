@@ -118,6 +118,11 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("INV6", "DescItemFat", "Alocação", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false, null);
                 #endregion
 
+                #region ParcelasDOcumento
+                DBCreation.CriarCampoUsuario("INV21", "BaseLine", "Número Linha Base", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
+                DBCreation.CriarCampoUsuario("INV21", "LineTotal", "Total Linha", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Price, 250, false, null);
+                #endregion
+
                 #region ALOCAÇÃO OBRA                
                 DBCreation.CriarTabelaUsuario("ZPN_ALOCON", "Cadastro Contrato Aloc.", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 DBCreation.CriarTabelaUsuario("ZPN_ALOCONI", "Cadastro Contrato Aloc I", SAPbobsCOM.BoUTBTableType.bott_MasterDataLines);
