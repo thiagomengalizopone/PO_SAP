@@ -39,7 +39,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 
         internal static bool Interface_FormDataEvent(BusinessObjectInfo businessObjectInfo)
         {
-            if (businessObjectInfo.Type == "112" &&
+            if (
                 (
                 businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD ||
                 businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE 
@@ -54,12 +54,25 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 
                 DBDataSource oDBOINV = oFormNF.DataSources.DBDataSources.Item(0);
 
-                if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
-                    DocEntry = Convert.ToInt32(oDBOINV.GetValue("DocEntry", 0));
-                else
-                    DocEntry = Convert.ToInt32(SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM ODRF WHERE ObjType = '13' "));
+                if (businessObjectInfo.Type == "112")
+                {
+                    if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
+                        DocEntry = Convert.ToInt32(oDBOINV.GetValue("DocEntry", 0));
+                    else
+                        DocEntry = Convert.ToInt32(SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM ODRF WHERE ObjType = '13' "));
 
-                UtilPCI.EnviarDadosNFDigitacaoPCIAsync(DocEntry);
+                    UtilPCI.EnviarDadosNFDigitacaoPCIAsync(DocEntry);
+                }
+                else
+                {
+                    if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
+                        DocEntry = Convert.ToInt32(oDBOINV.GetValue("DocEntry", 0));
+                    else
+                        DocEntry = Convert.ToInt32(SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM OINV WHERE ObjType = '13' "));
+
+                    UtilPCI.EnviarDadosNFLiberadaPCIAsync(DocEntry);
+
+                }
 
 
             }
