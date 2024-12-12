@@ -486,6 +486,7 @@
     <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaPO.sql" />
     <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaContasReceber.sql" />
     <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaNfeservico.sql" />
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_InsereAtualizaNfeservicoParcela.sql" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOEricsson.sql" />
     <Content Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOHuawei.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_STATUSVALIDACAOPEDIDOSPO.sql" />
@@ -511,7 +512,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_VERIFICACADASTROPCI.sql" />
     <EmbeddedResource Include="Model\SQL\Tables\ZPN_CONTASRECEBERPCI.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CriaNotaFsicalServicoPCI.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACNOTAFISCALSERVICO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_LISTAALOCACOESOBRA.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CriaObservacoesFaturamento.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CriaObservacoesFaturamentoEsboco.sql" />

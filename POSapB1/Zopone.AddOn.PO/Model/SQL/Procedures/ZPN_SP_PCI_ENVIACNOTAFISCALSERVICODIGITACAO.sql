@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ENVIACNOTAFISCALSERVICO]
+﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO]
 (
     @DocEntry INT
 )
@@ -16,9 +16,12 @@ BEGIN
 
         DECLARE @RowNum INT = 1;
         DECLARE @RowCount INT = 1;
+
+		DECLARE @RowNumParcela INT = 1;
+        DECLARE @RowCountParcela INT = 1;
         
 		declare
-			@nfeservicoid INT,
+			@nfeservicoid varchar(255),
             @sequencia INT,
             @obraid VARCHAR(255),
 			@emissao datetime,
@@ -26,6 +29,21 @@ BEGIN
             @situacao int, 
             @obracandidatoid VARCHAR(255),
 			@IdPCI varchar(250);
+
+
+		declare 
+			@RowNumParc INT,
+			@InstlmntID int,
+			@nfeservicopardelaid  varchar(250),
+			@gestatus INT,
+			@gedataacao DATETIME,
+			@gecontaidacao  varchar(250),
+			@sequenciaParc INT,
+			@vencimento DATETIME,
+			@valorParc DECIMAL(18,2),
+			@fatura VARCHAR(200),
+			@percentual FLOAT,
+			@etapaid  varchar(250);
 
         -- Captura a data e hora da execução atual
         SET @UltimaDataExec = GETDATE();
@@ -39,7 +57,7 @@ BEGIN
         DECLARE @nfeservico TABLE
         (
             RowNum INT,
-            nfeservicoid INT,
+            nfeservicoid VARCHAR(250),
             sequencia INT,
             obraid VARCHAR(255),
 			emissao datetime,
@@ -48,6 +66,24 @@ BEGIN
             obracandidatoid VARCHAR(255),
 			IdPCI varchar(250)
         );
+
+		
+		DECLARE @nfeservicoparcela TABLE
+		(
+			RowNumParc INT,
+			InstlmntID int,
+			nfeservicopardelaid varchar(250),
+			gestatus INT,
+			gedataacao DATETIME,
+			gecontaidacao  varchar(250),
+			nfeservicoid  varchar(250),
+			sequenciaParc INT,
+			vencimento DATETIME,
+			valorParc DECIMAL(18,2),
+			fatura VARCHAR(200),
+			percentual FLOAT,
+			etapaid  varchar(250)
+		);
 
 		
         -- Preenche a tabela temporária com os dados da consulta
@@ -69,13 +105,15 @@ BEGIN
             LEFT JOIN "@ZPN_OPRJ" ZPN_OPRJ ON ZPN_OPRJ.Code = DRF1.Project
             LEFT JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code = DRF1.U_Candidato
         WHERE
-			isnull(ZPN_OPRJ.U_IdPCI ,'') <> '' and 
 			ODRF."ObjType" = 13 and 
             ODRF.CANCELED <> 'Y' 
             AND (ISNULL(@DocEntry, 0) = 0 OR @DocEntry = ODRF.DocEntry)
             AND (
-                (ODRF.CreateDate >= @UltimaData AND ODRF.CreateTs >= @UltimaHora) OR 
+				ISNULL(@DocEntry, 0) <> 0 or
+					
+                ((ODRF.CreateDate >= @UltimaData AND ODRF.CreateTs >= @UltimaHora) OR 
                 (ODRF.UpdateDate >= @UltimaData AND ODRF.UpdateTs >= @UltimaHora)
+				)
             )
         ORDER BY  ODRF.DocEntry, ZPN_OPRJ.U_IdPCI;
 
@@ -99,11 +137,37 @@ BEGIN
 				@nfeservico
             WHERE RowNum = @RowNum;
 
-            -- Verifica se contareceberid está vazio e gera um novo se necessário
+			delete from @nfeservicoparcela;
+
+			-- Verifica se contareceberid está vazio e gera um novo se necessário
             IF (ISNULL(@IdPCI, '') = '') 
             BEGIN
                 SET @IdPCI = NEWID();
             END;
+			
+			INSERT INTO @nfeservicoparcela
+			SELECT 
+	            ROW_NUMBER() OVER (ORDER BY ODRF.DocEntry, DRF6.DueDate) AS RowNum,
+				DRF6.InstlmntID,
+				ISNULL(DRF6.U_IdPCI,''),
+				1,
+				GETDATE(),
+				NULL,
+				@IdPci,
+				ODRF.DocEntry,
+				DRF6.DueDate,
+				DRF6.InsTotal,
+				ODRF.NumAtCard,
+				DRF6.InstPrcnt,
+				isnull(ALOCA.U_IdPCI,'')
+
+			FROM 
+				DRF6
+				INNER JOIN ODRF ON ODRF.DocEntry = DRF6.DocEntry
+				INNER JOIN "@ZPN_ALOCA" ALOCA ON DRF6.U_ItemFat = ALOCA.Code
+			WHERE 
+				ODRF.DocEntry = @nfeservicoid
+			ORDER BY ODRF.DocEntry, DRF6.DueDate;  
 
 			EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaNfeservico 
 				@IdPCI ,
@@ -113,6 +177,60 @@ BEGIN
 				@valor,
 				@situacao, 
 				@obracandidatoid;
+
+			SET @RowCountParcela = (SELECT COUNT(*) FROM @nfeservicoparcela);
+			SET @RowNumParcela = 1;
+
+
+
+			--[ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO] 17
+
+
+			WHILE @RowNumParcela <= @RowCountParcela 
+			BEGIN
+				SELECT 
+					@InstlmntID = InstlmntID,
+					@nfeservicopardelaid = nfeservicopardelaid,
+					@gestatus = gestatus,
+					@gedataacao = gedataacao,
+					@gecontaidacao = gecontaidacao,
+					@sequenciaParc = sequenciaParc,
+					@vencimento = vencimento,
+					@valorParc = valorParc,
+					@fatura = fatura,
+					@percentual = percentual,
+					@etapaid = etapaid
+				FROM 
+					@nfeservicoparcela
+				WHERE RowNumParc = @RowNumParcela;
+
+				IF (ISNULL(@nfeservicopardelaid, '') = '') 
+				BEGIN
+					SET @nfeservicopardelaid = NEWID();
+				END;
+				
+				EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaNfeservicoParcela 
+															 @nfeservicopardelaid,
+															@gestatus,
+															@gedataacao,
+															@gecontaidacao,
+															@IdPCI,
+															@sequencia,
+															@vencimento,
+															@valor,
+															@fatura,
+															@percentual ,
+															@etapaid;
+
+
+
+				UPDATE DRF6 SET U_IdPCI = @nfeservicopardelaid WHERE ISNULL(U_IdPCI,'') = '' AND DocEntry = @nfeservicoid AND InstlmntID = @InstlmntID; 
+
+				set @RowNumParcela = @RowNumParcela+1;
+
+			END;
+
+
 
 			UPDATE ODRF SET U_IdPCI = @IdPCI WHERE ISNULL(U_IdPCI,'') = '' AND DocEntry = @nfeservicoid;
 

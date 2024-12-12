@@ -287,7 +287,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 GerarProjetosSAPB1();
                 Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
 
-                UtilPCI.EnviarDadosPCIAsync(string.Empty, DateTime.Now);
+                UtilPCI.EnviarDadosObraPCIAsync(string.Empty, DateTime.Now);
 
                 SqlUtils.DoNonQuery($"ZPN_SP_PCI_ATUALIZAOBRAPCG '', '{DateTime.Now.ToString("yyyy-MM-dd")}'");
 

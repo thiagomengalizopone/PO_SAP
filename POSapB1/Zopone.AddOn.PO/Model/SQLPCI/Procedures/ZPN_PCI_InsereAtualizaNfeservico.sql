@@ -50,4 +50,7 @@ BEGIN
                 ,@situacao
                 ,@obracandidatoid);
         END;
+
+
+        delete from [nfeservicoparcela] where [nfeservicoid] = @nfeservicoid;
 END;

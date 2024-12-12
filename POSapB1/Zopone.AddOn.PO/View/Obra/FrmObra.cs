@@ -968,7 +968,7 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
-                UtilPCI.EnviarDadosPCIAsync(CodeObra, DateTime.Now);
+                UtilPCI.EnviarDadosObraPCIAsync(CodeObra, DateTime.Now);
             }
             catch (Exception Ex)
             {

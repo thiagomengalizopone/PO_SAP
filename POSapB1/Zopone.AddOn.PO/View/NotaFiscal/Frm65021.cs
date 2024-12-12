@@ -65,10 +65,10 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                     string Code = Convert.ToString(oDataTable.GetValue("Code", 0));
                     string Descricao = Convert.ToString(oDataTable.GetValue("U_Desc", 0));
 
-                    EditText oEditText = (SAPbouiCOM.EditText)oMtParcelas.Columns.Item("U_DescItemFat").Cells.Item(1).Specific;
+                    EditText oEditText = (SAPbouiCOM.EditText)oMtParcelas.Columns.Item("U_DescItemFat").Cells.Item(pVal.Row).Specific;
                     oEditText.Value = Descricao;
 
-                    oEditText = (SAPbouiCOM.EditText)oMtParcelas.Columns.Item("U_ItemFat").Cells.Item(1).Specific;
+                    oEditText = (SAPbouiCOM.EditText)oMtParcelas.Columns.Item("U_ItemFat").Cells.Item(pVal.Row).Specific;
                     oEditText.Value = Code;
                 }
             }
