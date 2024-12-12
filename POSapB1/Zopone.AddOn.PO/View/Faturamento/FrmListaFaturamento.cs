@@ -12,6 +12,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
     {
         EditText EdDataI { get; set; }
         EditText EdDataF { get; set; }
+        EditText EdCliente { get; set; }     
         EditText EdPO { get; set; }
         DataTable DtPesquisa { get; set; }
         Matrix MtPedidos { get; set; }
@@ -28,6 +29,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdDataI = (EditText)oForm.Items.Item("EdDataI").Specific;
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
+            EdCliente = (EditText)oForm.Items.Item("EdCliente").Specific;
 
             MtPedidos = (Matrix)oForm.Items.Item("MtPed").Specific;
 
@@ -303,7 +305,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_ListaPedidosFaturamentoFaturar '{dataInicial}', '{dataFinal}', '{EdPO.Value}'";
+                string SQL_Query = $@"ZPN_SP_ListaPedidosFaturamentoFaturar '{dataInicial}', '{dataFinal}', '{EdPO.Value}', '{EdCliente.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
@@ -311,7 +313,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
-                
+
+                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "Data");
+                MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "CodCliente");
+                MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "DescCliente");
+
                 MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
                 MtPedidos.Columns.Item("Col_8").DataBind.Bind("DtPO", "Atividade");
@@ -340,3 +346,4 @@ namespace Zopone.AddOn.PO.View.Faturamento
         }
     }
 }
+
