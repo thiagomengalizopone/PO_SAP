@@ -126,7 +126,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 
                 var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
 
-                string sql_query = $"SP_ZPN_LISTAALOCACOESOBRA '{CodeObra}'";
+                string sql_query = $"SP_ZPN_LISTAALOCACOESOBRAFAT '{CodeObra}'";
                 oRecordSet.DoQuery(sql_query);
 
                 int iRow = 1;

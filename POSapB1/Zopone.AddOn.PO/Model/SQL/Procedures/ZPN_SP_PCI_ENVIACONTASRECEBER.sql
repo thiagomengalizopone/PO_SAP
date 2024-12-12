@@ -94,17 +94,17 @@ BEGIN
 			NULL AS gecontaidacao, 
 			OBPL.U_IdPCI AS empresaid,
 			ZPN_OPRJ.U_IdPCI AS obraid,
-			OINV.DocTotal AS valor,
+			OINV.DocTotal * (inv6.InstPrcnt/100) AS valor,
 			0 AS valorliquido,
-			ISNULL(IMP.PIS, 0) AS valorpis,
-			ISNULL(IMP.COFINS, 0) AS valorcofins,
-			ISNULL(IMP.CSLL, 0) AS valorcsll,
-			ISNULL(IMP.INSS, 0) AS valorinss,    
-			ISNULL(IMP.IRRF, 0) AS valorirrf,
-			ISNULL(IMP.ISS, 0) AS valoriss,
+			ISNULL(IMP.PIS, 0) * (inv6.InstPrcnt/100) AS valorpis,
+			ISNULL(IMP.COFINS, 0)* (inv6.InstPrcnt/100) AS valorcofins,
+			ISNULL(IMP.CSLL, 0)* (inv6.InstPrcnt/100)  AS valorcsll,
+			ISNULL(IMP.INSS, 0) * (inv6.InstPrcnt/100) AS valorinss,    
+			ISNULL(IMP.IRRF, 0)* (inv6.InstPrcnt/100)  AS valorirrf,
+			ISNULL(IMP.ISS, 0) * (inv6.InstPrcnt/100) AS valoriss,
 			OINV.DocDate AS emissao,
 			INV6.DueDate AS vencimento, 
-			NULL AS programacao,
+			INV6.U_DataProgramacao AS programacao,
 			NULL AS recebimento,
 			NULL AS cancelamento,
 			CAST(OINV.DocEntry AS VARCHAR(10)) + CAST(INV6.InstlmntID AS VARCHAR(5)) AS codigo,
@@ -117,7 +117,7 @@ BEGIN
 			INNER JOIN INV1 ON INV1.DocEntry = OINV.DocEntry AND INV1.LineNum = (SELECT MIN(T0.LineNum) FROM INV1 T0 WHERE T0.DocEntry = OINV.DocEntry)
 			LEFT JOIN "@ZPN_OPRJ" ZPN_OPRJ ON ZPN_OPRJ.Code = INV1.Project
 			INNER JOIN INV6 ON INV6.DocEntry = OINV.DocEntry
-			LEFT JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = INV1.U_ItemFat
+			LEFT JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = INV6.U_ItemFat
 			LEFT JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code = INV1.U_Candidato
 			LEFT JOIN ZPN_VW_DOCUMENTOSIMPOSTO IMP ON IMP.AbsEntry = OINV.DocEntry
 		WHERE
@@ -131,7 +131,7 @@ BEGIN
 		ORDER BY inv6."DocEntry",	inv6."InstlmntID";
 
 		-- Processa cada linha da CTE
-		SET @RowCount = (SELECT COUNT(*) FROM OrderedContas);
+		SET @RowCount = (SELECT COUNT(*) FROM @contareceber);
 		
 		WHILE @RowNum <= @RowCount
 		BEGIN
@@ -162,18 +162,20 @@ BEGIN
 				@fatura = fatura,
 				@etapaid = etapaid,
 				@obracandidatoid = obracandidatoid
-			FROM OrderedContas
+			FROM @contareceber
 			WHERE RowNum = @RowNum;
 
 			if (isnull(@contareceberid,'') = '') begin
 				set @contareceberid = newid();
 			end;
 
+
+
+
 			-- Chama a procedure para inserir ou atualizar
 			EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaContasReceber 
 				@contareceberid,
 				@gestatus,
-				@gedataacao,
 				@gecontaidacao,
 				@empresaid,
 				@obraid,

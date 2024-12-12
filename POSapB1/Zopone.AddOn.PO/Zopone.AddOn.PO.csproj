@@ -517,6 +517,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CriaObservacoesFaturamento.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CriaObservacoesFaturamentoEsboco.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_LISTAALOCACOESOBRAFAT.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

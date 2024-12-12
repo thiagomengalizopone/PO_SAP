@@ -28,8 +28,24 @@ namespace Zopone.AddOn.PO.Helpers
                 }
                 else
                 {
-                    Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+                    string SQL_QueryCR = $"ZPN_SP_PCI_ENVIACONTASRECEBER {DocEntry}";
+
+                    erro_obra = SqlUtils.GetValue(SQL_QueryCR);
+                    if (!string.IsNullOrEmpty(erro_obra))
+                    {
+                        Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, erro_obra);
+                        Util.ExibeMensagensDialogoStatusBar(erro_obra);
+                    }
+                    else
+                    {
+
+                        Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+                    }
                 }
+
+
+
+
             }
             catch (Exception Ex)
             {
