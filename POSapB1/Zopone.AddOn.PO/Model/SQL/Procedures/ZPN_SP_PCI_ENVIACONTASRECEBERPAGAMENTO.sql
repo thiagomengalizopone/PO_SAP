@@ -52,8 +52,21 @@ BEGIN TRY
 		(isnull(@DocentryPagto,0) = 0 or ORCT."DocEntry" = @DocentryPagto) and 
 		(isnull(@DocEntryNF,0) = 0 or OINV."DocEntry" = @DocEntryNF) and 
 		ORCT."Canceled" <> 'Y' AND
-		ORCT.CreateDate >= @UltimaData AND
-		ORCT.CreateTS >= @UltimaHora; 
+
+		(
+			(isnull(@DocentryPagto,0) = 0 and isnull(@DocEntryNF,0) = 0 )
+			and 
+			(
+				ORCT.CreateDate >= @UltimaData and 
+				ORCT.CreateTS >= @UltimaHora
+			)
+			or 
+			and 
+			(
+				ORCT.CreateDate >= @UltimaData and 
+				ORCT.CreateTS >= @UltimaHora
+			)
+		)
 
 
 
@@ -64,7 +77,8 @@ BEGIN TRY
 	-- Loop WHILE para processar os dados
 	WHILE @CurrentRow <= @RowCount
 	BEGIN
-		-- Buscar o próximo registro usando o IDENTITY da tabela
+
+
 		SELECT 
 			@Id = U_IdPci,
 			@DocDate = DocDate

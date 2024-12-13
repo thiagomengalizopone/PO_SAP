@@ -146,6 +146,9 @@ begin
 													@inicioatividade,
 													@codigo;
 
+
+    update ocrd set U_IdPCI =@clienteid where CardCode = @CardCodePCI and ISNULL(U_IdPCI,'') = '';
+
 	set @RowNumber= @RowNumber+1;
 end;
 
