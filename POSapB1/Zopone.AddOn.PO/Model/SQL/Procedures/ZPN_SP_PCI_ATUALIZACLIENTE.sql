@@ -1,121 +1,182 @@
-﻿CREATE PROCEDURE ZPN_SP_PCI_ATUALIZACLIENTE
+﻿create PROCEDURE ZPN_SP_PCI_ATUALIZACLIENTE
 (
 	@CardCode varchar(50)
 )
 AS 
 BEGIN
 
+BEGIN TRY
 
----DECLARE @CardCode varchar(50);
+--DECLARE @CardCode varchar(50);
 
---ZPN_SP_ATUALIZACLIENTEPCI ''
+		DECLARE @UltimaData date;
+		DECLARE @UltimaHora int;
+		DECLARE @UltimaDataExec DATE;
+        DECLARE @UltimaHoraExec INT;
+
+		declare @RowNumber int, @RowCount int;
+
+		declare     @RowNum int,
+					@clienteid varchar(250),    
+					@CardCodePCI varchar(100),
+					@BPLId int,
+					@gestatus INT,                    
+					@gedataacao DATETIME,             
+					@empresaid  varchar(250),                   
+					@razaosocial VARCHAR(255),        
+					@nomefantasia VARCHAR(255),       
+					@documentoprincipal VARCHAR(50),  
+					@documentoadicional VARCHAR(50),  
+					@inicioatividade DATETIME,        
+					@codigo INT  ;
 
 
-INSERT INTO 
-    [LINKZCLOUD].[zsistema_aceite].[dbo].[cliente]
-	(
-		 [clienteid]
-		,[gestatus]
-		,[gedataacao]
-		,[gecontaidacao]
-		,[empresaid]
-		,[razaosocial]
-		,[nomefantasia]
-		,[documentoprincipal]
-		,[documentoadicional]
-		,[inicioatividade]
-		,[codigo]
-	)
+        -- Captura a data e hora da execução atual
+        SET @UltimaDataExec = GETDATE();
+        SET @UltimaHoraExec = CAST(REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), ':', '') AS INT);
 
+        -- Recupera as últimas execuções
+        SET @UltimaData = (SELECT ISNULL(MAX(DataExecutado), '2024-01-01') FROM ZPN_INTEGRAPCI WHERE ObjType = 'OCRD');
+        SET @UltimaHora = (SELECT ISNULL(MAX(HoraExecutado), 0) FROM ZPN_INTEGRAPCI WHERE ObjType ='OCRD');
+
+
+DECLARE @ClientesPCI TABLE
+(
+    RowNumber INT IDENTITY(1,1),
+    clienteid VARCHAR(250),     
+	CardCodePCI varchar(100),
+	BPLId int,
+    gestatus INT,                    
+    gedataacao DATETIME,             
+    empresaid VARCHAR(250),                   
+    razaosocial VARCHAR(255),        
+    nomefantasia VARCHAR(255),       
+    documentoprincipal VARCHAR(50),  
+    documentoadicional VARCHAR(50),  
+    inicioatividade DATETIME,        
+    codigo INT          
+);
+
+-- Omitir a coluna RowNumber do INSERT
+INSERT INTO @ClientesPCI
+(
+    clienteid,    
+	CardCodePCI,
+	BPLId,
+    gestatus,                    
+    gedataacao,              
+    empresaid,                   
+    razaosocial,        
+    nomefantasia,       
+    documentoprincipal,  
+    documentoadicional,  
+    inicioatividade,     
+    codigo              
+)
 SELECT 
-	NEWID(),
-	1,
-	GETDATE(),
-	null,
-	obpl.U_IdPCI,
-	ocrd.CardName,
-	ocrd.CardFName,
-	CASE WHEN ISNULL(CRD7.TaxId0,'') <> '' THEN CRD7.TaxId0 ELSE CRD7.TaxId4 end,
-	CASE WHEN ISNULL(CRD7.TaxId1,'') <> '' THEN CRD7.TaxId5 ELSE CRD7.TaxId4 end,
-	isnull(ocrd.DateFrom, getdate()) ,
-	isnull(ocrd.U_IdZSistemas, 0)
-	
-FROM	
-	CRD7
-    INNER JOIN OCRD ON OCRD."CardCode" = CRD7."CardCode" and OCRD."CardType" = 'C'
-	INNER JOIN CRD8 ON CRD8.CardCode = OCRD.CardCode AND ISNULL(CRD8.DisabledBP,'') <> 'Y' 
-	INNER JOIN OBPL ON OBPL.BPLId    = CRD8.BPLId and obpl."U_EnviaPCI" = 'Y'
-	LEFT  JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[cliente] CLI
-        ON CLI.[empresaid] = OBPL.U_IdPCI AND 
-           CRD8.U_IdPCI = CAST(CLI.[clienteid] AS VARCHAR(50)) COLLATE SQL_Latin1_General_CP1_CI_AS
+    ISNULL(CRD8.U_IdPCI, ''),
+	ocrd.CardCode,
+	crd8.BPLId,
+    1,
+    GETDATE(),
+    obpl.U_IdPCI,
+    ocrd.CardName,
+    ocrd.CardFName,
+    CASE WHEN ISNULL(CRD7.TaxId0, '') <> '' THEN CRD7.TaxId0 ELSE CRD7.TaxId4 END,
+    CASE WHEN ISNULL(CRD7.TaxId1, '') <> '' THEN CRD7.TaxId5 ELSE CRD7.TaxId4 END,
+    ISNULL(ocrd.DateFrom, GETDATE()),
+    ISNULL(ocrd.DocEntry, 0)
+FROM    
+    CRD7
+    INNER JOIN OCRD ON OCRD.CardCode = CRD7.CardCode AND OCRD.CardType = 'C'
+    INNER JOIN CRD8 ON CRD8.CardCode = OCRD.CardCode AND ISNULL(CRD8.DisabledBP, '') <> 'Y' 
+    INNER JOIN OBPL ON OBPL.BPLId = CRD8.BPLId AND OBPL.U_EnviaPCI = 'Y'
 WHERE
-	CLI.clienteid IS NULL AND 
-	(isnull(@CardCode,'') = '' or ocrd.CardCode = @CardCode) and
-	ISNULL(CRD7.Address, '') = '' AND
-	ISNULL(CRD8.U_IdPCI,'') = '' ;
-	
-
-UPDATE CLI
-SET
-	CLI.gestatus = 1,
-	CLI.gedataacao = GETDATE(),
-	CLI.gecontaidacao = NULL,
-	CLI.empresaid = OBPL.U_IdPCI,
-	CLI.razaosocial = OCRD.CardName,
-	CLI.nomefantasia = OCRD.CardFName,
-	CLI.documentoprincipal = CASE 
-								WHEN ISNULL(CRD7.TaxId0, '') <> '' THEN CRD7.TaxId0 
-								ELSE CRD7.TaxId4 
-							 END,
-	CLI.documentoadicional = CASE 
-								WHEN ISNULL(CRD7.TaxId1, '') <> '' THEN CRD7.TaxId5 
-								ELSE CRD7.TaxId4 
-							 END,
-	CLI.inicioatividade = ISNULL(OCRD.DateFrom, GETDATE()),
-	CLI.codigo = ISNULL(OCRD.U_IdZSistemas, 0)
-FROM 
-	CRD7
-	INNER JOIN OCRD 
-		ON OCRD."CardCode" = CRD7."CardCode" AND OCRD."CardType" = 'C'
-	INNER JOIN CRD8 
-		ON CRD8.CardCode = OCRD.CardCode AND ISNULL(CRD8.DisabledBP, '') <> 'Y' 
-	INNER JOIN OBPL 
-		ON OBPL.BPLId = CRD8.BPLId AND OBPL."U_EnviaPCI" = 'Y'
-	INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[cliente] CLI
-		ON CLI.[empresaid] = OBPL.U_IdPCI AND 
-		   CASE 
-			   WHEN ISNULL(CRD7.TaxId0, '') <> '' THEN CRD7.TaxId0 
-			   ELSE CRD7.TaxId4 
-		   END COLLATE SQL_Latin1_General_CP1_CI_AS = CLI.[documentoprincipal] COLLATE SQL_Latin1_General_CP1_CI_AS
-WHERE
-	(isnull(@CardCode, '') = '' OR OCRD.CardCode = @CardCode) AND
-	ISNULL(CRD7.Address, '') = '' ;
-
-
-	
-UPDATE 
-	CRD8	
-		SET CRD8.U_IdPCI = CLI.clienteid
-FROM	
-    CRD8
-    INNER JOIN OCRD ON OCRD."CardCode" = CRD8."CardCode" AND OCRD."CardType" = 'C'
-    INNER JOIN CRD7 ON CRD7.CardCode = OCRD.CardCode AND ISNULL(CRD8.DisabledBP,'') <> 'Y' 
-    INNER JOIN OBPL ON OBPL.BPLId = CRD8.BPLId AND OBPL."U_EnviaPCI" = 'Y'
-    INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[cliente] CLI
-        ON 
-			CLI.[empresaid] = OBPL.U_IdPCI AND 
-			CASE 
-               WHEN ISNULL(CRD7.TaxId0,'') <> '' THEN CRD7.TaxId0 
-               ELSE CRD7.TaxId4 
-           END COLLATE SQL_Latin1_General_CP1_CI_AS = CLI.[documentoprincipal] COLLATE SQL_Latin1_General_CP1_CI_AS
-WHERE
-	(isnull(@cardCode,'') = '' or  ocrd.CardCode = @CardCode) and 
+    OCRD.CardType = 'C' AND
     ISNULL(CRD7.Address, '') = '' AND
-    ISNULL(CRD8.U_IdPCI,'') = '' ;
+    (
+        ocrd.CardCode = @CardCode OR 
+        (
+            ISNULL(@CardCode, '') = '' AND 
+            (
+                OCRD.CreateDate >= @UltimaData AND OCRD.CreateTS >= @UltimaHora OR 
+                OCRD.UpdateDate >= @UltimaData AND OCRD.UpdateTS >= @UltimaHora
+            )
+        )
+    );
 
 
+set @RowNumber = 1;
 
-	
+set @RowCount = (select count(1) from @ClientesPCI);
+
+while (@RowNumber <= @RowCount)
+begin
+
+	SELECT 
+		@clienteid = clienteid,   
+		@CardCodePCI = CardCodePCI,
+		@BPLId  = BPLId,
+		@gestatus = gestatus,                    
+		@gedataacao = gedataacao,             
+		@empresaid = empresaid,                   
+		@razaosocial = razaosocial,        
+		@nomefantasia = nomefantasia,       
+		@documentoprincipal = documentoprincipal,  
+		@documentoadicional = documentoadicional,  
+		@inicioatividade = inicioatividade,        
+		@codigo = codigo
+	FROM @ClientesPCI
+	WHERE RowNumber =@RowNumber;
+
+	if (isnull(@clienteid,'') = '') begin
+		set @clienteid = newid();
+	end;
+
+
+	exec [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaCliente
+													@clienteid,      
+													@gestatus, 
+													@gedataacao,
+													@empresaid,
+													@razaosocial,
+													@nomefantasia,
+													@documentoprincipal,
+													@documentoadicional,
+													@inicioatividade,
+													@codigo;
+
+	set @RowNumber= @RowNumber+1;
+end;
+
+
+  
+  
+  IF (ISNULL(@CardCode,'') = '')
+  BEGIN
+       INSERT INTO ZPN_INTEGRAPCI (ObjType, DataExecutado, HoraExecutado)
+       VALUES ('OCRD', @UltimaDataExec, @UltimaHoraExec);
+  END
+
+END TRY
+BEGIN CATCH
+   -- Captura do erro
+    DECLARE 
+        @ErrorNumber INT = ERROR_NUMBER(),
+        @ErrorSeverity INT = ERROR_SEVERITY(),
+        @ErrorState INT = ERROR_STATE(),
+        @ErrorProcedure NVARCHAR(128) = ERROR_PROCEDURE(),
+        @ErrorLine INT = ERROR_LINE(),
+        @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+
+    -- Inserir o log de erro na tabela ErrorLog
+    INSERT INTO ZPN_LogImportacaoPCI (ErrorNumber, ErrorSeverity, ErrorState, ErrorProcedure, ErrorLine, ErrorMessage, HostName, ApplicationName, UserName)
+    VALUES (@ErrorNumber, @ErrorSeverity, @ErrorState, @ErrorProcedure, @ErrorLine, @ErrorMessage, HOST_NAME(), APP_NAME(), SYSTEM_USER);
+    
+    -- Opcional: Re-lançar o erro se necessário
+    -- THROW; 
+
+END CATCH;
 	
 end ;
 

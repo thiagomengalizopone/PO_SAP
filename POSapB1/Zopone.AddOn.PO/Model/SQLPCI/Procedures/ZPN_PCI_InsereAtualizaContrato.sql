@@ -1,9 +1,8 @@
 ﻿CREATE procedure [ZPN_PCI_InsereAtualizaContrato]
 (
-	 @contratoid UNIQUEIDENTIFIER,
+	 @contratoid varchar(250),
 	 @gestatus INT,
 	 @gedataacao DATETIME,
-	 @gecontaidacao UNIQUEIDENTIFIER,
 	 @referencia VARCHAR(200),
 	 @descricao TEXT,
 	 @filialid UNIQUEIDENTIFIER,
@@ -29,7 +28,6 @@ BEGIN
 			   ([contratoid]
 			   ,[gestatus]
 			   ,[gedataacao]
-			   ,[gecontaidacao]
 			   ,[referencia]
 			   ,[descricao]
 			   ,[filialid]
@@ -43,7 +41,6 @@ BEGIN
 					 @contratoid,
 					 @gestatus,
 					 @gedataacao,
-					 @gecontaidacao,
 					 @referencia,
 					 @descricao,
 					 @filialid,
