@@ -59,6 +59,8 @@ namespace Zopone.AddOn.PO
             Globals.Master.Connection.Interface.RightClickEvent += RightClickEventHandler.Interface_RightClickEvent;
 
             UtilWarehouses.CriaDepositosRAAsync();
+
+            Util.ExibirMensagemStatusBar("AddOn Faturamento iniciado com sucesso!", SAPbouiCOM.BoMessageTime.bmt_Long);
         }
 
         private static void AtualizaPN()

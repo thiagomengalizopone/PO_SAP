@@ -233,6 +233,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             string ItemCode = DtPesquisa.GetValue("ItemCode", iRow).ToString();
                             string Atividade = DtPesquisa.GetValue("Atividade", iRow).ToString();
                             double TotalLinha = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", iRow));
+                            DateTime dataFaturamento = Convert.ToDateTime(DtPesquisa.GetValue("PrevFat", iRow));
 
 
                             string ItemFaturamento = DtPesquisa.GetValue("AlocacaoFAT", iRow).ToString();
@@ -263,6 +264,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
 
                             oNotaFiscalSaida.DocObjectCodeEx = "13";
+                            oNotaFiscalSaida.DocDate = dataFaturamento;                            
                             oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
                             oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
                             oNotaFiscalSaida.BPL_IDAssignedToInvoice = oPedidoVenda.BPL_IDAssignedToInvoice;
@@ -272,6 +274,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
 
                             oPedidoVenda.Lines.SetCurrentLine(LineNum);
+
+
+                            Util.ExibirMensagemStatusBar($"Faturando PO {oPedidoVenda.NumAtCard} - Linha -  {oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString()}", BoMessageTime.bmt_Medium, false);
 
                             oNotaFiscalSaida.Lines.ItemCode = ItemCode;
                             oNotaFiscalSaida.Lines.Quantity = 1;
@@ -294,7 +299,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             
                             oNotaFiscalSaida.DocumentReferences.ReferencedDocEntry = oPedidoVenda.DocEntry;
                             oNotaFiscalSaida.DocumentReferences.ReferencedObjectType = ReferencedObjectTypeEnum.rot_SalesOrder;
-                            oNotaFiscalSaida.DocumentReferences.Remark += ($" {oPedidoVenda.Lines.LineNum.ToString()} ");
+                            oNotaFiscalSaida.DocumentReferences.Remark += ($" {oPedidoVenda.Lines.LineNum.ToString()} ");                            
                         }
                     }
                 }
@@ -447,6 +452,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
+                
+                MtPedidos.Columns.Item("Col_22").DataBind.Bind("DtPO", "PrevFat");
 
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
                 MtPedidos.Columns.Item("Col_8").DataBind.Bind("DtPO", "Atividade");

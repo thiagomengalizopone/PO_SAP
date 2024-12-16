@@ -1,4 +1,4 @@
-﻿Create procedure ZPN_SP_ListaPedidosGerarPreFaturamento
+﻿CREATE procedure ZPN_SP_ListaPedidosGerarPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -8,21 +8,13 @@
 AS
 BEGIN
 
+SET @NumAtCard =  ISNULL(@NumAtCard,'') ;
 
---ZPN_SP_ListaPedidosGerarPreFaturamento '2024-08-28', '2024-08-28', ''
 
---DECLARE @StatusFaturamento varchar(1);
---DECLARE @NumAtCard varchar(100);
---DECLARE @DataInicial datetime;
---DECLARE @DataFinal datetime;
-
---set @DataInicial = '2024-01-01';
---set @DataFinal = '2025-01-01';
-
---set @StatusFaturamento = 'A';
-SELECT 
+SELECT top 300
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
+	GetDate() "PrevFat",
 	ORDR."NumAtCard" "PO",
 	ORDR.CardName "Cliente",
 	ORDR.CardCode "CodCliente",
@@ -45,7 +37,9 @@ SELECT
 	RDR1.U_StatusFat as "Status",
 	0000.00000											 as "TotalDocumento",
 	OBRA.Code											"Obra",
-	OOAT.Remarks										"Contrato"
+	OOAT.Remarks										"Contrato",
+	RDR1.ItemCode,
+	RDR1.Dscription
 FROM
 	RDR1 
 	INNER JOIN ORDR								ON ORDR."DocEntry" = RDR1."DocEntry"
@@ -57,13 +51,12 @@ FROM
 	LEFT JOIN "@ZPN_ALOCA" ALOCA				ON ALOCA."Code" = RDR1.U_ItemFat 
 	LEFT JOIN "@ZPN_ALOCA" ALOCAFAT				ON ALOCAFAT."Code" = ALOCA.U_EtapaFat
 WHERE 
-	ISNULL(RDR1.U_Bloqueado,'N') <> 'Y'  AND
-	ISNULL(ORDR.NumAtCard,'') <> ''  AND
-	 isnull(FAT."SaldoFaturado",0) < RDR1."LineTotal" and
-	ISNULL(RDR1."U_StatusFat",'A') = 'F'
-	AND (isnull(ORDR."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
+	ISNULL(RDR1.U_Bloqueado,'N') <> 'Y'  
+	AND ISNULL(ORDR.NumAtCard,'') <> ''  
+	AND isnull(FAT."SaldoFaturado",0) < RDR1."LineTotal" 
 	AND ORDR."DocDate" between @DataInicial and @DataFinal 
 	AND (ORDR."CardName" like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
+	AND (ISNULL(@NumAtCard,'') = '' or (ORDR.NumAtCard like '%' + @NumAtCard + '%' AND isnull(ORDR.NumAtCard,'') <> '') )
 ORDER BY
 	ORDR."DocDate", ORDR."DocNum", RDR1."LineNum";
 

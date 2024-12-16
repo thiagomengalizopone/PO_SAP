@@ -1,4 +1,4 @@
-﻿Create PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿ALTER PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -24,6 +24,7 @@ SELECT
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
 	ORDR."NumAtCard" "PO",
+	ODRF.DocDate "DataT",
 	ODRF."CardCode",
 	ODRF."CardName",
 	DRF1."LineNum" "Linha",
@@ -48,8 +49,11 @@ FROM
 	LEFT JOIN  ORDR ON ORDR.DocEntry = DRF21.RefDocEntr AND DRF21.RefObjType = ORDR.ObjType
 WHERE
 	ODRF."DocStatus" = 'O' AND 
-	ISNULL(DRF1."U_StatusFat",'A') = 'F'
-	AND (isnull(ODRF."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
+	(
+		(isnull(ODRF."NumAtCard",'') = @NumAtCard and isnull(@NumAtCard,'') <> '')
+		or 
+		(isnull(@NumAtCard,'') = '')
+	) 
 	AND DRF1."DocDate" between @DataInicial and @DataFinal
 ORDER BY
 	DRF1."DocDate", ODRF."DocNum", DRF1."LineNum";

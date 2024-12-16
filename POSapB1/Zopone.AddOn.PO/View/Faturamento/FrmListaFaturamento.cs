@@ -52,9 +52,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
             CarregarDadosFaturamentoFaturar();
 
             oForm.Visible = true;
-
-
-
         }
 
         private void MtPedidos_DoubleClickAfter(object sboObject, SBOItemEventArg pVal)

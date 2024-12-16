@@ -42,7 +42,6 @@ namespace Zopone.AddOn.PO.UtilAddOn
                     Util.ExibirMensagemStatusBar($"Criando depósito de RA: {dr["WhsName"].ToString()}");
                 }
 
-                Util.ExibirMensagemStatusBar($"Fim da criação de depósitos!");
             }
             catch (Exception Ex)
             {
