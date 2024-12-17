@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER
+﻿CREATE PROCEDURE ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER
 (
 	@DocEntry INT
 )
@@ -86,7 +85,6 @@ BEGIN
     WHERE ID = @CurrentRow;
 
     
-    select  @U_IdPci "nf", @U_IdPciNF "cr", @DocDate;
 
 
 	EXEC  [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_CancelaNFContasReceber  @U_IdPciNF, @U_IdPci, @DocDate;

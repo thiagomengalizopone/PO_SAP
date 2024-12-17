@@ -204,7 +204,7 @@ BEGIN
 		END;
 
 		-- Chama procedure para cancelar contas a receber
-		EXEC ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER @UltimaData, @UltimaHora;
+		EXEC ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER 0;
 
 		-- Insere o log da execução
 		IF (@DocEntry IS NULL OR @DocEntry = 0)
