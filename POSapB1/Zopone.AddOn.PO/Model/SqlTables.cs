@@ -50,7 +50,7 @@ namespace Zopone.AddOn.PO.Model
         }
         public static class ZPN_GERAROBRA
         {
-            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Tables.ZPN_POERICSSON.sql";
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Tables.ZPN_GERAROBRA.sql";
             public const string Descricao = "Tabela de log de Mensagens do AddOn";
             public const TipoScript Tipo = TipoScript.Table;
             public const Int32 Versao = 2024111201;

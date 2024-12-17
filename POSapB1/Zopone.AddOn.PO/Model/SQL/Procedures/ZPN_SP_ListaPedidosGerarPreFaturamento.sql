@@ -39,7 +39,10 @@ SELECT top 300
 	OBRA.Code											"Obra",
 	OOAT.Remarks										"Contrato",
 	RDR1.ItemCode,
-	RDR1.Dscription
+	RDR1.Dscription,
+	ISNULL(ocnt.ibgecode,'                    ') as "IbgeCode",
+	OCNT.State								 	 AS "Estado",
+	OCNT.Name							 		 as "Cidade"
 FROM
 	RDR1 
 	INNER JOIN ORDR								ON ORDR."DocEntry" = RDR1."DocEntry"
@@ -50,6 +53,7 @@ FROM
 	LEFT JOIN ZPN_VW_TotalFaturadoPedido FAT	ON FAT.U_BaseEntry = RDR1."DocEntry" AND FAT.U_BaseLine = RDR1.LineNum
 	LEFT JOIN "@ZPN_ALOCA" ALOCA				ON ALOCA."Code" = RDR1.U_ItemFat 
 	LEFT JOIN "@ZPN_ALOCA" ALOCAFAT				ON ALOCAFAT."Code" = ALOCA.U_EtapaFat
+	LEFT JOIN OCNT								ON OCNT.State	   = OBRA.U_Estado AND OCNT.Name = OBRA.U_Cidade
 WHERE 
 	ISNULL(RDR1.U_Bloqueado,'N') <> 'Y'  
 	AND ISNULL(ORDR.NumAtCard,'') <> ''  

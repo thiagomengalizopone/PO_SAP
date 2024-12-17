@@ -1,4 +1,4 @@
-﻿ALTER VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
+﻿create VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
 as
 
 
@@ -41,8 +41,8 @@ select
 	CASE WHEN isnull(OPRC_OBRA.PrcCode,'') = '' then 'N' else 'Y' end "CentroCustoObra",
 	obpl.BPLId "U_BPLId",
 	OBPL.BPLName "U_BPLName",
-	TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',1,8))   CenterCode
-
+	TRIM(SUBSTRING(replace(replace(REPLACE(OBR_002, ' ', ''),'.',''), '/','') + '        ',1,8))   CenterCode,
+	Obras.OBR_008 "DataCadastro"
 from 	
 	SQL_TOPENG.TOPENG.DBO.Obras 
 	INNER JOIN SQL_TOPENG.TOPENG.DBO.Contrato on Contrato.CTR_001 = Obras.CTR_001

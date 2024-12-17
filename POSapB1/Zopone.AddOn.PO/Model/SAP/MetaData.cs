@@ -17,6 +17,11 @@ namespace Zopone.AddOn.PO.Model.SAP
             if (Globals.Master.CurrentVersion < 2024070101)
             {
 
+                #region Municipio
+                DBCreation.CriarCampoUsuario("OCNT", "ISS", "Cód. Aliq. ISS", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 10, false);
+                #endregion
+
+
                 #region Campos AddOn WMS
                 var valoresValidosTipoDocumento = new List<Tuple<string, string>>();
                 valoresValidosTipoDocumento.Add(new Tuple<string, string>("N", "Nenhum"));
@@ -394,9 +399,6 @@ namespace Zopone.AddOn.PO.Model.SAP
 
                 #endregion
 
-            }
-            else if (Globals.Master.CurrentVersion < 2024060301)
-            {
                 #region Campos Senior
 
                 DBCreation.CriarCampoUsuario("@ZPN_CONFPO", "UsSenior", "Usuário Senior", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 100, false, null);

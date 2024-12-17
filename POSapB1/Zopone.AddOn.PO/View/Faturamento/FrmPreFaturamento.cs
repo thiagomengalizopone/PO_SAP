@@ -487,6 +487,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "Obra");
 
+                MtPedidos.Columns.Item("Col_23").DataBind.Bind("DtPO", "IbgeCode");
+                MtPedidos.Columns.Item("Col_24").DataBind.Bind("DtPO", "Estado");
+                MtPedidos.Columns.Item("Col_25").DataBind.Bind("DtPO", "Cidade");
+                
 
 
                 MtPedidos.LoadFromDataSourceEx();

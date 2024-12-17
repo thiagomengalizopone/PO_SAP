@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE SP_ZPN_CriaObservacoesFaturamentoEsboco
+﻿create PROCEDURE SP_ZPN_CriaObservacoesFaturamentoEsboco
 (
     @DocEntry INT
 /*	, 

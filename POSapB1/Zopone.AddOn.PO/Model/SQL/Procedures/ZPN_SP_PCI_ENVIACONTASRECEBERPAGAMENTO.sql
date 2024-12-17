@@ -61,7 +61,7 @@ BEGIN TRY
 				ORCT.CreateTS >= @UltimaHora
 			)
 			or 
-			and 
+
 			(
 				ORCT.CreateDate >= @UltimaData and 
 				ORCT.CreateTS >= @UltimaHora
