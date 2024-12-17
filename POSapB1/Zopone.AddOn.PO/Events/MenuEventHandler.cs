@@ -11,6 +11,7 @@ using Zopone.AddOn.PO.View.Faturamento;
 using Zopone.AddOn.PO.View.Obra;
 using Zopone.AddOn.PO.View.ParametrosPO;
 using Zopone.AddOn.PO.View.PO;
+using Zopone.AddOn.PO.View.Manutencao;
 
 
 namespace Zopone.AddOn.PO
@@ -99,9 +100,11 @@ namespace Zopone.AddOn.PO
                                 new FrmEfetivaFaturamento();
                             }
                             break;
-
-
-
+                        case MenuConstantes.MnuManutencaoDtProgramanda:
+                            {
+                                new FrmAtualizaDataProgramada();
+                            }
+                            break;
                     }
                 }
 
@@ -114,7 +117,5 @@ namespace Zopone.AddOn.PO
             }
 
         }
-
-
     }
 }

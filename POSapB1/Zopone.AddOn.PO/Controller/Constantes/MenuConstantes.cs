@@ -23,6 +23,9 @@
         public const string MnuCadastros = "MnuCadastros";
         public const string MnuPO = "MnPO";
         public const string MnuFaturamento = "MnuFaturamento";
+        public const string MnuManutencao = "MnuManutencao";
+
+        public const string MnuManutencaoDtProgramanda = "MnuMtDtProgramada";
 
     }
 
