@@ -1,4 +1,4 @@
-﻿CREATE procedure ZPN_SP_ListaPedidosGerarPreFaturamento
+﻿create procedure ZPN_SP_ListaPedidosGerarPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -11,7 +11,7 @@ BEGIN
 SET @NumAtCard =  ISNULL(@NumAtCard,'') ;
 
 
-SELECT top 300
+SELECT top 50
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
 	GetDate() "PrevFat",
@@ -40,9 +40,13 @@ SELECT top 300
 	OOAT.Remarks										"Contrato",
 	RDR1.ItemCode,
 	RDR1.Dscription,
-	ISNULL(ocnt.ibgecode,'                    ') as "IbgeCode",
+	case 
+		when ISNULL(ocnt.ibgecode,'') = '' then '                    '
+		else ISNULL(ocnt.ibgecode,'')
+	end as "IbgeCode",
 	OCNT.State								 	 AS "Estado",
-	OCNT.Name							 		 as "Cidade"
+	OCNT.Name							 		 as "Cidade",
+	OCNT.AbsId
 FROM
 	RDR1 
 	INNER JOIN ORDR								ON ORDR."DocEntry" = RDR1."DocEntry"
@@ -59,12 +63,19 @@ WHERE
 	AND ISNULL(ORDR.NumAtCard,'') <> ''  
 	AND isnull(FAT."SaldoFaturado",0) < RDR1."LineTotal" 
 	AND ORDR."DocDate" between @DataInicial and @DataFinal 
-	AND (ORDR."CardName" like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
+	AND 
+	(
+		(ORDR."CardName" like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
+		OR 
+		(ORDR.CardCode like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
+	)
 	AND (ISNULL(@NumAtCard,'') = '' or (ORDR.NumAtCard like '%' + @NumAtCard + '%' AND isnull(ORDR.NumAtCard,'') <> '') )
 ORDER BY
 	ORDR."DocDate", ORDR."DocNum", RDR1."LineNum";
 
 
 END ;
+
+
 
 

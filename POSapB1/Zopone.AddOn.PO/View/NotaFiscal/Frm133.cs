@@ -61,6 +61,8 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                     else
                         DocEntry = Convert.ToInt32(SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM ODRF WHERE ObjType = '13' "));
 
+                    SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 112");
+
                     UtilPCI.EnviarDadosNFDigitacaoPCIAsync(DocEntry);
                 }
                 else
@@ -69,6 +71,8 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                         DocEntry = Convert.ToInt32(oDBOINV.GetValue("DocEntry", 0));
                     else
                         DocEntry = Convert.ToInt32(SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM OINV WHERE ObjType = '13' "));
+
+                    SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 13");
 
                     UtilPCI.EnviarDadosNFLiberadaPCIAsync(DocEntry);
 

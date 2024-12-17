@@ -84,52 +84,56 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-                var oConds = new SAPbouiCOM.Conditions();
-                var oCfLs = oForm.ChooseFromLists;
-
-                var cfl = oCfLs.Item("CFL_ALOC");
-
-                if (cfl.GetConditions().Count > 0)
+                if (pVal.ColUID == "Col_7")
                 {
-                    SAPbouiCOM.Conditions emptyCon = new SAPbouiCOM.Conditions();
 
-                    cfl.SetConditions(emptyCon);
+                    var oConds = new SAPbouiCOM.Conditions();
+                    var oCfLs = oForm.ChooseFromLists;
+
+                    var cfl = oCfLs.Item("CFL_ALOC");
+
+                    if (cfl.GetConditions().Count > 0)
+                    {
+                        SAPbouiCOM.Conditions emptyCon = new SAPbouiCOM.Conditions();
+
+                        cfl.SetConditions(emptyCon);
+                    }
+
+                    var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                    string sql_query = $"SP_ZPN_LISTAALOCACOESOBRA '{DtPesquisa.GetValue("Obra", pVal.Row - 1)}'";
+                    oRecordSet.DoQuery(sql_query);
+
+                    int iRow = 1;
+
+                    while (!oRecordSet.EoF)
+                    {
+                        var oCond = oConds.Add();
+
+                        if (oConds.Count == 1)
+                            oCond.BracketOpenNum = 1;
+
+
+                        oCond.Alias = "Code";
+                        oCond.Operation = SAPbouiCOM.BoConditionOperation.co_EQUAL;
+                        oCond.CondVal = oRecordSet.Fields.Item("Codigo").Value.ToString();
+
+                        if (oRecordSet.RecordCount > 1 && iRow != oRecordSet.RecordCount)
+                            oCond.Relationship = BoConditionRelationship.cr_OR;
+
+                        if (iRow == oRecordSet.RecordCount)
+                            oCond.BracketCloseNum = 1;
+
+                        oRecordSet.MoveNext();
+
+                        iRow++;
+                    }
+
+
+
+
+                    cfl.SetConditions(oConds);
                 }
-
-                var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
-
-                string sql_query = $"SP_ZPN_LISTAALOCACOESOBRA '{DtPesquisa.GetValue("Obra", pVal.Row - 1)}'";
-                oRecordSet.DoQuery(sql_query);
-
-                int iRow = 1;
-
-                while (!oRecordSet.EoF)
-                {
-                    var oCond = oConds.Add();
-
-                    if (oConds.Count == 1)
-                        oCond.BracketOpenNum = 1;
-
-
-                    oCond.Alias = "Code";
-                    oCond.Operation = SAPbouiCOM.BoConditionOperation.co_EQUAL;
-                    oCond.CondVal = oRecordSet.Fields.Item("Codigo").Value.ToString();
-
-                    if (oRecordSet.RecordCount > 1 && iRow != oRecordSet.RecordCount)
-                        oCond.Relationship = BoConditionRelationship.cr_OR;
-
-                    if (iRow == oRecordSet.RecordCount)
-                        oCond.BracketCloseNum = 1;
-
-                    oRecordSet.MoveNext();
-
-                    iRow++;
-                }
-
-
-
-
-                cfl.SetConditions(oConds);
 
                 BubbleEvent = true;
             }
@@ -351,6 +355,28 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                     CalculaPorcentagemFaturamento(row);
                 }
+                else if (pVal.ColUID == "Col_23")
+                {
+                    MtPedidos.FlushToDataSource();
+
+                    Int32 row = pVal.Row - 1;
+
+                    SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                    if (aEvent.SelectedObjects == null)
+                        return;
+
+                    string IbgeCode = Convert.ToString(aEvent.SelectedObjects.GetValue("IbgeCode", 0));
+                    string State = Convert.ToString(aEvent.SelectedObjects.GetValue("State", 0));
+                    string Name = Convert.ToString(aEvent.SelectedObjects.GetValue("Name", 0));
+
+
+                    DtPesquisa.SetValue("IbgeCode", row, IbgeCode);
+                    DtPesquisa.SetValue("Estado", row, State);
+                    DtPesquisa.SetValue("Cidade", row, Name);
+
+                    MtPedidos.LoadFromDataSourceEx();
+
+                }
 
             }
             catch (Exception Ex)
@@ -490,8 +516,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_23").DataBind.Bind("DtPO", "IbgeCode");
                 MtPedidos.Columns.Item("Col_24").DataBind.Bind("DtPO", "Estado");
                 MtPedidos.Columns.Item("Col_25").DataBind.Bind("DtPO", "Cidade");
-                
-
 
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
@@ -499,6 +523,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 Column oColuna = MtPedidos.Columns.Item("Col_7");
                 oColuna.ChooseFromListUID = "CFL_ALOC";
                 oColuna.ChooseFromListAlias = "Code";
+
+                 oColuna = MtPedidos.Columns.Item("Col_23");
+                oColuna.ChooseFromListUID = "CFL_265";
+                oColuna.ChooseFromListAlias = "IbgeCode";
 
 
             }
