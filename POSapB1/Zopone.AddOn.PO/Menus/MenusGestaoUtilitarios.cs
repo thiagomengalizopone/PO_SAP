@@ -170,8 +170,21 @@ namespace Zopone.AddOn.PO.Menus
                  24,
                  null));
 
+            listMenu.Add(new Menu(
+                MenuConstantes.MnuFaturamentoPO,
+                BoMenuType.mt_POPUP,
+                MenuConstantes.MnuManutencao,
+                "Manutenção",
+                25,
+                null));
 
-
+            listMenu.Add(new Menu(
+                 MenuConstantes.MnuManutencao,
+                 BoMenuType.mt_STRING,
+                 MenuConstantes.MnuManutencaoDtProgramanda,
+                 "Data Programada",
+                 26,
+                 null));
 
 
             #endregion [ PO ]

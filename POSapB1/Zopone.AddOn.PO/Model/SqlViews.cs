@@ -47,5 +47,13 @@ namespace Zopone.AddOn.PO.Model
             public const TipoScript Tipo = TipoScript.View;
             public const Int32 Versao = 2024111201;
         }
+
+        public static class ZPN_VW_DOCUMENTOS_REPROGRAMACAO
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Views.ZPN_VW_DOCUMENTOS_REPROGRAMACAO.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.View;
+            public const Int32 Versao = 2024111201;
+        }
     }
 }
