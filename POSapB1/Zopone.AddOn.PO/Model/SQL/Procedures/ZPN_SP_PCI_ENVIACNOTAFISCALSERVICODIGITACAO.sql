@@ -164,7 +164,12 @@ BEGIN
 			FROM 
 				DRF6
 				INNER JOIN ODRF ON ODRF.DocEntry = DRF6.DocEntry
-				INNER JOIN "@ZPN_ALOCA" ALOCA ON DRF6.U_ItemFat = ALOCA.Code
+				INNER JOIN DRF1 ON DRF1.DocEntry = ODRF.DocEntry
+				INNER JOIN "@ZPN_ALOCA" ALOCA ON 
+					case when isnull(DRF6.U_ItemFat,'') <> '' then DRF6.U_ItemFat
+					else DRF1.U_ItemFat
+				end 
+					= ALOCA.Code
 			WHERE 
 				ODRF.DocEntry = @nfeservicoid
 			ORDER BY ODRF.DocEntry, DRF6.DueDate;  

@@ -275,7 +275,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                             oNotaFiscalSaida.UserFields.Fields.Item("U_TX_OrigemIbge").Value = IbgeCode;
 
-
                             oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
 
@@ -285,6 +284,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             Util.ExibirMensagemStatusBar($"Faturando PO {oPedidoVenda.NumAtCard} - Linha -  {oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString()}", BoMessageTime.bmt_Medium, false);
 
                             oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.Utilizacao);
+
+                            oNotaFiscalSaida.Project = oPedidoVenda.Lines.ProjectCode;
 
                             oNotaFiscalSaida.Lines.ItemCode = ItemCode;
                             oNotaFiscalSaida.Lines.Quantity = 1;
@@ -357,6 +358,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                     if (oNotaFiscalSaidaImposto.Update() != 0)
                         throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                    UtilPCI.EnviarDadosNFDigitacaoPCIAsync(DocEntry);
                 }
             }
             catch (Exception Ex)

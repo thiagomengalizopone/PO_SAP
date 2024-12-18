@@ -124,7 +124,7 @@ BEGIN
 
 		if (@IdPciCliente = '') begin
 
-			 select @IdPciCliente = ISNULL(MAX([clienteid]),'') from [LINKZCLOUD].[zsistema_aceite].[dbo].[cliente] where [documentoprincipal] = @DocumentoPrincipal;
+			 select @IdPciCliente = ISNULL(MAX(cast([clienteid] as varchar(250))),'') from [LINKZCLOUD].[zsistema_aceite].[dbo].[cliente] where [documentoprincipal] = @DocumentoPrincipal;
 
 			 IF (@IdPciCliente = '') 
 			 BEGIN

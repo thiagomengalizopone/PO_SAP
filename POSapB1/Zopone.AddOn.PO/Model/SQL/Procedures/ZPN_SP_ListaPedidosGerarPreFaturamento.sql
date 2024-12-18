@@ -1,4 +1,4 @@
-﻿create procedure ZPN_SP_ListaPedidosGerarPreFaturamento
+﻿ALTER procedure ZPN_SP_ListaPedidosGerarPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -10,6 +10,10 @@ BEGIN
 
 SET @NumAtCard =  ISNULL(@NumAtCard,'') ;
 
+
+declare @qtde int;
+
+set @qtde = 50;
 
 SELECT top 50
 	'N' "Selecionar",
@@ -71,7 +75,7 @@ WHERE
 	)
 	AND (ISNULL(@NumAtCard,'') = '' or (ORDR.NumAtCard like '%' + @NumAtCard + '%' AND isnull(ORDR.NumAtCard,'') <> '') )
 ORDER BY
-	ORDR."DocDate", ORDR."DocNum", RDR1."LineNum";
+	ORDR."DocDueDate" desc , ORDR."DocNum", RDR1."LineNum";
 
 
 END ;

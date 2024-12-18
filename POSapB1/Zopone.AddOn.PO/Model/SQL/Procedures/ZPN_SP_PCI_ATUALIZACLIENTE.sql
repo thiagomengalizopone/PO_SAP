@@ -1,185 +1,159 @@
-﻿create PROCEDURE ZPN_SP_PCI_ATUALIZACLIENTE
+﻿create PROCEDURE SP_ZPN_VERIFICACADASTROPCI
 (
-	@CardCode varchar(50)
+	@DocEntry INT,
+	@TipoDoc int
 )
 AS 
 BEGIN
 
-BEGIN TRY
 
---DECLARE @CardCode varchar(50);
-
-		DECLARE @UltimaData date;
-		DECLARE @UltimaHora int;
-		DECLARE @UltimaDataExec DATE;
-        DECLARE @UltimaHoraExec INT;
-
-		declare @RowNumber int, @RowCount int;
-
-		declare     @RowNum int,
-					@clienteid varchar(250),    
-					@CardCodePCI varchar(100),
-					@BPLId int,
-					@gestatus INT,                    
-					@gedataacao DATETIME,             
-					@empresaid  varchar(250),                   
-					@razaosocial VARCHAR(255),        
-					@nomefantasia VARCHAR(255),       
-					@documentoprincipal VARCHAR(50),  
-					@documentoadicional VARCHAR(50),  
-					@inicioatividade DATETIME,        
-					@codigo INT  ;
-
-
-        -- Captura a data e hora da execução atual
-        SET @UltimaDataExec = GETDATE();
-        SET @UltimaHoraExec = CAST(REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), ':', '') AS INT);
-
-        -- Recupera as últimas execuções
-        SET @UltimaData = (SELECT ISNULL(MAX(DataExecutado), '2024-01-01') FROM ZPN_INTEGRAPCI WHERE ObjType = 'OCRD');
-        SET @UltimaHora = (SELECT ISNULL(MAX(HoraExecutado), 0) FROM ZPN_INTEGRAPCI WHERE ObjType ='OCRD');
-
-
-DECLARE @ClientesPCI TABLE
-(
-    RowNumber INT IDENTITY(1,1),
-    clienteid VARCHAR(250),     
-	CardCodePCI varchar(100),
-	BPLId int,
-    gestatus INT,                    
-    gedataacao DATETIME,             
-    empresaid VARCHAR(250),                   
-    razaosocial VARCHAR(255),        
-    nomefantasia VARCHAR(255),       
-    documentoprincipal VARCHAR(50),  
-    documentoadicional VARCHAR(50),  
-    inicioatividade DATETIME,        
-    codigo INT          
-);
-
--- Omitir a coluna RowNumber do INSERT
-INSERT INTO @ClientesPCI
-(
-    clienteid,    
-	CardCodePCI,
-	BPLId,
-    gestatus,                    
-    gedataacao,              
-    empresaid,                   
-    razaosocial,        
-    nomefantasia,       
-    documentoprincipal,  
-    documentoadicional,  
-    inicioatividade,     
-    codigo              
-)
-SELECT 
-    ISNULL(CRD8.U_IdPCI, ''),
-	ocrd.CardCode,
-	crd8.BPLId,
-    1,
-    GETDATE(),
-    obpl.U_IdPCI,
-    ocrd.CardName,
-    ocrd.CardFName,
-    CASE WHEN ISNULL(CRD7.TaxId0, '') <> '' THEN CRD7.TaxId0 ELSE CRD7.TaxId4 END,
-    CASE WHEN ISNULL(CRD7.TaxId1, '') <> '' THEN CRD7.TaxId5 ELSE CRD7.TaxId4 END,
-    ISNULL(ocrd.DateFrom, GETDATE()),
-    ISNULL(ocrd.DocEntry, 0)
-FROM    
-    CRD7
-    INNER JOIN OCRD ON OCRD.CardCode = CRD7.CardCode AND OCRD.CardType = 'C'
-    INNER JOIN CRD8 ON CRD8.CardCode = OCRD.CardCode AND ISNULL(CRD8.DisabledBP, '') <> 'Y' 
-    INNER JOIN OBPL ON OBPL.BPLId = CRD8.BPLId AND OBPL.U_EnviaPCI = 'Y'
-WHERE
-    OCRD.CardType = 'C' AND
-    ISNULL(CRD7.Address, '') = '' AND
-    (
-        ocrd.CardCode = @CardCode OR 
-        (
-            ISNULL(@CardCode, '') = '' AND 
-            (
-                OCRD.CreateDate >= @UltimaData AND OCRD.CreateTS >= @UltimaHora OR 
-                OCRD.UpdateDate >= @UltimaData AND OCRD.UpdateTS >= @UltimaHora
-            )
-        )
-    );
-
-
-set @RowNumber = 1;
-
-set @RowCount = (select count(1) from @ClientesPCI);
-
-while (@RowNumber <= @RowCount)
-begin
-
+	-- Declaração do cursor diretamente com o SELECT
+	DECLARE CursorResultado CURSOR FOR
 	SELECT 
-		@clienteid = clienteid,   
-		@CardCodePCI = CardCodePCI,
-		@BPLId  = BPLId,
-		@gestatus = gestatus,                    
-		@gedataacao = gedataacao,             
-		@empresaid = empresaid,                   
-		@razaosocial = razaosocial,        
-		@nomefantasia = nomefantasia,       
-		@documentoprincipal = documentoprincipal,  
-		@documentoadicional = documentoadicional,  
-		@inicioatividade = inicioatividade,        
-		@codigo = codigo
-	FROM @ClientesPCI
-	WHERE RowNumber =@RowNumber;
+		CRD8."CardCode" AS CodigoCliente,   
+		ISNULL(CASE WHEN ISNULL(CRD7.TaxId0,'') <> '' THEN CRD7.TaxId0 ELSE CRD7.TaxId4 end, '') AS DocumentoPrincipal,
+		ISNULL(CRD8."U_IdPci",'') AS IdPciCliente,
+		crd8.BPLId,
+		OBRA."Code" AS CodigoObra,
+		ISNULL(OBRA.U_IdPci, '') AS IdPciObra,
+		ISNULL(ALOC."Code", '') AS CodigoAlocacao,
+		ISNULL(ALOC.U_IdPci, '') AS IdPciAlocacao,    
+		ISNULL(OOAT.AbsID, '') AS CodigoContrato,
+		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato
+	FROM 
+		RDR1
+		INNER JOIN ORDR ON ORDR.DocEntry = RDR1.DocEntry
+		INNER JOIN CRD8 ON CRD8.CardCode = ORDR.CardCode
+			AND CRD8.BPLId = ORDR.BPLId
+		INNER JOIN CRD7 ON CRD7.CardCode = CRD8.CardCode 
+			AND ISNULL(CRD7.Address, '') = ''
+		INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = RDR1.Project
+		INNER JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = RDR1.U_ItemFat
+		INNER JOIN OOAT ON OOAT.AbsId = OBRA.U_CodContrato
+	WHERE 
+		@TipoDoc = 17 and 
+		(ISNULL(OOAT.U_IdPCI, '') = '' or  ISNULL(ALOC.U_IdPci, '') = '' or ISNULL(OBRA.U_IdPci, '')  = '' or     ISNULL(CRD8."U_IdPci",'')  = '' ) and 
+		ORDR.DocEntry = @DocEntry
+		
+	UNION ALL 
+	SELECT 
+		CRD8."CardCode" AS CodigoCliente,   
+		ISNULL(CASE WHEN ISNULL(CRD7.TaxId0,'') <> '' THEN CRD7.TaxId0 ELSE CRD7.TaxId4 end, '') AS DocumentoPrincipal,
+		ISNULL(CRD8."U_IdPci",'') AS IdPciCliente,
+		crd8.BPLId,
+		OBRA."Code" AS CodigoObra,
+		ISNULL(OBRA.U_IdPci, '') AS IdPciObra,
+		ISNULL(ALOC."Code", '') AS CodigoAlocacao,
+		ISNULL(ALOC.U_IdPci, '') AS IdPciAlocacao,    
+		ISNULL(OOAT.AbsID, '') AS CodigoContrato,
+		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato
+	FROM 
+		DRF1
+		INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
+		INNER JOIN CRD8 ON CRD8.CardCode = ODRF.CardCode
+			AND CRD8.BPLId = ODRF.BPLId
+		INNER JOIN CRD7 ON CRD7.CardCode = CRD8.CardCode 
+			AND ISNULL(CRD7.Address, '') = ''
+		INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = DRF1.Project
+		INNER JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = DRF1.U_ItemFat
+		INNER JOIN OOAT ON OOAT.AbsId = OBRA.U_CodContrato
+	WHERE 
+		@TipoDoc = 112 and 
+		(ISNULL(OOAT.U_IdPCI, '') = '' or  ISNULL(ALOC.U_IdPci, '') = '' or ISNULL(OBRA.U_IdPci, '')  = '' or     ISNULL(CRD8."U_IdPci",'')  = '' ) and 
+		ODRF.DocEntry = @DocEntry
 
-	if (isnull(@clienteid,'') = '') begin
-		set @clienteid = newid();
-	end;
+	union all 
+	SELECT 
+		CRD8."CardCode" AS CodigoCliente,   
+		ISNULL(CASE WHEN ISNULL(CRD7.TaxId0,'') <> '' THEN CRD7.TaxId0 ELSE CRD7.TaxId4 end, '') AS DocumentoPrincipal,
+		ISNULL(CRD8."U_IdPci",'') AS IdPciCliente,
+		crd8.BPLId,
+		OBRA."Code" AS CodigoObra,
+		ISNULL(OBRA.U_IdPci, '') AS IdPciObra,
+		ISNULL(ALOC."Code", '') AS CodigoAlocacao,
+		ISNULL(ALOC.U_IdPci, '') AS IdPciAlocacao,    
+		ISNULL(OOAT.AbsID, '') AS CodigoContrato,
+		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato
+	FROM 
+		INV1
+		INNER JOIN OINV ON OINV.DocEntry = INV1.DocEntry
+		INNER JOIN CRD8 ON CRD8.CardCode = OINV.CardCode
+			AND CRD8.BPLId = OINV.BPLId
+		INNER JOIN CRD7 ON CRD7.CardCode = CRD8.CardCode 
+			AND ISNULL(CRD7.Address, '') = ''
+		INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = INV1.Project
+		INNER JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = INV1.U_ItemFat
+		INNER JOIN OOAT ON OOAT.AbsId = OBRA.U_CodContrato
+	WHERE 
+		@TipoDoc = 13 and 
+		(ISNULL(OOAT.U_IdPCI, '') = '' or  ISNULL(ALOC.U_IdPci, '') = '' or ISNULL(OBRA.U_IdPci, '')  = '' or     ISNULL(CRD8."U_IdPci",'')  = '' ) and 
+		OINV.DocEntry = @DocEntry;
+
+	-- Declaração das variáveis que receberão os dados de cada linha
+	DECLARE 
+		@CodigoCliente VARCHAR(50),
+		@DocumentoPrincipal VARCHAR(50),
+		@IdPciCliente VARCHAR(50),
+		@CodigoObra VARCHAR(50),
+		@IdPciObra VARCHAR(50),
+		@CodigoAlocacao VARCHAR(50),
+		@IdPciAlocacao VARCHAR(50),
+		@CodigoContrato VARCHAR(50),
+		@IdPciContrato VARCHAR(50),
+		@BplId int;
+
+	-- Abrir o cursor
+	OPEN CursorResultado;
+
+	-- Loop para percorrer os dados do cursor
+	FETCH NEXT FROM CursorResultado INTO 
+		@CodigoCliente, 
+		@DocumentoPrincipal,
+		@IdPciCliente,
+		@BplId,
+		@CodigoObra,
+		@IdPciObra,
+		@CodigoAlocacao,
+		@IdPciAlocacao,
+		@CodigoContrato,
+		@IdPciContrato;
+
+	-- Percorrer o cursor linha por linha
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+
+		if (@IdPciCliente = '') begin
+			 exec ZPN_SP_PCI_ATUALIZACLIENTE @CodigoCliente;
+		end;
+
+		if (@IdPciContrato = '') BEGIN 
+			exec ZPN_SP_PCI_ATUALIZACONTRATO @CodigoContrato;
+		end;
+
+		if (@IdPciObra = '') begin
+			EXEC [ZPN_SP_PCI_ATUALIZAOBRA] @CodigoObra, NULL;
+		end;
+	 
 
 
-	exec [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaCliente
-													@clienteid,      
-													@gestatus, 
-													@gedataacao,
-													@empresaid,
-													@razaosocial,
-													@nomefantasia,
-													@documentoprincipal,
-													@documentoadicional,
-													@inicioatividade,
-													@codigo;
+
+		-- Busque a próxima linha
+		FETCH NEXT FROM CursorResultado INTO 
+			@CodigoCliente, 
+			@DocumentoPrincipal,
+			@IdPciCliente,
+			@BplId,
+			@CodigoObra,
+			@IdPciObra,
+			@CodigoAlocacao,
+			@IdPciAlocacao,
+			@CodigoContrato,
+			@IdPciContrato;
+	END;
+
+	-- Fechar e desalocar o cursor
+	CLOSE CursorResultado;
+	DEALLOCATE CursorResultado;
 
 
-    update ocrd set U_IdPCI =@clienteid where CardCode = @CardCodePCI and ISNULL(U_IdPCI,'') = '';
-
-	set @RowNumber= @RowNumber+1;
-end;
-
-
-  
-  
-  IF (ISNULL(@CardCode,'') = '')
-  BEGIN
-       INSERT INTO ZPN_INTEGRAPCI (ObjType, DataExecutado, HoraExecutado)
-       VALUES ('OCRD', @UltimaDataExec, @UltimaHoraExec);
-  END
-
-END TRY
-BEGIN CATCH
-   -- Captura do erro
-    DECLARE 
-        @ErrorNumber INT = ERROR_NUMBER(),
-        @ErrorSeverity INT = ERROR_SEVERITY(),
-        @ErrorState INT = ERROR_STATE(),
-        @ErrorProcedure NVARCHAR(128) = ERROR_PROCEDURE(),
-        @ErrorLine INT = ERROR_LINE(),
-        @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-
-    -- Inserir o log de erro na tabela ErrorLog
-    INSERT INTO ZPN_LogImportacaoPCI (ErrorNumber, ErrorSeverity, ErrorState, ErrorProcedure, ErrorLine, ErrorMessage, HostName, ApplicationName, UserName)
-    VALUES (@ErrorNumber, @ErrorSeverity, @ErrorState, @ErrorProcedure, @ErrorLine, @ErrorMessage, HOST_NAME(), APP_NAME(), SYSTEM_USER);
-    
-    -- Opcional: Re-lançar o erro se necessário
-    -- THROW; 
-
-END CATCH;
-	
-end ;
-
+END;

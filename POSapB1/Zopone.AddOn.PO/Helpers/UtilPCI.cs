@@ -28,6 +28,8 @@ namespace Zopone.AddOn.PO.Helpers
                 }
                 else
                 {
+                    SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 13");
+
                     string SQL_QueryCR = $"ZPN_SP_PCI_ENVIACONTASRECEBER {DocEntry}";
 
                     erro_obra = SqlUtils.GetValue(SQL_QueryCR);
@@ -58,6 +60,8 @@ namespace Zopone.AddOn.PO.Helpers
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
+                SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 112");
+
                 string SQL_Query = $"ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO {DocEntry}";
 
                 string erro_obra = SqlUtils.GetValue(SQL_Query);
@@ -74,7 +78,7 @@ namespace Zopone.AddOn.PO.Helpers
             }
             catch (Exception Ex)
             {
-                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar dados de Nota Fiscal: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar dados de Nota Fiscal Digitação: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
         public static async Task EnviarDadosObraPCIAsync(string CodeObra, DateTime dataCriacao)
