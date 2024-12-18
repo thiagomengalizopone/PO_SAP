@@ -296,6 +296,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Candidato").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value += ($" {oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString()}");
 
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Project").Value = oPedidoVenda.Lines.ProjectCode;
+
 
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value =  ItemFaturamento;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescItemFat").Value = DescItemFaturamento;
@@ -334,23 +336,24 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 if (oNotaFiscalSaidaImposto.GetByKey(DocEntry))
                 {
+                    oNotaFiscalSaidaImposto.Lines.SetCurrentLine(0);
+                    oNotaFiscalSaidaImposto.Lines.UserFields.Fields.Item("U_Project").Value = oNotaFiscalSaidaImposto.Lines.ProjectCode;
+                    
+                    for (int iRow = 0; iRow < oNotaFiscalSaidaImposto.Installments.Count; iRow++)
+                        oNotaFiscalSaidaImposto.Installments.UserFields.Fields.Item("U_Project").Value = oNotaFiscalSaidaImposto.Lines.ProjectCode;
+
                     string IssCode = SqlUtils.GetValue($"SELECT U_ISS FROM OCNT WHERE IbgeCode = '{oNotaFiscalSaidaImposto.UserFields.Fields.Item("U_TX_OrigemIbge").Value}'");
 
                     if (!string.IsNullOrEmpty(IssCode))
                     {
-
-                        oNotaFiscalSaidaImposto.Lines.SetCurrentLine(0);
-
                         if (!string.IsNullOrEmpty(oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode))
                             oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.Add();
 
-
-                        oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode = IssCode;
-
-                        if (oNotaFiscalSaidaImposto.Update() != 0)
-                            throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
-
+                        oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode = IssCode;                      
                     }
+
+                    if (oNotaFiscalSaidaImposto.Update() != 0)
+                        throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                 }
             }
             catch (Exception Ex)

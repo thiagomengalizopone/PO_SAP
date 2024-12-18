@@ -18,6 +18,15 @@
 AS 
 BEGIN
     
+	UPDATE DRF6
+	SET DRF6.U_Project = DRF1.Project
+	FROM
+		DRF6
+		INNER JOIN DRF1 ON DRF1.DocEntry = DRF6.DocEntry
+	WHERE
+		DRF1.DocEntry = @DocEntry;
+
+
 	DECLARE @MENSAGEM VARCHAR(MAX);
 
 	SET @MENSAGEM = '';
@@ -50,14 +59,7 @@ BEGIN
 
 	UPDATE ODRF SET Header = @MENSAGEM WHERE DocEntry = @DocEntry;
 
-	update DRF6
-	SET DRF6.U_Project = DRF1.Project
-	FROM
-		DRF6
-		INNER JOIN DRF1 ON DRF1.DocEntry = DRF6.DocEntry
-	WHERE
-		DRF1.DocEntry = @DocEntry;
-
+	
 
 	
 

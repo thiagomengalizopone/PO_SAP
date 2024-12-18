@@ -1,13 +1,7 @@
-﻿alter VIEW [dbo].[VW_ZPN_IMPORTAPONAOFATURADA] 
+﻿CREATE VIEW [dbo].[VW_ZPN_IMPORTAPONAOFATURADA] 
 AS
 
-
-
-
-
-
-
-SELECT top 100
+SELECT 
 	OCRD."CardCode", 
 	PO_002 "NumAtCard",
 	getdate() "DocDate",
@@ -44,7 +38,6 @@ FROM
 	left JOIN OPRC CCOBRA ON CCOBRA.U_Obra = OBRA."Code"  and CCOBRA.DimCode = 2
 	
 WHERE
-	PO_002 collate SQL_Latin1_General_CP850_CI_AS not in (SELECT NumAtCard FROM ORDR WHERE ORDR.NumAtCard = PO_002 collate SQL_Latin1_General_CP850_CI_AS) and
 	PO_010 >= '2022-01-01'
 
 --order by PO_002

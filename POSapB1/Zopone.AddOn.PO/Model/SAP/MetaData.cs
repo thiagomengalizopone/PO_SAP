@@ -107,11 +107,10 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("RDR1", "itemDescription", "itemDescription", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false);
                 DBCreation.CriarCampoUsuario("RDR1", "Atividade", "Atividade", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false);
                 DBCreation.CriarCampoUsuario("RDR1", "DescCont", "Descrição Contrato", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 250, false);
-                
+                DBCreation.CriarCampoUsuario("RDR1", "Project", "Código Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 50, false);
 
                 DBCreation.CriarCampoUsuario("RDR1", "BaseEntry", "DocEntry Pedido", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false);
                 DBCreation.CriarCampoUsuario("RDR1", "BaseLine", "Linha Pedido", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false);
-
 
                 DBCreation.CriarCampoUsuario("RDR1", "StatusFat", "Status Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "A", valoresValidosStatusFaturamento);
                 DBCreation.CriarCampoUsuario("RDR1", "StatusImp", "Status Faturamento", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 1, false, "", valoresValidosStatusImportacao);
@@ -124,7 +123,7 @@ namespace Zopone.AddOn.PO.Model.SAP
                 DBCreation.CriarCampoUsuario("INV6", "Project", "Cód. Obra", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, 150, false, null);
                 #endregion
 
-                #region ParcelasDOcumento
+                #region Documento REferência
                 DBCreation.CriarCampoUsuario("INV21", "BaseLine", "Número Linha Base", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false, null);
                 DBCreation.CriarCampoUsuario("INV21", "LineTotal", "Total Linha", SAPbobsCOM.BoFieldTypes.db_Float, SAPbobsCOM.BoFldSubTypes.st_Price, 250, false, null);
                 #endregion
