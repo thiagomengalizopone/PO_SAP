@@ -1,10 +1,10 @@
-﻿create VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
+﻿CREATE VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
 as
 
 
 select 
 	OBR_002 "Code",
-	isnull(OBR_029,OBR_002) "Name",
+	REPLACE(isnull(OBR_029,OBR_002), CHAR(31), '') collate SQL_Latin1_General_CP1_CI_AS "Name",
 	OOAT.AbsID "U_CodContrato",
 	OOAT.Descript "U_DescContrato",
 	Obras.OBR_030 "U_IdSite",

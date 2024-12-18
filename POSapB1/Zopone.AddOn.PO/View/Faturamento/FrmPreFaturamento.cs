@@ -22,7 +22,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
         Button BtPesquisar { get; set; }
 
         Button BtEnviarFaturamento { get; set; }
-
         public FrmPreFaturamento() : base()
         {
             if (oForm == null)
@@ -41,7 +40,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
             BtPesquisar = (Button)oForm.Items.Item("BtPesq").Specific;
             BtPesquisar.PressedAfter += BtPesquisar_PressedAfter;
 
-
             BtEnviarFaturamento = (Button)oForm.Items.Item("BtEnv").Specific;
             BtEnviarFaturamento.PressedAfter += BtPreFaturamento_PressedAfter;
 
@@ -56,11 +54,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
             CarregarDadosFaturamentoFaturar();
 
             oForm.Visible = true;
-
-
-
         }
 
+        
 
         private Conditions CriaCondicoesCidade(string Estado)
         {
@@ -171,7 +167,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 BubbleEvent = false;
             }
         }
-
+       
         private void BtPreFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
             try
@@ -184,7 +180,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string MensagemErro = string.Empty;
 
 
-                Globals.Master.Connection.Database.StartTransaction();
 
                 GerarDocumentoPreFaturamento();
 
@@ -197,14 +192,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
 
-                if (Globals.Master.Connection.Database.InTransaction)
-                    Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_RollBack);
+
             }
             finally
             {
-                if (Globals.Master.Connection.Database.InTransaction)
-                    Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
-
                 CarregarDadosFaturamentoFaturar();
             }
         }
@@ -230,15 +221,20 @@ namespace Zopone.AddOn.PO.View.Faturamento
                         {
                             throw new Exception($"Não há atividade selecionada para a linha {iRow + 1}");
                         }
+                        else if (string.IsNullOrEmpty(DtPesquisa.GetValue("IbgeCode", iRow).ToString()))
+                        {
+                            throw new Exception($"Não há cidade (CodigoIbge) selecionada para a linha {iRow + 1}");
+                        }
                         else
                         {
                             Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Pedido", iRow));
                             Int32 LineNum = Convert.ToInt32(DtPesquisa.GetValue("Linha", iRow));
                             string ItemCode = DtPesquisa.GetValue("ItemCode", iRow).ToString();
                             string Atividade = DtPesquisa.GetValue("Atividade", iRow).ToString();
+                            string IbgeCode = DtPesquisa.GetValue("IbgeCode", iRow).ToString();
+
                             double TotalLinha = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", iRow));
                             DateTime dataFaturamento = Convert.ToDateTime(DtPesquisa.GetValue("PrevFat", iRow));
-
 
                             string ItemFaturamento = DtPesquisa.GetValue("AlocacaoFAT", iRow).ToString();
                             string DescItemFaturamento = DtPesquisa.GetValue("DescAlocacaoFAT", iRow).ToString();
@@ -260,6 +256,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                                 if (oNotaFiscalSaida.Add() != 0)
                                     throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
 
+                                AtualizaDocumentoCidadeImposto();
+
                                 oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
                                 oNotaFiscalSaida.CardCode = string.Empty;
                                 oNotaFiscalSaida.Lines.LineTotal = 0;
@@ -273,6 +271,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
                             oNotaFiscalSaida.BPL_IDAssignedToInvoice = oPedidoVenda.BPL_IDAssignedToInvoice;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_IdPO").Value = oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value;
+
+                            oNotaFiscalSaida.UserFields.Fields.Item("U_TX_OrigemIbge").Value = IbgeCode;
+
 
                             oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
@@ -312,6 +313,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 {
                     if (oNotaFiscalSaida.Add() != 0)
                         throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                    AtualizaDocumentoCidadeImposto();
+
                 }
             }
             catch (Exception Ex)
@@ -320,6 +324,40 @@ namespace Zopone.AddOn.PO.View.Faturamento
             }
         }
 
+        private void AtualizaDocumentoCidadeImposto()
+        {
+            try
+            {
+                Int32 DocEntry = Convert.ToInt32(SqlUtils.GetValue("SELECT MAX(DocEntry) FROM ODRF WHERE ObjType = '13'"));
+
+                Documents oNotaFiscalSaidaImposto = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+                if (oNotaFiscalSaidaImposto.GetByKey(DocEntry))
+                {
+                    string IssCode = SqlUtils.GetValue($"SELECT U_ISS FROM OCNT WHERE IbgeCode = '{oNotaFiscalSaidaImposto.UserFields.Fields.Item("U_TX_OrigemIbge").Value}'");
+
+                    if (!string.IsNullOrEmpty(IssCode))
+                    {
+
+                        oNotaFiscalSaidaImposto.Lines.SetCurrentLine(0);
+
+                        if (!string.IsNullOrEmpty(oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode))
+                            oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.Add();
+
+
+                        oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode = IssCode;
+
+                        if (oNotaFiscalSaidaImposto.Update() != 0)
+                            throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception($"Erro atualizar documento na cidade da NF: {Ex.Message}");
+            }
+        }
 
         private void MtPedidos_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
         {

@@ -38,7 +38,7 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
-        
+
         public static class ZPN_SP_RetornaProximaAlocacao
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_RetornaProximaAlocacao.sql";
@@ -141,6 +141,29 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
+
+        public static class ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+
+        public static class ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+        public static class ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
         public static class ZPN_SP_AtualizaPedidoFaturamento
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_AtualizaPedidoFaturamento.sql";
@@ -272,13 +295,6 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
-        public static class ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER
-        {
-            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER.sql";
-            public const string Descricao = "";
-            public const TipoScript Tipo = TipoScript.Proc;
-            public const Int32 Versao = 2024111201;
-        }
 
         public static class ZPN_SP_PCI_ENVIACONTASRECEBER
         {

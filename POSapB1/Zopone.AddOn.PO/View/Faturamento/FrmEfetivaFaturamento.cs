@@ -26,7 +26,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
         Button BtPesquisar { get; set; }
         Button BtImportarFaturamento { get; set; }
-
+        Button BtCancelarPreFaturamento { get; set; }
 
 
         Button BtEnviarFaturamento { get; set; }
@@ -58,6 +58,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
             BtImportarFaturamento = (Button)oForm.Items.Item("BtImpFat").Specific;
             BtImportarFaturamento.PressedAfter += BtImportarFaturamento_PressedAfter;
+
+            BtCancelarPreFaturamento = (Button)oForm.Items.Item("BtCanc").Specific;
+            BtCancelarPreFaturamento.PressedAfter += BtCancelarPreFaturamento_PressedAfter;
 
             BtImportarFaturamento.Item.Visible = false;
 
@@ -250,6 +253,34 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 BubbleEvent = false;
             }
         }
+        private void BtCancelarPreFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (!Util.RetornarDialogo("Deseja CANCELAR o pré faturamento dos documentos selecionados?"))
+                    return;
+
+                MtPedidos.FlushToDataSource();
+
+                for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
+                {
+                    if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
+                    {
+                        CancelarDocumentoPreFaturamento(iRow);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro cancelar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                CarregarDadosFaturamentoFaturar();
+            }
+        }
+
+       
 
         private void BtPreFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
@@ -288,7 +319,18 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 CarregarDadosFaturamentoFaturar();
             }
         }
+        private void CancelarDocumentoPreFaturamento(int iRow)
+        {
+            Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Esboco", iRow));
 
+            SAPbobsCOM.Documents oEsbocoNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+            if (oEsbocoNotaFiscalSaida.GetByKey(DocEntry))
+            {
+                if (oEsbocoNotaFiscalSaida.Cancel() != 0)
+                    throw new Exception($"Erro ao cancelar documentos de pré faturamento: {oEsbocoNotaFiscalSaida.NumAtCard} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+            }
+        }
         private string EfetivarDocumentoFaturamento(int iRow)
         {
             try
