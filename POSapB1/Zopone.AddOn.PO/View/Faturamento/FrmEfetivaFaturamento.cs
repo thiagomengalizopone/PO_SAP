@@ -67,6 +67,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
             MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
             MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
 
+            MtPedidos.LinkPressedBefore += MtPedidos_LinkPressedBefore;
+
             MtPedidos.AutoResizeColumns();
 
             CarregarDadosFaturamentoFaturar();
@@ -75,6 +77,35 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
 
 
+        }
+
+        private void MtPedidos_LinkPressedBefore(object sboObject, SBOItemEventArg pVal, out bool BubbleEvent)
+        {
+            try
+            {
+                Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Esboco", pVal.Row - 1));
+
+                SqlUtils.ExecuteCommand($"SP_ZPN_ATUALIZAPROJETOESBOCO {DocEntry.ToString()}");
+
+                SAPbobsCOM.Documents oEsbocoNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+                if (oEsbocoNotaFiscalSaida.GetByKey(DocEntry))
+                {
+                    if (oEsbocoNotaFiscalSaida.Cancelled == BoYesNoEnum.tYES || oEsbocoNotaFiscalSaida.DocumentStatus != BoStatus.bost_Open)
+                    {
+                        Util.ExibeMensagensDialogoStatusBar($"Documento já faturado!");
+                        CarregarDadosFaturamentoFaturar();
+                  
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao validar Pré Faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+
+
+            BubbleEvent = true;
         }
 
         private void BtAlterarDataT_PressedAfter(object sboObject, SBOItemEventArg pVal)
@@ -469,7 +500,19 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "Dscription");
                 MtPedidos.Columns.Item("Col_12").DataBind.Bind("DtPO", "Status");
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
-                
+
+                MtPedidos.Columns.Item("Col_8").DataBind.Bind("DtPO", "Obra");
+                MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "Contrato");
+
+                MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "COFINS");
+                MtPedidos.Columns.Item("Col_15").DataBind.Bind("DtPO", "CSLL");
+                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "IRRF");
+                MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "PIS");
+                MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "INSS");
+                MtPedidos.Columns.Item("Col_19").DataBind.Bind("DtPO", "ISS");
+
+
+
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
             }

@@ -6,7 +6,8 @@ using SAPbouiCOM;
 using System;
 using System.Drawing;
 using Zopone.AddOn.PO.Helpers;
-
+using Zopone.AddOn.PO.Model.Objects;
+using Zopone.AddOn.PO.UtilAddOn;
 
 namespace Zopone.AddOn.PO.View.Faturamento
 {
@@ -283,10 +284,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                             Util.ExibirMensagemStatusBar($"Faturando PO {oPedidoVenda.NumAtCard} - Linha -  {oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString()}", BoMessageTime.bmt_Medium, false);
 
+                            oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.Utilizacao);
+
                             oNotaFiscalSaida.Lines.ItemCode = ItemCode;
                             oNotaFiscalSaida.Lines.Quantity = 1;
                             oNotaFiscalSaida.Lines.LineTotal += TotalLinha;
-                            oNotaFiscalSaida.Lines.Usage = oPedidoVenda.Lines.Usage;
+                            oNotaFiscalSaida.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                             oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(oPedidoVenda.Lines.Usage);
                             oNotaFiscalSaida.Lines.TaxCode = "1556-001"; // Temporário até definição do imposto
                             oNotaFiscalSaida.Lines.ProjectCode = oPedidoVenda.Lines.ProjectCode;
@@ -530,7 +533,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "Cliente");
                 MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "CodCliente");
-                MtPedidos.Columns.Item("Col_20").DataBind.Bind("DtPO", "CodCliente");
 
                 MtPedidos.Columns.Item("Col_12").DataBind.Bind("DtPO", "Status");
 
@@ -548,9 +550,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "Obra");
-
-                MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "Linha");
-                MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "Obra");
+                MtPedidos.Columns.Item("Col_20").DataBind.Bind("DtPO", "Contrato");
 
                 MtPedidos.Columns.Item("Col_23").DataBind.Bind("DtPO", "IbgeCode");
                 MtPedidos.Columns.Item("Col_24").DataBind.Bind("DtPO", "Estado");

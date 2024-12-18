@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿ALTER  PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -27,6 +27,9 @@ SELECT
 	ODRF.DocDate "DataT",
 	ODRF."CardCode",
 	ODRF."CardName",
+	OOAT.Remarks "Contrato",
+	obra.Code "Obra",
+	odrf.DocDueDate "Vencimento",
 	DRF1."LineNum" "Linha",
 	DRF1."U_Item" "Item",
 	DRF1."U_Atividade" "Atividade",
@@ -41,12 +44,22 @@ SELECT
 	0 "SaldoAberto",
 	0 "TotalFaturar",
 	DRF1.U_StatusFat as "Status",
-	0 as "TotalDocumento"
+	0 as "TotalDocumento",
+	isnull(IMP.COFINS,0) COFINS,
+    isnull(IMP.CSLL,0) CSLL,
+    isnull(IMP.IRRF,0) IRRF,
+	isnull(IMP.PIS,0) PIS,
+	isnull(IMP.INSS,0) INSS,
+	isnull(IMP.ISS,0) ISS
 FROM
 	ODRF 
 	INNER JOIN DRF1 ON ODRF."DocEntry" = DRF1."DocEntry"
 	INNER JOIN DRF21 ON DRF21.DocEntry = ODRF.DocEntry  
 	LEFT JOIN  ORDR ON ORDR.DocEntry = DRF21.RefDocEntr AND DRF21.RefObjType = ORDR.ObjType
+	LEFT JOIN ZPN_VW_DOCUMENTOSIMPOSTO IMP ON IMP.AbsEntry = ODRF.DocEntry AND IMP."TipoDocumento" = 'DRF'
+	LEFT JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = DRF1.Project
+	LEFT JOIN OOAT ON OOAT.AbsID = OBRA.U_CodContrato
+	 
 WHERE
 	ODRF."DocStatus" = 'O' AND 
 	(

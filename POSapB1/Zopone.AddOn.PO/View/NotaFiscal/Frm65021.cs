@@ -60,8 +60,12 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                     SAPbouiCOM.DataTable oDataTable = null;
                     oDataTable = oCFLEvento.SelectedObjects;
 
-                    Matrix oMtParcelas = (Matrix)oForm.Items.Item("3").Specific;
 
+                    if (oCFLEvento.SelectedObjects == null)
+                        return;
+
+                    Matrix oMtParcelas = (Matrix)oForm.Items.Item("3").Specific;
+                    
                     string Code = Convert.ToString(oDataTable.GetValue("Code", 0));
                     string Descricao = Convert.ToString(oDataTable.GetValue("U_Desc", 0));
 
