@@ -331,6 +331,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     throw new Exception($"Erro ao cancelar documentos de pré faturamento: {oEsbocoNotaFiscalSaida.NumAtCard} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
             }
         }
+
         private string EfetivarDocumentoFaturamento(int iRow)
         {
             try
@@ -450,14 +451,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
-
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
 
                 MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "DataT");
 
-                
                 MtPedidos.Columns.Item("CardCode").DataBind.Bind("DtPO", "CardCode");
                 MtPedidos.Columns.Item("CardName").DataBind.Bind("DtPO", "CardName");                
 
@@ -468,15 +467,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 
                 MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "ItemCode");
                 MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "Dscription");
-
                 MtPedidos.Columns.Item("Col_12").DataBind.Bind("DtPO", "Status");
-
-
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
                 
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
-
             }
             catch (Exception Ex)
             {

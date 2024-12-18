@@ -393,7 +393,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                     CalculaPorcentagemFaturamento(row);
                 }
-                else if (pVal.ColUID == "Col_23")
+                else if (pVal.ColUID == "Col_25")
                 {
                     MtPedidos.FlushToDataSource();
 
@@ -407,13 +407,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     string State = Convert.ToString(aEvent.SelectedObjects.GetValue("State", 0));
                     string Name = Convert.ToString(aEvent.SelectedObjects.GetValue("Name", 0));
 
-
                     DtPesquisa.SetValue("IbgeCode", row, IbgeCode);
                     DtPesquisa.SetValue("Estado", row, State);
                     DtPesquisa.SetValue("Cidade", row, Name);
 
                     MtPedidos.LoadFromDataSourceEx();
-
                 }
 
             }
@@ -562,9 +560,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 oColuna.ChooseFromListUID = "CFL_ALOC";
                 oColuna.ChooseFromListAlias = "Code";
 
-                 oColuna = MtPedidos.Columns.Item("Col_23");
+                 oColuna = MtPedidos.Columns.Item("Col_25");
                 oColuna.ChooseFromListUID = "CFL_265";
-                oColuna.ChooseFromListAlias = "IbgeCode";
+                oColuna.ChooseFromListAlias = "Name";
 
 
             }
