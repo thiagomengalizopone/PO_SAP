@@ -519,6 +519,10 @@
     <EmbeddedResource Include="Model\SQL\IMPORTACAO\VW_ZPN_IMPORTAPONAOFATURADA.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_DOCUMENTOS_REPROGRAMACAO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_ATUALIZAPROJETOESBOCO.sql" />
+    <Content Include="Model\SQL\Procedures\SP_ZPN_PESQUISAPO.sql" />
+    <Content Include="Model\SQL\Procedures\SP_ZPN_VERIFICAIMPORTARPO.sql" />
+    <Content Include="Model\SQL\Procedures\ZPN_SP_CENTROCUSTOCLIENTE.sql" />
+    <Content Include="Model\SQL\Procedures\ZPN_SP_CODIGOCENTROCUSTO.sql" />
     <Content Include="Model\SQL\Views\ZPN_VW_PONaoValidada.sql" />
     <Content Include="Model\SQL\Views\ZPN_VW_POSITE.sql" />
     <Content Include="Model\SQL\Views\ZPN_VW_RET_OBRA_SAP2.sql" />
