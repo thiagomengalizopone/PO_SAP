@@ -20,7 +20,6 @@ namespace Zopone.AddOn.PO
                 {
                     CreateMetaData.CriarMetaDataCore();
 
-
                     AtualizaCampoUrln8n();
 
                     if (SenhaBD.VerificaSenhaBD())
