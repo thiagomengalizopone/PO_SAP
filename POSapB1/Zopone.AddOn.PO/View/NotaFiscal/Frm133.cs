@@ -39,6 +39,25 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
 
         internal static bool Interface_FormDataEvent(BusinessObjectInfo businessObjectInfo)
         {
+            if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD
+                 &&
+                businessObjectInfo.BeforeAction)
+            {
+                if (businessObjectInfo.Type != "112")
+                {
+                    Form oFormNF = Globals.Master.Connection.Interface.Forms.Item(businessObjectInfo.FormUID);
+
+                    DBDataSource oDBOINV = oFormNF.DataSources.DBDataSources.Item(0);
+
+                    string draftKey = oDBOINV.GetValue("draftKey", 0);
+
+                    if (!string.IsNullOrEmpty(draftKey) && Convert.ToInt32(draftKey) > 0)
+                    {
+                        if (SqlUtils.ExistemRegistros($"SELECT 1 FROM OINV WHERE DraftKey = {draftKey}"))
+                            return Util.RetornarDialogo("NF já faturada! Deseja faturar novamente?");
+                    }
+                }
+            }
             if (
                 (
                 businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD ||
@@ -61,7 +80,8 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                     else
                         DocEntry = Convert.ToInt32(SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM ODRF WHERE ObjType = '13' "));
 
-                    SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 112");
+                    
+                    SqlUtils.DoNonQuery($"exec SP_ZPN_CriaObservacoesFaturamentoEsboco {DocEntry}");
 
                     UtilPCI.EnviarDadosNFDigitacaoPCIAsync(DocEntry);
                 }

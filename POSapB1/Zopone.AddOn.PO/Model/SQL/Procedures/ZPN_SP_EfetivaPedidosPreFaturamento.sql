@@ -1,8 +1,9 @@
-﻿ALTER  PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿CREATE  PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
-	 @NumAtCard varchar(100)
+	 @NumAtCard varchar(100),
+	 @Cliente varchar(250)
 )
 AS
 BEGIN

@@ -478,7 +478,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}'";
+                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}','{EdCliente.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 

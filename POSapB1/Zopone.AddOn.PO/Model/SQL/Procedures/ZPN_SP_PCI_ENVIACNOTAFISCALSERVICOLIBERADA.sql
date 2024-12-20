@@ -156,7 +156,7 @@ BEGIN
 				@IdPci,
 				OINV.SeqCode,
 				INV6.DueDate,
-				INV6.InsTotal,
+				OINV.GrosProfit * (INV6.InstPrcnt / 100) ,
 				OINV.SeqCode,
 				INV6.InstPrcnt,
 				isnull(ALOCA.U_IdPCI,'')
@@ -217,7 +217,7 @@ BEGIN
 															@IdPCI,
 															@sequencia,
 															@vencimento,
-															@valor,
+															@valorParc,
 															@fatura,
 															@percentual ,
 															@etapaid;

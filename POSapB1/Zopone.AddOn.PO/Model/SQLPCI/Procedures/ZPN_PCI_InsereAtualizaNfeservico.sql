@@ -40,7 +40,7 @@ BEGIN
                 ,[situacao]
                 ,[obracandidatoid])
             VALUES
-                (@nfeservicoid
+                (cast(@nfeservicoid as uniqueid)
                 ,1
                 ,GETDATE()
                 ,@sequencia

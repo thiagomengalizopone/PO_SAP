@@ -68,6 +68,19 @@ BEGIN
         );
 
 		
+		UPDATE DRF6
+			SET 
+				U_ItemFat = ALOCA.U_EtapaRec,
+				U_DescItemFat = ALOCA.U_EtapaRecD
+		FROM
+			DRF6 
+			INNER JOIN DRF1 ON DRF1."DocEntry"  = DRF6."DocEntry"
+			INNER JOIN "@ZPN_ALOCA" ALOCA ON ALOCA."Code" = DRF1.U_ItemFat
+		WHERE 
+			isnull(DRF6.U_ItemFat,'') = '' and 
+			DRF6."DocEntry" = @DocEntry;			
+
+
 		DECLARE @nfeservicoparcela TABLE
 		(
 			RowNumParc INT,
@@ -156,7 +169,7 @@ BEGIN
 				@IdPci,
 				ODRF.DocEntry,
 				DRF6.DueDate,
-				DRF6.InsTotal,
+				ODRF.GrosProfit * (DRF6.InstPrcnt / 100) ,
 				ODRF.NumAtCard,
 				DRF6.InstPrcnt,
 				isnull(ALOCA.U_IdPCI,'')
@@ -222,7 +235,7 @@ BEGIN
 															@IdPCI,
 															@sequencia,
 															@vencimento,
-															@valor,
+															@valorParc,
 															@fatura,
 															@percentual ,
 															@etapaid;
