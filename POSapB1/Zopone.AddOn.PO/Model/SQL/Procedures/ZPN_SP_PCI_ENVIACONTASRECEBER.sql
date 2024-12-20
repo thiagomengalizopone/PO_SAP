@@ -1,4 +1,4 @@
-﻿create PROCEDURE [dbo].[ZPN_SP_PCI_ENVIACONTASRECEBER]
+﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ENVIACONTASRECEBER]
 (
 	@DocEntry INT
 )
@@ -94,7 +94,7 @@ BEGIN
 			NULL AS gecontaidacao, 
 			OBPL.U_IdPCI AS empresaid,
 			ZPN_OPRJ.U_IdPCI AS obraid,
-			OINV.DocTotal * (inv6.InstPrcnt/100) AS valor,
+			OINV.GrosProfit * (inv6.InstPrcnt/100) AS valor,
 			0 AS valorliquido,
 			ISNULL(IMP.PIS, 0) * (inv6.InstPrcnt/100) AS valorpis,
 			ISNULL(IMP.COFINS, 0)* (inv6.InstPrcnt/100) AS valorcofins,
