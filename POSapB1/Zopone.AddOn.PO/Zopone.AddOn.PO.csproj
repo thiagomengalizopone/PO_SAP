@@ -519,14 +519,16 @@
     <EmbeddedResource Include="Model\SQL\IMPORTACAO\VW_ZPN_IMPORTAPONAOFATURADA.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_DOCUMENTOS_REPROGRAMACAO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_ATUALIZAPROJETOESBOCO.sql" />
-    <Content Include="Model\SQL\Procedures\SP_ZPN_PESQUISAPO.sql" />
-    <Content Include="Model\SQL\Procedures\SP_ZPN_VERIFICAIMPORTARPO.sql" />
-    <Content Include="Model\SQL\Procedures\ZPN_SP_CENTROCUSTOCLIENTE.sql" />
-    <Content Include="Model\SQL\Procedures\ZPN_SP_CODIGOCENTROCUSTO.sql" />
-    <Content Include="Model\SQL\Views\ZPN_VW_PONaoValidada.sql" />
-    <Content Include="Model\SQL\Views\ZPN_VW_POSITE.sql" />
-    <Content Include="Model\SQL\Views\ZPN_VW_RET_OBRA_SAP2.sql" />
-    <Content Include="View\ParametrosPO\FrmParamPO.srf" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_VERIFICAIMPORTARPO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CENTROCUSTOCLIENTE.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CODIGOCENTROCUSTO.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_PONaoValidada.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_POSITE.sql" />
+    <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_RET_OBRA_SAP2.sql" />
+    <EmbeddedResource Include="View\ParametrosPO\FrmParamPO.srf" />
+    <Content Include="Model\SQL\Tables\ZPN_FATURADOCUMENTOPO.sql" />
+    <Content Include="Model\SQL\Tables\ZPN_GERAROBRA.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

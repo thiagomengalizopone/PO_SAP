@@ -5,6 +5,7 @@ using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
 using System.Drawing;
+using System.Globalization;
 using Zopone.AddOn.PO.Helpers;
 using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.UtilAddOn;
@@ -208,7 +209,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
                 SAPbobsCOM.Documents oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-                
+
+                string dataFaturamentoPO = DateTime.Now.ToString("yyyyMMdd HHmmss");
+
+
                 oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
 
                 Int32 PedidoVendaDocEntry = 0;
@@ -256,6 +260,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                                 AtualizaDocumentoCidadeImposto();
 
+                                dataFaturamentoPO = DateTime.Now.ToString("yyyyMMdd HHmmss");
                                 oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
                                 oNotaFiscalSaida.CardCode = string.Empty;
                                 oNotaFiscalSaida.Lines.LineTotal = 0;
@@ -288,6 +293,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.Lines.ItemCode = ItemCode;
                             oNotaFiscalSaida.Lines.Quantity = 1;
                             oNotaFiscalSaida.Lines.LineTotal += TotalLinha;
+
+                            string sqlFAturamento = $"SP_ZPN_InsertFaturamentoDocumentoPO '{dataFaturamentoPO}', {oPedidoVenda.DocEntry}, {oPedidoVenda.Lines.LineNum}, {TotalLinha.ToString("F4", CultureInfo.InvariantCulture)}";
+                            SqlUtils.ExecuteCommand(sqlFAturamento);
+
                             oNotaFiscalSaida.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                             oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(oPedidoVenda.Lines.Usage);
                             oNotaFiscalSaida.Lines.TaxCode = "1556-001"; // Temporário até definição do imposto
@@ -316,7 +325,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 if (!string.IsNullOrEmpty(oNotaFiscalSaida.CardCode))
                 {
                     if (oNotaFiscalSaida.Add() != 0)
+                    {
+                        SqlUtils.DoNonQuery("DELETE FROM ZPN_FATURADOCUMENTOPO WHERE DataHoraFaturamento = ''");
                         throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    }
 
                     AtualizaDocumentoCidadeImposto();
 

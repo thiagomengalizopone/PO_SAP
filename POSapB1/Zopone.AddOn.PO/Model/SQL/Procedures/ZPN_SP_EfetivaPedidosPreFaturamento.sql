@@ -1,4 +1,4 @@
-﻿CREATE  PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿ALTER  PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -46,12 +46,12 @@ SELECT
 	0 "TotalFaturar",
 	DRF1.U_StatusFat as "Status",
 	0 as "TotalDocumento",
-	isnull(IMP.COFINS,0) COFINS,
-    isnull(IMP.CSLL,0) CSLL,
-    isnull(IMP.IRRF,0) IRRF,
-	isnull(IMP.PIS,0) PIS,
-	isnull(IMP.INSS,0) INSS,
-	isnull(IMP.ISS,0) ISS
+	isnull(IMP.CofinsWTAmnt,0) COFINS,
+    isnull(IMP.CSLLWTAmnt,0) CSLL,
+    isnull(IMP.IRRFWTAmnt,0) IRRF,
+	isnull(IMP.PisWTAmnt,0) PIS,
+	isnull(IMP.InssWTAmnt,0) INSS,
+	isnull(IMP.ISSWTAmnt,0) ISS
 FROM
 	ODRF 
 	INNER JOIN DRF1 ON ODRF."DocEntry" = DRF1."DocEntry"

@@ -32,12 +32,23 @@ namespace Zopone.AddOn.PO.Model
             DTOScript[] SqlScriptsAddOn = new DTOScript[SqlProceduresSql.Length + SqlFunctionsSql.Length + SqlTablesSql.Length + SqlViewsSql.Length + SqlSequenceSql.Length];
 
             #region SQL - Table                        
+            string nomeArquivo = string.Empty;
             for (int iPos = 0; iPos < SqlTablesSql.Length; iPos++)
             {
-                SqlScriptsAddOn[Count] = new DTOScript();
-                SqlScriptsAddOn[Count].Tipo = TipoScript.Table;
-                SqlScriptsAddOn[Count].FileName = SqlTablesSql[iPos].GetField("Nome")?.GetValue(null).ToString();
-                SqlScriptsAddOn[Count].Bytes = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SqlScriptsAddOn[Count].FileName), encoding);
+                
+                try
+                { 
+                    SqlScriptsAddOn[Count] = new DTOScript();
+                    SqlScriptsAddOn[Count].Tipo = TipoScript.Table;
+                    SqlScriptsAddOn[Count].FileName = SqlTablesSql[iPos].GetField("Nome")?.GetValue(null).ToString();
+                    nomeArquivo = SqlScriptsAddOn[Count].FileName;
+                    SqlScriptsAddOn[Count].Bytes = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SqlScriptsAddOn[Count].FileName), encoding);
+                }
+                catch (Exception Ex)
+                {
+                    throw new Exception($"Erro ao carregar arquivo de script: {nomeArquivo}");
+                }
+                    
                 Count++;
             }
             #endregion
