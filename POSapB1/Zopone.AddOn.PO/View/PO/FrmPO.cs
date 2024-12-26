@@ -14,11 +14,13 @@ using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.Model.SAP;
 using Zopone.AddOn.PO.View.Obra.Helpers;
 using Zopone.AddOn.PO.View.PO;
+using static System.Windows.Forms.LinkLabel;
 
 namespace Zopone.AddOn.PO.View.Obra
 {
     public partial class FrmPO : Form
     {
+
         public static string TipoPesquisa { get; set; }
         public List<LinePO> linesPO = new List<LinePO>();
         public List<Int32> linesPODeleted = new List<Int32>();
@@ -171,6 +173,7 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_itemDescription = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value.ToString(),
                                U_manSiteInfo = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value.ToString(),
                                AgrNo = oPedidoVenda.Lines.AgreementNo,
+                               DescContrato = oPedidoVenda.Lines.UserFields.Fields.Item("U_DescCont").Value.ToString(),
                                PCG = oPedidoVenda.Lines.CostingCode,
                                Obra = oPedidoVenda.Lines.CostingCode2,
                                Regional = oPedidoVenda.Lines.CostingCode3
@@ -264,7 +267,7 @@ namespace Zopone.AddOn.PO.View.Obra
             }
         }
 
-        private void AdicionarRemoverItemGrid(bool remover = false)
+        private void AdicionarRemoverItemGrid(bool remover = false, bool salvar = false)
         {
             try
             {
@@ -291,6 +294,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 {
                     LinePO oLinePO = new LinePO()
                     {
+                        Agrupar = "N",
                         LineNum = LineNumEdit,
                         U_PrjCode = txtObra.Text,
                         U_Candidato = txtCandidato.Text,
@@ -310,6 +314,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         U_itemDescription = txtDescItemPO.Text,
                         U_manSiteInfo = txtInfoSitePO.Text,
                         AgrNo = !string.IsNullOrEmpty(txtNroCont.Text) ? Convert.ToInt32(txtNroCont.Text) : 0,
+                        DescContrato = txtDescContrato.Text,
                         CostingCode = PCG,
                         CostingCode2 = OBRA,
                         CostingCode3 = REGIONAL
@@ -340,7 +345,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 dblTotalPO = Math.Round(Convert.ToDouble(txtValorPO.Text), 2);
                 dblTotalLinhasPO = Math.Round(linesPO.Sum(item => item.U_Valor), 2);
 
-                if (dblTotalPO == dblTotalLinhasPO)
+                if (dblTotalPO == dblTotalLinhasPO && !salvar)
                 {
                     SalvarPO();
                 }
@@ -357,6 +362,7 @@ namespace Zopone.AddOn.PO.View.Obra
         public void CarregarMatrixPO()
         {
             BindingSource dgItensPO = new BindingSource();
+
             dgItensPO.DataSource = linesPO;
 
             DgItensPO.DataSource = dgItensPO;
@@ -377,6 +383,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
             txtTotalPO.Text = Math.Round(linesPO.Sum(item => item.U_Valor), 2).ToString();
         }
+
 
         private void LimparLinhaPO()
         {
@@ -399,6 +406,8 @@ namespace Zopone.AddOn.PO.View.Obra
             cbBloqueado.Checked = false;
             txtInfoSitePO.Text = string.Empty;
             txtDescItemPO.Text = string.Empty;
+            txtNroCont.Text = string.Empty;
+            txtDescContrato.Text = string.Empty;
 
             PCG = string.Empty;
             OBRA = string.Empty;
@@ -462,6 +471,8 @@ namespace Zopone.AddOn.PO.View.Obra
 
                         txtCliente.Text = string.Empty;
                         lblCliente.Text = string.Empty;
+                        txtNroCont.Text = string.Empty;
+                        txtDescContrato.Text = string.Empty;
                         BPLId = -1;
 
                         PCG = string.Empty;
@@ -480,12 +491,12 @@ namespace Zopone.AddOn.PO.View.Obra
                         BPLId = Convert.ToInt32(retornoDados[4]);
 
                         txtNroCont.Text = retornoDados[5];
-
+                        txtDescContrato.Text = retornoDados[9];
                         PCG = retornoDados[6];
                         OBRA = retornoDados[7];
                         REGIONAL = retornoDados[8];
 
-                        txtCandidato.Focus();   
+                        txtCandidato.Focus();
                     }
                 }
                 else if (TipoPesquisa == "CANDIDATO")
@@ -595,6 +606,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
             LimparLinhaPO();
             linesPO = new List<LinePO>();
+            linesPODeleted = new List<int>();
 
             foreach (Control controle in this.Controls)
             {
@@ -633,6 +645,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 txtDescItemPO.Text = linesPO[rowIndex].U_itemDescription;
                 txtInfoSitePO.Text = linesPO[rowIndex].U_manSiteInfo;
                 txtNroCont.Text = linesPO[rowIndex].AgrNo.ToString();
+                txtDescContrato.Text = linesPO[rowIndex].DescContrato;
                 PCG = linesPO[rowIndex].CostingCode;
                 OBRA = linesPO[rowIndex].CostingCode2;
                 REGIONAL = linesPO[rowIndex].CostingCode3;
@@ -649,6 +662,8 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             try
             {
+                BtSalvar.Enabled = false;
+
                 if (string.IsNullOrEmpty(txtNroPedido.Text))
                 {
                     MessageBox.Show("Não há número de pedido digitado!");
@@ -670,7 +685,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
 
                 if (!string.IsNullOrEmpty(txtItem.Text))
-                    AdicionarRemoverItemGrid();
+                    AdicionarRemoverItemGrid(false, true);
 
 
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
@@ -723,12 +738,16 @@ namespace Zopone.AddOn.PO.View.Obra
                 oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
                 oPedidoVenda.Comments = txtObservacao.Text;
 
+                for (int iRow = oPedidoVenda.Lines.Count - 1; iRow >= 0; iRow--)
+                {
+                    oPedidoVenda.Lines.SetCurrentLine(iRow);
+                    oPedidoVenda.Lines.Delete();
+                }
+
                 foreach (var linePO in linesPO)
                 {
-                    if (linePO.LineNum == -1 && !string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
+                    if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
                         oPedidoVenda.Lines.Add();
-                    else if (linePO.LineNum >= 0)
-                        oPedidoVenda.Lines.SetCurrentLine(linePO.LineNum);
 
                     oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                     oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
@@ -764,15 +783,13 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusImp").Value = "Y";
 
                     if (linePO.AgrNo > 0)
+                    {
+                        oPedidoVenda.Lines.UserFields.Fields.Item("U_DescCont").Value = linePO.DescContrato;
                         oPedidoVenda.Lines.AgreementNo = linePO.AgrNo;
+                    }
                 }
 
-                foreach (int LineNum in  linesPODeleted)
-                {
-                    oPedidoVenda.Lines.SetCurrentLine(LineNum);
-                    oPedidoVenda.Lines.Delete();
 
-                }
 
                 if (bExistePedido)
                 {
@@ -789,19 +806,37 @@ namespace Zopone.AddOn.PO.View.Obra
                     txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();
                 }
 
-                new Task(() => { EnviarDadosPCIAsync(txtCodigo.Text); }).Start();
+                string CodigoPO = txtCodigo.Text;
 
-                MessageBox.Show("PO salva com sucesso!");
+
+
+                new Task(() => { EnviarDadosPCIAsync(CodigoPO); }).Start();
 
                 if (!bExistePedido)
                     LimparTelaPO();
+
+                linesPODeleted = new List<int>();
+
+                lblMensagemTela.Text = "PO Salva com sucesso!";
+                lblMensagemTela.Font = new Font(lblMensagemTela.Font, FontStyle.Bold);
+                lblMensagemTela.ForeColor = Color.Black;
 
             }
             catch (Exception Ex)
             {
                 string mensagemErro = $"Erro ao salvar PO: {Ex.Message}";
+
+                lblMensagemTela.Text = mensagemErro;
+                lblMensagemTela.Font = new Font(lblMensagemTela.Font, FontStyle.Bold);
+                lblMensagemTela.ForeColor = Color.Red;
+
                 MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
+
+            }
+            finally
+            {
+                BtSalvar.Enabled = true;
             }
 
         }
@@ -880,6 +915,8 @@ namespace Zopone.AddOn.PO.View.Obra
         private void button1_Click(object sender, EventArgs e)
         {
             PesquisarDados("PO");
+            linesPODeleted = new List<int>();
+            lblMensagemTela.Text = string.Empty;
         }
 
         private void DgItensPO_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -919,7 +956,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         lblCliente.Text = dgResultado.Rows[0][6].ToString();//cliente
                         BPLId = Convert.ToInt32(dgResultado.Rows[0][8].ToString());
                         txtNroCont.Text = dgResultado.Rows[0][10].ToString();
-                        PCG =  dgResultado.Rows[0][11].ToString();
+                        PCG = dgResultado.Rows[0][11].ToString();
                         OBRA = dgResultado.Rows[0][12].ToString();
                         REGIONAL = dgResultado.Rows[0][13].ToString();
 
@@ -965,6 +1002,8 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 if (!string.IsNullOrEmpty(txtNroPedido.Text))
                     e.Cancel = ValidaNumeroPOExistente();
+
+                lblMensagemTela.Text = string.Empty;
             }
             catch (Exception Ex)
             {
@@ -977,16 +1016,20 @@ namespace Zopone.AddOn.PO.View.Obra
 
         private bool ValidaNumeroPOExistente()
         {
-            string sql = $"SELECT 1 FROM ORDR WHERE Canceled <> 'Y' and NumAtCard = '{txtNroPedido.Text.Trim()}'";
+            bool bExistente = false;
+            if (!string.IsNullOrEmpty(txtNroPedido.Text))
+            {
+                string sql = $"SELECT 1 FROM ORDR WHERE Canceled <> 'Y' and NumAtCard = '{txtNroPedido.Text.Trim()}'";
 
-            if (!string.IsNullOrEmpty(txtCodigo.Text))
-                sql += $" AND DocNum <> {txtCodigo.Text}";
+                if (!string.IsNullOrEmpty(txtCodigo.Text))
+                    sql += $" AND DocNum <> {txtCodigo.Text}";
 
 
-            bool bExistente = SqlUtils.ExistemRegistros(sql) ;
+                bExistente = SqlUtils.ExistemRegistros(sql);
 
-            if (bExistente)
-                MessageBox.Show($"PO {txtNroPedido.Text} já existe no sistema!");
+                if (bExistente)
+                    MessageBox.Show($"PO {txtNroPedido.Text} já existe no sistema!");
+            }
 
             return bExistente;
         }
@@ -1016,6 +1059,84 @@ namespace Zopone.AddOn.PO.View.Obra
             if (pesquisaEtapa)
             {
                 PesquisarDados("ITEMFAT");
+            }
+        }
+
+        private void BtMesclar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show("Deseja mesclas as linhas da PO?", "Atenção!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
+
+                int iRow = 0;
+
+
+                LinePO linePOAgrupamento = new LinePO();
+                linePOAgrupamento.U_Valor = 0;
+
+                List<LinePO> itemsToRemove = new List<LinePO>();
+
+                foreach (var linePO in linesPO)
+                {
+                    var mesclarCellValue = DgItensPO.Rows[iRow].Cells["Mesclar"].Value;
+
+                    if (mesclarCellValue != DBNull.Value && mesclarCellValue?.ToString() == "Y")
+                    {
+                        linesPODeleted.Add(iRow);
+
+                        linePOAgrupamento.Obra = linePO.Obra;
+                        linePOAgrupamento.U_PrjCode = linePO.U_PrjCode;
+                        linePOAgrupamento.U_PrjName = linePO.U_PrjName;
+                        linePOAgrupamento.U_Candidato = linePO.U_Candidato;
+                        linePOAgrupamento.U_CardCode = linePO.U_CardCode;
+                        linePOAgrupamento.U_CardName = linePO.U_CardName;
+                        linePOAgrupamento.U_Item = string.IsNullOrEmpty(linePOAgrupamento.U_Item) ? linePO.U_Item : linePOAgrupamento.U_Item + " " + linePO.U_Item;
+                        linePOAgrupamento.U_ItemFat = linePO.U_ItemFat;
+                        linePOAgrupamento.PCG = linePO.PCG;
+                        linePOAgrupamento.Regional = linePO.Regional;
+                        linePOAgrupamento.U_DescItemFat = linePO.U_DescItemFat;
+                        linePOAgrupamento.U_ItemCode = linePO.U_ItemCode;
+                        linePOAgrupamento.U_Parcela = linePO.U_Parcela;
+                        linePOAgrupamento.U_Valor += linePO.U_Valor;
+                        linePOAgrupamento.U_Tipo = linePO.U_Tipo;
+                        linePOAgrupamento.AgrNo = linePO.AgrNo;
+                        linePOAgrupamento.DescContrato = linePO.DescContrato;
+                        linePOAgrupamento.U_DataLanc = linePO.U_DataLanc;
+                        linePOAgrupamento.U_DataFat = linePO.U_DataFat;
+                        linePOAgrupamento.U_NroNF = linePO.U_NroNF;
+                        linePOAgrupamento.U_DataSol = linePO.U_DataSol;
+                        linePOAgrupamento.U_Obs = linePO.U_Obs;
+                        linePOAgrupamento.U_Bloqueado = linePO.U_Bloqueado;
+                        linePOAgrupamento.U_Validado = linePO.U_Validado;
+                        linePOAgrupamento.U_itemDescription = linePO.U_itemDescription;
+                        linePOAgrupamento.U_manSiteInfo = linePO.U_manSiteInfo;
+                        linePOAgrupamento.CostingCode = linePO.CostingCode;
+                        linePOAgrupamento.CostingCode2 = linePO.CostingCode2;
+                        linePOAgrupamento.CostingCode3 = linePO.CostingCode3;
+
+                        itemsToRemove.Add(linePO);
+                    }
+                    iRow++;
+                }
+
+                // Agora remove todos os itens de uma vez após o loop
+                foreach (var item in itemsToRemove)
+                {
+                    linesPO.Remove(item);
+                }
+                linesPO.Add(linePOAgrupamento);
+
+                CarregarMatrixPO();
+
+                LimparLinhaPO();
+
+            }
+            catch (Exception Ex)
+            {
+                string MensagemErro = $"Erro ao mesclar linhas: {Ex.Message}";
+                Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, MensagemErro, Ex);
+                MessageBox.Show(MensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -24,6 +24,9 @@ SELECT
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
 	ORDR."NumAtCard" "PO",
+	ODRF.DocDate "DataT",
+	ODRF."CardCode",
+	ODRF."CardName",
 	DRF1."LineNum" "Linha",
 	DRF1."U_Item" "Item",
 	DRF1."U_Atividade" "Atividade",
@@ -33,21 +36,24 @@ SELECT
 	0 "NF",
 	DRF1."ItemCode",
 	DRF1."Dscription", 
-	isnull(FAT."SaldoFaturado",0)"SaldoFaturado",
-	(DRF1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "SaldoAberto",
-	(DRF1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "TotalFaturar",
+	
+	ODRF.DocTotal "SaldoFaturado",
+	0 "SaldoAberto",
+	0 "TotalFaturar",
 	DRF1.U_StatusFat as "Status",
 	0 as "TotalDocumento"
 FROM
-	RDR1 
-	INNER JOIN ORDR ON ORDR."DocEntry" = RDR1."DocEntry"
-	LEFT JOIN ZPN_VW_TotalFaturadoPedido FAT ON FAT.U_BaseEntry = RDR1."DocEntry" AND FAT.U_BaseLine = RDR1.LineNum
-	INNER JOIN DRF1 ON DRF1.U_BaseEntry = RDR1."DocEntry" and DRF1."U_BaseLine" = RDR1."LineNum"
-	INNER JOIN ODRF ON ODRF."DocEntry" = DRF1."DocEntry"
-WHERE 
+	ODRF 
+	INNER JOIN DRF1 ON ODRF."DocEntry" = DRF1."DocEntry"
+	INNER JOIN DRF21 ON DRF21.DocEntry = ODRF.DocEntry  
+	LEFT JOIN  ORDR ON ORDR.DocEntry = DRF21.RefDocEntr AND DRF21.RefObjType = ORDR.ObjType
+WHERE
 	ODRF."DocStatus" = 'O' AND 
-	ISNULL(DRF1."U_StatusFat",'A') = 'F'
-	AND (isnull(ODRF."NumAtCard",'') = '' or isnull(@NumAtCard,'') = '')
+	(
+		(isnull(ODRF."NumAtCard",'') = @NumAtCard and isnull(@NumAtCard,'') <> '')
+		or 
+		(isnull(@NumAtCard,'') = '')
+	) 
 	AND DRF1."DocDate" between @DataInicial and @DataFinal
 ORDER BY
 	DRF1."DocDate", ODRF."DocNum", DRF1."LineNum";

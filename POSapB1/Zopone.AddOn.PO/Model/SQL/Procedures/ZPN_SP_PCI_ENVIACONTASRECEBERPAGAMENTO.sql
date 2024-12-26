@@ -32,19 +32,13 @@ BEGIN TRY
 	SET @UltimaHora = (SELECT isnull(max(HoraExecutado),0) FROM ZPN_INTEGRAPCI WHERE ObjType = '24');
 	
 
-	IF EXISTS (SELECT * FROM tempdb.sys.tables 
-           WHERE NAME LIKE '#DadosPagamentoPCI%' AND TYPE = 'U')
-	BEGIN
-		drop table #DadosPagamentoPCI;
-	END
-
-	create TABLE #DadosPagamentoPCI (
+	DECLARE @DadosPagamentoPCI TABLE  (
 		ID INT IDENTITY(1,1), -- Coluna de identidade para controlar o loop
 		U_IdPci varchar(100),
 		DocDate DATE
 	);
 
-	Insert Into #DadosPagamentoPCI
+	Insert Into @DadosPagamentoPCI
 	SELECT
 		INV6.U_IdPci,  isnull(ORCT.trsfrdate, orct."DocDate") as "DataPagto"
 	FROM 
@@ -54,30 +48,41 @@ BEGIN TRY
 						   RCT2."InvType"	= INV6."ObjType" AND
 						   RCT2.InstId		= INV6."InstlmntID"
 		INNER JOIN ORCT ON RCT2."DocNum"	= ORCT."DocEntry"
-		INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[contareceber] CR
-				   ON CR.[contareceberid] = INV6.U_IdPci AND isnull(ORCT.trsfrdate, orct."DocDate") > isnull(cr.recebimento,'2000-01-01')
-
 	WHERE
 		(isnull(@DocentryPagto,0) = 0 or ORCT."DocEntry" = @DocentryPagto) and 
 		(isnull(@DocEntryNF,0) = 0 or OINV."DocEntry" = @DocEntryNF) and 
 		ORCT."Canceled" <> 'Y' AND
-		ORCT.CreateDate >= @UltimaData AND
-		ORCT.CreateTS >= @UltimaHora; 
+
+		(
+			(isnull(@DocentryPagto,0) = 0 and isnull(@DocEntryNF,0) = 0 )
+			and 
+			(
+				ORCT.CreateDate >= @UltimaData and 
+				ORCT.CreateTS >= @UltimaHora
+			)
+			or 
+
+			(
+				ORCT.CreateDate >= @UltimaData and 
+				ORCT.CreateTS >= @UltimaHora
+			)
+		)
 
 
 
 	-- Definir o número de registros a serem processados
-	SET @RowCount = (SELECT COUNT(*) FROM #DadosPagamentoPCI);
+	SET @RowCount = (SELECT COUNT(*) FROM @DadosPagamentoPCI);
 	SET @CurrentRow = 1; -- Começar na primeira linha
 
 	-- Loop WHILE para processar os dados
 	WHILE @CurrentRow <= @RowCount
 	BEGIN
-		-- Buscar o próximo registro usando o IDENTITY da tabela
+
+
 		SELECT 
 			@Id = U_IdPci,
 			@DocDate = DocDate
-		FROM #DadosPagamentoPCI
+		FROM @DadosPagamentoPCI
 		WHERE ID = @CurrentRow;
 
     
@@ -93,9 +98,6 @@ BEGIN TRY
 		SET @CurrentRow = @CurrentRow + 1;
 
 	END;
-
-	drop table #DadosPagamentoPCI;
-
 	
 	IF (isnull(@DocEntryNF,0) = 0 and isnull(@DocentryPagto,0) = 0 ) 
 	BEGIN

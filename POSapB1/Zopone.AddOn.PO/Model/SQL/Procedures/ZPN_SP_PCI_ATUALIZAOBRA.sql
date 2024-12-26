@@ -5,6 +5,9 @@
 )
 AS
 BEGIN
+
+BEGIN TRY
+
     DECLARE 
         @obraid VARCHAR(255),
         @gestatus INT,
@@ -211,7 +214,6 @@ BEGIN
             end;
 		end;
 
-		BEGIN TRY
 
 			-- Chama a procedure para inserir/atualizar a obra
 			EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].[ZPN_PCI_InsereAtualizaObra]
@@ -255,10 +257,6 @@ BEGIN
 
 			update "@ZPN_OPRJ" set U_IdPCI = @obraid where "Code" = @referencia;
 
-		END TRY
-		BEGIN CATCH
-			select @erro_obra = @erro_obra + ' Erro ao enviar Obra ' + @referencia + ' '  + ERROR_MESSAGE() + '\n' ;
-		END CATCH
 
         SET @Counter = @Counter + 1;
     END;
@@ -267,4 +265,28 @@ BEGIN
     DROP TABLE #TempObra;
 
 	select @erro_obra "erro";
+
+    	  END TRY
+BEGIN CATCH
+   -- Captura do erro
+    DECLARE 
+        @ErrorNumber INT = ERROR_NUMBER(),
+        @ErrorSeverity INT = ERROR_SEVERITY(),
+        @ErrorState INT = ERROR_STATE(),
+        @ErrorProcedure NVARCHAR(128) = ERROR_PROCEDURE(),
+        @ErrorLine INT = ERROR_LINE(),
+        @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+
+    -- Inserir o log de erro na tabela ErrorLog
+    INSERT INTO ZPN_LogImportacaoPCI (ErrorNumber, ErrorSeverity, ErrorState, ErrorProcedure, ErrorLine, ErrorMessage, HostName, ApplicationName, UserName)
+    VALUES (@ErrorNumber, @ErrorSeverity, @ErrorState, @ErrorProcedure, @ErrorLine, @ErrorMessage, HOST_NAME(), APP_NAME(), SYSTEM_USER);
+    
+    select @erro_obra = @erro_obra + ' Erro ao enviar Obra ' + @referencia + ' '  + ERROR_MESSAGE() + '\n' ;
+
+    
+    -- Opcional: Re-lançar o erro se necessário
+    -- THROW; 
+
+END CATCH;
+
 END;

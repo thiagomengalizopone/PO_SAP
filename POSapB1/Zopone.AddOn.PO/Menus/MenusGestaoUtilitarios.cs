@@ -146,13 +146,6 @@ namespace Zopone.AddOn.PO.Menus
                  17,
                  null));
 
-            listMenu.Add(new Menu(
-                      MenuConstantes.MnuFaturamento,
-                      BoMenuType.mt_STRING,
-                      MenuConstantes.MnuFaturarPO,
-                      "Enviar para Faturamento PO",
-                      24,
-                      null));
 
             listMenu.Add(new Menu(
                  MenuConstantes.MnuFaturamento,

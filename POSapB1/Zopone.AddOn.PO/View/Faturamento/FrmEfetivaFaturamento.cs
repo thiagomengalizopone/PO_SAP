@@ -4,6 +4,8 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
+using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using Zopone.AddOn.PO.Model.Objects;
@@ -15,8 +17,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
         EditText EdDataI { get; set; }
         EditText EdDataF { get; set; }
         EditText EdPO { get; set; }
+        EditText EdCliente { get; set; }
         DataTable DtPesquisa { get; set; }
         Matrix MtPedidos { get; set; }
+
+        EditText EdDataT { get; set; }
+        Button BtAlterarDataT { get; set; }
 
         Button BtPesquisar { get; set; }
         Button BtImportarFaturamento { get; set; }
@@ -34,9 +40,15 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
 
+            EdCliente = (EditText)oForm.Items.Item("EdCliente").Specific;            
+
             MtPedidos = (Matrix)oForm.Items.Item("MtPed").Specific;
 
             DtPesquisa = oForm.DataSources.DataTables.Item("DtPO");
+
+            EdDataT = (EditText)oForm.Items.Item("EdDataT").Specific;
+            BtAlterarDataT = (Button)oForm.Items.Item("BtDataT").Specific;
+            BtAlterarDataT.PressedAfter += BtAlterarDataT_PressedAfter;
 
             BtPesquisar = (Button)oForm.Items.Item("BtPesq").Specific;
             BtPesquisar.PressedAfter += BtPesquisar_PressedAfter;
@@ -54,10 +66,68 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
             MtPedidos.AutoResizeColumns();
 
+            CarregarDadosFaturamentoFaturar();
+
             oForm.Visible = true;
 
 
 
+        }
+
+        private void BtAlterarDataT_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (!Util.RetornarDialogo("Deseja alterar a Previsão de Transmissão para as notas selecionadas?"))
+                    return;
+
+                AlterarDataPrevisaoFaturamento();
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao importar faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+
+        private void AlterarDataPrevisaoFaturamento()
+        {
+            try
+            {
+                string MensagemErro = string.Empty;
+
+                MtPedidos.FlushToDataSource();
+
+                DateTime dtDataTransmissao = DateTime.ParseExact(EdDataT.Value, "yyyyMMdd", CultureInfo.InvariantCulture);
+
+                for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
+                {
+                    if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
+                    {
+                        Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Esboco", iRow));
+
+                        SAPbobsCOM.Documents oEsbocoNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+                        if (oEsbocoNotaFiscalSaida.GetByKey(DocEntry))
+                        {
+                            oEsbocoNotaFiscalSaida.DocDate = dtDataTransmissao;
+                            if (oEsbocoNotaFiscalSaida.Update() != 0)
+                                MensagemErro += $" {Globals.Master.Connection.Database.GetLastErrorDescription()} ";
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MensagemErro))
+                    Util.ExibeMensagensDialogoStatusBar($"Erro ao alterar data de transmissão: {MensagemErro}", BoMessageTime.bmt_Medium, true);
+
+                CarregarDadosFaturamentoFaturar();
+
+                Util.ExibirMensagemStatusBar("Dados alterados com sucesso!");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao alterar data de previsão de transmissão: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
         private void BtImportarFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
@@ -185,7 +255,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-                if (!Util.RetornarDialogo("Deseja efetivar o pré faturamento dos documentos?"))
+                if (!Util.RetornarDialogo("Deseja efetivar o faturamento dos documentos?"))
                     return;
 
                 MtPedidos.FlushToDataSource();
@@ -230,6 +300,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 if (oEsbocoNotaFiscalSaida.GetByKey(DocEntry))
                 {
+                    if (oEsbocoNotaFiscalSaida.DocDate != DateTime.Now.Date) 
+                    {
+                        return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} - Data de transmissão diferente da data de hoje!";
+                    }
+
                     if (oEsbocoNotaFiscalSaida.SaveDraftToDocument() != 0)
                         return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} Linha {iRow + 1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
 
@@ -337,6 +412,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
+
+                MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "DataT");
+
+                
+                MtPedidos.Columns.Item("CardCode").DataBind.Bind("DtPO", "CardCode");
+                MtPedidos.Columns.Item("CardName").DataBind.Bind("DtPO", "CardName");                
 
                 MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");

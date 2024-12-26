@@ -5,6 +5,7 @@ using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
 using System.Drawing;
+using Zopone.AddOn.PO.Helpers;
 
 
 namespace Zopone.AddOn.PO.View.Faturamento
@@ -14,6 +15,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         EditText EdDataI { get; set; }
         EditText EdDataF { get; set; }
         EditText EdPO { get; set; }
+        EditText EdCliente { get; set; }
         DataTable DtPesquisa { get; set; }
         Matrix MtPedidos { get; set; }
 
@@ -30,6 +32,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
 
+            EdCliente = (EditText)oForm.Items.Item("EdCliente").Specific;
+
             MtPedidos = (Matrix)oForm.Items.Item("MtPed").Specific;
 
             DtPesquisa = oForm.DataSources.DataTables.Item("DtPO");
@@ -44,9 +48,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
             MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
             MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
 
+            MtPedidos.ChooseFromListBefore += MtPedidos_ChooseFromListBefore;
             MtPedidos.ChooseFromListAfter += MtPedidos_ChooseFromListAfter;
 
             MtPedidos.AutoResizeColumns();
+
+            CarregarDadosFaturamentoFaturar();
 
             oForm.Visible = true;
 
@@ -54,7 +61,84 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
         }
 
-        
+
+        private Conditions CriaCondicoesCidade(string Estado)
+        {
+            if (string.IsNullOrEmpty(Estado))
+                throw new Exception("Selecione o Estado!");
+
+            var oConds = new SAPbouiCOM.Conditions();
+
+            var oCond = oConds.Add();
+
+            oCond.Alias = "State";
+
+            oCond.Operation = SAPbouiCOM.BoConditionOperation.co_EQUAL;
+
+            oCond.CondVal = Estado;
+
+            return oConds;
+        }
+
+        private void MtPedidos_ChooseFromListBefore(object sboObject, SBOItemEventArg pVal, out bool BubbleEvent)
+        {
+            try
+            {
+                var oConds = new SAPbouiCOM.Conditions();
+                var oCfLs = oForm.ChooseFromLists;
+
+                var cfl = oCfLs.Item("CFL_ALOC");
+
+                if (cfl.GetConditions().Count > 0)
+                {
+                    SAPbouiCOM.Conditions emptyCon = new SAPbouiCOM.Conditions();
+
+                    cfl.SetConditions(emptyCon);
+                }
+
+                var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                string sql_query = $"SP_ZPN_LISTAALOCACOESOBRA '{DtPesquisa.GetValue("Obra", pVal.Row - 1)}'";
+                oRecordSet.DoQuery(sql_query);
+
+                int iRow = 1;
+
+                while (!oRecordSet.EoF)
+                {
+                    var oCond = oConds.Add();
+
+                    if (oConds.Count == 1)
+                        oCond.BracketOpenNum = 1;
+
+
+                    oCond.Alias = "Code";
+                    oCond.Operation = SAPbouiCOM.BoConditionOperation.co_EQUAL;
+                    oCond.CondVal = oRecordSet.Fields.Item("Codigo").Value.ToString();
+
+                    if (oRecordSet.RecordCount > 1 && iRow != oRecordSet.RecordCount)
+                        oCond.Relationship = BoConditionRelationship.cr_OR;
+
+                    if (iRow == oRecordSet.RecordCount)
+                        oCond.BracketCloseNum = 1;
+
+                    oRecordSet.MoveNext();
+
+                    iRow++;
+                }
+
+
+
+
+                cfl.SetConditions(oConds);
+
+                BubbleEvent = true;
+            }
+            catch (Exception Ex)
+            {
+                BubbleEvent = false;
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar Alocação: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
 
         private void MtPedidos_ValidateBefore(object sboObject, SBOItemEventArg pVal, out bool BubbleEvent)
         {
@@ -81,7 +165,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao validar dados coluna: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
                 BubbleEvent = false;
-            }            
+            }
         }
 
         private void BtPreFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
@@ -94,124 +178,144 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.FlushToDataSource();
 
                 string MensagemErro = string.Empty;
+
+
+                Globals.Master.Connection.Database.StartTransaction();
+
+                GerarDocumentoPreFaturamento();
+
+                Util.ExibirMensagemStatusBar("Pré Faturamento gerado com sucesso!");
+                if (Globals.Master.Connection.Database.InTransaction)
+                    Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+
+                if (Globals.Master.Connection.Database.InTransaction)
+                    Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_RollBack);
+            }
+            finally
+            {
+                if (Globals.Master.Connection.Database.InTransaction)
+                    Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
+
+                CarregarDadosFaturamentoFaturar();
+            }
+        }
+
+        private void GerarDocumentoPreFaturamento()
+        {
+            try
+            {
+                SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
+                SAPbobsCOM.Documents oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
                 
+                oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+                Int32 PedidoVendaDocEntry = 0;
+                string Obra = string.Empty;
+                string ItemCodeFaturamento = string.Empty;
+
                 for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
                 {
                     if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
                     {
                         if (string.IsNullOrEmpty(DtPesquisa.GetValue("Atividade", iRow).ToString()))
                         {
-                            MensagemErro += $"Não há atividade selecionada para a  linha {iRow+1}";
+                            throw new Exception($"Não há atividade selecionada para a linha {iRow + 1}");
                         }
                         else
                         {
-                            MensagemErro += GerarDocumentoPreFaturamento(iRow);
+                            Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Pedido", iRow));
+                            Int32 LineNum = Convert.ToInt32(DtPesquisa.GetValue("Linha", iRow));
+                            string ItemCode = DtPesquisa.GetValue("ItemCode", iRow).ToString();
+                            string Atividade = DtPesquisa.GetValue("Atividade", iRow).ToString();
+                            double TotalLinha = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", iRow));
+                            DateTime dataFaturamento = Convert.ToDateTime(DtPesquisa.GetValue("PrevFat", iRow));
+
+
+                            string ItemFaturamento = DtPesquisa.GetValue("AlocacaoFAT", iRow).ToString();
+                            string DescItemFaturamento = DtPesquisa.GetValue("DescAlocacaoFAT", iRow).ToString();
+
+                            oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
+
+                            if (!oPedidoVenda.GetByKey(DocEntry))
+                                throw new Exception($"Pedido de venda (PO) não encontrado: {DocEntry}");
+
+                            if (string.IsNullOrEmpty(Obra))
+                            {
+                                Obra = oPedidoVenda.Lines.ProjectCode;
+                                PedidoVendaDocEntry = oPedidoVenda.DocEntry;
+                                ItemCodeFaturamento = ItemCode;
+                            }
+
+                            if (Obra != oPedidoVenda.Lines.ProjectCode || oPedidoVenda.DocEntry != PedidoVendaDocEntry || ItemCode != ItemCodeFaturamento)
+                            {
+                                if (oNotaFiscalSaida.Add() != 0)
+                                    throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                                oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                                oNotaFiscalSaida.CardCode = string.Empty;
+                                oNotaFiscalSaida.Lines.LineTotal = 0;
+                                oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value = string.Empty;
+                            }
+
+
+                            oNotaFiscalSaida.DocObjectCodeEx = "13";
+                            oNotaFiscalSaida.DocDate = dataFaturamento;                            
+                            oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
+                            oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
+                            oNotaFiscalSaida.BPL_IDAssignedToInvoice = oPedidoVenda.BPL_IDAssignedToInvoice;
+                            oNotaFiscalSaida.UserFields.Fields.Item("U_IdPO").Value = oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value;
+
+                            oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
+                            oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
+
+                            oPedidoVenda.Lines.SetCurrentLine(LineNum);
+
+
+                            Util.ExibirMensagemStatusBar($"Faturando PO {oPedidoVenda.NumAtCard} - Linha -  {oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString()}", BoMessageTime.bmt_Medium, false);
+
+                            oNotaFiscalSaida.Lines.ItemCode = ItemCode;
+                            oNotaFiscalSaida.Lines.Quantity = 1;
+                            oNotaFiscalSaida.Lines.LineTotal += TotalLinha;
+                            oNotaFiscalSaida.Lines.Usage = oPedidoVenda.Lines.Usage;
+                            oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(oPedidoVenda.Lines.Usage);
+                            oNotaFiscalSaida.Lines.TaxCode = "1556-001"; // Temporário até definição do imposto
+                            oNotaFiscalSaida.Lines.ProjectCode = oPedidoVenda.Lines.ProjectCode;
+                            oNotaFiscalSaida.Lines.COGSCostingCode = oPedidoVenda.Lines.COGSCostingCode;
+                            oNotaFiscalSaida.Lines.COGSCostingCode2 = oPedidoVenda.Lines.COGSCostingCode2;
+                            oNotaFiscalSaida.Lines.COGSCostingCode3 = oPedidoVenda.Lines.COGSCostingCode3;
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Candidato").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value;
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value += ($" {oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString()}");
+
+
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value =  ItemFaturamento;
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescItemFat").Value = DescItemFaturamento;
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Atividade").Value = Atividade;
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_StatusFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusFat").Value;
+                            
+                            oNotaFiscalSaida.DocumentReferences.ReferencedDocEntry = oPedidoVenda.DocEntry;
+                            oNotaFiscalSaida.DocumentReferences.ReferencedObjectType = ReferencedObjectTypeEnum.rot_SalesOrder;
+                            oNotaFiscalSaida.DocumentReferences.Remark += ($" {oPedidoVenda.Lines.LineNum.ToString()} ");                            
                         }
                     }
                 }
 
-                if (!string.IsNullOrEmpty(MensagemErro))
+                if (!string.IsNullOrEmpty(oNotaFiscalSaida.CardCode))
                 {
-                    Util.ExibeMensagensDialogoStatusBar($"Há pedido(s) não faturado(s) \n: {MensagemErro}", BoMessageTime.bmt_Medium, true);
-                }
-                else
-                {
-                    Util.ExibirMensagemStatusBar("Pré Faturamento gerado com sucesso!");
-                }
-            }
-            catch (Exception Ex)
-            {
-                Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
-            }
-            finally
-            {
-                CarregarDadosFaturamentoFaturar();
-            }
-        }
-
-        private string GerarDocumentoPreFaturamento(int iRow)
-        {
-            try
-            {
-
-                Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Pedido", iRow));
-                Int32 LineNum = Convert.ToInt32(DtPesquisa.GetValue("Linha", iRow));
-                string ItemCode = DtPesquisa.GetValue("ItemCode", iRow).ToString();
-                string Atividade = DtPesquisa.GetValue("Atividade", iRow).ToString();
-                double TotalLinha = Convert.ToDouble(DtPesquisa.GetValue("TotalFaturar", iRow));
-                
-                string ItemFaturamento = DtPesquisa.GetValue("AlocacaoFAT", iRow).ToString();
-                string DescItemFaturamento = DtPesquisa.GetValue("DescAlocacaoFAT", iRow).ToString();
-
-
-                SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
-                SAPbobsCOM.Documents oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-
-                if (oPedidoVenda.GetByKey(DocEntry))
-                {
-                    oPedidoVenda.Lines.SetCurrentLine(LineNum);
-
-                    oNotaFiscalSaida.DocObjectCodeEx = "13";
-                    oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
-                    oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
-
-                    oNotaFiscalSaida.BPL_IDAssignedToInvoice = oPedidoVenda.BPL_IDAssignedToInvoice;
-                    oNotaFiscalSaida.UserFields.Fields.Item("U_IdPO").Value             = oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value;
-                    oNotaFiscalSaida.UserFields.Fields.Item("U_IdPCI").Value            = oPedidoVenda.UserFields.Fields.Item("U_IdPCI").Value;
-                    oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value    = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
-                    oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value          = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
-
-                    oPedidoVenda.Lines.SetCurrentLine(LineNum);
-
-                    oNotaFiscalSaida.Lines.ItemCode = ItemCode;
-                    oNotaFiscalSaida.Lines.Quantity = 1;
-                    oNotaFiscalSaida.Lines.LineTotal = TotalLinha;
-                    oNotaFiscalSaida.Lines.Usage = oPedidoVenda.Lines.Usage;
-                    oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(oPedidoVenda.Lines.Usage);
-                    oNotaFiscalSaida.Lines.TaxCode = "1556-001";
-                    oNotaFiscalSaida.Lines.ProjectCode = oPedidoVenda.Lines.ProjectCode;
-                    oNotaFiscalSaida.Lines.COGSCostingCode = oPedidoVenda.Lines.COGSCostingCode;
-                    oNotaFiscalSaida.Lines.COGSCostingCode2 = oPedidoVenda.Lines.COGSCostingCode2;
-                    oNotaFiscalSaida.Lines.COGSCostingCode3 = oPedidoVenda.Lines.COGSCostingCode3;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Candidato").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value = ItemFaturamento;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescItemFat").Value = DescItemFaturamento;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Parcela").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Tipo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_itemDescription").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Atividade").Value = Atividade;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_StatusFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusFat").Value;
-
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseEntry").Value = oPedidoVenda.DocEntry;
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_BaseLine").Value = oPedidoVenda.Lines.LineNum;
-
-                    oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_manSiteInfo").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value;
-
-
-                    oNotaFiscalSaida.DocumentReferences.ReferencedDocEntry = oPedidoVenda.DocEntry;
-                    oNotaFiscalSaida.DocumentReferences.ReferencedObjectType = ReferencedObjectTypeEnum.rot_SalesOrder;
-                    oNotaFiscalSaida.DocumentReferences.ReferencedAmount = TotalLinha;
-                    
-
-
-
                     if (oNotaFiscalSaida.Add() != 0)
-                        return $"Erro ao gerar pré faturamento de PO - {oPedidoVenda.NumAtCard} Linha {LineNum} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
-
+                        throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                 }
-
-                Util.ExibirMensagemStatusBar($"Pré Faturamento gerado com sucesso - {oPedidoVenda.NumAtCard} Linha {LineNum}!");
             }
             catch (Exception Ex)
             {
-                Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar pré faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                throw new Exception($"Erro ao gerar pré faturamento: {Ex.Message}");
             }
-            
-
-            return string.Empty;
         }
+
 
         private void MtPedidos_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
         {
@@ -230,6 +334,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     string Code = Convert.ToString(aEvent.SelectedObjects.GetValue("Code", 0));
                     string Descricao = Convert.ToString(aEvent.SelectedObjects.GetValue("U_Desc", 0));
 
+
                     DtPesquisa.SetValue("AlocacaoFAT", row, Code);
                     DtPesquisa.SetValue("DescAlocacaoFAT", row, Descricao);
 
@@ -240,21 +345,29 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     double dblPercentualFaturamento = Convert.ToDouble(SqlUtils.GetValue(SQL_PESQUISA));
 
                     if (dblPercentualFaturamento > 0)
-                    {
-                        double dblSaldoAberto = Convert.ToDouble(DtPesquisa.GetValue("SaldoAberto", row));
-
-                        DtPesquisa.SetValue("TotalFaturar", row, (dblSaldoAberto * dblPercentualFaturamento / 100));
-                    }
-
+                        DtPesquisa.SetValue("PercFaturar", row, dblPercentualFaturamento);
 
                     MtPedidos.LoadFromDataSourceEx();
+
+                    CalculaPorcentagemFaturamento(row);
                 }
-                    
+
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar alocação faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
+        }
+        private void CalculaPorcentagemFaturamento(Int32 row)
+        {
+            MtPedidos.FlushToDataSource();
+
+            double dblSaldoAberto = Convert.ToDouble(DtPesquisa.GetValue("SaldoAberto", row));
+            double dblPercentualFaturamento = Convert.ToDouble(DtPesquisa.GetValue("PercFaturar", row));
+
+            DtPesquisa.SetValue("TotalFaturar", row, (dblSaldoAberto * dblPercentualFaturamento / 100));
+
+            MtPedidos.LoadFromDataSourceEx(true);
         }
 
 
@@ -263,7 +376,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
             try
             {
                 if (pVal.ColUID == "Col_8")
-                    SelecionaAtividadeServico(pVal.Row-1);
+                    SelecionaAtividadeServico(pVal.Row - 1);
+                else if (pVal.ColUID == "Col_21")
+                    CalculaPorcentagemFaturamento(pVal.Row - 1);
             }
             catch (Exception Ex)
             {
@@ -295,9 +410,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     Util.ExibeMensagensDialogoStatusBar($"Não há serviço cadastrado com o código {Atividade}");
                     return;
                 }
-                
+
                 DtPesquisa.SetValue("Selecionar", row, "Y");
-                DtPesquisa.SetValue("ItemCode", row, dtRegistrosItens.Rows[0]["ItemCode"].ToString()   );
+                DtPesquisa.SetValue("ItemCode", row, dtRegistrosItens.Rows[0]["ItemCode"].ToString());
                 DtPesquisa.SetValue("Dscription", row, dtRegistrosItens.Rows[0]["ItemName"].ToString());
 
                 MtPedidos.LoadFromDataSourceEx();
@@ -313,7 +428,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-               CarregarDadosFaturamentoFaturar();
+                CarregarDadosFaturamentoFaturar();
             }
             catch (Exception Ex)
             {
@@ -329,7 +444,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_ListaPedidosGerarPreFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}'";
+                string SQL_Query = $@"ZPN_SP_ListaPedidosGerarPreFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}', '{EdCliente.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
@@ -338,19 +453,25 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
                 
+                MtPedidos.Columns.Item("Col_22").DataBind.Bind("DtPO", "PrevFat");
+
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
                 MtPedidos.Columns.Item("Col_8").DataBind.Bind("DtPO", "Atividade");
                 MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "Descricao");
                 MtPedidos.Columns.Item("Col_5").DataBind.Bind("DtPO", "Valor");
-                MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "ItemCode");
-                MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "Dscription");
+
+                MtPedidos.Columns.Item("ItemCode").DataBind.Bind("DtPO", "ItemCode");
+                MtPedidos.Columns.Item("Dscription").DataBind.Bind("DtPO", "Dscription");
+
+                MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "Cliente");
+                MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "CodCliente");
+                MtPedidos.Columns.Item("Col_20").DataBind.Bind("DtPO", "CodCliente");
 
                 MtPedidos.Columns.Item("Col_12").DataBind.Bind("DtPO", "Status");
 
-
                 MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "AlocacaoFAT");
                 MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "DescAlocacaoFAT");
-
+                MtPedidos.Columns.Item("Col_21").DataBind.Bind("DtPO", "PercFaturar");
 
                 MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
                 MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "SaldoAberto");
@@ -363,6 +484,13 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "Obra");
 
+                MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "Linha");
+                MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "Obra");
+
+                MtPedidos.Columns.Item("Col_23").DataBind.Bind("DtPO", "IbgeCode");
+                MtPedidos.Columns.Item("Col_24").DataBind.Bind("DtPO", "Estado");
+                MtPedidos.Columns.Item("Col_25").DataBind.Bind("DtPO", "Cidade");
+                
 
 
                 MtPedidos.LoadFromDataSourceEx();
@@ -381,3 +509,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
         }
     }
 }
+
+
+

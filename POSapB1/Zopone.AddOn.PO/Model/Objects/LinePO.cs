@@ -6,6 +6,7 @@ namespace Zopone.AddOn.PO.Model.Objects
     public class LinePO
     {
         public Int32 LineNum { get; set; }
+        public string Agrupar { get; set; }
         public string U_PrjCode { get; set; }
         public string U_PrjName { get; set; }
         public string U_Candidato { get; set; }
@@ -23,6 +24,7 @@ namespace Zopone.AddOn.PO.Model.Objects
         public Double U_Valor { get; set; }
         public string U_Tipo { get; set; }
         public Int32 AgrNo { get; set; }
+        public string DescContrato { get; set; }
         public DateTime U_DataLanc { get; set; }
         public DateTime? U_DataFat { get; set; }
         public string U_NroNF { get; set; }

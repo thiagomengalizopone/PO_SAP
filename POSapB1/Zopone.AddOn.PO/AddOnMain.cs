@@ -16,6 +16,8 @@ using static sap.dev.core.EnumList;
 using System.Text;
 using System.Net.Configuration;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+using sap.dev.data;
+using SAPbobsCOM;
 
 namespace Zopone.AddOn.PO
 {
@@ -40,7 +42,6 @@ namespace Zopone.AddOn.PO
             //ImportaContratoHomologacao.criacentrocusto();
             #endregion
 
-            
             Install.VerificaInstalacaoAddOn();
             
             Instalar.ExecutaScriptsAtualizacaoCampos();
@@ -58,6 +59,34 @@ namespace Zopone.AddOn.PO
             Globals.Master.Connection.Interface.RightClickEvent += RightClickEventHandler.Interface_RightClickEvent;
 
             UtilWarehouses.CriaDepositosRAAsync();
+
+            Util.ExibirMensagemStatusBar("AddOn Faturamento iniciado com sucesso!", SAPbouiCOM.BoMessageTime.bmt_Long);
+        }
+
+        private static void AtualizaPN()
+        {
+
+            //
+            var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+            SAPbobsCOM.BusinessPartners oParceiroNegocio = (SAPbobsCOM.BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
+            oRecordSet.DoQuery(@"select ""CardCode"", ""GroupNum"" from vw_atualizapn order by ""GroupNum""");
+
+            while (!oRecordSet.EoF)
+            {
+                oParceiroNegocio = (SAPbobsCOM.BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
+
+                if (oParceiroNegocio.GetByKey(oRecordSet.Fields.Item("CardCode").Value.ToString()))
+                {
+                    oParceiroNegocio.PayTermsGrpCode = Convert.ToInt32(oRecordSet.Fields.Item("GroupNum").Value);
+
+                    oParceiroNegocio.Update();
+                }
+
+                oRecordSet.MoveNext();
+            }
+
+
+
         }
 
         private static Int32 GetDLLVersion()

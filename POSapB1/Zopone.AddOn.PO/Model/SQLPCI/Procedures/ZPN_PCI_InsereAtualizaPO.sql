@@ -16,6 +16,8 @@ BEGIN
 
 	set @count = (select count(1) from  [po] where [poid] = @poid);
 
+	delete from poitem where poid = @poid;
+
 	IF (@count = 0) 
 	BEGIN
 
@@ -59,5 +61,6 @@ BEGIN
 			codigo = @Codigo
         WHERE 
             [poid] = @poid;
+
 	END
 END

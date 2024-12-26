@@ -120,6 +120,7 @@ namespace Zopone.AddOn.PO.View.PO
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[11].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[12].Value.ToString());
                     retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[13].Value.ToString());
+                    retornoDados.Add(dgResultado.Rows[selectedRowIndex].Cells[3].Value.ToString()); //id Contrato
                 }
                 else if (TipoPesquisa == "CANDIDATO")
                 {

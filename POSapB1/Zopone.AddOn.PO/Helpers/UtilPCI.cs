@@ -11,8 +11,73 @@ namespace Zopone.AddOn.PO.Helpers
 {
     public static class UtilPCI
     {
+        public static async Task EnviarDadosNFLiberadaPCIAsync(Int32 DocEntry)
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
-        public static async Task EnviarDadosPCIAsync(string CodeObra, DateTime dataCriacao)
+                string SQL_Query = $"ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA {DocEntry}";
+
+                string erro_obra = SqlUtils.GetValue(SQL_Query);
+
+                if (!string.IsNullOrEmpty(erro_obra))
+                {
+                    Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, erro_obra);
+                    Util.ExibeMensagensDialogoStatusBar(erro_obra);
+                }
+                else
+                {
+                    string SQL_QueryCR = $"ZPN_SP_PCI_ENVIACONTASRECEBER {DocEntry}";
+
+                    erro_obra = SqlUtils.GetValue(SQL_QueryCR);
+                    if (!string.IsNullOrEmpty(erro_obra))
+                    {
+                        Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, erro_obra);
+                        Util.ExibeMensagensDialogoStatusBar(erro_obra);
+                    }
+                    else
+                    {
+
+                        Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+                    }
+                }
+
+
+
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar dados de Nota Fiscal: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+        public static async Task EnviarDadosNFDigitacaoPCIAsync(Int32 DocEntry)
+        {
+            try
+            {
+                Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
+
+                string SQL_Query = $"ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO {DocEntry}";
+
+                string erro_obra = SqlUtils.GetValue(SQL_Query);
+
+                if (!string.IsNullOrEmpty(erro_obra))
+                {
+                    Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, erro_obra);
+                    Util.ExibeMensagensDialogoStatusBar(erro_obra);
+                }
+                else
+                {
+                    Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
+                }
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar dados de Nota Fiscal: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+        public static async Task EnviarDadosObraPCIAsync(string CodeObra, DateTime dataCriacao)
         {
             try
             {

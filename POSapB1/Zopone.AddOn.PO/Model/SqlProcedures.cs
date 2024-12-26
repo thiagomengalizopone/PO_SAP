@@ -21,6 +21,24 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
+
+        public static class SP_ZPN_LISTAALOCACOESOBRAFAT
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_LISTAALOCACOESOBRAFAT.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+
+        public static class SP_ZPN_LISTAALOCACOESOBRA
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_LISTAALOCACOESOBRA.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+
+        
         public static class ZPN_SP_RetornaProximaAlocacao
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_RetornaProximaAlocacao.sql";
@@ -28,10 +46,26 @@ namespace Zopone.AddOn.PO.Model
             public const TipoScript Tipo = TipoScript.Proc;
             public const Int32 Versao = 2024111201;
         }
-        
+
         public static class SP_ZPN_IMPORTARPOERICSSON
         {
             public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_IMPORTARPOERICSSON.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+
+        public static class ZPN_SP_EfetivaPedidosPreFaturamento
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_EfetivaPedidosPreFaturamento.sql";
+            public const string Descricao = "";
+            public const TipoScript Tipo = TipoScript.Proc;
+            public const Int32 Versao = 2024111201;
+        }
+
+        public static class SP_ZPN_CriaObservacoesFaturamentoEsboco
+        {
+            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.SP_ZPN_CriaObservacoesFaturamentoEsboco.sql";
             public const string Descricao = "";
             public const TipoScript Tipo = TipoScript.Proc;
             public const Int32 Versao = 2024111201;
@@ -115,13 +149,6 @@ namespace Zopone.AddOn.PO.Model
             public const Int32 Versao = 2024111201;
         }
 
-        public static class ZPN_SP_EfetivaPedidosPreFaturamento
-        {
-            public const string Nome = "Zopone.AddOn.PO.Model.SQL.Procedures.ZPN_SP_EfetivaPedidosPreFaturamento.sql";
-            public const string Descricao = "";
-            public const TipoScript Tipo = TipoScript.Proc;
-            public const Int32 Versao = 2024111201;
-        }
 
         public static class ZPN_SP_GeraProjetoTabelaB1
         {

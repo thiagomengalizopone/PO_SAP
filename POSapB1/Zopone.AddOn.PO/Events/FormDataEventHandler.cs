@@ -41,6 +41,10 @@ namespace Zopone.AddOn.PO
             {
                 BubbleEvent = FrmParamPO.Interface_FormDataEvent(BusinessObjectInfo);
             }
+            else if (BusinessObjectInfo.FormTypeEx == FormConstantes.FrmNotaFiscalSaida) 
+            {
+                BubbleEvent = Frm133.Interface_FormDataEvent(BusinessObjectInfo);
+            }
             
 
         }

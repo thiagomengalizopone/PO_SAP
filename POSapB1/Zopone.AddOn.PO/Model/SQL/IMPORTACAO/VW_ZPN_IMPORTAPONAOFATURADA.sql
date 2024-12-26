@@ -1,0 +1,55 @@
+﻿
+
+create VIEW [dbo].[VW_ZPN_IMPORTAPONAOFATURADA] 
+AS
+
+
+
+
+
+
+
+SELECT
+	OCRD."CardCode", 
+	PO_002 "NumAtCard",
+	PO_010 "DocDate",
+	PO_010 DocDueDate,
+	PO_012 "U_Contrato",
+	PO_005 "Comments",
+	obra.U_BPLId "BPL_IDAssignedToInvoice",
+	'I000001' "ItemCode",
+	1 "Quantity",
+	9 "Usage",
+	POI_002 U_Item,
+	poi_003 "U_Perc",
+	POI_007 "LineTotal",
+	poi_008 "U_Tipo",
+	"@ZPN_ALOCA"."Code" "U_ItemFat",
+	"@ZPN_ALOCA".U_Desc "U_DescItemFat",
+	Obra.Code ProjectCode,
+	OPRC.PrcCode CostingCode,
+	CCOBRA.PrcCode CostingCode2
+	--,
+	--Obra.U_Regional CostingCode3
+
+
+FROM
+	SQL_TOPENG.TOPENG.DBO.PO
+	INNER JOIN SQL_TOPENG.TOPENG.DBO.PO_ITENS ON PO.PO_001 = PO_ITENS.PO_001
+	INNER JOIN SQL_TOPENG.TOPENG.DBO.OBRAS ON OBRAS.OBR_001 = PO_ITENS.OBR_001
+	INNER JOIN SQL_TOPENG.TOPENG.DBO.ETAPA ON ETAPA.ETA_001 = PO_ITENS.ETA_001
+	inner join SQL_TOPENG.TOPENG.DBO.PESSOA ON PESSOA.PES_001 = PO_ITENS.PES_001
+	INNER JOIN OCRD ON OCRD."CardCode" =   'C' + right('000000' + CAST(PESSOA.PES_057 AS VARCHAR(10)), 6)
+	INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = OBRAS.OBR_002 COLLATE SQL_Latin1_General_CP850_CI_AS
+	INNER JOIN "@ZPN_ALOCA" ON "@ZPN_ALOCA"."Code" = CAST(ETAPA.ETA_001 AS VARCHAR(100))
+	INNER JOIN OPRC ON OPRC.U_CardCode = OCRD.CardCode AND OPRC.DimCode = 1 
+	INNER JOIN OPRC CCOBRA ON CCOBRA.U_Obra = OBRA."Code"  and CCOBRA.DimCode = 2
+	
+WHERE
+	PO_002 collate SQL_Latin1_General_CP850_CI_AS not in (SELECT NumAtCard FROM ORDR WHERE ORDR.NumAtCard = PO_002 collate SQL_Latin1_General_CP850_CI_AS) and
+	PO_010 >= '2024-10-01'
+
+--order by PO_002
+	
+GO
+
