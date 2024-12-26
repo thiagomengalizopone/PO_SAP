@@ -508,19 +508,6 @@
     <EmbeddedResource Include="View\Manutencao\FrmAtualizaDataProgramada.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\SQL\Tables\ZPN_IMPFATURAMENTOHUAWEI.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_IMPFATURAMENTOHUAWEI.sql" />
-    <EmbeddedResource Include="Model\SQL\Views\VW_ZPN_TOTALFATURADOPOTOPENG.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_VERIFICACADASTROPCI.sql" />
-    <EmbeddedResource Include="Model\SQL\Tables\ZPN_CONTASRECEBERPCI.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_CriaNotaFsicalServicoPCI.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_LISTAALOCACOESOBRA.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CriaObservacoesFaturamento.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CriaObservacoesFaturamentoEsboco.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA.sql" />
-    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_LISTAALOCACOESOBRAFAT.sql" />
-    <EmbeddedResource Include="Model\SQL\IMPORTACAO\VW_ZPN_IMPORTAPONAOFATURADA.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_DOCUMENTOS_REPROGRAMACAO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_ATUALIZAPROJETOESBOCO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PESQUISAPO.sql" />

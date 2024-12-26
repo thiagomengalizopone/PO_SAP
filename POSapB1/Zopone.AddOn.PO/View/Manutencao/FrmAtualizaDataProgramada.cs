@@ -193,6 +193,36 @@ namespace Zopone.AddOn.PO.View.Manutencao
                     oForm.Freeze(false);
                 }
             }
+            else if ((pVal.CharPressed == 0 || pVal.CharPressed == 32) && pVal.ColUID == "Col_0")
+            {
+                try
+                {
+                    oForm.Freeze(true);
+
+                    if (((CheckBox)MtNotasP.Columns.Item("Col_0").Cells.Item(pVal.Row).Specific).Checked == true)
+                    {
+
+                        MtNotasP.CommonSetting.SetRowBackColor(pVal.Row, 16753920);
+                        MtNotasP.CommonSetting.SetRowFontColor(pVal.Row, ConverteRGB(255, 255, 255));
+
+                        MtNotasP.CommonSetting.SetCellBackColor(pVal.Row, 1, ConverteRGB(255, 255, 255));
+                        //MtNotasP.CommonSetting.SetCellFontColor(pVal.Row, 0, ConverteRGB(0, 0, 0));                          
+                    }
+                    else
+                    {
+                        MtNotasP.CommonSetting.SetRowBackColor(pVal.Row, -1);
+                        MtNotasP.CommonSetting.SetRowFontColor(pVal.Row, ConverteRGB(0, 0, 0));
+                    }
+                }
+                catch (Exception Ex)
+                {
+                    var tempErro = Ex.Message;
+                }
+                finally
+                {
+                    oForm.Freeze(false);
+                }
+            }
         }
 
         private void BtAtualizar_PressedAfter(object sboObject, SBOItemEventArg pVal)
@@ -369,11 +399,11 @@ namespace Zopone.AddOn.PO.View.Manutencao
                                     INSS,
                                     IRRF,
                                     ISS,
-                                    ValorTitulo,
+                                    ValorNF,
                                     ValorRecebido,
                                     Desconto,
                                     Outros,
-                                    ValorLiquido
+                                    ValorFatura
                                     FROM ZPN_VW_DOCUMENTOS_REPROGRAMACAO ";// '{dataLancInicial}', '{dataLancFinal}', '{EdCliente.Value}'";
 
                 SQL_Query += $" WHERE Emissao between '{dataLancInicial}' AND '{dataLancFinal}' ";
@@ -405,17 +435,19 @@ namespace Zopone.AddOn.PO.View.Manutencao
                 MtNotasP.Columns.Item("Col_10").DataBind.Bind("DtDocs", "Vencimento");
                 MtNotasP.Columns.Item("Col_11").DataBind.Bind("DtDocs", "Programacao");
                 MtNotasP.Columns.Item("Col_12").DataBind.Bind("DtDocs", "InfoPrg");
+
+                MtNotasP.Columns.Item("Col_19").DataBind.Bind("DtDocs", "ValorNF");
+
                 MtNotasP.Columns.Item("Col_13").DataBind.Bind("DtDocs", "PIS");
                 MtNotasP.Columns.Item("Col_14").DataBind.Bind("DtDocs", "COFINS");
                 MtNotasP.Columns.Item("Col_15").DataBind.Bind("DtDocs", "CSLL");
                 MtNotasP.Columns.Item("Col_16").DataBind.Bind("DtDocs", "INSS");
                 MtNotasP.Columns.Item("Col_17").DataBind.Bind("DtDocs", "IRRF");
-                MtNotasP.Columns.Item("Col_18").DataBind.Bind("DtDocs", "ISS");
-                MtNotasP.Columns.Item("Col_19").DataBind.Bind("DtDocs", "ValorTitulo");
+                MtNotasP.Columns.Item("Col_18").DataBind.Bind("DtDocs", "ISS");                
                 MtNotasP.Columns.Item("Col_20").DataBind.Bind("DtDocs", "ValorRecebido");
                 MtNotasP.Columns.Item("Col_21").DataBind.Bind("DtDocs", "Desconto");
                 MtNotasP.Columns.Item("Col_22").DataBind.Bind("DtDocs", "Outros");
-                MtNotasP.Columns.Item("Col_23").DataBind.Bind("DtDocs", "ValorLiquido");
+                MtNotasP.Columns.Item("Col_23").DataBind.Bind("DtDocs", "ValorFatura");
 
                 MtNotasP.LoadFromDataSourceEx();
 
