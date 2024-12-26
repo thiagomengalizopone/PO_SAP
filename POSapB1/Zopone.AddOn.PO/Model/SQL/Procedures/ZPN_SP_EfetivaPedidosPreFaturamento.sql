@@ -1,9 +1,9 @@
-﻿CREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿create PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
 	 @NumAtCard varchar(100),
-	 @Cliente varchar(250)
+	 @CardName varchar(250)
 )
 AS
 BEGIN
@@ -68,7 +68,13 @@ WHERE
 		or 
 		(isnull(@NumAtCard,'') = '')
 	) 
-	AND DRF1."DocDate" between @DataInicial and @DataFinal
+	AND DRF1."DocDate" between @DataInicial and @DataFinal 
+	AND 
+	(
+		(ORDR."CardName" like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
+		OR 
+		(ORDR.CardCode like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
+	)
 ORDER BY
 	DRF1."DocDate", ODRF."DocNum", DRF1."LineNum";
 

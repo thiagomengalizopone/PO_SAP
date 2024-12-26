@@ -1,4 +1,4 @@
-﻿create PROCEDURE SP_ZPN_VERIFICACADASTROPCI
+﻿CREATE PROCEDURE SP_ZPN_VERIFICACADASTROPCI
 (
 	@DocEntry INT,
 	@TipoDoc int
@@ -59,7 +59,7 @@ BEGIN
 		INNER JOIN OOAT ON OOAT.AbsId = OBRA.U_CodContrato
 	WHERE 
 		@TipoDoc = 112 and 
-		(ISNULL(OOAT.U_IdPCI, '') = '' or  ISNULL(ALOC.U_IdPci, '') = '' or ISNULL(OBRA.U_IdPci, '')  = '' or     ISNULL(CRD8."U_IdPci",'')  = '' ) and 
+		--(ISNULL(OOAT.U_IdPCI, '') = '' or  ISNULL(ALOC.U_IdPci, '') = '' or ISNULL(OBRA.U_IdPci, '')  = '' or     ISNULL(CRD8."U_IdPci",'')  = '' ) and 
 		ODRF.DocEntry = @DocEntry
 
 	union all 
@@ -86,7 +86,7 @@ BEGIN
 		INNER JOIN OOAT ON OOAT.AbsId = OBRA.U_CodContrato
 	WHERE 
 		@TipoDoc = 13 and 
-		(ISNULL(OOAT.U_IdPCI, '') = '' or  ISNULL(ALOC.U_IdPci, '') = '' or ISNULL(OBRA.U_IdPci, '')  = '' or     ISNULL(CRD8."U_IdPci",'')  = '' ) and 
+		--(ISNULL(OOAT.U_IdPCI, '') = '' or  ISNULL(ALOC.U_IdPci, '') = '' or ISNULL(OBRA.U_IdPci, '')  = '' or     ISNULL(CRD8."U_IdPci",'')  = '' ) and 
 		OINV.DocEntry = @DocEntry;
 
 	-- Declaração das variáveis que receberão os dados de cada linha
@@ -122,7 +122,7 @@ BEGIN
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 
-		if (@IdPciCliente = '') begin
+		--if (@IdPciCliente = '') begin
 
 			 select @IdPciCliente = ISNULL(MAX(cast([clienteid] as varchar(250))),'') from [LINKZCLOUD].[zsistema_aceite].[dbo].[cliente] where [documentoprincipal] = @DocumentoPrincipal;
 
@@ -134,15 +134,15 @@ BEGIN
 			 UPDATE CRD8 SET U_IdPCI = @IdPciCliente WHERE CardCode = @CodigoCliente and BplId = @BplId;
 
 			 exec ZPN_SP_PCI_ATUALIZACLIENTE @CodigoCliente;
-		end;
+		--end;
 
-		if (@IdPciContrato = '') BEGIN 
+		--if (@IdPciContrato = '') BEGIN 
 			exec ZPN_SP_PCI_ATUALIZACONTRATO @CodigoContrato;
-		end;
+		--end;
 
-		if (@IdPciObra = '') begin
+		--if (@IdPciObra = '') begin
 			EXEC [ZPN_SP_PCI_ATUALIZAOBRA] @CodigoObra, NULL;
-		end;
+		--end;
 	 
 
 

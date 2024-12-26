@@ -52,7 +52,7 @@ namespace Zopone.AddOn.PO.Helpers
             }
             catch (Exception Ex)
             {
-                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar dados de Nota Fiscal: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar dados de Contas a Receber: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
         public static async Task EnviarDadosNFDigitacaoPCIAsync(Int32 DocEntry)
@@ -79,7 +79,7 @@ namespace Zopone.AddOn.PO.Helpers
             }
             catch (Exception Ex)
             {
-                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar dados de Nota Fiscal: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar dados de Nota Fiscal Digitação: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
         public static async Task EnviarDadosObraPCIAsync(string CodeObra, DateTime dataCriacao)
