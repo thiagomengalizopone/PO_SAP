@@ -1,7 +1,9 @@
-﻿create PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿cREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
+	 @DataInicialInclusao datetime,
+	 @DataFinalInclusao datetime,
 	 @NumAtCard varchar(100),
 	 @CardName varchar(250)
 )
@@ -26,6 +28,7 @@ SELECT
 	ORDR."DocEntry" "Pedido",
 	ORDR."NumAtCard" "PO",
 	ODRF.DocDate "DataT",
+	ODRF.CreateDate "DataI",
 	ODRF."CardCode",
 	ODRF."CardName",
 	OOAT.Remarks "Contrato",
@@ -68,6 +71,7 @@ WHERE
 		or 
 		(isnull(@NumAtCard,'') = '')
 	) 
+	AND odrf.CreateDate between @DataInicialInclusao and @DataFinalInclusao
 	AND DRF1."DocDate" between @DataInicial and @DataFinal 
 	AND 
 	(

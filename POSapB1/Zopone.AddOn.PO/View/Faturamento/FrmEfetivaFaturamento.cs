@@ -16,6 +16,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
     {
         EditText EdDataI { get; set; }
         EditText EdDataF { get; set; }
+
+        EditText EdDataIncI { get; set; }
+        EditText EdDataIncF { get; set; }
         EditText EdPO { get; set; }
         EditText EdCliente { get; set; }
         DataTable DtPesquisa { get; set; }
@@ -38,6 +41,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
             EdDataI = (EditText)oForm.Items.Item("EdDataI").Specific;
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
+
+            EdDataIncI = (EditText)oForm.Items.Item("EdDtIncI").Specific;
+            EdDataIncF = (EditText)oForm.Items.Item("EdDtIncF").Specific;            
+
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
 
             EdCliente = (EditText)oForm.Items.Item("EdCliente").Specific;            
@@ -478,7 +485,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}','{EdCliente.Value}'";
+                string dataInicialInclusao = !string.IsNullOrEmpty(EdDataIncI.Value) ? EdDataIncI.Value : "20200101";
+                string dataFinalInclusao = !string.IsNullOrEmpty(EdDataIncF.Value) ? EdDataIncF.Value : "20500101";
+
+                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{dataInicialInclusao}', '{dataFinalInclusao}','{EdPO.Value}','{EdCliente.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
@@ -487,6 +497,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
 
                 MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "DataT");
+
+                MtPedidos.Columns.Item("Col_20").DataBind.Bind("DtPO", "DataI");                
 
                 MtPedidos.Columns.Item("CardCode").DataBind.Bind("DtPO", "CardCode");
                 MtPedidos.Columns.Item("CardName").DataBind.Bind("DtPO", "CardName");                
