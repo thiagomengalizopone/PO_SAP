@@ -134,25 +134,30 @@ namespace Zopone.AddOn.PO.View.Manutencao
 
         private void CkBoxMatrixLotes_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
-            if ((pVal.CharPressed == 0 || pVal.CharPressed == 32) && pVal.ColUID == "Col_0")
+            //if ((pVal.CharPressed == 0 || pVal.CharPressed == 32) && pVal.ColUID == "Col_0")
+            if (pVal.CharPressed == 0 || pVal.CharPressed == 32)
             {
                 try
                 {
                     oForm.Freeze(true);
+                   
 
                     if (((CheckBox)MtNotasP.Columns.Item("Col_0").Cells.Item(pVal.Row).Specific).Checked == true)
                     {
-
                         MtNotasP.CommonSetting.SetRowBackColor(pVal.Row, 16753920);
                         MtNotasP.CommonSetting.SetRowFontColor(pVal.Row, ConverteRGB(255, 255, 255));
 
                         MtNotasP.CommonSetting.SetCellBackColor(pVal.Row, 1, ConverteRGB(255, 255, 255));
-                        //MtNotasP.CommonSetting.SetCellFontColor(pVal.Row, 0, ConverteRGB(0, 0, 0));                          
+                        //MtNotasP.CommonSetting.SetCellFontColor(pVal.Row, 0, ConverteRGB(0, 0, 0));
+                        if (MtNotasP.Columns.Item(pVal.ColUID).UniqueID != "Col_0")
+                            ((CheckBox)MtNotasP.Columns.Item("Col_0").Cells.Item(pVal.Row).Specific).Checked = false;
                     }
-                    else
+                    else 
                     {
                         MtNotasP.CommonSetting.SetRowBackColor(pVal.Row, -1);
                         MtNotasP.CommonSetting.SetRowFontColor(pVal.Row, ConverteRGB(0, 0, 0));
+                        if (MtNotasP.Columns.Item(pVal.ColUID).UniqueID != "Col_0")
+                            ((CheckBox)MtNotasP.Columns.Item("Col_0").Cells.Item(pVal.Row).Specific).Checked = true;
                     }
                 }
                 catch (Exception Ex)
