@@ -18,7 +18,7 @@ namespace Zopone.AddOn.PO.Helpers
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
 
-                SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 112");
+                SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 13");
 
                 string SQL_Query = $"ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA {DocEntry}";
 

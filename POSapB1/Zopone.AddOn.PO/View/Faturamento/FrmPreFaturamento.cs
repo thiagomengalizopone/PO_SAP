@@ -344,17 +344,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 Int32 DocEntry = Convert.ToInt32(SqlUtils.GetValue("SELECT MAX(DocEntry) FROM ODRF WHERE ObjType = '13'"));
 
                 Documents oNotaFiscalSaidaImposto = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-                
-                UtilPCI.EnviarDadosNFDigitacaoPCIAsync(DocEntry);
+
+                SqlUtils.DoNonQuery($"SP_ZPN_ATUALIZAPROJETONF {DocEntry}");
 
                 if (oNotaFiscalSaidaImposto.GetByKey(DocEntry))
                 {
-                    oNotaFiscalSaidaImposto.Lines.SetCurrentLine(0);
-                    oNotaFiscalSaidaImposto.Lines.UserFields.Fields.Item("U_Project").Value = oNotaFiscalSaidaImposto.Lines.ProjectCode;
-                    
-                    for (int iRow = 0; iRow < oNotaFiscalSaidaImposto.Installments.Count; iRow++)
-                        oNotaFiscalSaidaImposto.Installments.UserFields.Fields.Item("U_Project").Value = oNotaFiscalSaidaImposto.Lines.ProjectCode;
-
                     string IssCode = SqlUtils.GetValue($"SELECT U_ISS FROM OCNT WHERE IbgeCode = '{oNotaFiscalSaidaImposto.UserFields.Fields.Item("U_TX_OrigemIbge").Value}'");
 
                     if (!string.IsNullOrEmpty(IssCode))
@@ -362,24 +356,30 @@ namespace Zopone.AddOn.PO.View.Faturamento
                         if (!string.IsNullOrEmpty(oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode))
                             oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.Add();
 
-                        oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode = IssCode;                      
+                        oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode = IssCode;
+                        
+                        oNotaFiscalSaidaImposto.DiscountPercent = 0;
+
+                        if (oNotaFiscalSaidaImposto.Update() != 0)
+                            throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                     }
 
-                    oNotaFiscalSaidaImposto.DiscountPercent = 0;
 
-                    if (oNotaFiscalSaidaImposto.Update() != 0)
-                        throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    
 
-                    oNotaFiscalSaidaImposto.GetByKey(DocEntry);
-                    oNotaFiscalSaidaImposto.DiscountPercent = 0;
+                    //oNotaFiscalSaidaImposto.GetByKey(DocEntry);
+                    //oNotaFiscalSaidaImposto.DiscountPercent = 0;
 
-                    if (oNotaFiscalSaidaImposto.Update() != 0)
-                        throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    //if (oNotaFiscalSaidaImposto.Update() != 0)
+                        //throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
 
                     SqlUtils.DoNonQuery($"exec SP_ZPN_CriaObservacoesFaturamentoEsboco {DocEntry}");
 
 
                 }
+
+                UtilPCI.EnviarDadosNFDigitacaoPCIAsync(DocEntry);
+
             }
             catch (Exception Ex)
             {

@@ -520,6 +520,17 @@
     <EmbeddedResource Include="View\ParametrosPO\FrmParamPO.srf" />
     <EmbeddedResource Include="Model\SQL\Tables\ZPN_FATURADOCUMENTOPO.sql" />
     <EmbeddedResource Include="Model\SQL\Tables\ZPN_GERAROBRA.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_ATUALIZAPROJETONF.sql" />
+    <Content Include="Model\SQL\Procedures\SP_ZPN_CriaObservacoesFaturamento.sql" />
+    <Content Include="Model\SQL\Procedures\SP_ZPN_CriaObservacoesFaturamentoEsboco.sql" />
+    <Content Include="Model\SQL\Procedures\SP_ZPN_InsertFaturamentoDocumentoPO.sql" />
+    <Content Include="Model\SQL\Procedures\SP_ZPN_LISTAALOCACOESOBRA.sql" />
+    <Content Include="Model\SQL\Procedures\SP_ZPN_LISTAALOCACOESOBRAFAT.sql" />
+    <Content Include="Model\SQL\Procedures\SP_ZPN_VERIFICACADASTROPCI.sql" />
+    <Content Include="Model\SQL\Procedures\ZPN_SP_CriaNotaFsicalServicoPCI.sql" />
+    <Content Include="Model\SQL\Procedures\ZPN_SP_IMPFATURAMENTOHUAWEI.sql" />
+    <Content Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO.sql" />
+    <Content Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
