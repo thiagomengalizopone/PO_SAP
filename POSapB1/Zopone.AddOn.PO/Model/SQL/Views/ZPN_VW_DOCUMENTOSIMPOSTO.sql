@@ -1,41 +1,59 @@
 ﻿create VIEW ZPN_VW_DOCUMENTOSIMPOSTO AS
 
 SELECT 
-	'INV' as "TipoDocumento",
-	T99."AbsEntry",
-    ISNULL(SUM(CASE WHEN T97.WTType = 'COFINS' THEN T99.WTAmnt ELSE 0 END),0) AS COFINS,
-    ISNULL(SUM(CASE WHEN T97.WTType = 'CSLL' THEN T99.WTAmnt ELSE 0 END),0) AS CSLL,
-    ISNULL(SUM(CASE WHEN T97.WTType = 'IRRF' THEN T99.WTAmnt ELSE 0 END),0) AS IRRF,
-	ISNULL(SUM(CASE WHEN T97.WTType = 'PIS' THEN T99.WTAmnt ELSE 0 END),0) AS PIS,
-	ISNULL(SUM(CASE WHEN T97.WTType = 'INSS' THEN T99.WTAmnt ELSE 0 END),0) AS INSS,
-	ISNULL(SUM(CASE WHEN T97.WTType = 'ISS' THEN T99.WTAmnt ELSE 0 END),0) AS ISS
+    TipoDocumento,
+    AbsEntry,
+    isnull(MAX(CASE WHEN WTType = 'IRRF' THEN Rate ELSE NULL END),0) AS "IrrfRate",
+    isnull(MAX(CASE WHEN WTType = 'PIS' THEN Rate ELSE NULL END),0) AS "PisRate",
+    isnull(MAX(CASE WHEN WTType = 'CSLL' THEN Rate ELSE NULL END),0) AS "CSLLRate",
+    isnull(MAX(CASE WHEN WTType = 'COFINS' THEN Rate ELSE NULL END),0) AS "COFINSRate",
+	isnull(MAX(CASE WHEN WTType = 'ISSF' THEN Rate ELSE NULL END),0) AS "ISSRate",
+	isnull(MAX(CASE WHEN WTType = 'INSS' THEN Rate ELSE NULL END),0) AS "INSSRate",
+
+    isnull(SUM(CASE WHEN WTType = 'IRRF' THEN TaxbleAmnt ELSE 0 END),0) AS "IRRFTaxbleAmnt",
+    isnull(SUM(CASE WHEN WTType = 'PIS' THEN TaxbleAmnt ELSE 0 END),0) AS "PISTaxbleAmnt",
+    isnull(SUM(CASE WHEN WTType = 'CSLL' THEN TaxbleAmnt ELSE 0 END),0) AS "CSLLTaxbleAmnt",
+    isnull(SUM(CASE WHEN WTType = 'COFINS' THEN TaxbleAmnt ELSE 0 END),0) AS "COFINSTaxbleAmnt",
+	isnull(SUM(CASE WHEN WTType = 'ISSF' THEN TaxbleAmnt ELSE 0 END),0) AS "ISSTaxbleAmnt",
+	isnull(SUM(CASE WHEN WTType = 'INSS' THEN TaxbleAmnt ELSE 0 END),0) AS "INSSTaxbleAmnt",
+
+    isnull(SUM(CASE WHEN WTType = 'IRRF' THEN WTAmnt ELSE 0 END),0) AS "IRRFWTAmnt",
+    isnull(SUM(CASE WHEN WTType = 'PIS' THEN WTAmnt ELSE 0 END),0) AS "PISWTAmnt",
+    isnull(SUM(CASE WHEN WTType = 'CSLL' THEN WTAmnt ELSE 0 END),0) AS "CSLLWTAmnt",
+    isnull(SUM(CASE WHEN WTType = 'COFINS' THEN WTAmnt ELSE 0 END),0) AS "COFINSWTAmnt",
+	isnull(SUM(CASE WHEN WTType = 'ISSF' THEN WTAmnt ELSE 0 END),0) AS "ISSWTAmnt",
+	isnull(SUM(CASE WHEN WTType = 'INSS' THEN WTAmnt ELSE 0 END),0) AS "INSSWTAmnt"
+
 FROM 
-	INV5 T99
-	INNER JOIN OWHT T98 ON T99.WTCode = T98.WTCode
-	INNER JOIN OWTT T97 ON T98.WTTypeId = T97.WTTypeId
+
+    (SELECT 
+        'INV' AS TipoDocumento,
+        T99."AbsEntry",
+        T98.Rate,
+        T97.WTType,
+        T99.TaxbleAmnt,
+        T99.WTAmnt
+    FROM 
+        INV5 T99
+    INNER JOIN OWHT T98 ON T99.WTCode = T98.WTCode
+    INNER JOIN OWTT T97 ON T98.WTTypeId = T97.WTTypeId
+    
+
+    UNION ALL 
+
+    SELECT 
+        'DRF' AS TipoDocumento,
+        T99."AbsEntry",
+        T98.Rate,
+        T97.WTType,
+        T99.TaxbleAmnt,
+        T99.WTAmnt
+    FROM 
+        DRF5 T99
+    INNER JOIN OWHT T98 ON T99.WTCode = T98.WTCode
+    INNER JOIN OWTT T97 ON T98.WTTypeId = T97.WTTypeId
+	 ) AS Subquery
+
 GROUP BY 
-	T99."AbsEntry"
-	
-union all 
-
-SELECT 
-	'DRF' as "TipoDocumento",
-	T99."AbsEntry",
-    ISNULL(SUM(CASE WHEN T97.WTType = 'COFINS' THEN T99.WTAmnt ELSE 0 END),0) AS COFINS,
-    ISNULL(SUM(CASE WHEN T97.WTType = 'CSLL' THEN T99.WTAmnt ELSE 0 END),0) AS CSLL,
-    ISNULL(SUM(CASE WHEN T97.WTType = 'IRRF' THEN T99.WTAmnt ELSE 0 END),0) AS IRRF,
-	ISNULL(SUM(CASE WHEN T97.WTType = 'PIS' THEN T99.WTAmnt ELSE 0 END),0) AS PIS,
-	ISNULL(SUM(CASE WHEN T97.WTType = 'INSS' THEN T99.WTAmnt ELSE 0 END),0) AS INSS,
-	ISNULL(SUM(CASE WHEN T97.WTType = 'ISS' THEN T99.WTAmnt ELSE 0 END),0) AS ISS
-FROM 
-	DRF5 T99
-	INNER JOIN OWHT T98 ON T99.WTCode = T98.WTCode
-	INNER JOIN OWTT T97 ON T98.WTTypeId = T97.WTTypeId
-GROUP BY 
-	T99."AbsEntry";
-
-
-	;
-
-
-	
+    TipoDocumento,
+    aBSeNTRY;

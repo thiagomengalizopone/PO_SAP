@@ -1,4 +1,5 @@
-﻿ALTER procedure ZPN_SP_ListaPedidosGerarPreFaturamento
+﻿
+CREATE procedure [dbo].[ZPN_SP_ListaPedidosGerarPreFaturamento]
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,

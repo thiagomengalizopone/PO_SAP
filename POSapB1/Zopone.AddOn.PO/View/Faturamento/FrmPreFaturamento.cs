@@ -294,9 +294,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.Lines.Quantity = 1;
                             oNotaFiscalSaida.Lines.LineTotal += TotalLinha;
 
-                            string sqlFAturamento = $"SP_ZPN_InsertFaturamentoDocumentoPO '{dataFaturamentoPO}', {oPedidoVenda.DocEntry}, {oPedidoVenda.Lines.LineNum}, {TotalLinha.ToString("F4", CultureInfo.InvariantCulture)}";
-                            SqlUtils.ExecuteCommand(sqlFAturamento);
-
                             oNotaFiscalSaida.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                             oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(oPedidoVenda.Lines.Usage);
                             oNotaFiscalSaida.Lines.TaxCode = "1556-001"; // Temporário até definição do imposto
