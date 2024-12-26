@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE SP_ZPN_CriaObservacoesFaturamentoEsboco
+﻿CREATE PROCEDURE SP_ZPN_CriaObservacoesFaturamentoEsboco
 (
     @DocEntry INT
     -- Os parâmetros comentados não estão sendo utilizados, mas podem ser descomentados conforme necessário
@@ -64,12 +64,9 @@ BEGIN
                 CHAR(13) + CHAR(10) +
 
                 -- Chama a função FN_ZPN_RetornaImpostosClaro
-                dbo.FN_ZPN_RetornaImpostosClaroNokia(@DocEntry) +
+                DBO.FN_ZPN_RetornaImpostosClaro(@DocEntry) 
 
-                -- Detalhes do valor a ser recebido e vencimento
-                ' LIQUIDO A RECEBER: ' + FORMAT(ODRF.DocTotal, 'C', 'pt-BR') + CHAR(13) + CHAR(10) +
-                CHAR(13) + CHAR(10) +
-                ' VENCIMENTO: ' + FORMAT(ODRF.DocDueDate, 'dd/MM/yyyy') + CHAR(13) + CHAR(10)
+               
             FROM 
                 DRF1 
                 INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
@@ -80,7 +77,7 @@ BEGIN
         ELSE
         BEGIN
             -- Caso contrário, adiciona a parte de impostos à mensagem existente
-            SET @MENSAGEMIMPOSTO = dbo.FN_ZPN_RetornaImpostosClaroNokia(@DocEntry);
+            SET @MENSAGEMIMPOSTO = dbo.FN_ZPN_RetornaImpostosClaro(@DocEntry);
 
             -- Substitui a parte de impostos na mensagem
             SET @MENSAGEM = 
@@ -190,10 +187,9 @@ BEGIN
                 'SITE: ' + ISNULL(OBRA.U_IdSite, '') + ' ' + ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
                 CHAR(13) + CHAR(10) +              
                 -- Chama a função FN_ZPN_RetornaImpostosClaro
-                dbo.FN_ZPN_RetornaImpostosClaroNokia(@DocEntry) +
+                dbo.FN_ZPN_RetornaImpostosNokia(@DocEntry) 
 
-                CHAR(13) + CHAR(10) +
-                ' VENCIMENTO: ' + FORMAT(ODRF.DocDueDate, 'dd/MM/yyyy') + CHAR(13) + CHAR(10)
+
             FROM 
                 DRF1 
                 INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
