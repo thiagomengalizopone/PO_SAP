@@ -1,4 +1,4 @@
-﻿create FUNCTION FN_ZPN_RetornaImpostoHuawei (@DocEntry INT)
+﻿CREATE FUNCTION [dbo].[FN_ZPN_RetornaImpostoHuawei] (@DocEntry INT)
 RETURNS VARCHAR(MAX)
 AS
 BEGIN
@@ -36,3 +36,6 @@ BEGIN
 
     RETURN @Impostos;
 END;
+GO
+
+

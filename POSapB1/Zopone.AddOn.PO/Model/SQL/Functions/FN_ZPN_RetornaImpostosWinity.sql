@@ -1,4 +1,7 @@
-﻿CREATE FUNCTION FN_ZPN_RetornaImpostosWinity (@DocEntry INT)
+﻿
+
+
+CREATE FUNCTION [dbo].[FN_ZPN_RetornaImpostosWinity] (@DocEntry INT)
 RETURNS VARCHAR(MAX)
 AS
 BEGIN
@@ -32,3 +35,6 @@ BEGIN
 
     RETURN @Impostos;
 END;
+GO
+
+
