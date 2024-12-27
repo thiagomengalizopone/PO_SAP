@@ -80,8 +80,14 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                     else
                         DocEntry = Convert.ToInt32(SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM ODRF WHERE ObjType = '13' "));
 
-                    
-                    SqlUtils.DoNonQuery($"exec SP_ZPN_CriaObservacoesFaturamentoEsboco {DocEntry}");
+                    try
+                    {
+                        SqlUtils.DoNonQuery($"exec SP_ZPN_CriaObservacoesFaturamentoEsboco {DocEntry}");
+                    }
+                    catch (Exception Ex) 
+                    {
+                        Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar observações da NF (esboço): {Ex.Message}");
+                    }
 
                     UtilPCI.EnviarDadosNFDigitacaoPCIAsync(DocEntry);
                 }
@@ -92,7 +98,14 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                     else
                         DocEntry = Convert.ToInt32(SqlUtils.GetValue(@"SELECT MAX(""DocEntry"") FROM OINV WHERE ObjType = '13' "));
 
-                    SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 13");
+                    try
+                    {
+                        SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 13");
+                    }
+                    catch (Exception Ex)
+                    {
+                        Util.ExibeMensagensDialogoStatusBar($"Erro ao verificar dados de cadastro PCI (NF): {Ex.Message}");
+                    }
 
                     UtilPCI.EnviarDadosNFLiberadaPCIAsync(DocEntry);
 
