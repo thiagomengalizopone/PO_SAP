@@ -129,7 +129,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (isDraft)
                     oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
 
-                if (oPedidoVenda.GetByKey(Convert.ToInt16(txtCodigo.Text)))
+                if (oPedidoVenda.GetByKey(Convert.ToInt32(txtCodigo.Text)))
                 {
                     txtNroPedido.Text = oPedidoVenda.NumAtCard;
                     txtValorPO.Text = oPedidoVenda.DocTotal.ToString();
