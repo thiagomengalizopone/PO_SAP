@@ -537,6 +537,8 @@
     <EmbeddedResource Include="Model\SQL\Views\VW_ZPN_TOTALFATURADOPOTOPENG.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\sp_cloud_AlteraObraCandidato.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\sp_cloud_AlteraObra.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ATUALIZAOBRASAP.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ATUALIZAOBRACANDIDATOSAP.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
