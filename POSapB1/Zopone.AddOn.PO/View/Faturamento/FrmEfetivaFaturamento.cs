@@ -305,6 +305,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
                     {
                         CancelarDocumentoPreFaturamento(iRow);
+
+                        //voltaraqui
+
                     }
                 }
             }
@@ -398,9 +401,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             return $"Erro ao Fechar Esboço pré faturamento: {oEsbocoNotaFiscalSaida.DocEntry} Linha {iRow + 1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
                     }
                 }
-
-
-
 
                 Util.ExibirMensagemStatusBar($"PO faturada com sucesso - {oEsbocoNotaFiscalSaida.NumAtCard}!");
             }

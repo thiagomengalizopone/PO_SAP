@@ -32,7 +32,7 @@ BEGIN
 		(@AbsId = -1 OR OOAT.AbsId = @AbsId) and
 		OOAT.AbsId not in (SELECT "Code" FROM "@ZPN_ALOCON" WHERE "Code" = OOAT.AbsId );
 
-
+/*
 	INSERT INTO "@ZPN_ALOCONI"
         SELECT 
             OOAT.AbsID,
@@ -64,7 +64,7 @@ BEGIN
                 WHERE ALCI.Code = OOAT.AbsID 
                   AND ALCI.U_CodAloc = "@ZPN_ALOCA"."Code"
             );
-
+            */
 
 END;
 
