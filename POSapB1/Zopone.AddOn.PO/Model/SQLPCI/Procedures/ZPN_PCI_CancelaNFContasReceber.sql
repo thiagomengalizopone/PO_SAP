@@ -1,4 +1,4 @@
-﻿create PROCEDURE [dbo].ZPN_PCI_CancelaNFContasReceber
+﻿create PROCEDURE ZPN_PCI_CancelaNFContasReceber
 (
     @nfeservicoid varchar(250),
     @contareceberid varchar(250),

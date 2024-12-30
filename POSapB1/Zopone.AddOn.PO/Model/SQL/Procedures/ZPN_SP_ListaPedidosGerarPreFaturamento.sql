@@ -1,5 +1,5 @@
 ﻿
-CREATE procedure [dbo].[ZPN_SP_ListaPedidosGerarPreFaturamento]
+CREATE procedure [ZPN_SP_ListaPedidosGerarPreFaturamento]
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -65,6 +65,7 @@ FROM
 	LEFT JOIN "@ZPN_ALOCA" ALOCAFAT				ON ALOCAFAT."Code" = ALOCA.U_EtapaFat
 	LEFT JOIN OCNT								ON OCNT.State	   = OBRA.U_Estado AND OCNT.Name = OBRA.U_Cidade
 WHERE 
+	ORDR.Canceled <> 'Y' AND 
 	ISNULL(RDR1.U_Bloqueado,'N') <> 'Y'  
 	AND ISNULL(ORDR.NumAtCard,'') <> ''  
 	AND isnull(FAT."SaldoFaturado",0) < RDR1."LineTotal" 

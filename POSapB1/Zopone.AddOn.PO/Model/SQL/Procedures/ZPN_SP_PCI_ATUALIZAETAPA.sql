@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ZPN_SP_PCI_ATUALIZAETAPA
+﻿CREATE PROCEDURE [ZPN_SP_PCI_ATUALIZAETAPA]
 (
 	@CodeEtapa varchar(30)
 )
@@ -12,7 +12,7 @@ BEGIN
 		FROM
 			"@ZPN_ALOCA" ALOCA
 			INNER JOIN OBPL ON OBPL.BPLId = ALOCA.U_BplId
-			INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETAPA ON 
+			INNER JOIN [LINKZCLOUD].[zsistema_producao].[dbo].[etapa] ETAPA ON 
 				ETAPA.nome collate SQL_Latin1_General_CP1_CI_AS = ALOCA.U_Desc and 
 				cast(etapa.empresaid  as varchar(50)) = OBPL.U_IdPCI
 		WHERE 
@@ -22,7 +22,7 @@ BEGIN
 				SELECT 
 					[nome] COLLATE SQL_Latin1_General_CP1_CI_AS
 				FROM 
-					[LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETP 
+					[LINKZCLOUD].[zsistema_producao].[dbo].[etapa] ETP 
 				WHERE 
 					ETP.Nome COLLATE SQL_Latin1_General_CP1_CI_AS = ALOCA.U_Desc COLLATE SQL_Latin1_General_CP1_CI_AS
 					AND CAST(ETP.[empresaid] AS VARCHAR(50)) COLLATE SQL_Latin1_General_CP1_CI_AS = OBPL.U_IdPci COLLATE SQL_Latin1_General_CP1_CI_AS
@@ -30,7 +30,7 @@ BEGIN
 
 
 
-	INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa]
+	INSERT INTO [LINKZCLOUD].[zsistema_producao].[dbo].[etapa]
 			   ([etapaid]
 			   ,[gestatus]
 			   ,[gedataacao]
@@ -65,7 +65,7 @@ BEGIN
 				SELECT 
 					[nome] COLLATE SQL_Latin1_General_CP1_CI_AS
 				FROM 
-					[LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETP 
+					[LINKZCLOUD].[zsistema_producao].[dbo].[etapa] ETP 
 				WHERE 
 					ETP.Nome COLLATE SQL_Latin1_General_CP1_CI_AS = ALOCA.U_Desc COLLATE SQL_Latin1_General_CP1_CI_AS
 					AND CAST(ETP.[empresaid] AS VARCHAR(50)) COLLATE SQL_Latin1_General_CP1_CI_AS = OBPL.U_IdPci COLLATE SQL_Latin1_General_CP1_CI_AS
@@ -80,7 +80,7 @@ BEGIN
 		
 
 
-	UPDATE [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa]
+	UPDATE [LINKZCLOUD].[zsistema_producao].[dbo].[etapa]
 	SET
 		ETP.gestatus = 1,
 		ETP.gedataacao = GETDATE(),
@@ -92,7 +92,7 @@ BEGIN
 		ETP.itempedido = CASE WHEN ISNULL(ALOCA.U_ItensPed, '') = 'Y' THEN 1 ELSE 0 END,
 		ETP.itemrecebimento = CASE WHEN ISNULL(ALOCA.U_ItensRec, '') = 'Y' THEN 1 ELSE 0 END
 	FROM
-		[LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETP
+		[LINKZCLOUD].[zsistema_producao].[dbo].[etapa] ETP
 		INNER JOIN "@ZPN_ALOCA" ALOCA ON cast(ETP.[etapaid] as varchar(50)) COLLATE SQL_Latin1_General_CP1_CI_AS = ALOCA.U_IdPCI
 		INNER JOIN OBPL ON OBPL.BPLId = ALOCA.U_BplId
 	WHERE
@@ -103,5 +103,4 @@ BEGIN
 
 
 
-END;			
-			
+END;

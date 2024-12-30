@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_PCI_ATUALIZACONTRATO
+﻿CREATE PROCEDURE [ZPN_SP_PCI_ATUALIZACONTRATO]
 (
 	@AbsIDParam INT
 )
@@ -142,7 +142,7 @@ declare 	 @contratoid varchar(200),
 			
 			if (@contratoid = '')
 			begin 
-				select @contratoid = isnull(max(cast(contratoid as varchar(250))),'') from [LINKZCLOUD].[zsistema_aceite].[dbo].contrato where [referencia] = @referencia;
+				select @contratoid = isnull(max(cast(contratoid as varchar(250))),'') from [LINKZCLOUD].[zsistema_producao].[dbo].contrato where [referencia] = @referencia;
 
 				if (@contratoid = '') begin
 					set @contratoid = newid();
@@ -150,7 +150,7 @@ declare 	 @contratoid varchar(200),
 			end;
 
 	
-		   exec [LINKZCLOUD].[zsistema_aceite].[dbo].[ZPN_PCI_InsereAtualizaContrato]
+		   exec [LINKZCLOUD].[zsistema_producao].[dbo].[ZPN_PCI_InsereAtualizaContrato]
 				@contratoid,
 				@gestatus,
 				@gedataacao,
@@ -207,3 +207,4 @@ BEGIN CATCH
 END CATCH;
 
 END;
+

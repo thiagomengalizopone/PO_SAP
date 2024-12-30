@@ -12,7 +12,7 @@ as
       CRD8.CardCode
 
   FROM
-      [LINKZCLOUD].[zsistema_aceite].[dbo].CONTRATO CONT
+      [LINKZCLOUD].[zsistema_producao].[dbo].CONTRATO CONT
       INNER JOIN OPRC ON OPRC.U_IdPCI = CONT.FILIALID
       INNER JOIN CRD8 ON CRD8.U_IdPCI  = CONT.CLIENTEID
   where

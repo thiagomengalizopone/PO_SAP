@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE ZPN_PCI_InsereAtualizaNfeservicoParcela
+﻿CREATE PROCEDURE [dbo].[ZPN_PCI_InsereAtualizaNfeservicoParcela]
     @nfeservicopardelaid varchar(250),
     @gestatus INT,
     @gedataacao DATETIME,
@@ -40,3 +39,5 @@ BEGIN
            ,@etapaid);
 END
 GO
+
+

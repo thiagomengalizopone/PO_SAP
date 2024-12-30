@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ATUALIZAOBRAPCG]
+﻿CREATE PROCEDURE [ZPN_SP_PCI_ATUALIZAOBRAPCG]
 (
     @CodeObra VARCHAR(30),
 	@CreateDate date
@@ -19,5 +19,3 @@ BEGIN
 			OBRA.CreateDate = @CreateDate
 		));
 END;
-
-

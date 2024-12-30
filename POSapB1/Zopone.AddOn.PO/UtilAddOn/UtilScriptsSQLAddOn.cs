@@ -18,17 +18,16 @@ namespace Zopone.AddOn.PO.UtilAddOn
 					FROM
 						OLCT
 					WHERE
-						('{CodeLocalizacao}' = '' or Code = '{CodeLocalizacao}') 
-						AND
-							OLCT.Code NOT IN 
-							(
-								SELECT 
-									OPRC.U_Localiz
-								FROM
-									OPRC
-								WHERE 
-									OPRC.U_Localiz = OLCT.Code
-							)
+						('{CodeLocalizacao}' = '' or Code = '{CodeLocalizacao}')  AND
+					OLCT.Code NOT IN 
+					(
+						SELECT 
+							OPRC.U_Regional
+						FROM
+							OPRC
+						WHERE 
+							OPRC.U_Regional = OLCT.Code
+					)
 					ORDER BY
 						OLCT.Code ;
 					";

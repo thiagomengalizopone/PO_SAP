@@ -24,7 +24,7 @@ SET @COUNT = (SELECT COUNT(1) FROM [contrato] WHERE contratoid = @contratoid);
 IF (@COUNT = 0) 
 BEGIN
 
-	INSERT INTO [dbo].[contrato]
+	INSERT INTO [contrato]
 			   ([contratoid]
 			   ,[gestatus]
 			   ,[gedataacao]
@@ -55,7 +55,7 @@ BEGIN
 END;
 ELSE
 BEGIN
-	UPDATE [dbo].[contrato]
+	UPDATE [contrato]
 		SET 
 		 [gestatus] = @gestatus
 		,[gedataacao] = @gedataacao

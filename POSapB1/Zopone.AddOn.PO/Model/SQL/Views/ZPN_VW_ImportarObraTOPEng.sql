@@ -1,4 +1,4 @@
-﻿CREATE VIEW [dbo].[ZPN_VW_ImportarObraTOPEng]
+﻿CREATE VIEW [ZPN_VW_ImportarObraTOPEng]
 as
 
 

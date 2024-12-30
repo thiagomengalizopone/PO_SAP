@@ -1,4 +1,4 @@
-﻿create VIEW [dbo].[ZPN_VW_RET_OBRA_SAP]
+﻿create VIEW [ZPN_VW_RET_OBRA_SAP]
 AS
 SELECT 
 T2.U_IdSenior AS numEmp, 

@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[ZPN_PCI_InsereAtualizaObra]
+﻿CREATE PROCEDURE [dbo].[ZPN_PCI_InsereAtualizaObra]
     @obraid VARCHAR(255),
     @gestatus INT,
     @gedataacao DATETIME,
@@ -13,10 +12,10 @@ CREATE PROCEDURE [dbo].[ZPN_PCI_InsereAtualizaObra]
     @altitude VARCHAR(255),
     @cep VARCHAR(10),
     @complemento VARCHAR(255),
-    @contratoid varchar(250),
+    @contratoid UNIQUEIDENTIFIER,
     @datacadastro DATETIME,
     @endereco VARCHAR(255),
-    @filialid varchar(250),
+    @filialid UNIQUEIDENTIFIER,
     @latitude VARCHAR(255),
     @localizacao VARCHAR(255),
     @numero VARCHAR(50),
@@ -132,7 +131,6 @@ BEGIN
         SET
             [gedataacao] = GETDATE(),
             [gecontaidacao] = NULL,
-            [obraclassificacaoid] = @obraclassificacaoid,
             [referencia] = @referencia,
             [longitude] = @longitude,
             [bairro] = @bairro,  -- Corrigido para usar @bairro

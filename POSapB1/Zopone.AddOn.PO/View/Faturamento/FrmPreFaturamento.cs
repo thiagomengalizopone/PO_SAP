@@ -17,6 +17,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
     {
         EditText EdDataI { get; set; }
         EditText EdDataF { get; set; }
+        EditText EdDataIVencimento { get; set; }
+        EditText EdDataFVencimento { get; set; }
         EditText EdPO { get; set; }
         EditText EdCliente { get; set; }
         DataTable DtPesquisa { get; set; }
@@ -33,6 +35,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdDataI = (EditText)oForm.Items.Item("EdDataI").Specific;
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
+
+            EdDataIVencimento = (EditText)oForm.Items.Item("EdDataIV").Specific;
+            EdDataFVencimento = (EditText)oForm.Items.Item("EdDataFV").Specific;
 
             EdCliente = (EditText)oForm.Items.Item("EdCliente").Specific;
 
@@ -410,7 +415,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                     string SQL_PESQUISA = string.Empty;
 
-                    SQL_PESQUISA = $"SELECT isnull(max(T0.[U_Perc]),0) FROM [dbo].[@ZPN_ALOCA]  T0 WHERE T0.[Code] = '{Code}'";
+                    SQL_PESQUISA = $"SELECT isnull(max(T0.[U_Perc]),0) FROM [@ZPN_ALOCA]  T0 WHERE T0.[Code] = '{Code}'";
 
                     double dblPercentualFaturamento = Convert.ToDouble(SqlUtils.GetValue(SQL_PESQUISA));
 
@@ -534,7 +539,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_ListaPedidosGerarPreFaturamento '{dataInicial}', '{dataFinal}', '{EdPO.Value}', '{EdCliente.Value}'";
+                string dataInicialVencimento = !string.IsNullOrEmpty(EdDataIVencimento.Value) ? EdDataIVencimento.Value : "20200101";
+                string dataFinalVencimento = !string.IsNullOrEmpty(EdDataFVencimento.Value) ? EdDataFVencimento.Value : "20500101";
+
+                string SQL_Query = $@"ZPN_SP_ListaPedidosGerarPreFaturamento '{dataInicial}', '{dataFinal}', '{dataInicialVencimento}', '{dataFinalVencimento}', '{EdPO.Value}', '{EdCliente.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 

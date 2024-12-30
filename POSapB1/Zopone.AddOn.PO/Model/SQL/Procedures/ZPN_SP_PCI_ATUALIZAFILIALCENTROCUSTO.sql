@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_PCI_ATUALIZAFILIALCENTROCUSTO
+﻿create PROCEDURE [ZPN_SP_PCI_ATUALIZAFILIALCENTROCUSTO]
 (
 	@PrcCode varchar(50)
 )
@@ -22,7 +22,7 @@ BEGIN
 
 	
 	INSERT INTO 
-		[LINKZCLOUD].[zsistema_aceite].[dbo].[filial] 
+		[LINKZCLOUD].[zsistema_producao].[dbo].[filial] 
 		(
 			T0.[filialid]
 			,[gestatus]
@@ -53,7 +53,7 @@ BEGIN
 					select 
 						filial.[nome] collate SQL_Latin1_General_CP1_CI_AS
 					from 
-						[LINKZCLOUD].[zsistema_aceite].[dbo].[filial] filial 
+						[LINKZCLOUD].[zsistema_producao].[dbo].[filial] filial 
 					where 
 						filial.nome collate SQL_Latin1_General_CP1_CI_AS = T0.PrcName and 
 						cast(filial.empresaid as varchar(50)) collate SQL_Latin1_General_CP1_CI_AS = t2.U_IdPCI
@@ -65,6 +65,4 @@ BEGIN
 
 
 END;
-
-
 

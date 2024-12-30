@@ -1,6 +1,6 @@
 ﻿
 
-CREATE PROCEDURE [dbo].ZPN_PCI_InsereAtualizaCliente
+CREATE PROCEDURE ZPN_PCI_InsereAtualizaCliente
     @clienteid varchar(250),      
     @gestatus INT,                    
     @gedataacao DATETIME,             

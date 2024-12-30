@@ -690,12 +690,12 @@ namespace Zopone.AddOn.PO.View.Contrato
 
                 string valorMontante = Util.MatrixGetValue(oMtValores, 1, "1320000039");
 
-                if (string.IsNullOrEmpty(valorMontante) || Convert.ToDouble(valorMontante.Replace(".", "").Replace(",", ".").Replace("R$ ", "").Trim()) < 999999999999)
+                if (string.IsNullOrEmpty(valorMontante) || Convert.ToDouble(valorMontante.Replace(".", "").Replace(",", ".").Replace("R$ ", "").Trim()) < 9999999998.00)
                     bMontante = false;
 
                 if (!bMontante)
                 {
-                    Util.ExibeMensagensDialogoStatusBar("Necessário adicionar no montante de valores um valor superior a R$ 999.999.999.999,99!", BoMessageTime.bmt_Medium, true);
+                    Util.ExibeMensagensDialogoStatusBar("Necessário adicionar no montante de valores um valor superior a R$ 9.999.999.999.99!", BoMessageTime.bmt_Medium, true);
                     return false;
                 }
 

@@ -1,5 +1,5 @@
 ﻿
-INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[obracandidato]
+INSERT INTO [LINKZCLOUD].[zsistema_producao].[dbo].[obracandidato]
 	(
 		[obracandidatoid]
         ,[gestatus]
@@ -59,13 +59,13 @@ INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[obracandidato]
 			SELECT 
 				OC.CODIGO 
 			FROM 
-				[LINKZCLOUD].[zsistema_aceite].[dbo].[obracandidato] OC
+				[LINKZCLOUD].[zsistema_producao].[dbo].[obracandidato] OC
 			WHERE
 				OC.Codigo = CAND.U_Codigo and 
 				CAST(OC.[obraid] AS VARCHAR(50)) = OBRA.U_IdPCI
 		)
 
-		SELECT TOP 100 * FROM [LINKZCLOUD].[zsistema_aceite].[dbo].[obracandidato]
+		SELECT TOP 100 * FROM [LINKZCLOUD].[zsistema_producao].[dbo].[obracandidato]
 		
 		
 		

@@ -1,11 +1,11 @@
 ﻿
-CREATE view [dbo].[vw_tmp_obrasimportar] as 
+CREATE view [vw_tmp_obrasimportar] as 
 select	distinct 
 	obra.referencia,
 	ooat.AbsID,
 	ooat.Descript
 from 
-	[LINKZCLOUD].[zsistema_producao].[dbo].contrato 
+	[LINKZCLOUD].[zsistema_producao].contrato 
 	inner join [LINKZCLOUD].[zsistema_producao].dbo.obra on obra.contratoid = contrato.contratoid 
 	inner join [LINKZCLOUD].[zsistema_producao].dbo.poitem on poitem.obraid = obra.obraid
 	inner join [LINKZCLOUD].[zsistema_producao].dbo.cliente on cliente.clienteid = contrato.clienteid

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[SP_ZPN_IMPORTARPOHuawei]
+﻿CREATE PROCEDURE [SP_ZPN_IMPORTARPOHuawei]
 (
 	@DataInicial datetime,
 	@DataFinal datetime,

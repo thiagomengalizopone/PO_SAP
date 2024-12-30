@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿create PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -58,8 +58,8 @@ SELECT
 	isnull(IMP.PisWTAmnt,0) PIS,
 	isnull(IMP.InssWTAmnt,0) INSS,
 	isnull(IMP.ISSWTAmnt,0) ISS,
-	isnull(OBRA.U_Estado,'') + ' - ' + isnull(OBRA.U_CidadeDesc,'') "CidadeObra"
-	
+	isnull(OBRA.U_Estado,'') + ' - ' + isnull(OBRA.U_CidadeDesc,'') "CidadeObra",
+	OUSR.USER_CODE
 FROM
 	ODRF 
 	INNER JOIN DRF1 ON ODRF."DocEntry" = DRF1."DocEntry"
@@ -68,7 +68,7 @@ FROM
 	LEFT JOIN ZPN_VW_DOCUMENTOSIMPOSTO IMP ON IMP.AbsEntry = ODRF.DocEntry AND IMP."TipoDocumento" = 'DRF'
 	LEFT JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = DRF1.Project
 	LEFT JOIN OOAT ON OOAT.AbsID = OBRA.U_CodContrato
-	 
+	INNER JOIN OUSR ON ODRF.[UserSign] = OUSR.[USERID] 
 WHERE
 	ODRF."DocStatus" = 'O' AND 
 	(

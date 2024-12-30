@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA]
+﻿CREATE PROCEDURE [ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA]
 (
     @DocEntry INT
 )
@@ -169,7 +169,7 @@ BEGIN
 				OINV.DocEntry = @nfeservicoid
 			ORDER BY OINV.DocEntry, INV6.DueDate;  
 
-			EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaNfeservico 
+			EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaNfeservico 
 				@IdPCI ,
 				@sequencia,
 				@obraid,
@@ -209,7 +209,7 @@ BEGIN
 					SET @nfeservicopardelaid = NEWID();
 				END;
 				
-				EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaNfeservicoParcela 
+				EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaNfeservicoParcela 
 															 @nfeservicopardelaid,
 															@gestatus,
 															@gedataacao,
@@ -259,3 +259,6 @@ BEGIN
         THROW;
     END CATCH
 END
+
+
+

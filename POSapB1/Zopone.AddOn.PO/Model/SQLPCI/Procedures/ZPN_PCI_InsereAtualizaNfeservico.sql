@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].ZPN_PCI_InsereAtualizaNfeservico
+﻿
+CREATE PROCEDURE [dbo].[ZPN_PCI_InsereAtualizaNfeservico]
 (
     @nfeservicoid varchar(250),
     @sequencia INT,
@@ -40,11 +41,11 @@ BEGIN
                 ,[situacao]
                 ,[obracandidatoid])
             VALUES
-                (cast(@nfeservicoid as uniqueid)
+                (cast(@nfeservicoid as uniqueidentifier)
                 ,1
                 ,GETDATE()
                 ,@sequencia
-                ,@obraid
+                ,cast(@obraid as  uniqueidentifier)
                 ,@emissao
                 ,@valor
                 ,@situacao
@@ -54,3 +55,6 @@ BEGIN
 
         delete from [nfeservicoparcela] where [nfeservicoid] = @nfeservicoid;
 END;
+GO
+
+

@@ -6,7 +6,7 @@ FROM
     INNER JOIN OCRD ON OCRD."CardCode" = CRD8."CardCode" AND OCRD."CardType" = 'C'
     INNER JOIN CRD7 ON CRD7.CardCode = OCRD.CardCode AND ISNULL(CRD8.DisabledBP,'') <> 'Y' 
     INNER JOIN OBPL ON OBPL.BPLId = CRD8.BPLId AND OBPL."U_EnviaPCI" = 'Y'
-    INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[cliente] CLI
+    INNER JOIN [LINKZCLOUD].[zsistema_producao].[dbo].[cliente] CLI
         ON 
 			CLI.[empresaid] = OBPL.U_IdPCI AND 
 			CASE 

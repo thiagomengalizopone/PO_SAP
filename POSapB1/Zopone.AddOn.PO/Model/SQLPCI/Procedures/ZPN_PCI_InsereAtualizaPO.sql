@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].ZPN_PCI_InsereAtualizaPO
+﻿create PROCEDURE ZPN_PCI_InsereAtualizaPO
     @poid VARCHAR(100),
     @gestatus INT,
     @gedataacao DATETIME,
@@ -63,4 +63,6 @@ BEGIN
             [poid] = @poid;
 
 	END
+
+	delete from poitem where poid = @poid;
 END

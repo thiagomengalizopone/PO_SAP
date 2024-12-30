@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].ZPN_PCI_InsereAtualizaNfeservico
+﻿CREATE PROCEDURE ZPN_PCI_InsereAtualizaNfeservico
 (
     @nfeservicoid varchar(250),
     @sequencia INT,
@@ -15,7 +15,7 @@ BEGIN
 		set @count = (select count(1) from [nfeservico] where nfeservicoid = @nfeservicoid);
 
         if (@count > 0) begin 
-			UPDATE [dbo].[nfeservico]
+			UPDATE [nfeservico]
 			SET
 				gestatus = 1,
 				gedataacao = GETDATE(),
@@ -29,7 +29,7 @@ BEGIN
 		end;
 		else
 		begin
-            INSERT INTO [dbo].[nfeservico]
+            INSERT INTO [nfeservico]
                 ([nfeservicoid]
                 ,[gestatus]
                 ,[gedataacao]

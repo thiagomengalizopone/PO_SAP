@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_PCI_ENVIACONTASRECEBERPAGAMENTO
+﻿create PROCEDURE [ZPN_SP_PCI_ENVIACONTASRECEBERPAGAMENTO]
 (
 	@DocEntryNF INT,
 	@DocentryPagto INT
@@ -87,7 +87,7 @@ BEGIN TRY
 
     
 		UPDATE 
-			[LINKZCLOUD].[zsistema_aceite].[dbo].[contareceber]
+			[LINKZCLOUD].[zsistema_producao].[dbo].[contareceber]
 		SET 
 			recebimento = @DocDate
 		WHERE 

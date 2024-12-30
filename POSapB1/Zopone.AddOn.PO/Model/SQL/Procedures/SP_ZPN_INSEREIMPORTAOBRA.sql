@@ -85,7 +85,7 @@ AS
 		OCNT.Code,
 		OCNT.State
 	FROM 
-		[LINKZCLOUD].[zsistema_aceite].[dbo].[obra] OBRAPCI
+		[LINKZCLOUD].[zsistema_producao].[dbo].[obra] OBRAPCI
 		INNER JOIN OPRJ ON OPRJ.PrjCode = OBRAPCI.referencia COLLATE SQL_Latin1_General_CP1_CI_AS
 		INNER JOIN "@ZPN_CLASSOBF" CLASS ON OBRAPCI.obraclassificacaoid = CLASS.U_IdPCI
 		inner join vw_tmp_obrasimportar obraimp on obraimp.referencia =  OBRAPCI.referencia

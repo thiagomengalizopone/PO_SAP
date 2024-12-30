@@ -1,6 +1,6 @@
 ﻿
 
-create PROCEDURE [dbo].[sp_cloud_AlteraObraCandidato] (
+create PROCEDURE [sp_cloud_AlteraObraCandidato] (
 	@emp_id int,
     @referencia varchar(20),
     @codigo int,

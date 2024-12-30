@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ENVIACONTASRECEBER]
+﻿CREATE PROCEDURE [ZPN_SP_PCI_ENVIACONTASRECEBER]
 (
 	@DocEntry INT
 )
@@ -173,7 +173,7 @@ BEGIN
 
 
 			-- Chama a procedure para inserir ou atualizar
-			EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaContasReceber 
+			EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaContasReceber 
 				@contareceberid,
 				@gestatus,
 				@gecontaidacao,
@@ -227,3 +227,6 @@ BEGIN
 		THROW;
 	END CATCH
 END
+
+
+

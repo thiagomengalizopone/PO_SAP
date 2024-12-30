@@ -49,7 +49,7 @@ SELECT
     OBPL.BPLId AS U_BplId,
 	etp.etapaid
 FROM 
-    [LINKZCLOUD].[zsistema_aceite].[dbo].[etapa] ETP
+    [LINKZCLOUD].[zsistema_producao].[dbo].[etapa] ETP
 	INNER JOIN OBPL ON OBPL.U_IdPci = CAST(ETP.[empresaid] AS VARCHAR(100)) COLLATE SQL_Latin1_General_CP1_CI_AS
 WHERE 
     (ETP.[nome] COLLATE SQL_Latin1_General_CP1_CI_AS NOT IN

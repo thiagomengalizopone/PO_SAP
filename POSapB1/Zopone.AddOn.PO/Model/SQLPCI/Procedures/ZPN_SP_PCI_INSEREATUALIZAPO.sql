@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_PCI_INSEREATUALIZAPO (@DocEntry int)
+﻿create PROCEDURE [ZPN_SP_PCI_INSEREATUALIZAPO] (@DocEntry int)
 AS
 BEGIN
 
@@ -215,7 +215,7 @@ BEGIN
 				set @poid = newid();
 			end;
 
-            exec [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaPO @poid,
+            exec [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaPO @poid,
                                                                                @gestatus,
                                                                                @gedataacao,
                                                                                @empresaid,
@@ -367,7 +367,7 @@ BEGIN
 			   
 
                 -- Inserir os dados na tabela final
-                exec [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaPOItem @poitemid,
+                exec [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaPOItem @poitemid,
                                                                                        @gestatus,
                                                                                        @gedataacao,
                                                                                        @item,
@@ -470,6 +470,4 @@ BEGIN
 
 
 end;
-
-
 

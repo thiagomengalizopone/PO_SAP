@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ZPN_SP_PCI_ATUALIZAOBRACLASSIFICACAO
+﻿CREATE PROCEDURE [ZPN_SP_PCI_ATUALIZAOBRACLASSIFICACAO]
 (
 	@CodeClassificacao varchar(30)
 )
@@ -8,7 +8,7 @@ BEGIN
 
 
 
-INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[obraclassificacao]
+INSERT INTO [LINKZCLOUD].[zsistema_producao].[dbo].[obraclassificacao]
 	(
 		    [obraclassificacaoid]
            ,[gestatus]
@@ -38,7 +38,7 @@ INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[obraclassificacao]
 								SELECT 
 									OC.[codigo] collate SQL_Latin1_General_CP1_CI_AS
 								FROM
-									[LINKZCLOUD].[zsistema_aceite].[dbo].[obraclassificacao] OC
+									[LINKZCLOUD].[zsistema_producao].[dbo].[obraclassificacao] OC
 								where 
 									OC.[codigo]	collate SQL_Latin1_General_CP1_CI_AS	= CLASSOB.Code and
 									cast(oc.[empresaid] as varchar(50)) collate SQL_Latin1_General_CP1_CI_AS 	= obpl.U_IdPCI
@@ -51,7 +51,7 @@ INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[obraclassificacao]
 	FROM 
 		"@ZPN_CLASSOB" CLASSOB
 		CROSS JOIN OBPL 
-		INNER JOIN [LINKZCLOUD].[zsistema_aceite].[dbo].[obraclassificacao] OC ON 
+		INNER JOIN [LINKZCLOUD].[zsistema_producao].[dbo].[obraclassificacao] OC ON 
 								OC.[codigo]	collate SQL_Latin1_General_CP1_CI_AS	= CLASSOB.Code and
 									cast(oc.[empresaid] as varchar(50)) collate SQL_Latin1_General_CP1_CI_AS 	= obpl.U_IdPCI
 	WHERE 
@@ -60,3 +60,6 @@ INSERT INTO [LINKZCLOUD].[zsistema_aceite].[dbo].[obraclassificacao]
 
 
 END;
+
+
+

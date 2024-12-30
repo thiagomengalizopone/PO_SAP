@@ -1,5 +1,5 @@
 ﻿
-Create PROCEDURE [dbo].[sp_cloud_AlteraObra] (
+Create PROCEDURE [sp_cloud_AlteraObra] (
 	@emp_id int,
     @referencia varchar(20),
     @endereco varchar(200),

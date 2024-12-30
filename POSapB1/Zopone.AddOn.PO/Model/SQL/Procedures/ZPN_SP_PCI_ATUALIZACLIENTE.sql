@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_PCI_ATUALIZACLIENTE
+﻿CREATE PROCEDURE [ZPN_SP_PCI_ATUALIZACLIENTE]
 (
 	@CardCode varchar(50)
 )
@@ -130,12 +130,17 @@ begin
 	WHERE RowNumber =@RowNumber;
 
 	if (isnull(@clienteid,'') = '') begin
-		SELECT @clienteid = isnull(max((cast(clienteid as varchar(250)))),'') from [LINKZCLOUD].[zsistema_aceite].cliente where documentoprincipal = @documentoprincipal and @razaosocial = @razaosocial; 
-		set @clienteid = newid();
+
+		SELECT @clienteid = isnull(max((cast(clienteid as varchar(250)))),'') from [LINKZCLOUD].[zsistema_producao].[dbo].cliente where documentoprincipal = @documentoprincipal and @razaosocial = @razaosocial; 
+
+		if (@clienteid = '') 
+		begin
+			set @clienteid = newid();
+		end;
 	end;
 
 
-	exec [LINKZCLOUD].[zsistema_aceite].[dbo].ZPN_PCI_InsereAtualizaCliente
+	exec [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaCliente
 													@clienteid,      
 													@gestatus, 
 													@gedataacao,
@@ -149,6 +154,8 @@ begin
 
 
     update ocrd set U_IdPCI =@clienteid where CardCode = @CardCodePCI and ISNULL(U_IdPCI,'') = '';
+	update CRD8 set U_IdPCI =@clienteid where BPLId = @BPLId AND CardCode = @CardCodePCI and ISNULL(U_IdPCI,'') = '';
+
 
 	set @RowNumber= @RowNumber+1;
 end;
@@ -183,4 +190,7 @@ BEGIN CATCH
 END CATCH;
 	
 end ;
+
+
+
 

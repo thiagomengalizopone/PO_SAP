@@ -35,6 +35,6 @@ BEGIN
 
     RETURN @Impostos;
 END;
-GO
+
 
 

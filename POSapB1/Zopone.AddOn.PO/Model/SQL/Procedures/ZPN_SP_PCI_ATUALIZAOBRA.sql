@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ATUALIZAOBRA]
+﻿CREATE PROCEDURE [ZPN_SP_PCI_ATUALIZAOBRA]
 (
     @CodeObra VARCHAR(30),
 	@CreateDate date
@@ -207,7 +207,7 @@ BEGIN TRY
 
 		if (isnull(@obraid,'') = '') begin
 
-       		select @obraid = isnull(max(cast(obraid as varchar(250))),'') from [LINKZCLOUD].[zsistema_aceite].[dbo].obra where [referencia] = @referencia;
+       		select @obraid = isnull(max(cast(obraid as varchar(250))),'') from [LINKZCLOUD].[zsistema_producao].[dbo].obra where [referencia] = @referencia;
 
             if (@obraid = '') begin
 			    set @obraid = newid();
@@ -216,7 +216,7 @@ BEGIN TRY
 
 
 			-- Chama a procedure para inserir/atualizar a obra
-			EXEC [LINKZCLOUD].[zsistema_aceite].[dbo].[ZPN_PCI_InsereAtualizaObra]
+			EXEC [LINKZCLOUD].[zsistema_producao].[dbo].[ZPN_PCI_InsereAtualizaObra]
 				@obraid,
 				@gestatus,
 				@gedataacao,

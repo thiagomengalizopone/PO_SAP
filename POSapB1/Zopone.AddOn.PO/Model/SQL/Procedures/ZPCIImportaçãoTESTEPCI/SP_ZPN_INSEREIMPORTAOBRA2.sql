@@ -1,7 +1,7 @@
 ﻿
 
 
-create procedure [dbo].[SP_ZPN_INSEREIMPORTAOBRA2](@PRJCODE VARCHAR(100))
+create procedure [SP_ZPN_INSEREIMPORTAOBRA2](@PRJCODE VARCHAR(100))
 AS 
 	BEGIN
 
