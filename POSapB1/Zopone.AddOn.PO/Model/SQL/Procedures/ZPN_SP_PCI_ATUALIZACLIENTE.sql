@@ -130,6 +130,7 @@ begin
 	WHERE RowNumber =@RowNumber;
 
 	if (isnull(@clienteid,'') = '') begin
+		SELECT @clienteid = isnull(max((cast(clienteid as varchar(250)))),'') from [LINKZCLOUD].[zsistema_aceite].cliente where documentoprincipal = @documentoprincipal and @razaosocial = @razaosocial; 
 		set @clienteid = newid();
 	end;
 
