@@ -13,7 +13,7 @@ create PROCEDURE [dbo].[sp_cloud_AlteraObraCandidato] (
     @numero varchar(10),
     @complemento varchar(20),
     @bairro varchar(50),
-    @cidade	int,
+    @cidade	int, 
     @cep varchar(9),
     @latitude varchar(50),
     @longitude varchar(50),

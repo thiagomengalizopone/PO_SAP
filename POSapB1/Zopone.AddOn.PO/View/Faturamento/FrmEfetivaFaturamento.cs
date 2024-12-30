@@ -23,6 +23,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         EditText EdCliente { get; set; }
         DataTable DtPesquisa { get; set; }
         Matrix MtPedidos { get; set; }
+        ComboBox cbUsuario { get; set; }
 
         EditText EdDataT { get; set; }
         Button BtAlterarDataT { get; set; }
@@ -38,6 +39,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             if (oForm == null)
                 return;
+
+            cbUsuario = (ComboBox)oForm.Items.Item("cbUsu").Specific;
 
             EdDataI = (EditText)oForm.Items.Item("EdDataI").Specific;
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
@@ -78,11 +81,23 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
             MtPedidos.AutoResizeColumns();
 
+            CarregarDadosTela();
+
             CarregarDadosFaturamentoFaturar();
 
             oForm.Visible = true;
+        }
 
-
+        private void CarregarDadosTela()
+        {
+            try
+            {
+                Util.ComboBoxSetValoresValidosPorSQL(cbUsuario, UtilScriptsSQL.SQL_Usuarios, null, true);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados em tela: {Ex.Message}");
+            }
 
         }
 
@@ -488,7 +503,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string dataInicialInclusao = !string.IsNullOrEmpty(EdDataIncI.Value) ? EdDataIncI.Value : "20200101";
                 string dataFinalInclusao = !string.IsNullOrEmpty(EdDataIncF.Value) ? EdDataIncF.Value : "20500101";
 
-                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{dataInicialInclusao}', '{dataFinalInclusao}','{EdPO.Value}','{EdCliente.Value}'";
+                string Usuario = !string.IsNullOrEmpty(cbUsuario.Value) ? cbUsuario.Value : "-1";
+
+
+                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{dataInicialInclusao}', '{dataFinalInclusao}','{EdPO.Value}','{EdCliente.Value}', {Usuario}";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
@@ -523,7 +541,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "INSS");
                 MtPedidos.Columns.Item("Col_19").DataBind.Bind("DtPO", "ISS");
 
-
+                MtPedidos.Columns.Item("Col_21").DataBind.Bind("DtPO", "USER_CODE");
 
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();

@@ -170,7 +170,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 BubbleEvent = false;
             }
         }
-       
+
         private void BtPreFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
             try
@@ -270,7 +270,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.DiscountPercent = 0;
 
                             oNotaFiscalSaida.DocObjectCodeEx = "13";
-                            oNotaFiscalSaida.DocDate = dataFaturamento;                            
+                            oNotaFiscalSaida.DocDate = dataFaturamento;
                             oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
                             oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
                             oNotaFiscalSaida.BPL_IDAssignedToInvoice = oPedidoVenda.BPL_IDAssignedToInvoice;
@@ -307,14 +307,14 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Project").Value = oPedidoVenda.Lines.ProjectCode;
 
 
-                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value =  ItemFaturamento;
+                            oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_ItemFat").Value = ItemFaturamento;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_DescItemFat").Value = DescItemFaturamento;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Atividade").Value = Atividade;
                             oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_StatusFat").Value = oPedidoVenda.Lines.UserFields.Fields.Item("U_StatusFat").Value;
-                            
+
                             oNotaFiscalSaida.DocumentReferences.ReferencedDocEntry = oPedidoVenda.DocEntry;
                             oNotaFiscalSaida.DocumentReferences.ReferencedObjectType = ReferencedObjectTypeEnum.rot_SalesOrder;
-                            oNotaFiscalSaida.DocumentReferences.Remark += ($" {oPedidoVenda.Lines.LineNum.ToString()} ");                            
+                            oNotaFiscalSaida.DocumentReferences.Remark += ($" {oPedidoVenda.Lines.LineNum.ToString()} ");
                         }
                     }
                 }
@@ -357,7 +357,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.Add();
 
                         oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode = IssCode;
-                        
+
                         oNotaFiscalSaidaImposto.DiscountPercent = 0;
 
                         if (oNotaFiscalSaidaImposto.Update() != 0)
@@ -365,13 +365,13 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     }
 
 
-                    
+
 
                     //oNotaFiscalSaidaImposto.GetByKey(DocEntry);
                     //oNotaFiscalSaidaImposto.DiscountPercent = 0;
 
                     //if (oNotaFiscalSaidaImposto.Update() != 0)
-                        //throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    //throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
 
                     SqlUtils.DoNonQuery($"exec SP_ZPN_CriaObservacoesFaturamentoEsboco {DocEntry}");
 
@@ -542,7 +542,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
-                
+
                 MtPedidos.Columns.Item("Col_22").DataBind.Bind("DtPO", "PrevFat");
 
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
@@ -578,6 +578,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 MtPedidos.Columns.Item("Col_24").DataBind.Bind("DtPO", "Estado");
                 MtPedidos.Columns.Item("Col_25").DataBind.Bind("DtPO", "Cidade");
 
+                MtPedidos.Columns.Item("Col_26").DataBind.Bind("DtPO", "CidadeObra");
+
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
 
@@ -585,7 +587,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 oColuna.ChooseFromListUID = "CFL_ALOC";
                 oColuna.ChooseFromListAlias = "Code";
 
-                 oColuna = MtPedidos.Columns.Item("Col_25");
+                oColuna = MtPedidos.Columns.Item("Col_25");
                 oColuna.ChooseFromListUID = "CFL_265";
                 oColuna.ChooseFromListAlias = "Name";
 

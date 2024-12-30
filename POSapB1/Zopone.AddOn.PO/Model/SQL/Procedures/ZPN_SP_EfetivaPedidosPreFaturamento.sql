@@ -1,11 +1,12 @@
-﻿cREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿CREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
 	 @DataInicialInclusao datetime,
 	 @DataFinalInclusao datetime,
 	 @NumAtCard varchar(100),
-	 @CardName varchar(250)
+	 @CardName varchar(250),
+	 @Usuario int
 )
 AS
 BEGIN
@@ -22,6 +23,8 @@ BEGIN
 --set @DataFinal = '2025-01-01';
 
 --set @StatusFaturamento = 'A';
+
+set @Usuario = isnull(@Usuario,-1);
 
 SELECT 
 	'N' "Selecionar",
@@ -54,7 +57,9 @@ SELECT
     isnull(IMP.IRRFWTAmnt,0) IRRF,
 	isnull(IMP.PisWTAmnt,0) PIS,
 	isnull(IMP.InssWTAmnt,0) INSS,
-	isnull(IMP.ISSWTAmnt,0) ISS
+	isnull(IMP.ISSWTAmnt,0) ISS,
+	isnull(OBRA.U_Estado,'') + ' - ' + isnull(OBRA.U_CidadeDesc,'') "CidadeObra"
+	
 FROM
 	ODRF 
 	INNER JOIN DRF1 ON ODRF."DocEntry" = DRF1."DocEntry"
@@ -78,6 +83,10 @@ WHERE
 		(ORDR."CardName" like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
 		OR 
 		(ORDR.CardCode like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
+	)
+	and 
+	(
+		ODRF.[UserSign] = @Usuario or @Usuario = -1
 	)
 ORDER BY
 	DRF1."DocDate", ODRF."DocNum", DRF1."LineNum";

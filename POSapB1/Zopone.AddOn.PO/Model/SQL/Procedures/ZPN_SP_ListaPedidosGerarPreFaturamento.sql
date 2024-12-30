@@ -51,7 +51,8 @@ SELECT top 50
 	end as "IbgeCode",
 	OCNT.State								 	 AS "Estado",
 	OCNT.Name							 		 as "Cidade",
-	OCNT.AbsId
+	OCNT.AbsId,
+	isnull(OBRA.U_Estado,'') + ' - ' + isnull(OBRA.U_CidadeDesc,'') "CidadeObra"
 FROM
 	RDR1 
 	INNER JOIN ORDR								ON ORDR."DocEntry" = RDR1."DocEntry"
