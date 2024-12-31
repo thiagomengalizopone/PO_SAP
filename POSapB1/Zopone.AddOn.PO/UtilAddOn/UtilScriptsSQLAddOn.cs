@@ -22,7 +22,7 @@ namespace Zopone.AddOn.PO.UtilAddOn
 					OLCT.Code NOT IN 
 					(
 						SELECT 
-							OPRC.U_Regional
+							OLCT.Code
 						FROM
 							OPRC
 						WHERE 

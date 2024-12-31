@@ -46,8 +46,6 @@ namespace Zopone.AddOn.PO
             
             Instalar.ExecutaScriptsAtualizacaoCampos();
 
-            CentroCustoLocalizacao.CriarCentroCustoLocalizacao();            
-
             Configuracoes.CarregarConfiguracaoes();
             UtilAddOn.UtilAddOn.CarregarMenus();
 
