@@ -66,6 +66,7 @@ namespace Zopone.AddOn.PO.View.Obra
         public EditText EdCidadeCandidato { get; set; }
         public EditText EdCidadeCandidatoDescricao { get; set; }
         public EditText EdPCG { get; set; }
+        public CheckBox CkVisualizarPCI { get; set; }
 
         public EditText EdLatitude { get; set; }
 
@@ -102,6 +103,7 @@ namespace Zopone.AddOn.PO.View.Obra
             EdCardCode.ChooseFromListAfter += EdCardCode_ChooseFromListAfter;
             EdCardName = (EditText)oForm.Items.Item("EdCardName").Specific;
 
+            CkVisualizarPCI = (CheckBox)oForm.Items.Item("CkVisPCI").Specific;
 
             MtCandidato = (Matrix)oForm.Items.Item("MtCandi").Specific;
 
@@ -1015,6 +1017,16 @@ namespace Zopone.AddOn.PO.View.Obra
                 {
                     if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD || businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE)
                     {
+
+                        if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_ADD)
+                        {
+                            Form oFormObra = Globals.Master.Connection.Interface.Forms.Item(businessObjectInfo.FormUID);
+
+                            CheckBox CkVisualizarPCI = (CheckBox)oFormObra.Items.Item("CkVisPCI").Specific;
+
+                            CkVisualizarPCI.Checked = true;
+                        }
+
                         return ValidarDadosObra(businessObjectInfo.FormUID);
                     }
                 }

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SP_ZPN_CriaObservacoesFaturamentoEsboco
+﻿CREATE PROCEDURE [dbo].[SP_ZPN_CriaObservacoesFaturamentoEsboco]
 (
     @DocEntry INT
 )
@@ -9,12 +9,14 @@ BEGIN
     DECLARE @ItemCode VARCHAR(250);
     DECLARE @MENSAGEM VARCHAR(MAX);
     DECLARE @MENSAGEMIMPOSTO VARCHAR(MAX);
+	DECLARE @SEQUENCIA VARCHAR(250);
 
     -- Seleciona dados necessários para o processamento
     SELECT TOP 1
         @ItemCode = DRF1.ItemCode,
         @CardName = ODRF.CardName,
-        @MENSAGEM = ISNULL(ODRF.Header, '')
+        @MENSAGEM = ISNULL(ODRF.Header, ''),
+		@SEQUENCIA = ODRF.SeqCode
     FROM 
         DRF1 
         INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
@@ -29,6 +31,11 @@ BEGIN
         INNER JOIN DRF1 ON DRF1.DocEntry = DRF6.DocEntry
     WHERE
         DRF1.DocEntry = @DocEntry;
+
+	if (@SEQUENCIA <> '29') 
+	begin
+		return;
+	end;
 
     -- Verifica se o nome do cliente contém 'CLARO'
     IF (UPPER(@CardName) LIKE '%CLARO%')
@@ -113,7 +120,6 @@ BEGIN
 
 	ELSE IF (UPPER(@CardName) LIKE '%HUAWEI%')
     BEGIN
-	SET @MENSAGEM = '';
 	IF (@MENSAGEM = '') 
         BEGIN
             SELECT 
@@ -159,6 +165,45 @@ BEGIN
                 + @MENSAGEMIMPOSTO; -- A nova parte de impostos
         END
     END;
+	ELSE IF (UPPER(@CardName) LIKE '%ERICSSON%' AND @ItemCode = '7.02')
+    BEGIN
+		IF (@MENSAGEM = '') 
+			BEGIN
+				SELECT 
+					@MENSAGEM = 
+					ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
+					'PEDIDO DE COMPRA: ' + ISNULL(ODRF.NumAtCard, '') + + CHAR(13) + CHAR(10) +
+					'OBRA: ' + ISNULL(DRF1.Project, '') + CHAR(13) + CHAR(10) +
+					CHAR(13) + CHAR(10) +
+					CHAR(13) + CHAR(10) +
+					'SITE: ' + ISNULL(OBRA.U_IdSite, '') + ' ' + ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
+					CHAR(13) + CHAR(10) +
+					CHAR(13) + CHAR(10) +
+					'EVENTO: TERMINO DOS SERVIÇOS ' + CHAR(13) + CHAR(10) +
+					'ITEM ' +
+					CHAR(13) + CHAR(10) +
+					CHAR(13) + CHAR(10) +                
+					+
+
+					dbo.FN_ZPN_RetornaImpostosERICSSON702(@DocEntry)
+				FROM 
+					DRF1 
+					INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
+					INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = DRF1.Project
+				WHERE
+					DRF1.DocEntry = @DocEntry;
+			END
+			ELSE
+			BEGIN
+				-- Caso contrário, adiciona a parte de impostos à mensagem existente
+				SET @MENSAGEMIMPOSTO = dbo.FN_ZPN_RetornaImpostosERICSSON702(@DocEntry);
+
+				-- Substitui a parte de impostos na mensagem
+				SET @MENSAGEM = 
+					LEFT(@MENSAGEM, CHARINDEX('ALIQUOTA INSS', @MENSAGEM) - 1) -- Tudo antes de IRRF
+					+ @MENSAGEMIMPOSTO; -- A nova parte de impostos
+			END
+    END;
     ELSE
     BEGIN
         -- Se @MENSAGEM estiver vazia, cria a mensagem inicial
@@ -191,7 +236,7 @@ BEGIN
 
             -- Substitui a parte de impostos na mensagem
             SET @MENSAGEM = 
-                LEFT(@MENSAGEM, CHARINDEX(' IRRF', @MENSAGEM) - 1) -- Tudo antes de IRRF
+              LEFT(@MENSAGEM, CHARINDEX(' IRRF', @MENSAGEM) - 1) -- Tudo antes de IRRF
                 + @MENSAGEMIMPOSTO; -- A nova parte de impostos
         END
     END;
@@ -201,3 +246,6 @@ BEGIN
     SET Header = @MENSAGEM 
     WHERE DocEntry = @DocEntry;
 END;
+GO
+
+

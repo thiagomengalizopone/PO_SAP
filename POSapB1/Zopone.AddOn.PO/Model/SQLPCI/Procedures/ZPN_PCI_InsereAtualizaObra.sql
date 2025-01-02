@@ -50,7 +50,6 @@ BEGIN
             [obraid],
             [gestatus],
             [gedataacao],
-            [gecontaidacao],
             [obraclassificacaoid],
             [referencia],
             [longitude],
@@ -89,7 +88,6 @@ BEGIN
             @obraid,
             @gestatus,
             @gedataacao,
-            @gecontaidacao,
             @obraclassificacaoid,
             @referencia,
             @longitude,
@@ -166,3 +164,6 @@ BEGIN
             [obraid] = @obraid;
     END
 END
+GO
+
+

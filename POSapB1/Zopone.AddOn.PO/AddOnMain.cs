@@ -36,12 +36,6 @@ namespace Zopone.AddOn.PO
 
             Util.CriarPastaLog();
 
-            #region DEBUG
-            //ImportaContratoHomologacao.ImportaContratoValidacao();
-            //ImportaContratoHomologacao.ImportarObrasSAPB1();
-            //ImportaContratoHomologacao.criacentrocusto();
-            #endregion
-
             Install.VerificaInstalacaoAddOn();
 
             Instalar.ExecutaScriptsAtualizacaoCampos();
@@ -59,6 +53,52 @@ namespace Zopone.AddOn.PO
             UtilWarehouses.CriaDepositosRAAsync();
 
             Util.ExibirMensagemStatusBar("AddOn Faturamento iniciado com sucesso!", SAPbouiCOM.BoMessageTime.bmt_Long);
+        }
+
+        private static void AtualizaCorrigeVencimentos()
+        {
+            var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+            oRecordSet.DoQuery(@"
+                                SELECT DISTINCT 
+                                    DocEntry
+                                FROM 
+	                                INV6 
+                                WHERE 
+	                                DUEDATE < '2025-01-01'
+                                ");
+
+            Documents oNotaFiscalSaidaImposto = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oInvoices);
+
+            while (!oRecordSet.EoF)
+            {
+                try
+                {
+                    Int32 DocEntry = Convert.ToInt32(oRecordSet.Fields.Item("DocEntry").Value);
+
+                    if (oNotaFiscalSaidaImposto.GetByKey(DocEntry))
+                    {
+                        for (int iRow = 0; iRow < oNotaFiscalSaidaImposto.Installments.Count; iRow++)
+                        {
+                            oNotaFiscalSaidaImposto.Installments.SetCurrentLine(iRow);
+                            oNotaFiscalSaidaImposto.Installments.DueDate = Convert.ToDateTime("2025-01-30");
+                        }
+
+                        if (oNotaFiscalSaidaImposto.Update() != 0)
+                            throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorCode()} {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+
+                    }
+                }
+                catch (Exception Ex)
+                {
+                    string erro = Ex.ToString();
+                }
+                oRecordSet.MoveNext();
+
+            }
+
+
         }
 
         private static void AtualizaEsbocoCidadeISS()

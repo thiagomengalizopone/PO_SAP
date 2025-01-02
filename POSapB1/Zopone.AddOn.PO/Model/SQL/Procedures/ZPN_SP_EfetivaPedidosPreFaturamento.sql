@@ -1,4 +1,4 @@
-﻿create PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿cREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -6,27 +6,25 @@
 	 @DataFinalInclusao datetime,
 	 @NumAtCard varchar(100),
 	 @CardName varchar(250),
-	 @Usuario int
+	 @Usuario int,
+	 @Item varchar(250) = '',
+	 @Obra varchar(250) = ''
 )
 AS
 BEGIN
 
 
---ZPN_SP_ListaPedidosGerarPreFaturamento '2024-08-28', '2024-08-28', ''
-
---DECLARE @StatusFaturamento varchar(1);
---DECLARE @NumAtCard varchar(100);
---DECLARE @DataInicial datetime;
---DECLARE @DataFinal datetime;
-
---set @DataInicial = '2024-01-01';
---set @DataFinal = '2025-01-01';
-
---set @StatusFaturamento = 'A';
 
 set @Usuario = isnull(@Usuario,-1);
 
 SELECT 
+	ROW_NUMBER() OVER 
+		(
+			 ORDER BY
+				DRF1."DocDate", 
+				ODRF."DocNum", 
+				DRF1."LineNum"
+			) AS "LineId",
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
 	ORDR."NumAtCard" "PO",
@@ -45,7 +43,10 @@ SELECT
 	DRF1.DocEntry "Esboco",
 	0 "NF",
 	DRF1."ItemCode",
-	DRF1."Dscription", 
+	case 
+		when isnull(oitm.ItemName,'') <> '' then oitm.ItemName
+		else oitm.FrgnName
+	end "Dscription", 
 	
 	ODRF.DocTotal "SaldoFaturado",
 	0 "SaldoAberto",
@@ -69,6 +70,7 @@ FROM
 	LEFT JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = DRF1.Project
 	LEFT JOIN OOAT ON OOAT.AbsID = OBRA.U_CodContrato
 	INNER JOIN OUSR ON ODRF.[UserSign] = OUSR.[USERID] 
+	INNER JOIN OITM ON OITM.ItemCode = DRF1."ItemCode"
 WHERE
 	ODRF."DocStatus" = 'O' AND 
 	(
@@ -80,9 +82,21 @@ WHERE
 	AND DRF1."DocDate" between @DataInicial and @DataFinal 
 	AND 
 	(
-		(ORDR."CardName" like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
-		OR 
-		(ORDR.CardCode like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
+		isnull(@CardName,'') = '' or 
+
+		(
+			ODRF."CardName" like '%' + @CardName + '%'
+			OR 
+			ODRF.CardCode like '%' + @CardName + '%' 
+		)
+	)
+	and
+	(
+		DRF1."ItemCode" = @Item or isnull(@Item,'') = '' 
+	)
+	and
+	(
+		DRF1.Project = @Obra or isnull(@Obra,'') = '' 
 	)
 	and 
 	(

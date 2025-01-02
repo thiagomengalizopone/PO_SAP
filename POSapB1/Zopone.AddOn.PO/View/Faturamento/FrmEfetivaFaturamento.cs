@@ -4,6 +4,7 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -20,6 +21,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         EditText EdDataIncI { get; set; }
         EditText EdDataIncF { get; set; }
         EditText EdPO { get; set; }
+        EditText EdItem { get; set; }
         EditText EdCliente { get; set; }
         DataTable DtPesquisa { get; set; }
         Matrix MtPedidos { get; set; }
@@ -32,6 +34,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         Button BtImportarFaturamento { get; set; }
         Button BtCancelarPreFaturamento { get; set; }
 
+        EditText EdObra { get; set; }
 
         EditText EDTotBru { get; set; }
         EditText EdCofins { get; set; }
@@ -40,6 +43,16 @@ namespace Zopone.AddOn.PO.View.Faturamento
         EditText EdPis { get; set; }
         EditText EdInss { get; set; }
         EditText EdIss { get; set; }
+
+        EditText EDTotBruG { get; set; }
+        EditText EdCofinsG { get; set; }
+        EditText EdCsllG { get; set; }
+        EditText EdIrrfG { get; set; }
+        EditText EdPisG { get; set; }
+        EditText EdInssG { get; set; }
+        EditText EdIssG { get; set; }
+
+        List<Int32> LinhasSelecionadas = new List<int>();
 
 
         Button BtEnviarFaturamento { get; set; }
@@ -64,11 +77,24 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdPis = (EditText)oForm.Items.Item("EdPis").Specific;
             EdInss = (EditText)oForm.Items.Item("EdInss").Specific;
             EdIss = (EditText)oForm.Items.Item("EdIss").Specific;
+            
+            EDTotBruG = (EditText)oForm.Items.Item("EDTotBruG").Specific;
+            EdCofinsG = (EditText)oForm.Items.Item("EdCofinsG").Specific;
+            EdCsllG = (EditText)oForm.Items.Item("EdCsllG").Specific;
+            EdIrrfG = (EditText)oForm.Items.Item("EdIrrfG").Specific;
+            EdPisG = (EditText)oForm.Items.Item("EdPisG").Specific;
+            EdInssG = (EditText)oForm.Items.Item("EdInssG").Specific;
+            EdIssG = (EditText)oForm.Items.Item("EdIssG").Specific;
 
+            EdItem = (EditText)oForm.Items.Item("EdItem").Specific;
+
+            EdItem = (EditText)oForm.Items.Item("EdItem").Specific;
+
+            EdObra = (EditText)oForm.Items.Item("EdObra").Specific;
 
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
 
-            EdCliente = (EditText)oForm.Items.Item("EdCliente").Specific;            
+            EdCliente = (EditText)oForm.Items.Item("EdCliente").Specific;
 
             MtPedidos = (Matrix)oForm.Items.Item("MtPed").Specific;
 
@@ -106,6 +132,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
             CarregarDadosFaturamentoFaturar();
 
             oForm.Visible = true;
+
+            LinhasSelecionadas = new List<int>();
         }
 
         private void MtPedidos_ClickAfter(object sboObject, SBOItemEventArg pVal)
@@ -113,7 +141,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             try
             {
                 if (pVal.Row > 0 && pVal.ColUID == "Col_9")
-                    SomarRegistrosTela();
+                    SomarRegistrosTelaSelecionado(pVal.Row-1);
             }
             catch (Exception Ex)
             {
@@ -121,36 +149,44 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
             }
         }
-
-        private void SomarRegistrosTela()
+        
+        private void SomarRegistrosTelaSelecionado(int row)
         {
             try
             {
+
                 oForm.Freeze(true);
 
                 MtPedidos.FlushToDataSource();
 
+                if (DtPesquisa.GetValue("Selecionar", row).ToString() == "Y")
+                {
+                    if (!LinhasSelecionadas.Contains(row))
+                        LinhasSelecionadas.Add(row);
+                }
+                else
+                {
+                    if (LinhasSelecionadas.Contains(row))
+                        LinhasSelecionadas.Remove(row);
+                }
+
                 double Valor = 0;
-                double COFINS = 0; 
+                double COFINS = 0;
                 double CSLL = 0;
                 double IRRF = 0;
                 double PIS = 0;
                 double INSS = 0;
                 double ISS = 0;
 
-
-                for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
+                for (int iRow = 0; iRow  < LinhasSelecionadas.Count; iRow ++)
                 {
-                    if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
-                    {
-                        Valor += Convert.ToDouble(DtPesquisa.GetValue("Valor", iRow));
-                        COFINS += Convert.ToDouble(DtPesquisa.GetValue("COFINS", iRow));
-                        CSLL += Convert.ToDouble(DtPesquisa.GetValue("CSLL", iRow));
-                        IRRF += Convert.ToDouble(DtPesquisa.GetValue("IRRF", iRow));
-                        PIS += Convert.ToDouble(DtPesquisa.GetValue("PIS", iRow));
-                        INSS += Convert.ToDouble(DtPesquisa.GetValue("INSS", iRow));
-                        ISS += Convert.ToDouble(DtPesquisa.GetValue("ISS", iRow));
-                    }
+                    Valor += Convert.ToDouble(DtPesquisa.GetValue("Valor", LinhasSelecionadas[iRow] ));
+                    COFINS += Convert.ToDouble(DtPesquisa.GetValue("COFINS", LinhasSelecionadas[iRow]));
+                    CSLL += Convert.ToDouble(DtPesquisa.GetValue("CSLL", LinhasSelecionadas[iRow]));
+                    IRRF += Convert.ToDouble(DtPesquisa.GetValue("IRRF", LinhasSelecionadas[iRow]));
+                    PIS += Convert.ToDouble(DtPesquisa.GetValue("PIS", LinhasSelecionadas[iRow]));
+                    INSS += Convert.ToDouble(DtPesquisa.GetValue("INSS", LinhasSelecionadas[iRow]));
+                    ISS += Convert.ToDouble(DtPesquisa.GetValue("ISS", LinhasSelecionadas[iRow]));
                 }
 
                 EDTotBru.Value = Valor.ToString().Replace(".", "").Replace(",", ".");
@@ -160,7 +196,62 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 EdPis.Value = PIS.ToString().Replace(".", "").Replace(",", ".");
                 EdInss.Value = INSS.ToString().Replace(".", "").Replace(",", ".");
                 EdIss.Value = ISS.ToString().Replace(".", "").Replace(",", ".");
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao somar registros selecionados em tela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
+            }
 
+        }
+
+        private void SomarRegistrosTelaTotal()
+        {
+            try
+            {
+                oForm.Freeze(true);
+
+                MtPedidos.FlushToDataSource();
+
+                double Valor = 0;
+                double COFINS = 0;
+                double CSLL = 0;
+                double IRRF = 0;
+                double PIS = 0;
+                double INSS = 0;
+                double ISS = 0;
+
+                for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
+                {
+                    Valor += Convert.ToDouble(DtPesquisa.GetValue("Valor", iRow));
+                    COFINS += Convert.ToDouble(DtPesquisa.GetValue("COFINS", iRow));
+                    CSLL += Convert.ToDouble(DtPesquisa.GetValue("CSLL", iRow));
+                    IRRF += Convert.ToDouble(DtPesquisa.GetValue("IRRF", iRow));
+                    PIS += Convert.ToDouble(DtPesquisa.GetValue("PIS", iRow));
+                    INSS += Convert.ToDouble(DtPesquisa.GetValue("INSS", iRow));
+                    ISS += Convert.ToDouble(DtPesquisa.GetValue("ISS", iRow));
+                }
+
+                EDTotBruG.Value = Valor.ToString().Replace(".", "").Replace(",", ".");
+                EdCofinsG.Value = COFINS.ToString().Replace(".", "").Replace(",", ".");
+                EdCsllG.Value = CSLL.ToString().Replace(".", "").Replace(",", ".");
+                EdIrrfG.Value = IRRF.ToString().Replace(".", "").Replace(",", ".");
+                EdPisG.Value = PIS.ToString().Replace(".", "").Replace(",", ".");
+                EdInssG.Value = INSS.ToString().Replace(".", "").Replace(",", ".");
+                EdIssG.Value = ISS.ToString().Replace(".", "").Replace(",", ".");
+
+                EDTotBru.Value = "0";
+                EdCofins.Value = "0";
+                EdCsll.Value = "0";
+                EdIrrf.Value = "0";
+                EdPis.Value = "0";
+                EdInss.Value = "0";
+                EdIss.Value = "0";
+
+                LinhasSelecionadas = new List<int>();
             }
             catch (Exception Ex)
             {
@@ -201,7 +292,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     {
                         Util.ExibeMensagensDialogoStatusBar($"Documento já faturado!");
                         CarregarDadosFaturamentoFaturar();
-                  
+
                     }
                 }
             }
@@ -420,7 +511,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             }
         }
 
-       
+
 
         private void BtPreFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
@@ -483,7 +574,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 if (oEsbocoNotaFiscalSaida.GetByKey(DocEntry))
                 {
-                    if (oEsbocoNotaFiscalSaida.DocDate != DateTime.Now.Date) 
+                    if (oEsbocoNotaFiscalSaida.DocDate != DateTime.Now.Date)
                     {
                         return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} - Data de transmissão diferente da data de hoje!";
                     }
@@ -590,26 +681,29 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 string Usuario = !string.IsNullOrEmpty(cbUsuario.Value) ? cbUsuario.Value : "-1";
 
 
-                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{dataInicialInclusao}', '{dataFinalInclusao}','{EdPO.Value}','{EdCliente.Value}', {Usuario}";
+                string SQL_Query = $@"ZPN_SP_EfetivaPedidosPreFaturamento '{dataInicial}', '{dataFinal}', '{dataInicialInclusao}', '{dataFinalInclusao}','{EdPO.Value}','{EdCliente.Value}', {Usuario}, '{EdItem.Value}', '{EdObra.Value}'";
 
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
+
+
+                MtPedidos.Columns.Item("#").DataBind.Bind("DtPO", "LineId");
                 MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
                 MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
                 MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
 
                 MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "DataT");
 
-                MtPedidos.Columns.Item("Col_20").DataBind.Bind("DtPO", "DataI");                
+                MtPedidos.Columns.Item("Col_20").DataBind.Bind("DtPO", "DataI");
 
                 MtPedidos.Columns.Item("CardCode").DataBind.Bind("DtPO", "CardCode");
-                MtPedidos.Columns.Item("CardName").DataBind.Bind("DtPO", "CardName");                
+                MtPedidos.Columns.Item("CardName").DataBind.Bind("DtPO", "CardName");
 
                 MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Linha");
                 MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
                 MtPedidos.Columns.Item("Col_5").DataBind.Bind("DtPO", "Valor");
                 MtPedidos.Columns.Item("Col_6").DataBind.Bind("DtPO", "Esboco");
-                
+
                 MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "ItemCode");
                 MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "Dscription");
                 MtPedidos.Columns.Item("Col_12").DataBind.Bind("DtPO", "Status");
@@ -629,8 +723,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
-                
-                SomarRegistrosTela();
+
+                SomarRegistrosTelaTotal();
             }
             catch (Exception Ex)
             {

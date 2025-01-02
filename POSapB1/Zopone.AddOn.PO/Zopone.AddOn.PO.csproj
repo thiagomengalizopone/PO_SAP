@@ -539,6 +539,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\sp_cloud_AlteraObra.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ATUALIZAOBRASAP.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ATUALIZAOBRACANDIDATOSAP.sql" />
+    <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosERICSSON702.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
