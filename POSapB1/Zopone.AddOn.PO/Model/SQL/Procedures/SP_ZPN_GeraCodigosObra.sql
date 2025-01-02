@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SP_ZPN_GeraCodigosObra
+﻿ALTER PROCEDURE SP_ZPN_GeraCodigosObra
 (
 	@Prefixo VARCHAR(10),  
     @Quantidade INT
@@ -71,7 +71,7 @@ SELECT
 	'                                ' "CodCli", 
 	'                                                                                                                                                                                                ' "Cliente", 
 	'                                                                ' "Contrato", 
-    CONCAT(@Prefixo, '.', RIGHT('0000' + CAST(Codigo AS VARCHAR(10)), LEN(@CodigoInicial)), '/', @Sufixo) AS "CodObra",
+    CONCAT(@Prefixo, '.', RIGHT('0000' + CAST(Codigo AS VARCHAR(10)), 4), '/', @Sufixo) AS "CodObra",
 	GEtdatE() "Cadastro",
 	'                                 ' Regional,
 	'																											                                            																											                                            ' Validacao,

@@ -153,7 +153,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 string CodRegional = DtObras.GetValue("Regional", iRow).ToString().Trim();
 
-                oRecordSet.DoQuery($@"SELECT T0.[PrcCode] FROM OPRC T0 WHERE T0.[PrcName] like '%{CodRegional}%' AND T0.[DimCode] = 3");
+                oRecordSet.DoQuery($@"SELECT T0.[PrcCode] FROM OPRC T0 WHERE T0.[PrcCode] like '%{CodRegional}%' AND T0.[DimCode] = 3");
 
                 if (!oRecordSet.EoF && !string.IsNullOrEmpty(CodRegional))
                 {
@@ -313,7 +313,7 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 string Usuario = SqlUtils.GetValue("SELECT maX(Usuario) FROM ZPN_GERAROBRA");
 
-                if (!string.IsNullOrEmpty(Usuario))
+                if (!string.IsNullOrEmpty(Usuario) && Usuario != Globals.Master.Connection.Database.UserName)
                 {
                     Util.ExibeMensagensDialogoStatusBar($"ATENÇÃO: Usuário {Usuario} trabalhando com a tela. Aguarde o usuário fechar a tela para prosseguir!");
                     return false;
