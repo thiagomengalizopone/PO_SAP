@@ -33,6 +33,15 @@ namespace Zopone.AddOn.PO.View.Faturamento
         Button BtCancelarPreFaturamento { get; set; }
 
 
+        EditText EDTotBru { get; set; }
+        EditText EdCofins { get; set; }
+        EditText EdCsll { get; set; }
+        EditText EdIrrf { get; set; }
+        EditText EdPis { get; set; }
+        EditText EdInss { get; set; }
+        EditText EdIss { get; set; }
+
+
         Button BtEnviarFaturamento { get; set; }
 
         public FrmEfetivaFaturamento() : base()
@@ -46,7 +55,16 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
 
             EdDataIncI = (EditText)oForm.Items.Item("EdDtIncI").Specific;
-            EdDataIncF = (EditText)oForm.Items.Item("EdDtIncF").Specific;            
+            EdDataIncF = (EditText)oForm.Items.Item("EdDtIncF").Specific;
+
+            EDTotBru = (EditText)oForm.Items.Item("EDTotBru").Specific;
+            EdCofins = (EditText)oForm.Items.Item("EdCofins").Specific;
+            EdCsll = (EditText)oForm.Items.Item("EdCsll").Specific;
+            EdIrrf = (EditText)oForm.Items.Item("EdIrrf").Specific;
+            EdPis = (EditText)oForm.Items.Item("EdPis").Specific;
+            EdInss = (EditText)oForm.Items.Item("EdInss").Specific;
+            EdIss = (EditText)oForm.Items.Item("EdIss").Specific;
+
 
             EdPO = (EditText)oForm.Items.Item("EdPO").Specific;
 
@@ -77,6 +95,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
             MtPedidos.LostFocusAfter += MtPedidos_LostFocusAfter;
             MtPedidos.ValidateBefore += MtPedidos_ValidateBefore;
 
+            MtPedidos.ClickAfter += MtPedidos_ClickAfter;
+
             MtPedidos.LinkPressedBefore += MtPedidos_LinkPressedBefore;
 
             MtPedidos.AutoResizeColumns();
@@ -86,6 +106,70 @@ namespace Zopone.AddOn.PO.View.Faturamento
             CarregarDadosFaturamentoFaturar();
 
             oForm.Visible = true;
+        }
+
+        private void MtPedidos_ClickAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (pVal.Row > 0 && pVal.ColUID == "Col_9")
+                    SomarRegistrosTela();
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar registro: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+
+            }
+        }
+
+        private void SomarRegistrosTela()
+        {
+            try
+            {
+                oForm.Freeze(true);
+
+                MtPedidos.FlushToDataSource();
+
+                double Valor = 0;
+                double COFINS = 0; 
+                double CSLL = 0;
+                double IRRF = 0;
+                double PIS = 0;
+                double INSS = 0;
+                double ISS = 0;
+
+
+                for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
+                {
+                    if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
+                    {
+                        Valor += Convert.ToDouble(DtPesquisa.GetValue("Valor", iRow));
+                        COFINS += Convert.ToDouble(DtPesquisa.GetValue("COFINS", iRow));
+                        CSLL += Convert.ToDouble(DtPesquisa.GetValue("CSLL", iRow));
+                        IRRF += Convert.ToDouble(DtPesquisa.GetValue("IRRF", iRow));
+                        PIS += Convert.ToDouble(DtPesquisa.GetValue("PIS", iRow));
+                        INSS += Convert.ToDouble(DtPesquisa.GetValue("INSS", iRow));
+                        ISS += Convert.ToDouble(DtPesquisa.GetValue("ISS", iRow));
+                    }
+                }
+
+                EDTotBru.Value = Valor.ToString().Replace(".", "").Replace(",", ".");
+                EdCofins.Value = COFINS.ToString().Replace(".", "").Replace(",", ".");
+                EdCsll.Value = CSLL.ToString().Replace(".", "").Replace(",", ".");
+                EdIrrf.Value = IRRF.ToString().Replace(".", "").Replace(",", ".");
+                EdPis.Value = PIS.ToString().Replace(".", "").Replace(",", ".");
+                EdInss.Value = INSS.ToString().Replace(".", "").Replace(",", ".");
+                EdIss.Value = ISS.ToString().Replace(".", "").Replace(",", ".");
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao somar registros em tela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
+            }
         }
 
         private void CarregarDadosTela()
@@ -545,6 +629,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
+                
+                SomarRegistrosTela();
             }
             catch (Exception Ex)
             {

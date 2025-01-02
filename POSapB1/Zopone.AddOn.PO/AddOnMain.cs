@@ -43,7 +43,7 @@ namespace Zopone.AddOn.PO
             #endregion
 
             Install.VerificaInstalacaoAddOn();
-            
+
             Instalar.ExecutaScriptsAtualizacaoCampos();
 
             Configuracoes.CarregarConfiguracaoes();
@@ -61,31 +61,66 @@ namespace Zopone.AddOn.PO
             Util.ExibirMensagemStatusBar("AddOn Faturamento iniciado com sucesso!", SAPbouiCOM.BoMessageTime.bmt_Long);
         }
 
-        private static void AtualizaPN()
+        private static void AtualizaEsbocoCidadeISS()
         {
 
-            //
             var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
-            SAPbobsCOM.BusinessPartners oParceiroNegocio = (SAPbobsCOM.BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
-            oRecordSet.DoQuery(@"select ""CardCode"", ""GroupNum"" from vw_atualizapn order by ""GroupNum""");
+
+            oRecordSet.DoQuery(@"
+                                SELECT 
+	                                DocEntry,
+	                                U_ISS
+                                FROM 
+	                                VW_IMPOSTODOCUMENTOISSCIDADE
+                                order by 
+	                                DocEntry
+                                ");
+
+            Documents oNotaFiscalSaidaImposto = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
 
             while (!oRecordSet.EoF)
             {
-                oParceiroNegocio = (SAPbobsCOM.BusinessPartners)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.oBusinessPartners);
-
-                if (oParceiroNegocio.GetByKey(oRecordSet.Fields.Item("CardCode").Value.ToString()))
+                try
                 {
-                    oParceiroNegocio.PayTermsGrpCode = Convert.ToInt32(oRecordSet.Fields.Item("GroupNum").Value);
+                    Int32 DocEntry = Convert.ToInt32(oRecordSet.Fields.Item("DocEntry").Value);
+                    string IssCode = oRecordSet.Fields.Item("U_ISS").Value.ToString();
 
-                    oParceiroNegocio.Update();
+                    if (oNotaFiscalSaidaImposto.GetByKey(DocEntry))
+                    {
+                        string cardcode = oNotaFiscalSaidaImposto.CardCode;
+
+                        if (!string.IsNullOrEmpty(IssCode))
+                        {
+                            oNotaFiscalSaidaImposto.Lines.SetCurrentLine(0);
+
+                            if (!string.IsNullOrEmpty(oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode))
+                                oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.Add();
+
+                            oNotaFiscalSaidaImposto.SequenceCode = 29;
+                            oNotaFiscalSaidaImposto.SequenceModel = "46";
+
+                            oNotaFiscalSaidaImposto.DiscountPercent = 0;
+
+                            oNotaFiscalSaidaImposto.Lines.WithholdingTaxLines.WTCode = IssCode;
+
+                            if (oNotaFiscalSaidaImposto.Update() != 0)
+                                throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorCode()} {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                        }
+                    }
                 }
-
+                catch (Exception Ex)
+                {
+                    string erro = Ex.ToString();
+                }
                 oRecordSet.MoveNext();
+
             }
 
 
-
         }
+
+
+
 
         private static Int32 GetDLLVersion()
         {

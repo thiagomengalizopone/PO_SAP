@@ -64,7 +64,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
             oForm.Visible = true;
         }
 
-        
 
         private Conditions CriaCondicoesCidade(string Estado)
         {
@@ -273,6 +272,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             }
 
                             oNotaFiscalSaida.DiscountPercent = 0;
+
+                            oNotaFiscalSaida.SequenceCode = 29;
+                            oNotaFiscalSaida.SequenceModel = "46";
 
                             oNotaFiscalSaida.DocObjectCodeEx = "13";
                             oNotaFiscalSaida.DocDate = dataFaturamento;
