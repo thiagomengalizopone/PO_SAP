@@ -36,6 +36,8 @@ namespace Zopone.AddOn.PO
 
             Util.CriarPastaLog();
 
+            //AtualizaItensSAP();
+
             Install.VerificaInstalacaoAddOn();
 
             Instalar.ExecutaScriptsAtualizacaoCampos();
@@ -54,6 +56,52 @@ namespace Zopone.AddOn.PO
 
             Util.ExibirMensagemStatusBar("AddOn Faturamento iniciado com sucesso!", SAPbouiCOM.BoMessageTime.bmt_Long);
         }
+
+        private static void AtualizaItensSAP()
+        {
+            try
+            {
+                SAPbobsCOM.Items oItem = (SAPbobsCOM.Items)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oItems);
+                var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                string itemCode = string.Empty;
+
+                oRecordSet.DoQuery(@"
+	                                SELECT distinct
+		                                ItemCode
+	                                FROM 
+		                                OITM 
+	                                WHERE 
+		                                SellItem <> 'Y' AND InvntItem = 'Y'
+                                ");
+
+                int itemCount = 1;
+                while (!oRecordSet.EoF)
+                {
+                    itemCode = oRecordSet.Fields.Item("ItemCode").Value.ToString();
+
+                    if (oItem.GetByKey(itemCode))
+                    {
+                        oItem.SalesItem = BoYesNoEnum.tYES;
+                        
+                        if (oItem.Update() != 0)
+                            throw new Exception($"Erro ao Atualizar Item: {Globals.Master.Connection.Database.GetLastErrorCode()} {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    }
+
+                    itemCount++;
+
+                    oRecordSet.MoveNext();
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar itens SAP: {Ex.Message}");
+            }
+
+        }
+
+
 
         private static void AtualizaCorrigeVencimentos()
         {

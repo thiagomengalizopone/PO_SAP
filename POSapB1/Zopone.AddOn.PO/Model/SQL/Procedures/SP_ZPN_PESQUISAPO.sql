@@ -1,10 +1,10 @@
-﻿create PROCEDURE SP_ZPN_PESQUISAPO
+﻿CREATE PROCEDURE SP_ZPN_PESQUISAPO
 (
 	@CampoPesquisa varchar(50)
 )
 AS
 
-SELECT DISTINCT
+SELECT DISTINCT TOP 100
 	T0."DocEntry"							"Id PO", 
 	T0."DocNum"								"Código PO", 
 	T0.NumAtCard							"Número Pedido", 
@@ -21,6 +21,7 @@ FROM
 	INNER JOIN OBPL	   ON OBPL."BplID"				= T0.BPLId
 	LEFT JOIN OPRJ    ON OPRJ."PrjCode"			= T1.Project
 WHERE
+	T0.Canceled <> 'Y' and 
 	isnull(T0.NumAtCard,'') <> ''			  AND
 	T0."ObjType"							= '17' and
 

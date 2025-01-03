@@ -1,8 +1,9 @@
-﻿
-CREATE procedure [ZPN_SP_ListaPedidosGerarPreFaturamento]
+﻿CREATE procedure [ZPN_SP_ListaPedidosGerarPreFaturamento]
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
+	 @DataInicialVenc datetime,
+	 @DataFinalVEnc datetime,
 	 @NumAtCard varchar(100),
 	 @CardName varchar(250)
 )
@@ -70,13 +71,25 @@ WHERE
 	AND ISNULL(ORDR.NumAtCard,'') <> ''  
 	AND isnull(FAT."SaldoFaturado",0) < RDR1."LineTotal" 
 	AND ORDR."DocDate" between @DataInicial and @DataFinal 
+	AND ORDR.DocDueDate between @DataInicial and @DataFinal 
+
 	AND 
 	(
 		(ORDR."CardName" like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
 		OR 
 		(ORDR.CardCode like '%' + @CardName + '%' or isnull(@CardName,'') = '')  
 	)
-	AND (ISNULL(@NumAtCard,'') = '' or (ORDR.NumAtCard like '%' + @NumAtCard + '%' AND isnull(ORDR.NumAtCard,'') <> '') )
+	and
+	(
+        (ISNULL(@NumAtCard, '') <> '' 
+            AND EXISTS (
+                SELECT 1
+                FROM STRING_SPLIT(@NumAtCard, ',') AS nums
+                WHERE trim(ORDR.NumAtCard) like '%' + trim(nums.value) + '%'
+            )
+        )
+        OR (ISNULL(@NumAtCard, '') = '')
+    )
 ORDER BY
 	ORDR."DocDueDate" desc , ORDR."DocNum", RDR1."LineNum";
 

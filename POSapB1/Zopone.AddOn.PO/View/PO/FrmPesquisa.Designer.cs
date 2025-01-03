@@ -41,7 +41,7 @@
             this.txtPesquisar.Location = new System.Drawing.Point(122, 12);
             this.txtPesquisar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtPesquisar.Name = "txtPesquisar";
-            this.txtPesquisar.Size = new System.Drawing.Size(974, 22);
+            this.txtPesquisar.Size = new System.Drawing.Size(1525, 22);
             this.txtPesquisar.TabIndex = 0;
             this.txtPesquisar.TextChanged += new System.EventHandler(this.txtPesquisar_TextChanged);
             // 
@@ -63,13 +63,13 @@
             this.dgResultado.RowHeadersWidth = 51;
             this.dgResultado.RowTemplate.Height = 24;
             this.dgResultado.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgResultado.Size = new System.Drawing.Size(1083, 359);
+            this.dgResultado.Size = new System.Drawing.Size(1634, 652);
             this.dgResultado.TabIndex = 2;
             this.dgResultado.DoubleClick += new System.EventHandler(this.dgResultado_DoubleClick);
             // 
             // BtPesq
             // 
-            this.BtPesq.Location = new System.Drawing.Point(13, 423);
+            this.BtPesq.Location = new System.Drawing.Point(12, 720);
             this.BtPesq.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BtPesq.Name = "BtPesq";
             this.BtPesq.Size = new System.Drawing.Size(98, 23);
@@ -80,7 +80,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(115, 423);
+            this.button1.Location = new System.Drawing.Point(114, 720);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 23);
@@ -93,7 +93,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1108, 462);
+            this.ClientSize = new System.Drawing.Size(1670, 756);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.BtPesq);
             this.Controls.Add(this.dgResultado);

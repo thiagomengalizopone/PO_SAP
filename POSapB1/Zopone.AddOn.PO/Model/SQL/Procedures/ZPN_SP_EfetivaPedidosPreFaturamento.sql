@@ -1,4 +1,4 @@
-﻿cREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
+﻿CREATE PROCEDURE ZPN_SP_EfetivaPedidosPreFaturamento
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -73,11 +73,16 @@ FROM
 	INNER JOIN OITM ON OITM.ItemCode = DRF1."ItemCode"
 WHERE
 	ODRF."DocStatus" = 'O' AND 
-	(
-		(isnull(ODRF."NumAtCard",'') = @NumAtCard and isnull(@NumAtCard,'') <> '')
-		or 
-		(isnull(@NumAtCard,'') = '')
-	) 
+	 (
+        (ISNULL(@NumAtCard, '') <> '' 
+            AND EXISTS (
+                SELECT 1
+                FROM STRING_SPLIT(@NumAtCard, ',') AS nums
+                WHERE trim(ODRF.NumAtCard) like '%' + trim(nums.value) + '%'
+            )
+        )
+        OR (ISNULL(@NumAtCard, '') = '')
+    )
 	AND odrf.CreateDate between @DataInicialInclusao and @DataFinalInclusao
 	AND DRF1."DocDate" between @DataInicial and @DataFinal 
 	AND 

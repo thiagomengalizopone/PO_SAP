@@ -283,7 +283,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     if (RowIndexEdit >= 0)
                         dblTotalLinhasPO -= linesPO[RowIndexEdit].U_Valor;
 
-                    if (dblTotalLinhasPO >= dblTotalPO || (dblTotalLinhasPO + Convert.ToDouble(txtValor.Text) > dblTotalPO))
+                    if (dblTotalLinhasPO > dblTotalPO || Math.Round((dblTotalLinhasPO + Convert.ToDouble(txtValor.Text)),2) > dblTotalPO)
                     {
                         MessageBox.Show("Não é possível adicionar novas linhas. Total das linhas não pode ser maior que total da PO!");
                         return;
@@ -690,8 +690,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
 
-
-
                 if (!string.IsNullOrEmpty(txtCodigo.Text))
                 {
                     if (IsDraft)
@@ -702,7 +700,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     if (!oPedidoVenda.GetByKey(Convert.ToInt32(txtCodigo.Text)))
                         throw new Exception($"Erro ao pesquisar Pedido: {txtNroNF.Text}");
-
 
                     if (oPedidoVenda.CardCode != linesPO[0].U_CardCode)
                     {
@@ -956,6 +953,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         lblCliente.Text = dgResultado.Rows[0][6].ToString();//cliente
                         BPLId = Convert.ToInt32(dgResultado.Rows[0][8].ToString());
                         txtNroCont.Text = dgResultado.Rows[0][10].ToString();
+                        txtDescContrato.Text = dgResultado.Rows[0][9].ToString();
                         PCG = dgResultado.Rows[0][11].ToString();
                         OBRA = dgResultado.Rows[0][12].ToString();
                         REGIONAL = dgResultado.Rows[0][13].ToString();
