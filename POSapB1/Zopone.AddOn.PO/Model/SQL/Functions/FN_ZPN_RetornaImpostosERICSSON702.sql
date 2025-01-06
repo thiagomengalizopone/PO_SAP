@@ -32,7 +32,6 @@ BEGIN
 				END +
                 
 				+CHAR(13) + CHAR(10) +
-				+CHAR(13) + CHAR(10) +
                 ' DADOS BANCÁRIOS: BCO BRADESCO (BAURU) / AG.: 3384-7 - C/C: 2887-8 ' 
                 +
 			+CHAR(13) + CHAR(10) +

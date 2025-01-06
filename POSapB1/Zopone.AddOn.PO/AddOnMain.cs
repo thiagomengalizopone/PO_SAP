@@ -36,8 +36,6 @@ namespace Zopone.AddOn.PO
 
             Util.CriarPastaLog();
 
-            //AtualizaItensSAP();
-
             Install.VerificaInstalacaoAddOn();
 
             Instalar.ExecutaScriptsAtualizacaoCampos();

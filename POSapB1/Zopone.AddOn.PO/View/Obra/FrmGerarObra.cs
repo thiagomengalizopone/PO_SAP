@@ -350,6 +350,7 @@ namespace Zopone.AddOn.PO.View.Obra
             Int32 Dimensao = Convert.ToInt32(SqlUtils.GetValue(@"SELECT Max(T0.""DimCode"") FROM ODIM T0 WHERE T0.""DimDesc"" = 'OBRA'"));
             string TipoCentroCusto = SqlUtils.GetValue(@"SELECT maX(CctCode) FROM OCCT WHERE CctName = 'Receitas'");
 
+            string BplName = SqlUtils.GetValue("SELECT T0.[BPLName] FROM OBPL T0 WHERE T0.[BPLId] = 1");
 
             GeneralService oGeneralService = null;
             GeneralData oGeneralData = null;
@@ -375,6 +376,8 @@ namespace Zopone.AddOn.PO.View.Obra
                     oGeneralData.SetProperty("U_CodContrato", DtObras.GetValue("IdContrato", iRow).ToString());
                     oGeneralData.SetProperty("U_DescContrato", DtObras.GetValue("Contrato", iRow).ToString());
                     oGeneralData.SetProperty("U_BPLId", 1);
+                    oGeneralData.SetProperty("U_VisPCI", "Y");
+
                     oGeneralData.SetProperty("U_CardCode", DtObras.GetValue("IdCliente", iRow).ToString());
                     oGeneralData.SetProperty("U_CardName", DtObras.GetValue("Cliente", iRow).ToString());
                     oGeneralData.SetProperty("U_Regional", DtObras.GetValue("IdRegional", iRow).ToString());
@@ -383,7 +386,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     oGeneralParams = oGeneralService.Add(oGeneralData);
 
 
-                    UtilProjetos.SalvarProjeto(Code, Code);
+                    UtilProjetos.SalvarProjeto(Code, Code, BplName);
 
                     CentroCusto.CriaCentroCusto(Code, Dimensao, TipoCentroCusto, "", "", Code);
 

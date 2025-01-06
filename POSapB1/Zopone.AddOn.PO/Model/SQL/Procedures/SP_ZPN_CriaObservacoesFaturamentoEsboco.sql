@@ -38,7 +38,7 @@ BEGIN
 	end;
 
     -- Verifica se o nome do cliente contém 'CLARO'
-    IF (UPPER(@CardName) LIKE '%CLARO%')
+    IF (UPPER(@CardName) LIKE '%CLARO%' )
     BEGIN
         -- Se @MENSAGEM estiver vazia, cria a mensagem inicial
         IF (@MENSAGEM = '') 
@@ -51,16 +51,19 @@ BEGIN
                 CHAR(13) + CHAR(10) +
                 'CÓD. DA PREST. DE SERVS. ' + ISNULL(DRF1.ItemCode, '') + CHAR(13) + CHAR(10) +
                 'SERVS. DE PROJETOS DE ENGENHARIA ' + CHAR(13) + CHAR(10) +
-                'CONTRATO: ' + CHAR(13) + CHAR(10) +
-                'SITE: ' + ISNULL(OBRA.U_IdSite, '') + ' ' + ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
+                'CONTRATO: 102877' + CHAR(13) + CHAR(10) +
+				CHAR(13) + CHAR(10) +
+                'SITE: ' + ISNULL(OBRA.U_IdSite, '') + ' -  ' + ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
                 CHAR(13) + CHAR(10) +
                 'EVENTO: 100% - TERMINO DOS SERVIÇOS ' + CHAR(13) + CHAR(10) +
                 CHAR(13) + CHAR(10) +
 
-                -- Chama a função FN_ZPN_RetornaImpostosClaro
-                DBO.FN_ZPN_RetornaImpostosClaro(@DocEntry) 
-
-               
+				case 
+					when @ItemCode = '7.03' then 
+		                DBO.FN_ZPN_RetornaImpostosClaro703(@DocEntry) 
+					else 
+					    DBO.FN_ZPN_RetornaImpostosClaro702(@DocEntry) 
+					end              
             FROM 
                 DRF1 
                 INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
@@ -132,11 +135,11 @@ BEGIN
 					ELSE 'LINHA: 2' 
 				END +  + CHAR(13) + CHAR(10) +
 				'PARCELA 1/1 - 100%: ' + CHAR(13) + CHAR(10) +
-				'CONTRATO: ' + CHAR(13) + CHAR(10) +
+				'CONTRATO: 2010.17.3619.0 ' + CHAR(13) + CHAR(10) +
 				'SERVS. ' + 
 						CASE 
-							WHEN DRF1.ItemCode = '7.02' THEN 'INSTA' 
-							ELSE 'PPI.' 
+							WHEN DRF1.ItemCode = '7.02' THEN 'INSTA ' 
+							ELSE 'PPI. ' 
 						END + 
 				'CÓD. DA PREST. DE SERVS. ' + ISNULL(DRF1.ItemCode, '') + CHAR(13) + CHAR(10) +
 
@@ -175,12 +178,11 @@ BEGIN
 					'PEDIDO DE COMPRA: ' + ISNULL(ODRF.NumAtCard, '') + + CHAR(13) + CHAR(10) +
 					'OBRA: ' + ISNULL(DRF1.Project, '') + CHAR(13) + CHAR(10) +
 					CHAR(13) + CHAR(10) +
-					CHAR(13) + CHAR(10) +
-					'SITE: ' + ISNULL(OBRA.U_IdSite, '') + ' ' + ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
-					CHAR(13) + CHAR(10) +
+					'SITE: ' + ISNULL(OBRA.U_IdSite, '') + ' - ' + ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
 					CHAR(13) + CHAR(10) +
 					'EVENTO: TERMINO DOS SERVIÇOS ' + CHAR(13) + CHAR(10) +
-					'ITEM ' +
+					CHAR(13) + CHAR(10) +
+					'ITEM : ' +
 					CHAR(13) + CHAR(10) +
 					CHAR(13) + CHAR(10) +                
 					+
@@ -203,6 +205,91 @@ BEGIN
 					LEFT(@MENSAGEM, CHARINDEX('ALIQUOTA INSS', @MENSAGEM) - 1) -- Tudo antes de IRRF
 					+ @MENSAGEMIMPOSTO; -- A nova parte de impostos
 			END
+    END;
+	ELSE IF (UPPER(@CardName) LIKE '%ERICSSON%' AND (@ItemCode = '7.03' or @ItemCode = '31.01' ))
+    BEGIN
+        -- Se @MENSAGEM estiver vazia, cria a mensagem inicial
+        IF (@MENSAGEM = '') 
+        BEGIN
+            SELECT 
+                @MENSAGEM = 
+                'PEDIDO DE COMPRA: ' + ISNULL(ODRF.NumAtCard, '') + CHAR(13) + CHAR(10) +
+                'OBRA: ' + ISNULL(DRF1.Project, '') + CHAR(13) + CHAR(10) +
+                CHAR(13) + CHAR(10) +
+                'CÓD. DA PREST. DE SERVS. ' + ISNULL(DRF1.ItemCode, '') + CHAR(13) + CHAR(10) +
+                CHAR(13) + CHAR(10) +
+                'SITE: ' + ISNULL(OBRA.U_IdSite, '') + ' - ' + ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
+                CHAR(13) + CHAR(10) + 
+				'ITEM: ' + CHAR(13) + CHAR(10) +
+				+ CHAR(13) + CHAR(10) +
+                -- Chama a função FN_ZPN_RetornaImpostosClaro
+                dbo.FN_ZPN_RetornaImpostosNokia(@DocEntry) 
+
+
+            FROM 
+                DRF1 
+                INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
+                INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = DRF1.Project
+            WHERE
+                DRF1.DocEntry = @DocEntry;
+        END
+        ELSE
+        BEGIN
+            -- Caso contrário, adiciona a parte de impostos à mensagem existente
+            SET @MENSAGEMIMPOSTO = dbo.FN_ZPN_RetornaImpostosNokia(@DocEntry);
+
+            -- Substitui a parte de impostos na mensagem
+            SET @MENSAGEM = 
+              LEFT(@MENSAGEM, CHARINDEX(' IRRF', @MENSAGEM) - 1) -- Tudo antes de IRRF
+                + @MENSAGEMIMPOSTO; -- A nova parte de impostos
+        END
+    END;
+	ELSE IF (UPPER(@CardName) LIKE '%AMERICAN TO%' )
+    BEGIN
+        -- Se @MENSAGEM estiver vazia, cria a mensagem inicial
+        IF (@MENSAGEM = '') 
+        BEGIN
+            SELECT 
+                @MENSAGEM = 
+                'OBRA: ' + ISNULL(DRF1.Project, '') + ' - ' + 'CÓD. DA PREST. DE SERVS. ' + ISNULL(DRF1.ItemCode, '') +
+				+ CHAR(13) + CHAR(10) +
+				+ CHAR(13) + CHAR(10) +
+                'SITE: ' + ISNULL(OBRA.U_IdSite, '') + ' - ' + ISNULL(OBRA.U_CidadeDesc, '') + ' - ' + ISNULL(OBRA.U_Estado, '') + CHAR(13) + CHAR(10) +
+                + ISNULL(OBRA.U_Rua, '') + ' - ' + ISNULL(OBRA.U_Numero, '')  + ' ' + ISNULL(OBRA.U_Complemento, '')
+				+ CHAR(13) + CHAR(10) +
+				'CEP: ' + ISNULL(OBRA.U_CEP, '') + ' - ' + ISNULL(OBRA.U_Bairro, '')  + 
+				+ CHAR(13) + CHAR(10) +
+				+ CHAR(13) + CHAR(10) +
+				'EVENTO: 70% - TERMINO DE SERVIÇO / 30% - ACEITAÇÃO FINAL' + CHAR(13) + CHAR(10) +
+				+ CHAR(13) + CHAR(10) +
+				'/PO ' + ODRF.NumAtCard + ' LINHA 1 VALOR 000,00 /TYPE COLLO' +  CHAR(13) + CHAR(10) +
+				'/PO ' + ODRF.NumAtCard + ' LINHA 2 VALOR 000,00 /TYPE COLLO' +  CHAR(13) + CHAR(10) +
+				'/PO ' + ODRF.NumAtCard + ' LINHA 3 VALOR 000,00 /TYPE COLLO' +  CHAR(13) + CHAR(10) +
+				'/PO ' + ODRF.NumAtCard + ' LINHA 4 VALOR 000,00 /TYPE COLLO' +  CHAR(13) + CHAR(10) +
+				'/PO ' + ODRF.NumAtCard + ' LINHA 5 VALOR 000,00 /TYPE COLLO' +  CHAR(13) + CHAR(10) +
+				'/PO ' + ODRF.NumAtCard + ' LINHA 6 VALOR 000,00 /TYPE COLLO' +  CHAR(13) + CHAR(10) +
+				+ CHAR(13) + CHAR(10) +
+                -- Chama a função FN_ZPN_RetornaImpostosClaro
+                dbo.[FN_ZPN_RetornaImpostosATC](@DocEntry) 
+
+
+            FROM 
+                DRF1 
+                INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
+                INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = DRF1.Project
+            WHERE
+                DRF1.DocEntry = @DocEntry;
+        END
+        ELSE
+        BEGIN
+            -- Caso contrário, adiciona a parte de impostos à mensagem existente
+            SET @MENSAGEMIMPOSTO = dbo.[FN_ZPN_RetornaImpostosATC](@DocEntry);
+
+            -- Substitui a parte de impostos na mensagem
+            SET @MENSAGEM = 
+              LEFT(@MENSAGEM, CHARINDEX(' ISS:', @MENSAGEM) - 1) -- Tudo antes de IRRF
+                + @MENSAGEMIMPOSTO; -- A nova parte de impostos
+        END
     END;
     ELSE
     BEGIN

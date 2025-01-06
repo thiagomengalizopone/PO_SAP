@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION [dbo].[FN_ZPN_RetornaImpostoHuawei] (@DocEntry INT)
+﻿create FUNCTION [dbo].[FN_ZPN_RetornaImpostoHuawei] (@DocEntry INT)
 RETURNS VARCHAR(MAX)
 AS
 BEGIN
@@ -12,8 +12,8 @@ BEGIN
                 FORMAT(ISNULL(IMP."INSSTaxbleAmnt", 0), 'C', 'pt-BR') + CHAR(13) + CHAR(10) +
 			    ' RETENÇÃO P/ PREVIDÊNCIA SOCIAL: ' + 
                 FORMAT(ISNULL(IMP."INSSWTAmnt", 0), 'C', 'pt-BR') + CHAR(13) + CHAR(10) +
-			    ' 50% MATERIAIS..........................: ' + FORMAT(ISNULL(ODRF.DocTotal * 0.5, 0), 'C', 'pt-BR') + CHAR(13) + CHAR(10) +
-			    ' 50% SERVIÇO............................: ' + FORMAT(ISNULL(ODRF.DocTotal * 0.5, 0), 'C', 'pt-BR') + CHAR(13) + CHAR(10) +
+			    ' 50% MATERIAIS..........................: ' + FORMAT(ISNULL(DRF1.LineTotal * 0.5, 0), 'C', 'pt-BR') + CHAR(13) + CHAR(10) +
+			    ' 50% SERVIÇO............................: ' + FORMAT(ISNULL(DRF1.LineTotal * 0.5, 0), 'C', 'pt-BR') + CHAR(13) + CHAR(10) +
                 ' INSS LEI 13.161 DE 31 DE AGOSTO DE 2015.: ' 
                
 			else
@@ -36,6 +36,3 @@ BEGIN
 
     RETURN @Impostos;
 END;
-
-
-

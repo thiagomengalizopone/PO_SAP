@@ -104,7 +104,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                     var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
 
-                    string sql_query = $"SP_ZPN_LISTAALOCACOESOBRA '{DtPesquisa.GetValue("Obra", pVal.Row - 1)}'";
+                    string sql_query = $"SP_ZPN_LISTAALOCACOESOBRAFAT '{DtPesquisa.GetValue("Obra", pVal.Row - 1)}'";
                     oRecordSet.DoQuery(sql_query);
 
                     int iRow = 1;
@@ -288,7 +288,14 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
 
-                            oPedidoVenda.Lines.SetCurrentLine(LineNum);
+                            for (int iRowPedido = 0; iRowPedido < oPedidoVenda.Lines.Count; iRowPedido ++ )
+                            {
+                                oPedidoVenda.Lines.SetCurrentLine(iRowPedido);
+
+                                if (oPedidoVenda.Lines.LineNum == LineNum)
+                                    break;
+                            }
+
 
 
                             Util.ExibirMensagemStatusBar($"Faturando PO {oPedidoVenda.NumAtCard} - Linha -  {oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString()}", BoMessageTime.bmt_Medium, false);

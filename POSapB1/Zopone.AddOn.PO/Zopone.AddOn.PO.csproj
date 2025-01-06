@@ -494,7 +494,7 @@
     <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosNokia.sql" />
     <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosWinity.sql" />
     <EmbeddedResource Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOEricsson.sql" />
-    <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosClaro.sql" />
+    <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosClaro703.sql" />
     <EmbeddedResource Include="Model\SQL\Functions\ZPN_FN_RetornaObraPOHuawei.sql" />
     <EmbeddedResource Include="Model\SQL\Views\ZPN_VW_STATUSVALIDACAOPEDIDOSPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPCIImportaçãoTESTEPCI\vw_tmp_obrasimportar.sql" />
@@ -540,6 +540,12 @@
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ATUALIZAOBRASAP.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_ATUALIZAOBRACANDIDATOSAP.sql" />
     <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosERICSSON702.sql" />
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_PCI_DeletaNfeservico.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\VW_ZPN_TotalImpostoRetidoPagamento.sql" />
+    <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosClaro702.sql" />
+    <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosATC.sql" />
+    <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosERICSSON.sql" />
+    <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosClaro.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

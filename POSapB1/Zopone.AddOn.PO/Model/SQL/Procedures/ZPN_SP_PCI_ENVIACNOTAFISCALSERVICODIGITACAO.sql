@@ -71,12 +71,11 @@ BEGIN
 		
 		UPDATE DRF6
 			SET 
-				U_ItemFat = ALOCA.U_EtapaRec,
-				U_DescItemFat = ALOCA.U_EtapaRecD
+				U_ItemFat = DRF1.U_ItemFat,
+				U_DescItemFat = DRF1.U_DescItemFat
 		FROM
 			DRF6 
 			INNER JOIN DRF1 ON DRF1."DocEntry"  = DRF6."DocEntry"
-			INNER JOIN "@ZPN_ALOCA" ALOCA ON ALOCA."Code" = DRF1.U_ItemFat
 		WHERE 
 			isnull(DRF6.U_ItemFat,'') = '' and 
 			DRF6."DocEntry" = @DocEntry;			
