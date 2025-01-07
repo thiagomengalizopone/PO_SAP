@@ -22,6 +22,12 @@ namespace Zopone.AddOn.PO.Model.SAP
                 #endregion
 
 
+                #region Código Migrado - Z Sistemas
+                DBCreation.CriarCampoUsuario("@ZPN_OPRJ", "CodMigrado", "Código Migrado", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false);
+                DBCreation.CriarCampoUsuario("OOAT", "CodMigrado", "Código Migrado", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false);
+                DBCreation.CriarCampoUsuario("OLCT", "CodMigrado", "Código Migrado", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoFldSubTypes.st_None, 10, false);
+                #endregion
+
                 #region Campos AddOn WMS
                 var valoresValidosTipoDocumento = new List<Tuple<string, string>>();
                 valoresValidosTipoDocumento.Add(new Tuple<string, string>("N", "Nenhum"));

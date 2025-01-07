@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [ZPN_SP_PCI_ATUALIZAOBRA]
+﻿create PROCEDURE [ZPN_SP_PCI_ATUALIZAOBRA]
 (
     @CodeObra VARCHAR(30),
 	@CreateDate date
@@ -134,8 +134,8 @@ BEGIN TRY
         OBRA.U_IdSite,                           -- idsite
         OBRA.U_Tipo,                             -- tipo
         isnull(OBRA.U_Situacao,''),              -- situacao
-        OCNT.Name,                               -- cidade
-        OCNT.State,                              -- estado
+        obra.U_CidadeDesc collate SQL_Latin1_General_CP1_CI_AS,                             -- cidade
+        OBRA.U_Estado,                              -- estado
         OBRA.UpdateDate,                         -- dataatualizacao
         0,                                       -- situacaopci
         NULL,                                    -- observacaomontagemform
@@ -247,7 +247,7 @@ BEGIN TRY
 				@idsite,
 				@tipo,
 				@situacao,
-				@cidade,
+				@cidade collate SQL_Latin1_General_CP1_CI_AS,
 				@estado,
 				@dataatualizacao,
 				@situacaopci,

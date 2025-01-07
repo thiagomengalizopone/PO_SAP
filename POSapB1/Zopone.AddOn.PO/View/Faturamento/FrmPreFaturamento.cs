@@ -310,7 +310,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                             oNotaFiscalSaida.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                             oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(oPedidoVenda.Lines.Usage);
-                            oNotaFiscalSaida.Lines.TaxCode = "1556-001"; // Temporário até definição do imposto
                             oNotaFiscalSaida.Lines.ProjectCode = oPedidoVenda.Lines.ProjectCode;
                             oNotaFiscalSaida.Lines.COGSCostingCode = oPedidoVenda.Lines.COGSCostingCode;
                             oNotaFiscalSaida.Lines.COGSCostingCode2 = oPedidoVenda.Lines.COGSCostingCode2;
@@ -378,14 +377,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
                     }
 
+                    oNotaFiscalSaidaImposto.GetByKey(DocEntry);
+                    oNotaFiscalSaidaImposto.DiscountPercent = 0;
 
-
-
-                    //oNotaFiscalSaidaImposto.GetByKey(DocEntry);
-                    //oNotaFiscalSaidaImposto.DiscountPercent = 0;
-
-                    //if (oNotaFiscalSaidaImposto.Update() != 0)
-                    //throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+                    if (oNotaFiscalSaidaImposto.Update() != 0)
+                        throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
 
                     SqlUtils.DoNonQuery($"exec SP_ZPN_CriaObservacoesFaturamentoEsboco {DocEntry}");
 

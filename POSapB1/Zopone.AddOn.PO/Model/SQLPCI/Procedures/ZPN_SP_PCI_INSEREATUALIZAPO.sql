@@ -1,12 +1,8 @@
-﻿create PROCEDURE [ZPN_SP_PCI_INSEREATUALIZAPO] (@DocEntry int)
+﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_INSEREATUALIZAPO] (@DocEntry int)
 AS
 BEGIN
 
     BEGIN TRY
-
-	
-	
-
 
 
         DECLARE @UltimaData date;
@@ -79,7 +75,6 @@ BEGIN
         AS (SELECT T0.DocEntry,
                    MIN(T0.LineNum) AS MinLineNum
             FROM RDR1 T0
-            WHERE ISNULL(T0.AgrNo, 0) <> 0
             GROUP BY T0.DocEntry
            )
 
@@ -116,11 +111,12 @@ BEGIN
             INNER JOIN RDR1
                 ON RDR1.DocEntry = ORDR.DocEntry
                    AND RDR1.LineNum = MinLineNums.MinLineNum
-            INNER JOIN OOAT
+				
+            LEFT JOIN OOAT
                 ON OOAT.AbsID = RDR1.AgrNo
         WHERE 
-              (
-                      (
+			(
+                     (
                           ORDR.CreateDate >= @UltimaData
                           AND ORDR.CreateTs >= @UltimaHora
                           AND ISNULL(@DocEntry, 0) = 0
@@ -131,7 +127,6 @@ BEGIN
                          )
                   )
               AND OBPL.U_IdPCI IS NOT NULL;
-
 
         -- Variáveis para armazenar os dados
         DECLARE @poid varchar(150);
@@ -283,8 +278,6 @@ BEGIN
 
             -- Variáveis para armazenar os dados
             SET @poitemid = ''
-
-
 
             SET @item = ''
 
@@ -460,13 +453,6 @@ BEGIN
     -- THROW; 
 
     END CATCH;
-
-
-
-
-
-
-
 
 
 end;

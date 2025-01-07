@@ -50,7 +50,6 @@ BEGIN
             [obraid],
             [gestatus],
             [gedataacao],
-            [obraclassificacaoid],
             [referencia],
             [longitude],
             [bairro],
@@ -79,16 +78,13 @@ BEGIN
             [cidade],
             [estado],
             [dataatualizacao],
-            [situacaopci],
-            [observacaomontagemform],
-            [gedarquivoid],
-            [gedpastaid]
+            [observacaomontagemform]
+            
         ) VALUES
         (
             @obraid,
             @gestatus,
             @gedataacao,
-            @obraclassificacaoid,
             @referencia,
             @longitude,
             @bairro,
@@ -117,10 +113,7 @@ BEGIN
             @cidade,
             @estado,
             @dataatualizacao,
-            @situacaopci,
-            @observacaomontagemform,
-            @gedarquivoid,
-            @gedpastaid
+            @observacaomontagemform
         );
     END
     ELSE
@@ -128,7 +121,6 @@ BEGIN
         UPDATE [dbo].[obra]  -- Corrigido para a tabela correta
         SET
             [gedataacao] = GETDATE(),
-            [gecontaidacao] = NULL,
             [referencia] = @referencia,
             [longitude] = @longitude,
             [bairro] = @bairro,  -- Corrigido para usar @bairro
@@ -156,14 +148,8 @@ BEGIN
             [cidade] = @cidade,
             [estado] = @estado,
             [dataatualizacao] = @dataatualizacao,
-            [situacaopci] = @situacaopci,  -- Corrigido para usar @situacaopci
-            [observacaomontagemform] = @observacaomontagemform,
-            [gedarquivoid] = @gedarquivoid,
-            [gedpastaid] = @gedpastaid
+            [observacaomontagemform] = @observacaomontagemform
         WHERE
             [obraid] = @obraid;
     END
 END
-GO
-
-

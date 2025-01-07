@@ -578,6 +578,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     {
                         return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} - Data de transmissão diferente da data de hoje!";
                     }
+                    
+                    oEsbocoNotaFiscalSaida.DiscountPercent = 0;
 
                     if (oEsbocoNotaFiscalSaida.SaveDraftToDocument() != 0)
                         return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} Linha {iRow + 1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";

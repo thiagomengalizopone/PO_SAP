@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AddOnRegData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SlientInstallation="No" SlientUpgrade="No" Partnernmsp="Zopone" SchemaVersion="3.0" Type="" MultipleVersion="true" OnDemand="" OnPremise="" ExtName="Faturamento2025010201" ExtVersion="2025.01.02.01" Contdata="Zopone" Partner="Zopone" DBType="MSSQL" ClientType="W">
+<AddOnRegData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SlientInstallation="No" SlientUpgrade="No" Partnernmsp="Zopone" SchemaVersion="3.0" Type="" MultipleVersion="true" OnDemand="" OnPremise="" ExtName="Faturamento2025010701" ExtVersion="2025.01.07.01" Contdata="Zopone" Partner="Zopone" DBType="MSSQL" ClientType="W">
   <Validity>
     <SBOCompatibility>
       <Version From="9.0" To="11.0" />
