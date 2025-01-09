@@ -72,6 +72,7 @@ FROM
 	INNER JOIN OUSR ON ODRF.[UserSign] = OUSR.[USERID] 
 	INNER JOIN OITM ON OITM.ItemCode = DRF1."ItemCode"
 WHERE
+	DRF1.Usage = 14 and 
 	ODRF."DocStatus" = 'O' AND 
 	 (
         (ISNULL(@NumAtCard, '') <> '' 

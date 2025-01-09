@@ -11,16 +11,13 @@ namespace Zopone.AddOn.PO.Helpers
 {
     public static class UtilPCI
     {
-        public static async Task EnviarDadosNFLiberadaPCIAsync(Int32 DocEntry)
+        public static async Task EnviarDadosNFTransmitida(Int32 DocEntry)
         {
             try
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
-
-                SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {DocEntry}, 13");
-
-                string SQL_Query = $"ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA {DocEntry}";
+                string SQL_Query = $"[ZPN_SP_PCI_ENVIACONTASRECEBER] {DocEntry}";
 
                 string erro_obra = SqlUtils.GetValue(SQL_Query);
 

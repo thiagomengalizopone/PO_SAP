@@ -97,7 +97,7 @@ namespace Zopone.AddOn.PO.View.Obra
             EdCodeContrato = (EditText)oForm.Items.Item("EdCodCont").Specific;
             EdDescContrato = (EditText)oForm.Items.Item("EdDescCont").Specific;
             EdDescContrato.ChooseFromListAfter += EdDescContrato_ChooseFromListAfter;
-
+            EdDescContrato.ValidateAfter += EdDescContrato_ValidateAfter;
 
             EdCardCode = (EditText)oForm.Items.Item("EdCardCode").Specific;
             EdCardCode.ChooseFromListAfter += EdCardCode_ChooseFromListAfter;
@@ -187,6 +187,24 @@ namespace Zopone.AddOn.PO.View.Obra
 
             oForm.Visible = true;
 
+        }
+
+        private void EdDescContrato_ValidateAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                string CodContrato = SqlUtils.GetValue($"SELECT AbsId FROM OOAT WHERE Descript = '{EdDescContrato.Value.Trim()}'");
+
+                if (!string.IsNullOrEmpty(CodContrato) && EdCodeContrato.Value != CodContrato)
+                    EdCodeContrato.Value = CodContrato;
+                
+                oForm.Mode = BoFormMode.fm_UPDATE_MODE;
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro carregar código contrato: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
         }
 
         private void EdCardCode_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
@@ -585,9 +603,8 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (aEvent.SelectedObjects == null)
                     return;
 
-                if (pVal.ItemUID != "CFL_Contr")
+                if (pVal.ItemUID != "EdDescCont")
                     return;
-
 
                 string CodeContrato = Convert.ToString(aEvent.SelectedObjects.GetValue("Number", 0));
                 string DescContrato = Convert.ToString(aEvent.SelectedObjects.GetValue("Descript", 0));

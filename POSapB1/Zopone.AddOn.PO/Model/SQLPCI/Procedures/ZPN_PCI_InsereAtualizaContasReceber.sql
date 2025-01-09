@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ZPN_PCI_InsereAtualizaContasReceber
+﻿create PROCEDURE [dbo].[ZPN_PCI_InsereAtualizaContasReceber]
 (
     @contareceberid VARCHAR(150),
     @gestatus INT,
@@ -105,8 +105,6 @@ BEGIN
             [emissao] = @emissao,
             [vencimento] = @vencimento,
             [programacao] = @programacao,
-            [recebimento] = @recebimento,
-            [cancelamento] = @cancelamento,
             [codigo] = @codigo,
             [fatura] = @fatura,
             [etapaid] = @etapaid,

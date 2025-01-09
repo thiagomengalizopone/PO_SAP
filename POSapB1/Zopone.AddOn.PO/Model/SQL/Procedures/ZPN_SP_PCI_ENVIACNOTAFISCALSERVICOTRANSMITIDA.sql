@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOLIBERADA]
+﻿create PROCEDURE [ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOTRANSMITIDA]
 (
     @DocEntry INT
 )
@@ -91,11 +91,11 @@ BEGIN
         SELECT 
             ROW_NUMBER() OVER (ORDER BY OINV.DocEntry, ZPN_OPRJ.U_IdPCI) AS RowNum,
             OINV.DocEntry,
-            OINV.SeqCode,
+            DOC.SerialNFSe,
             ZPN_OPRJ.U_IdPCI AS obraid,
 			OINV.DocDate,
 			INV1.LineTotal,
-            2,
+            4,
             CAND.U_IdPCI AS obracandidatoid,
 			isnull(OINV.U_IdPCI,'') 
         FROM 
@@ -104,7 +104,11 @@ BEGIN
 			INNER JOIN INV1 ON INV1."DocEntry" = OINV."DocEntry"
             LEFT JOIN "@ZPN_OPRJ" ZPN_OPRJ ON ZPN_OPRJ.Code = INV1.Project
             LEFT JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code = INV1.U_Candidato
+			INNER JOIN sbo_taxOne.[dbo].doc ON DOC.DocType = oinv."ObjType" AND DOC.DocEntry = OINV."DocEntry"
+			INNER JOIN sbo_taxOne.[dbo].Entidade ET on ET.id = doc.EntityId
         WHERE
+			DOC.StatusId = 4 and 
+			ET.CompanyDb= 'SBO_ZOPONE_ENGENHARIA' AND
 			OINV."ObjType" = 13 and 
             OINV.CANCELED <> 'Y' 
             AND (ISNULL(@DocEntry, 0) = 0 OR @DocEntry = OINV.DocEntry)
@@ -154,18 +158,24 @@ BEGIN
 				GETDATE(),
 				NULL,
 				@IdPci,
-				OINV.SeqCode,
+				OINV.DocEntry,
 				INV6.DueDate,
-				OINV.GrosProfit * (INV6.InstPrcnt / 100) ,
-				OINV.SeqCode,
+				INV1.LineTotal *  (INV6.InstPrcnt / 100) ,
+	            DOC.SerialNFSe,
 				INV6.InstPrcnt,
-				isnull(ALOCA.U_IdPCI,'')
-
+				isnull(ALOCA_REC.U_IdPCI,'')
 			FROM 
 				INV6
 				INNER JOIN OINV ON OINV.DocEntry = INV6.DocEntry
+				INNER JOIN INV1 ON INV1.DocEntry = OINV.DocEntry
 				INNER JOIN "@ZPN_ALOCA" ALOCA ON INV6.U_ItemFat = ALOCA.Code
+				INNER JOIN "@ZPN_ALOCA" ALOCA_REC ON  ALOCA_REC.Code = ALOCA.U_EtapaRec
+				INNER JOIN sbo_taxOne.[dbo].doc ON DOC.DocType = oinv."ObjType" AND DOC.DocEntry = OINV."DocEntry"
+				INNER JOIN sbo_taxOne.[dbo].Entidade ET on ET.id = doc.EntityId
 			WHERE 
+				oinv.docentry = 41 and 
+				DOC.StatusId = 4 and 
+				ET.CompanyDb= 'SBO_ZOPONE_ENGENHARIA' AND
 				OINV.DocEntry = @nfeservicoid
 			ORDER BY OINV.DocEntry, INV6.DueDate;  
 

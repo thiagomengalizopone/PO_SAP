@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO]
+﻿create PROCEDURE [ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO]
 (
     @DocEntry INT
 )
@@ -169,20 +168,16 @@ BEGIN
 				@IdPci,
 				ODRF.DocEntry,
 				DRF6.DueDate,
-				ODRF.GrosProfit * (DRF6.InstPrcnt / 100) ,
+				DRF1.LineTotal * (DRF6.InstPrcnt / 100) ,
 				ODRF.NumAtCard,
 				DRF6.InstPrcnt,
-				isnull(ALOCA.U_IdPCI,'')
-
+				isnull(ALOCA_REC.U_IdPCI,'')
 			FROM 
 				DRF6
 				INNER JOIN ODRF ON ODRF.DocEntry = DRF6.DocEntry
 				INNER JOIN DRF1 ON DRF1.DocEntry = ODRF.DocEntry
-				INNER JOIN "@ZPN_ALOCA" ALOCA ON 
-					case when isnull(DRF6.U_ItemFat,'') <> '' then DRF6.U_ItemFat
-					else DRF1.U_ItemFat
-				end 
-					= ALOCA.Code
+				INNER JOIN "@ZPN_ALOCA" ALOCA ON DRF6.U_ItemFat = ALOCA.Code
+				INNER JOIN "@ZPN_ALOCA" ALOCA_REC ON  ALOCA_REC.Code = ALOCA.U_EtapaRec
 			WHERE 
 				ODRF.DocEntry = @nfeservicoid
 			ORDER BY ODRF.DocEntry, DRF6.DueDate;  
@@ -198,11 +193,6 @@ BEGIN
 
 			SET @RowCountParcela = (SELECT COUNT(*) FROM @nfeservicoparcela);
 			SET @RowNumParcela = 1;
-
-
-
-			--[ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO] 17
-
 
 			WHILE @RowNumParcela <= @RowCountParcela 
 			BEGIN

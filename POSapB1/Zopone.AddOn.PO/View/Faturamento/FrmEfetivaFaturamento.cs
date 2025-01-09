@@ -560,6 +560,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 if (oEsbocoNotaFiscalSaida.Cancel() != 0)
                     throw new Exception($"Erro ao cancelar documentos de pré faturamento: {oEsbocoNotaFiscalSaida.NumAtCard} - {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                SqlUtils.DoNonQuery($"EXEC SP_ZPN_REMOVENFSERVICO {DocEntry}");
             }
         }
 

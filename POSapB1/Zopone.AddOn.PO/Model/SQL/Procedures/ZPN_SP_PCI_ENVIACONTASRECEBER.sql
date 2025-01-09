@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [ZPN_SP_PCI_ENVIACONTASRECEBER]
+﻿create PROCEDURE [ZPN_SP_PCI_ENVIACONTASRECEBER]
 (
 	@DocEntry INT
 )
@@ -94,7 +94,7 @@ BEGIN
 			NULL AS gecontaidacao, 
 			OBPL.U_IdPCI AS empresaid,
 			ZPN_OPRJ.U_IdPCI AS obraid,
-			OINV.GrosProfit * (inv6.InstPrcnt/100) AS valor,
+			INV1.LineTotal * (inv6.InstPrcnt/100) AS valor,
 			0 AS valorliquido,
 			ISNULL(IMP.PISWTAmnt, 0) * (inv6.InstPrcnt/100) AS valorpis,
 			ISNULL(IMP.COFINSWTAmnt, 0)* (inv6.InstPrcnt/100) AS valorcofins,
@@ -108,8 +108,8 @@ BEGIN
 			NULL AS recebimento,
 			NULL AS cancelamento,
 			CAST(OINV.DocEntry AS VARCHAR(10)) + CAST(INV6.InstlmntID AS VARCHAR(5)) AS codigo,
-			CAST(OINV.Serial AS VARCHAR(10)) + '-' + CAST(INV6.InstlmntID AS VARCHAR(5)) AS fatura,
-			ALOC.U_IdPCI AS etapaid,
+			CAST(OINV.U_TX_NDfe AS VARCHAR(10)) + '-' + CAST(INV6.InstlmntID AS VARCHAR(5)) AS fatura,
+			ALOCA_REC.U_IdPCI AS etapaid,
 			CAND.U_IdPCI AS obracandidatoid
 		FROM 
 			OINV
@@ -118,9 +118,14 @@ BEGIN
 			LEFT JOIN "@ZPN_OPRJ" ZPN_OPRJ ON ZPN_OPRJ.Code = INV1.Project
 			INNER JOIN INV6 ON INV6.DocEntry = OINV.DocEntry
 			LEFT JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = INV6.U_ItemFat
+			LEFT JOIN "@ZPN_ALOCA" ALOCA_REC ON  ALOCA_REC.Code = ALOC.U_EtapaRec
 			LEFT JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code = INV1.U_Candidato
-			LEFT JOIN ZPN_VW_DOCUMENTOSIMPOSTO IMP ON IMP.AbsEntry = OINV.DocEntry
+			LEFT JOIN ZPN_VW_DOCUMENTOSIMPOSTO IMP ON IMP.AbsEntry = OINV.DocEntry and IMP.TipoDocumento = 'INV'
+			INNER JOIN sbo_taxOne.[dbo].doc ON DOC.DocType = oinv."ObjType" AND DOC.DocEntry = OINV."DocEntry"
+			INNER JOIN sbo_taxOne.[dbo].Entidade ET on ET.id = doc.EntityId
 		WHERE
+			DOC.StatusId = 4 and 
+			ET.CompanyDb= 'SBO_ZOPONE_ENGENHARIA' AND
 			OINV.CANCELED <> 'Y' 
 			AND (ISNULL(@DocEntry, 0) = 0 OR @DocEntry = OINV.DocEntry)
 			AND ISNULL(ZPN_OPRJ.U_IdPCI, '') <> '' 
@@ -204,7 +209,7 @@ BEGIN
 		END;
 
 		-- Chama procedure para cancelar contas a receber
-		EXEC ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER 0;
+		--EXEC ZPN_SP_PCI_ENVIACANCELAMENTOCONTASRECEBER 0;
 
 		-- Insere o log da execução
 		IF (@DocEntry IS NULL OR @DocEntry = 0)

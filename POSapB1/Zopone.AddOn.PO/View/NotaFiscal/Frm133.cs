@@ -107,7 +107,7 @@ namespace Zopone.AddOn.PO.View.FrmParceiroNegocio
                         Util.ExibeMensagensDialogoStatusBar($"Erro ao verificar dados de cadastro PCI (NF): {Ex.Message}");
                     }
 
-                    UtilPCI.EnviarDadosNFLiberadaPCIAsync(DocEntry);
+                    UtilPCI.EnviarDadosNFTransmitida(DocEntry);
 
                 }
 

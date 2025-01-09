@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SP_ZPN_LISTAALOCACOESOBRAFAT
+﻿create PROCEDURE SP_ZPN_LISTAALOCACOESOBRAFAT
 (
 	@CodigoObra varchar(100)
 )
@@ -12,7 +12,7 @@ BEGIN
 		INNER JOIN "@ZPN_ALOCONI" ALCI ON ALCI.Code		= OBRA.U_CodContrato AND ALCI.U_PC = 'Y'
 		INNER JOIN "@ZPN_ALOCA" ON "@ZPN_ALOCA"."Code"	= ALCI.U_CodAloc
 	where
-		"@ZPN_ALOCA".U_ItensRec = 'Y' and 
+		"@ZPN_ALOCA".U_ItensFat = 'Y' and 
 		OBRA."Code" = @CodigoObra;
 
 END;
