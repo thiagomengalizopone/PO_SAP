@@ -50,15 +50,8 @@ BEGIN TRY
 	declare @erro_obra  VARCHAR(max) = '';
 
 
-    -- Verifica e remove a tabela temporária se já existir
-    IF EXISTS (SELECT * FROM tempdb.sys.tables 
-               WHERE NAME LIKE '#TempObra%' AND TYPE = 'U')
-    BEGIN
-        DROP TABLE #TempObra;
-    END
-
     -- Cria a tabela temporária
-    CREATE TABLE #TempObra
+    declare @TempObra TABLE 
     (
 		rownumber int,
         obraid VARCHAR(255),

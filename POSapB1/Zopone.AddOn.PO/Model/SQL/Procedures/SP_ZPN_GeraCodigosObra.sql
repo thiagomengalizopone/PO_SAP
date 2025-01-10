@@ -33,6 +33,7 @@ WITH CTE AS (
     FROM 
         "@ZPN_OPRJ"
     WHERE
+        CAST(SUBSTRING(Code, CHARINDEX('/', Code) + 1, LEN(Code)) AS INT) = 
 		PATINDEX('[A-Za-z][0-9].____/__', "Code") > 0 and
 		LEN(Code) = 10
 )
