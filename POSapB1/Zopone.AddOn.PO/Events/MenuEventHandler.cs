@@ -12,7 +12,7 @@ using Zopone.AddOn.PO.View.Obra;
 using Zopone.AddOn.PO.View.ParametrosPO;
 using Zopone.AddOn.PO.View.PO;
 using Zopone.AddOn.PO.View.Manutencao;
-
+using Zopone.AddOn.PO.View.Financeiro;
 
 namespace Zopone.AddOn.PO
 {
@@ -105,6 +105,13 @@ namespace Zopone.AddOn.PO
                                 new FrmAtualizaDataProgramada();
                             }
                             break;
+                        case MenuConstantes.MnuContasReceber:
+                            {
+                                new FrmContasReceber();
+                            }
+                            break;
+
+                            
                     }
                 }
 

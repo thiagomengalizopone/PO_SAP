@@ -179,6 +179,22 @@ namespace Zopone.AddOn.PO.Menus
                  26,
                  null));
 
+            listMenu.Add(new Menu(
+                MenuConstantes.MnuFaturamentoPO,
+                BoMenuType.mt_POPUP,
+                MenuConstantes.MnuFinanceiro,
+                "Financeiro",
+                27,
+                null));
+
+            listMenu.Add(new Menu(
+                 MenuConstantes.MnuFinanceiro,
+                 BoMenuType.mt_STRING,
+                 MenuConstantes.MnuContasReceber,
+                 "Contas a Receber",
+                 28,
+                 null));
+
 
             #endregion [ PO ]
 

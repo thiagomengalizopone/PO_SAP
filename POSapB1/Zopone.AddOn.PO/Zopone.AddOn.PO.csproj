@@ -239,6 +239,7 @@
     <Compile Include="View\ContratoAlocacao\FrmContAloca.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
     <Compile Include="View\Deposito\Frm62.cs" />
+    <Compile Include="View\Financeiro\FrmContasReceber.cs" />
     <Compile Include="View\Manutencao\FrmAtualizaDataProgramada.cs" />
     <Compile Include="View\Faturamento\FrmEfetivaFaturamento.cs" />
     <Compile Include="View\Faturamento\FrmPreFaturamento.cs" />
@@ -547,12 +548,17 @@
     <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosERICSSON.sql" />
     <EmbeddedResource Include="Model\SQL\Functions\FN_ZPN_RetornaImpostosClaro.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_REMOVENFSERVICO.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_LISTACONTASRECEBER.sql" />
+    <EmbeddedResource Include="View\Financeiro\FrmContasReceber.srf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Faturamento\" />
+    <Folder Include="Financeiro\" />
     <Folder Include="Model\Senior\" />
   </ItemGroup>
   <ItemGroup>

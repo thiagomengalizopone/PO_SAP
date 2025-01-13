@@ -78,6 +78,8 @@ namespace Zopone.AddOn.PO.View.Obra
                     maskedEdit.LostFocus += UtilTextBox.MskOnLostFocus;
                     maskedEdit.GotFocus += UtilTextBox.MskOnGotFocus;
                 }
+                
+                txtNroPedido.Focus();
             }
 
             foreach (Control control in this.gbItens.Controls)
@@ -617,6 +619,8 @@ namespace Zopone.AddOn.PO.View.Obra
             }
 
             CarregarMatrixPO();
+
+            txtNroPedido.Focus();
         }
 
         private void CarregarDadosLinhaPO(int rowIndex)
@@ -729,7 +733,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     oPedidoVenda.DocDate = Convert.ToDateTime(mskDATA.Text);
                     oPedidoVenda.DocDueDate = Convert.ToDateTime(mskDATA.Text);
                     oPedidoVenda.CardCode = linesPO[0].U_CardCode;
-                    oPedidoVenda.BPL_IDAssignedToInvoice = BPLId;
+                    oPedidoVenda.BPL_IDAssignedToInvoice = 1;
                 }
 
                 oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
@@ -1136,6 +1140,11 @@ namespace Zopone.AddOn.PO.View.Obra
                 Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, MensagemErro, Ex);
                 MessageBox.Show(MensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void txtValor_Validated(object sender, EventArgs e)
+        {
+            AdicionarRemoverItemGrid();
         }
     }
 }

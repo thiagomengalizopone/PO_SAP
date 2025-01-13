@@ -24,6 +24,9 @@
         public const string MnuPO = "MnPO";
         public const string MnuFaturamento = "MnuFaturamento";
         public const string MnuManutencao = "MnuManutencao";
+        
+        public const string MnuFinanceiro = "MnuFinanc";
+        public const string MnuContasReceber = "MnuContRec";
 
         public const string MnuManutencaoDtProgramanda = "MnuMtDtProgramada";
 
