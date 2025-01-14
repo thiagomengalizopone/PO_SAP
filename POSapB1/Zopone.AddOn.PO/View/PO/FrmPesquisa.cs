@@ -12,6 +12,8 @@ namespace Zopone.AddOn.PO.View.PO
         public string TipoPesquisa { get; set; }
         public List<string> retornoDados = new List<string>();
         public List<string> Parametros = new List<string>();
+        private Timer _debounceTimer;
+
         public FrmPesquisa(string tipoPesquisa, List<string> parametros = null)
         {
             TipoPesquisa = tipoPesquisa;
@@ -63,19 +65,21 @@ namespace Zopone.AddOn.PO.View.PO
                 else if (TipoPesquisa == "PO")
                     commandSQL = $"SP_ZPN_PESQUISAPO '{txtPesquisar.Text}'";
                 else if (TipoPesquisa == "CLIENTE")
-                    commandSQL = $"SP_ZPN_PESQUISACLIENTE '{txtPesquisar.Text}'";                
+                    commandSQL = $"SP_ZPN_PESQUISACLIENTE '{txtPesquisar.Text}'";
 
+                // Carregar dados no DataTable
                 DataTable result = SqlUtils.ExecuteCommand(commandSQL);
 
+                // Atualizar o DataGridView
+                dgResultado.SuspendLayout();
                 dgResultado.DataSource = result;
-
                 for (int iCol = 0; iCol < dgResultado.Columns.Count; iCol++)
                 {
                     dgResultado.Columns[iCol].SortMode = DataGridViewColumnSortMode.Automatic;
                     dgResultado.Columns[iCol].ReadOnly = true;
                 }
-
                 dgResultado.AutoResizeColumns();
+                dgResultado.ResumeLayout();
             }
             catch (Exception Ex)
             {
@@ -87,7 +91,22 @@ namespace Zopone.AddOn.PO.View.PO
 
         private void txtPesquisar_TextChanged(object sender, EventArgs e)
         {
-            CarregarDadosPesquisa();
+            // Cancelar o timer anterior se houver
+            if (_debounceTimer != null)
+            {
+                _debounceTimer.Stop();
+            }
+
+            // Criar e configurar o timer para disparar após 300ms
+            _debounceTimer = new Timer();
+            _debounceTimer.Interval = 300;  // Intervalo de 300ms
+            _debounceTimer.Tick += (s, args) =>
+            {
+                _debounceTimer.Stop();  // Parar o timer
+                CarregarDadosPesquisa(); // Carregar os dados da pesquisa
+            };
+
+            _debounceTimer.Start(); // Iniciar o timer
         }
 
         private void BtPesq_Click(object sender, EventArgs e)

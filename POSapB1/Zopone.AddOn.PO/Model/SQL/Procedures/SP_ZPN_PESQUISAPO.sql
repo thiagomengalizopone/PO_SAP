@@ -4,7 +4,7 @@
 )
 AS
 
-SELECT DISTINCT TOP 100
+SELECT DISTINCT TOP 30
 	T0."DocEntry"							"Id PO", 
 	T0."DocNum"								"Código PO", 
 	T0.NumAtCard							"Número Pedido", 

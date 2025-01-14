@@ -552,6 +552,7 @@
     <EmbeddedResource Include="View\Financeiro\FrmContasReceber.srf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQLPCI\Procedures\ZPN_SP_PCI_REMOVEPO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
