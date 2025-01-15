@@ -294,7 +294,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (!remover)
                 {
-                    LinePO oLinePO = new LinePO()
+                        LinePO oLinePO = new LinePO()
                     {
                         Agrupar = "N",
                         LineNum = LineNumEdit,
@@ -475,6 +475,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         lblCliente.Text = string.Empty;
                         txtNroCont.Text = string.Empty;
                         txtDescContrato.Text = string.Empty;
+                        lblObra.Text = string.Empty;
                         BPLId = -1;
 
                         PCG = string.Empty;
@@ -631,7 +632,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 RowIndexEdit = rowIndex;
                 LineNumEdit = linesPO[rowIndex].LineNum;
                 txtObra.Text = linesPO[rowIndex].U_PrjCode;
-                lblObra.Text = linesPO[rowIndex].U_PrjName;
                 txtCandidato.Text = linesPO[rowIndex].U_Candidato;
                 txtCliente.Text = linesPO[rowIndex].U_CardCode;
                 lblCliente.Text = linesPO[rowIndex].U_CardName;
@@ -653,6 +653,9 @@ namespace Zopone.AddOn.PO.View.Obra
                 PCG = linesPO[rowIndex].CostingCode;
                 OBRA = linesPO[rowIndex].CostingCode2;
                 REGIONAL = linesPO[rowIndex].CostingCode3;
+
+                lblObra.Text = SqlUtils.GetValue($@"SELECT Name FROM ""@ZPN_OPRJ"" WHERE ""Code"" = '{linesPO[rowIndex].U_PrjCode}'");
+
             }
             catch (Exception Ex)
             {

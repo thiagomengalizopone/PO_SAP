@@ -9,7 +9,7 @@ BEGIN
 
     SELECT TOP 500
         OPRJ.PrjCode AS "Código Obra",
-        OPRJ.PrjName AS "Obra",
+        ZPN_PRJ.Name AS "Localização",
         ZPN_PRJ.U_IdSite AS "Id Site",
         OOAT.Descript AS "Contrato",
         OBPL.BplName AS "Filial",
