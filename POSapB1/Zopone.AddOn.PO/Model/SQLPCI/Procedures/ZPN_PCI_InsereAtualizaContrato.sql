@@ -1,4 +1,4 @@
-﻿CREATE procedure [ZPN_PCI_InsereAtualizaContrato]
+﻿create procedure [dbo].[ZPN_PCI_InsereAtualizaContrato]
 (
 	 @contratoid varchar(250),
 	 @gestatus INT,
@@ -63,7 +63,6 @@ BEGIN
 		,[descricao] = @descricao
 		,[filialid] = @filialid
 		,[clienteid] = @clienteid
-		,[iniciocontrato] = @iniciocontrato
 		,[terminocontrato] = @terminocontrato
 		,[datacadastro] = @datacadastro
 		,[codigo] = @codigo
@@ -73,6 +72,3 @@ BEGIN
 END;
 
 end;
-
-
-

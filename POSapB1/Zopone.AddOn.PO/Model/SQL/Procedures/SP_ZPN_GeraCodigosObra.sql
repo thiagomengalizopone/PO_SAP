@@ -1,4 +1,11 @@
-﻿ALTER PROCEDURE SP_ZPN_GeraCodigosObra
+﻿USE [SBO_ZOPONE_ENGENHARIA]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_ZPN_GeraCodigosObra]    Script Date: 15/01/2025 17:05:12 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SP_ZPN_GeraCodigosObra]
 (
 	@Prefixo VARCHAR(10),  
     @Quantidade INT
@@ -33,7 +40,7 @@ WITH CTE AS (
     FROM 
         "@ZPN_OPRJ"
     WHERE
-        CAST(SUBSTRING(Code, CHARINDEX('/', Code) + 1, LEN(Code)) AS INT) = 
+        CAST(SUBSTRING(Code, CHARINDEX('/', Code) + 1, LEN(Code)) AS INT) = right(cast(YEAR(GETDATE()) as varchar(4)),2) and
 		PATINDEX('[A-Za-z][0-9].____/__', "Code") > 0 and
 		LEN(Code) = 10
 )
@@ -78,7 +85,8 @@ SELECT
 	'																											                                            																											                                            ' Validacao,
 	'                                ' "IdContrato",
 	'                                ' "IdRegional",
-	'                                ' "IdCliente"
+	'                                ' "IdCliente",
+    '                                ' "Localizacao"
 	
 FROM 
     CTE_Codigos

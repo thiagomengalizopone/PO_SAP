@@ -180,6 +180,17 @@ namespace Zopone.AddOn.PO.View.Obra
                     ErroValida += "Contrato não encontrado | ";
                 }
 
+
+                string IdSite = DtObras.GetValue("Site", iRow).ToString().Trim();
+                string Regional = DtObras.GetValue("IdRegional", iRow).ToString().Trim();
+
+                string Estado = SqlUtils.GetValue($"SELECT isnull(Max(Estado),'') FROM VW_FILIAL_ESTADO WHERE Filial = '{Regional}'");
+
+                string Localizacao = $"{Estado}-{IdSite}";
+
+                DtObras.SetValue("Localizacao", iRow, Localizacao);
+
+
                 if (!string.IsNullOrEmpty(ErroValida))
                 {
                     DtObras.SetValue("Validacao", iRow, ErroValida);
@@ -253,6 +264,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 MtObras.Columns.Item("Col_8").DataBind.Bind("DtObras", "IdRegional");
                 MtObras.Columns.Item("Col_9").DataBind.Bind("DtObras", "IdCliente");
                 MtObras.Columns.Item("Col_10").DataBind.Bind("DtObras", "Validacao");
+                MtObras.Columns.Item("Col_11").DataBind.Bind("DtObras", "Localizacao");
 
                 MtObras.LoadFromDataSourceEx();
 
@@ -346,6 +358,7 @@ namespace Zopone.AddOn.PO.View.Obra
         private void GerarProjetosSAPB1()
         {
             string Code = string.Empty;
+            string Localizacao = string.Empty;
 
             Int32 Dimensao = Convert.ToInt32(SqlUtils.GetValue(@"SELECT Max(T0.""DimCode"") FROM ODIM T0 WHERE T0.""DimDesc"" = 'OBRA'"));
             string TipoCentroCusto = SqlUtils.GetValue(@"SELECT maX(CctCode) FROM OCCT WHERE CctName = 'Receitas'");
@@ -365,12 +378,14 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (!string.IsNullOrEmpty(DtObras.GetValue("CodObra", iRow).ToString()))
                 {
                     Code = DtObras.GetValue("CodObra", iRow).ToString();
+                    Localizacao = DtObras.GetValue("Localizacao", iRow).ToString();
+
 
                     Util.ExibirMensagemStatusBar($"Gerando obra {Code}");
 
                     oGeneralData = (GeneralData)oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData);
                     oGeneralData.SetProperty("Code", Code);
-                    oGeneralData.SetProperty("Name", Code);
+                    oGeneralData.SetProperty("Name", Localizacao);
 
                     oGeneralData.SetProperty("U_IdSite", DtObras.GetValue("Site", iRow).ToString());
                     oGeneralData.SetProperty("U_CodContrato", DtObras.GetValue("IdContrato", iRow).ToString());
