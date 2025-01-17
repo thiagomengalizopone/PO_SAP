@@ -17,7 +17,7 @@ namespace Zopone.AddOn.PO.Helpers
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
-                string SQL_Query = $"[ZPN_SP_PCI_ENVIACONTASRECEBER] {DocEntry}";
+                string SQL_Query = $"[ZPN_SP_PCI_ENVIACNOTAFISCALSERVICOTRANSMITIDA] {DocEntry}";
 
                 string erro_obra = SqlUtils.GetValue(SQL_Query);
 
@@ -25,8 +25,7 @@ namespace Zopone.AddOn.PO.Helpers
                 {
                     Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, erro_obra);
                     Util.ExibeMensagensDialogoStatusBar(erro_obra);
-                }
-                else
+                }                
                 {
                     string SQL_QueryCR = $"ZPN_SP_PCI_ENVIACONTASRECEBER {DocEntry}";
 

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SP_ZPN_VERIFICACADASTROPCI
+﻿create PROCEDURE [dbo].[SP_ZPN_VERIFICACADASTROPCI]
 (
 	@DocEntry INT,
 	@TipoDoc int
@@ -19,7 +19,9 @@ BEGIN
 		ISNULL(ALOC."Code", '') AS CodigoAlocacao,
 		ISNULL(ALOC.U_IdPci, '') AS IdPciAlocacao,    
 		ISNULL(OOAT.AbsID, '') AS CodigoContrato,
-		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato
+		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato,
+		null AS CodigoAlocacaoParc,
+		null AS IdPciAlocacaoParc
 	FROM 
 		RDR1
 		INNER JOIN ORDR ON ORDR.DocEntry = RDR1.DocEntry
@@ -46,17 +48,21 @@ BEGIN
 		ISNULL(ALOC."Code", '') AS CodigoAlocacao,
 		ISNULL(ALOC.U_IdPci, '') AS IdPciAlocacao,    
 		ISNULL(OOAT.AbsID, '') AS CodigoContrato,
-		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato
+		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato,
+		ISNULL(ALOC_PARC."Code", '') AS CodigoAlocacaoParc,
+		ISNULL(ALOC_PARC.U_IdPci, '') AS IdPciAlocacaoParc
 	FROM 
 		DRF1
 		INNER JOIN ODRF ON ODRF.DocEntry = DRF1.DocEntry
+		INNER JOIN DRF6 ON drf1.DocEntry = drf6.DocEntry
 		INNER JOIN CRD8 ON CRD8.CardCode = ODRF.CardCode
 			AND CRD8.BPLId = ODRF.BPLId
 		INNER JOIN CRD7 ON CRD7.CardCode = CRD8.CardCode 
 			AND ISNULL(CRD7.Address, '') = ''
 		INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = DRF1.Project
-		INNER JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = DRF1.U_ItemFat
+		LEFT JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = DRF1.U_ItemFat
 		INNER JOIN OOAT ON OOAT.AbsId = OBRA.U_CodContrato
+		LEFT JOIN "@ZPN_ALOCA" ALOC_PARC ON ALOC.Code = DRF6.U_ItemFat
 	WHERE 
 		@TipoDoc = 112 and 
 		--(ISNULL(OOAT.U_IdPCI, '') = '' or  ISNULL(ALOC.U_IdPci, '') = '' or ISNULL(OBRA.U_IdPci, '')  = '' or     ISNULL(CRD8."U_IdPci",'')  = '' ) and 
@@ -70,19 +76,24 @@ BEGIN
 		crd8.BPLId,
 		OBRA."Code" AS CodigoObra,
 		ISNULL(OBRA.U_IdPci, '') AS IdPciObra,
-		ISNULL(ALOC."Code", '') AS CodigoAlocacao,
-		ISNULL(ALOC.U_IdPci, '') AS IdPciAlocacao,    
+		ISNULL(ALOC."Code", '') AS CodigoAlocacaoItem,
+		ISNULL(ALOC.U_IdPci, '') AS IdPciAlocacaoItem,    
 		ISNULL(OOAT.AbsID, '') AS CodigoContrato,
-		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato
+		ISNULL(OOAT.U_IdPCI, '') AS IdPciContrato,
+		ISNULL(ALOC_PARC."Code", '') AS CodigoAlocacaoParc,
+		ISNULL(ALOC_PARC.U_IdPci, '') AS IdPciAlocacaoParc
+
 	FROM 
 		INV1
 		INNER JOIN OINV ON OINV.DocEntry = INV1.DocEntry
+		INNER JOIN inv6 ON OINV.DocEntry = inv6.DocEntry
 		INNER JOIN CRD8 ON CRD8.CardCode = OINV.CardCode
 			AND CRD8.BPLId = OINV.BPLId
 		INNER JOIN CRD7 ON CRD7.CardCode = CRD8.CardCode 
 			AND ISNULL(CRD7.Address, '') = ''
 		INNER JOIN "@ZPN_OPRJ" OBRA ON OBRA.Code = INV1.Project
-		INNER JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = INV1.U_ItemFat
+		LEFT JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = INV1.U_ItemFat
+		LEFT JOIN "@ZPN_ALOCA" ALOC_PARC ON ALOC.Code = INV6.U_ItemFat
 		INNER JOIN OOAT ON OOAT.AbsId = OBRA.U_CodContrato
 	WHERE 
 		@TipoDoc = 13 and 
@@ -91,16 +102,18 @@ BEGIN
 
 	-- Declaração das variáveis que receberão os dados de cada linha
 	DECLARE 
-		@CodigoCliente VARCHAR(50),
-		@DocumentoPrincipal VARCHAR(50),
-		@IdPciCliente VARCHAR(50),
-		@CodigoObra VARCHAR(50),
-		@IdPciObra VARCHAR(50),
-		@CodigoAlocacao VARCHAR(50),
-		@IdPciAlocacao VARCHAR(50),
-		@CodigoContrato VARCHAR(50),
-		@IdPciContrato VARCHAR(50),
-		@BplId int;
+		@CodigoCliente VARCHAR(250),
+		@DocumentoPrincipal VARCHAR(250),
+		@IdPciCliente VARCHAR(250),
+		@CodigoObra VARCHAR(250),
+		@IdPciObra VARCHAR(250),
+		@CodigoAlocacaoItem VARCHAR(250),
+		@IdPciAlocacaoItem VARCHAR(250),
+		@CodigoContrato VARCHAR(250),
+		@IdPciContrato VARCHAR(250),
+		@BplId int,
+		@CodigoAlocacaoParcela VARCHAR(250),
+		@IdPciAlocacaoParcela VARCHAR(250);
 
 	-- Abrir o cursor
 	OPEN CursorResultado;
@@ -113,16 +126,18 @@ BEGIN
 		@BplId,
 		@CodigoObra,
 		@IdPciObra,
-		@CodigoAlocacao,
-		@IdPciAlocacao,
+		@CodigoAlocacaoItem,
+		@IdPciAlocacaoItem,
 		@CodigoContrato,
-		@IdPciContrato;
+		@IdPciContrato,
+		@CodigoAlocacaoParcela,
+		@IdPciAlocacaoParcela;
 
 	-- Percorrer o cursor linha por linha
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 
-		--if (@IdPciCliente = '') begin
+		if (@IdPciCliente = '') begin
 
 			 select @IdPciCliente = ISNULL(MAX(cast([clienteid] as varchar(250))),'') from [LINKZCLOUD].[zsistema_producao].[dbo].[cliente] where [documentoprincipal] = @DocumentoPrincipal;
 
@@ -134,20 +149,35 @@ BEGIN
 			 UPDATE CRD8 SET U_IdPCI = @IdPciCliente WHERE CardCode = @CodigoCliente and BplId = @BplId;
 
 			 exec ZPN_SP_PCI_ATUALIZACLIENTE @CodigoCliente;
-		--end;
+		end;
+
+
+
 
 		--if (@IdPciContrato = '') BEGIN 
 			exec ZPN_SP_PCI_ATUALIZACONTRATO @CodigoContrato;
 		--end;
 
+
+
+
 		--if (@IdPciObra = '') begin
 			EXEC [ZPN_SP_PCI_ATUALIZAOBRA] @CodigoObra, NULL;
 		--end;
-	 
+	 	
+		--IF (@IdPciAlocacaoItem = '')
+		--BEGIN
+			--print 'passou1';
+			--EXEC [ZPN_SP_PCI_ATUALIZAETAPA] @CodigoAlocacaoItem;
+		--END;
+
+		--IF (@IdPciAlocacaoParcela = '')
+		--BEGIN
+		--print 'passou2';
+			--EXEC [ZPN_SP_PCI_ATUALIZAETAPA] @CodigoAlocacaoParcela;
+		--END;
 
 
-
-		-- Busque a próxima linha
 		FETCH NEXT FROM CursorResultado INTO 
 			@CodigoCliente, 
 			@DocumentoPrincipal,
@@ -155,10 +185,12 @@ BEGIN
 			@BplId,
 			@CodigoObra,
 			@IdPciObra,
-			@CodigoAlocacao,
-			@IdPciAlocacao,
+			@CodigoAlocacaoItem,
+			@IdPciAlocacaoItem,
 			@CodigoContrato,
-			@IdPciContrato;
+			@IdPciContrato,
+			@CodigoAlocacaoParcela,
+			@IdPciAlocacaoParcela;
 	END;
 
 	-- Fechar e desalocar o cursor
@@ -167,3 +199,6 @@ BEGIN
 
 
 END;
+GO
+
+
