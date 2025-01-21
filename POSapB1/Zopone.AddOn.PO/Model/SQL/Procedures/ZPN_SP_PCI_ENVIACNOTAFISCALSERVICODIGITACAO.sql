@@ -1,4 +1,4 @@
-﻿create PROCEDURE [ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO]
+﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ENVIACNOTAFISCALSERVICODIGITACAO]
 (
     @DocEntry INT
 )
@@ -115,7 +115,7 @@ BEGIN
             INNER JOIN OBPL ON OBPL.BPLId = ODRF.BPLId 
 			INNER JOIN DRF1 ON DRF1."DocEntry" = ODRF."DocEntry"
             LEFT JOIN "@ZPN_OPRJ" ZPN_OPRJ ON ZPN_OPRJ.Code = DRF1.Project
-            LEFT JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code = DRF1.U_Candidato
+			LEFT JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code =  ZPN_OPRJ."Code" AND CAND.U_Identif =  DRF1.U_Candidato
         WHERE
 			ODRF."ObjType" = 13 and 
             ODRF.CANCELED <> 'Y' 
@@ -157,88 +157,96 @@ BEGIN
                 SET @IdPCI = NEWID();
             END;
 			
-			INSERT INTO @nfeservicoparcela
-			SELECT 
-	            ROW_NUMBER() OVER (ORDER BY ODRF.DocEntry, DRF6.DueDate) AS RowNum,
-				DRF6.InstlmntID,
-				ISNULL(DRF6.U_IdPCI,''),
-				1,
-				GETDATE(),
-				NULL,
-				@IdPci,
-				ODRF.DocEntry,
-				DRF6.DueDate,
-				DRF1.LineTotal * (DRF6.InstPrcnt / 100) ,
-				ODRF.NumAtCard,
-				DRF6.InstPrcnt,
-				isnull(ALOCA_REC.U_IdPCI,'')
-			FROM 
-				DRF6
-				INNER JOIN ODRF ON ODRF.DocEntry = DRF6.DocEntry
-				INNER JOIN DRF1 ON DRF1.DocEntry = ODRF.DocEntry
-				INNER JOIN "@ZPN_ALOCA" ALOCA ON DRF6.U_ItemFat = ALOCA.Code
-				INNER JOIN "@ZPN_ALOCA" ALOCA_REC ON  ALOCA_REC.Code = ALOCA.U_EtapaRec
-			WHERE 
-				ODRF.DocEntry = @nfeservicoid
-			ORDER BY ODRF.DocEntry, DRF6.DueDate;  
-
-			EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaNfeservico 
-				@IdPCI ,
-				@sequencia,
-				@obraid,
-				@emissao,
-				@valor,
-				@situacao, 
-				@obracandidatoid;
-
-			SET @RowCountParcela = (SELECT COUNT(*) FROM @nfeservicoparcela);
-			SET @RowNumParcela = 1;
-
-			WHILE @RowNumParcela <= @RowCountParcela 
+			if (isnull(@obraid,'') = '')  
 			BEGIN
-				SELECT 
-					@InstlmntID = InstlmntID,
-					@nfeservicopardelaid = nfeservicopardelaid,
-					@gestatus = gestatus,
-					@gedataacao = gedataacao,
-					@gecontaidacao = gecontaidacao,
-					@sequenciaParc = sequenciaParc,
-					@vencimento = vencimento,
-					@valorParc = valorParc,
-					@fatura = fatura,
-					@percentual = percentual,
-					@etapaid = etapaid
-				FROM 
-					@nfeservicoparcela
-				WHERE RowNumParc = @RowNumParcela;
-
-				IF (ISNULL(@nfeservicopardelaid, '') = '') 
-				BEGIN
-					SET @nfeservicopardelaid = NEWID();
-				END;
-				
-				EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaNfeservicoParcela 
-															 @nfeservicopardelaid,
-															@gestatus,
-															@gedataacao,
-															@gecontaidacao,
-															@IdPCI,
-															@sequencia,
-															@vencimento,
-															@valorParc,
-															@fatura,
-															@percentual ,
-															@etapaid;
-
-
-
-				UPDATE DRF6 SET U_IdPCI = @nfeservicopardelaid WHERE ISNULL(U_IdPCI,'') = '' AND DocEntry = @nfeservicoid AND InstlmntID = @InstlmntID; 
-
-				set @RowNumParcela = @RowNumParcela+1;
-
+				EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_RemoveNfeservico @IdPCI;
 			END;
 
+			if (isnull(@obraid,'') <> '') 
+			begin
+			
+				INSERT INTO @nfeservicoparcela
+				SELECT 
+					ROW_NUMBER() OVER (ORDER BY ODRF.DocEntry, DRF6.DueDate) AS RowNum,
+					DRF6.InstlmntID,
+					ISNULL(DRF6.U_IdPCI,''),
+					1,
+					GETDATE(),
+					NULL,
+					@IdPci,
+					ODRF.DocEntry,
+					DRF6.DueDate,
+					DRF1.LineTotal * (DRF6.InstPrcnt / 100) ,
+					ODRF.NumAtCard,
+					DRF6.InstPrcnt,
+					isnull(ALOCA_REC.U_IdPCI,'')
+				FROM 
+					DRF6
+					INNER JOIN ODRF ON ODRF.DocEntry = DRF6.DocEntry
+					INNER JOIN DRF1 ON DRF1.DocEntry = ODRF.DocEntry
+					INNER JOIN "@ZPN_ALOCA" ALOCA ON DRF6.U_ItemFat = ALOCA.Code
+					INNER JOIN "@ZPN_ALOCA" ALOCA_REC ON  ALOCA_REC.Code = ALOCA.U_EtapaRec
+				WHERE 
+					ODRF.DocEntry = @nfeservicoid
+				ORDER BY ODRF.DocEntry, DRF6.DueDate;  
 
+				EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaNfeservico 
+					@IdPCI ,
+					@sequencia,
+					@obraid,
+					@emissao,
+					@valor,
+					@situacao, 
+					@obracandidatoid;
+
+				SET @RowCountParcela = (SELECT COUNT(*) FROM @nfeservicoparcela);
+				SET @RowNumParcela = 1;
+
+				WHILE @RowNumParcela <= @RowCountParcela 
+				BEGIN
+					SELECT 
+						@InstlmntID = InstlmntID,
+						@nfeservicopardelaid = nfeservicopardelaid,
+						@gestatus = gestatus,
+						@gedataacao = gedataacao,
+						@gecontaidacao = gecontaidacao,
+						@sequenciaParc = sequenciaParc,
+						@vencimento = vencimento,
+						@valorParc = valorParc,
+						@fatura = fatura,
+						@percentual = percentual,
+						@etapaid = etapaid
+					FROM 
+						@nfeservicoparcela
+					WHERE RowNumParc = @RowNumParcela;
+
+					IF (ISNULL(@nfeservicopardelaid, '') = '') 
+					BEGIN
+						SET @nfeservicopardelaid = NEWID();
+					END;
+				
+					EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaNfeservicoParcela 
+																 @nfeservicopardelaid,
+																@gestatus,
+																@gedataacao,
+																@gecontaidacao,
+																@IdPCI,
+																@sequencia,
+																@vencimento,
+																@valorParc,
+																@fatura,
+																@percentual ,
+																@etapaid;
+
+
+
+					UPDATE DRF6 SET U_IdPCI = @nfeservicopardelaid WHERE ISNULL(U_IdPCI,'') = '' AND DocEntry = @nfeservicoid AND InstlmntID = @InstlmntID; 
+
+					set @RowNumParcela = @RowNumParcela+1;
+
+				END;
+
+			end;
 
 			UPDATE ODRF SET U_IdPCI = @IdPCI WHERE ISNULL(U_IdPCI,'') = '' AND DocEntry = @nfeservicoid;
 

@@ -1,4 +1,4 @@
-﻿create PROCEDURE SP_ZPN_PESQUISAOBRA
+﻿ALTER PROCEDURE SP_ZPN_PESQUISAOBRA
 (
     @CampoPesquisa VARCHAR(250)
 )
@@ -14,7 +14,10 @@ BEGIN
         OOAT.Descript AS "Contrato",
         OBPL.BplName AS "Filial",
         OCRD.CardCode AS "Código Cliente",
-        OCRD.CardName AS "Cliente",
+        OCRD.CardName + CASE 
+			WHEN isnull(T1.TaxId0,'') <> '' THEN T1.TaxId0
+			ELSE ISNULL(T1.TaxId4,'')
+		END AS "Cliente",
         CLASS.Name AS "Classificação Obra",
         ZPN_PRJ.U_BplId AS "ID Filial",
         OBPL.BplName AS "Filial/Empresa",
@@ -28,6 +31,7 @@ BEGIN
         INNER JOIN OBPL ON ZPN_PRJ.U_BPLId = OBPL.BplId
         INNER JOIN OOAT ON OOAT.Number = ZPN_PRJ.U_CodContrato
         INNER JOIN OCRD ON OCRD.CardCode = OOAT.BPCode
+        LEFT JOIN CRD7 T1 ON T1."CardCode" = OCRD."CardCode"  and isnull(t1.Address   ,'') = ''
         LEFT JOIN "@ZPN_CLASSOB" CLASS ON CLASS.Code = ZPN_PRJ.U_ClassOb
         LEFT JOIN OPRC ON OPRC.U_Obra = ZPN_PRJ.Code
         LEFT JOIN OPRC OPRC_PCG ON OPRC_PCG.U_CardCode = OCRD.CardCode

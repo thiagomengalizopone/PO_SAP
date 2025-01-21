@@ -184,9 +184,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 string IdSite = DtObras.GetValue("Site", iRow).ToString().Trim();
                 string Regional = DtObras.GetValue("IdRegional", iRow).ToString().Trim();
 
-                string Estado = SqlUtils.GetValue($"SELECT isnull(Max(Estado),'') FROM VW_FILIAL_ESTADO WHERE Filial = '{Regional}'");
-
-                string Localizacao = $"{Estado}-{IdSite}";
+                string Localizacao = $"{IdSite}";
 
                 DtObras.SetValue("Localizacao", iRow, Localizacao);
 

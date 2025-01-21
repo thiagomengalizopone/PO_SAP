@@ -72,7 +72,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtCancelar = new System.Windows.Forms.Button();
             this.BtSalvar = new System.Windows.Forms.Button();
             this.lblItemFat = new System.Windows.Forms.Label();
-            this.lblCliente = new System.Windows.Forms.Label();
             this.lblObra = new System.Windows.Forms.Label();
             this.txtValor = new System.Windows.Forms.TextBox();
             this.mskDataFaturamento = new System.Windows.Forms.MaskedTextBox();
@@ -128,6 +127,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtAnexo = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.lblMensagemTela = new System.Windows.Forms.Label();
+            this.txtNomeCliente = new System.Windows.Forms.TextBox();
             this.gbItens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -243,6 +243,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // gbItens
             // 
+            this.gbItens.Controls.Add(this.txtNomeCliente);
             this.gbItens.Controls.Add(this.BtMesclar);
             this.gbItens.Controls.Add(this.txtDescContrato);
             this.gbItens.Controls.Add(this.BtDel);
@@ -262,7 +263,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.gbItens.Controls.Add(this.BtCancelar);
             this.gbItens.Controls.Add(this.BtSalvar);
             this.gbItens.Controls.Add(this.lblItemFat);
-            this.gbItens.Controls.Add(this.lblCliente);
             this.gbItens.Controls.Add(this.lblObra);
             this.gbItens.Controls.Add(this.txtValor);
             this.gbItens.Controls.Add(this.mskDataFaturamento);
@@ -319,7 +319,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // BtDel
             // 
             this.BtDel.Image = ((System.Drawing.Image)(resources.GetObject("BtDel.Image")));
-            this.BtDel.Location = new System.Drawing.Point(1272, 16);
+            this.BtDel.Location = new System.Drawing.Point(1272, 11);
             this.BtDel.Name = "BtDel";
             this.BtDel.Size = new System.Drawing.Size(27, 28);
             this.BtDel.TabIndex = 63;
@@ -476,16 +476,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.lblItemFat.TabIndex = 50;
             this.lblItemFat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // lblCliente
-            // 
-            this.lblCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCliente.ForeColor = System.Drawing.Color.Red;
-            this.lblCliente.Location = new System.Drawing.Point(686, 43);
-            this.lblCliente.Name = "lblCliente";
-            this.lblCliente.Size = new System.Drawing.Size(408, 22);
-            this.lblCliente.TabIndex = 49;
-            this.lblCliente.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
             // lblObra
             // 
             this.lblObra.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -528,7 +518,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // BtAdicionar
             // 
             this.BtAdicionar.Image = ((System.Drawing.Image)(resources.GetObject("BtAdicionar.Image")));
-            this.BtAdicionar.Location = new System.Drawing.Point(1239, 16);
+            this.BtAdicionar.Location = new System.Drawing.Point(1239, 11);
             this.BtAdicionar.Name = "BtAdicionar";
             this.BtAdicionar.Size = new System.Drawing.Size(27, 28);
             this.BtAdicionar.TabIndex = 23;
@@ -1030,6 +1020,15 @@ namespace Zopone.AddOn.PO.View.Obra
             this.lblMensagemTela.Size = new System.Drawing.Size(0, 16);
             this.lblMensagemTela.TabIndex = 66;
             // 
+            // txtNomeCliente
+            // 
+            this.txtNomeCliente.Enabled = false;
+            this.txtNomeCliente.Location = new System.Drawing.Point(686, 42);
+            this.txtNomeCliente.Multiline = true;
+            this.txtNomeCliente.Name = "txtNomeCliente";
+            this.txtNomeCliente.Size = new System.Drawing.Size(613, 28);
+            this.txtNomeCliente.TabIndex = 66;
+            // 
             // FrmPO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1118,7 +1117,6 @@ namespace Zopone.AddOn.PO.View.Obra
         private TextBox txtValor;
         private TextBox txtValorPO;
         private Label lblObra;
-        private Label lblCliente;
         private Label lblItemFat;
         private Button BtCancelar;
         private Button BtSalvar;
@@ -1164,6 +1162,7 @@ namespace Zopone.AddOn.PO.View.Obra
         private DataGridViewTextBoxColumn Contrato;
         private DataGridViewTextBoxColumn DescContrato;
         private Label lblMensagemTela;
+        private TextBox txtNomeCliente;
     }
 }
 
