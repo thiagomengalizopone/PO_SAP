@@ -303,8 +303,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 Util.ExibeMensagensDialogoStatusBar($"Fim da geração de obras!");
 
-                FinalizarGerarObras();
-
                 USValidou.ValueEx = string.Empty;
 
             }
@@ -314,6 +312,10 @@ namespace Zopone.AddOn.PO.View.Obra
                     Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_RollBack);
 
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar Obras: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                FinalizarGerarObras();
             }
         }
 
@@ -325,8 +327,8 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (!string.IsNullOrEmpty(Usuario) && Usuario != Globals.Master.Connection.Database.UserName)
                 {
-                    Util.ExibeMensagensDialogoStatusBar($"ATENÇÃO: Usuário {Usuario} trabalhando com a tela. Aguarde o usuário fechar a tela para prosseguir!");
-                    return false;
+                    if (!Util.RetornarDialogo($"ATENÇÃO: Usuário {Usuario} trabalhando com a tela. \n Deseja prosseguir com a tela?"))
+                        return false;
                 }
 
                 SqlUtils.DoNonQuery($"INSERT INTO ZPN_GERAROBRA (Usuario, Hora) values ('{Globals.Master.Connection.Database.UserName}', Getdate());");

@@ -732,12 +732,13 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     if (!bExistePedido)
                     {
-                        oPedidoVenda.NumAtCard = txtNroPedido.Text;
                         oPedidoVenda.DocDate = Convert.ToDateTime(mskDATA.Text);
                         oPedidoVenda.DocDueDate = Convert.ToDateTime(mskDATA.Text);
                         oPedidoVenda.CardCode = linesPO[0].U_CardCode;
                         oPedidoVenda.BPL_IDAssignedToInvoice = 1;
                     }
+                    
+                    oPedidoVenda.NumAtCard = txtNroPedido.Text;
 
                     oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
                     oPedidoVenda.Comments = txtObservacao.Text;
