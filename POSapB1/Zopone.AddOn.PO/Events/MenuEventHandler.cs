@@ -13,6 +13,7 @@ using Zopone.AddOn.PO.View.ParametrosPO;
 using Zopone.AddOn.PO.View.PO;
 using Zopone.AddOn.PO.View.Manutencao;
 using Zopone.AddOn.PO.View.Financeiro;
+using Zopone.AddOn.PO.View.NotaFiscal;
 
 namespace Zopone.AddOn.PO
 {
@@ -98,6 +99,11 @@ namespace Zopone.AddOn.PO
                         case MenuConstantes.MnuEfetFaturaPO:
                             {
                                 new FrmEfetivaFaturamento();
+                            }
+                            break;
+                        case MenuConstantes.MnuEditarNF:
+                            {
+                                new FrmNotaFiscal();
                             }
                             break;
                         case MenuConstantes.MnuManutencaoDtProgramanda:

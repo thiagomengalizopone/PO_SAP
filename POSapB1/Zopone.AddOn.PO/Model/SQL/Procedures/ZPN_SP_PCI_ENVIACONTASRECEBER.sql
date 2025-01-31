@@ -1,4 +1,4 @@
-﻿create PROCEDURE [ZPN_SP_PCI_ENVIACONTASRECEBER]
+﻿CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ENVIACONTASRECEBER]
 (
 	@DocEntry INT
 )
@@ -116,13 +116,13 @@ BEGIN
 			INNER JOIN OBPL ON OBPL.BPLId = OINV.BPLId 
 			INNER JOIN INV1 ON INV1.DocEntry = OINV.DocEntry AND INV1.LineNum = (SELECT MIN(T0.LineNum) FROM INV1 T0 WHERE T0.DocEntry = OINV.DocEntry)
 			LEFT JOIN "@ZPN_OPRJ" ZPN_OPRJ ON ZPN_OPRJ.Code = 
-				case when ISNULL(OINV.Project,'') <> '' THEN OINV.Project
-				else INV1.Project
-			end 
+						case when ISNULL(OINV.Project,'') <> '' THEN OINV.Project
+						else INV1.Project
+					end 
 			INNER JOIN INV6 ON INV6.DocEntry = OINV.DocEntry
 			LEFT JOIN "@ZPN_ALOCA" ALOC ON ALOC.Code = INV6.U_ItemFat
 			LEFT JOIN "@ZPN_ALOCA" ALOCA_REC ON  ALOCA_REC.Code = ALOC.U_EtapaRec
-			LEFT JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code = INV1.U_Candidato
+			LEFT JOIN "@ZPN_OPRJ_CAND" CAND ON CAND.Code =  ZPN_OPRJ."Code" AND CAND.U_Identif =  INV1.U_Candidato
 			LEFT JOIN ZPN_VW_DOCUMENTOSIMPOSTO IMP ON IMP.AbsEntry = OINV.DocEntry and IMP.TipoDocumento = 'INV'
 			INNER JOIN sbo_taxOne.[dbo].doc ON DOC.DocType = oinv."ObjType" AND DOC.DocEntry = OINV."DocEntry"
 			INNER JOIN sbo_taxOne.[dbo].Entidade ET on ET.id = doc.EntityId
@@ -178,32 +178,39 @@ BEGIN
 			end;
 
 
+			if (isnull(@obraid,'') = '') begin
+				EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_RemoveContasReceber @contareceberid;
+			
+			end;
 
+			
+			if (isnull(@obraid,'') <> '') begin
 
-			-- Chama a procedure para inserir ou atualizar
-			EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaContasReceber 
-				@contareceberid,
-				@gestatus,
-				@gecontaidacao,
-				@empresaid,
-				@obraid,
-				@valor,
-				@valorliquido,
-				@valorpis,
-				@valorcofins,
-				@valorcsll,
-				@valorinss,
-				@valorirrf,
-				@valoriss,
-				@emissao,
-				@vencimento,
-				@programacao,
-				@recebimento,
-				@cancelamento,
-				@codigo,
-				@fatura,
-				@etapaid,
-				@obracandidatoid;
+				-- Chama a procedure para inserir ou atualizar
+				EXEC [LINKZCLOUD].[zsistema_producao].[dbo].ZPN_PCI_InsereAtualizaContasReceber 
+					@contareceberid,
+					@gestatus,
+					@gecontaidacao,
+					@empresaid,
+					@obraid,
+					@valor,
+					@valorliquido,
+					@valorpis,
+					@valorcofins,
+					@valorcsll,
+					@valorinss,
+					@valorirrf,
+					@valoriss,
+					@emissao,
+					@vencimento,
+					@programacao,
+					@recebimento,
+					@cancelamento,
+					@codigo,
+					@fatura,
+					@etapaid,
+					@obracandidatoid;
+			end;
 
 			update inv6 set U_IdPci = @contareceberid where isnull(u_idpci,'') = '' and DocEntry = @docEntry and InstlmntID = @InstlmntID;
 

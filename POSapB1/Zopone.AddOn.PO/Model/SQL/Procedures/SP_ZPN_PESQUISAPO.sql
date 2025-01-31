@@ -1,10 +1,10 @@
-﻿CREATE PROCEDURE SP_ZPN_PESQUISAPO
+﻿create PROCEDURE [dbo].[SP_ZPN_PESQUISAPO]
 (
 	@CampoPesquisa varchar(50)
 )
 AS
 
-SELECT DISTINCT TOP 30
+SELECT DISTINCT TOP 200
 	T0."DocEntry"							"Id PO", 
 	T0."DocNum"								"Código PO", 
 	T0.NumAtCard							"Número Pedido", 

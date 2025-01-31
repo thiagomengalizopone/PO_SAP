@@ -154,7 +154,9 @@ namespace Zopone.AddOn.PO.View.Obra
                                U_PrjCode = oPedidoVenda.Lines.ProjectCode,
                                U_Candidato = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value.ToString(),
                                U_CardCode = oPedidoVenda.CardCode,
-                               U_CardName = oPedidoVenda.CardName,
+                               U_CardName = !string.IsNullOrEmpty(oPedidoVenda.Lines.UserFields.Fields.Item("U_CardName").Value.ToString()) 
+                                                ? oPedidoVenda.Lines.UserFields.Fields.Item("U_CardName").Value.ToString()
+                                                :  oPedidoVenda.CardName,
                                U_Item = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString(),
                                U_ItemFat = oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value.ToString(),
                                U_DescItemFat = oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value.ToString(),
@@ -301,7 +303,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         U_PrjCode = txtObra.Text,
                         U_Candidato = txtCandidato.Text,
                         U_CardCode = txtCliente.Text,
-                        U_CardName = lblCliente.Text,
+                        U_CardName = txtNomeCliente.Text,
                         U_Item = txtItem.Text,
                         U_ItemFat = txtItemFaturamento.Text,
                         U_DescItemFat = lblItemFat.Text,
@@ -394,7 +396,7 @@ namespace Zopone.AddOn.PO.View.Obra
             txtCliente.Text = string.Empty;
             txtItem.Text = string.Empty;
             txtItemFaturamento.Text = string.Empty;
-            lblCliente.Text = string.Empty;
+            txtNomeCliente.Text = string.Empty;
             lblObra.Text = string.Empty;
             lblItemFat.Text = string.Empty;
             txtParcela.Text = string.Empty;
@@ -472,7 +474,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         lblObra.Text = string.Empty;
 
                         txtCliente.Text = string.Empty;
-                        lblCliente.Text = string.Empty;
+                        txtNomeCliente.Text = string.Empty;
                         txtNroCont.Text = string.Empty;
                         txtDescContrato.Text = string.Empty;
                         lblObra.Text = string.Empty;
@@ -489,7 +491,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         lblObra.Text = retornoDados[1];
 
                         txtCliente.Text = retornoDados[2];
-                        lblCliente.Text = retornoDados[3];
+                        txtNomeCliente.Text = retornoDados[3];
 
                         BPLId = Convert.ToInt32(retornoDados[4]);
 
@@ -540,7 +542,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     if (retornoDados.Count != 0)
                     {
                         txtCliente.Text = retornoDados[0];
-                        lblCliente.Text = retornoDados[1];
+                        txtNomeCliente.Text = retornoDados[1];
                     }
                 }
             }
@@ -634,7 +636,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 txtObra.Text = linesPO[rowIndex].U_PrjCode;
                 txtCandidato.Text = linesPO[rowIndex].U_Candidato;
                 txtCliente.Text = linesPO[rowIndex].U_CardCode;
-                lblCliente.Text = linesPO[rowIndex].U_CardName;
+                txtNomeCliente.Text = linesPO[rowIndex].U_CardName;
                 txtItem.Text = linesPO[rowIndex].U_Item;
                 txtItemFaturamento.Text = linesPO[rowIndex].U_ItemFat;
                 lblItemFat.Text = linesPO[rowIndex].U_DescItemFat;
@@ -730,12 +732,13 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     if (!bExistePedido)
                     {
-                        oPedidoVenda.NumAtCard = txtNroPedido.Text;
                         oPedidoVenda.DocDate = Convert.ToDateTime(mskDATA.Text);
                         oPedidoVenda.DocDueDate = Convert.ToDateTime(mskDATA.Text);
                         oPedidoVenda.CardCode = linesPO[0].U_CardCode;
                         oPedidoVenda.BPL_IDAssignedToInvoice = 1;
                     }
+                    
+                    oPedidoVenda.NumAtCard = txtNroPedido.Text;
 
                     oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
                     oPedidoVenda.Comments = txtObservacao.Text;
@@ -988,7 +991,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         txtObra.Text = dgResultado.Rows[0][0].ToString();//obra
                         lblObra.Text = dgResultado.Rows[0][1].ToString();//desc obra
                         txtCliente.Text = dgResultado.Rows[0][5].ToString();//código cliente
-                        lblCliente.Text = dgResultado.Rows[0][6].ToString();//cliente
+                        txtNomeCliente.Text = dgResultado.Rows[0][6].ToString();//cliente
                         BPLId = Convert.ToInt32(dgResultado.Rows[0][8].ToString());
                         txtNroCont.Text = dgResultado.Rows[0][10].ToString();
                         txtDescContrato.Text = dgResultado.Rows[0][9].ToString();
