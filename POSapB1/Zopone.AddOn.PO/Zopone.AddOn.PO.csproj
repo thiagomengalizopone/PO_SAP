@@ -558,6 +558,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\SQL\Tables\ZPN_ALOCACAOPARCELANF.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CriaAlocacaoDocumento.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

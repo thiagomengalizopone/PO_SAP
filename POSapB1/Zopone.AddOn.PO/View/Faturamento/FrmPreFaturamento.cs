@@ -4,6 +4,7 @@ using sap.dev.ui.Forms;
 using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using Zopone.AddOn.PO.Helpers;
@@ -27,6 +28,17 @@ namespace Zopone.AddOn.PO.View.Faturamento
         Button BtPesquisar { get; set; }
 
         Button BtEnviarFaturamento { get; set; }
+
+        private Dictionary<string, (string, string, string, string)> colMapping = new Dictionary<string, (string, string, string, string)>
+            {
+                { "CodAlc1", ("AlocacaoFAT1", "DescAlocacaoFAT1", "PercFaturar1", "ValorFaturar1") },
+                { "CodAlc2", ("AlocacaoFAT2", "DescAlocacaoFAT2", "PercFaturar2", "ValorFaturar2") },
+                { "CodAlc3", ("AlocacaoFAT3", "DescAlocacaoFAT3", "PercFaturar3", "ValorFaturar3") },
+                { "CodAlc4", ("AlocacaoFAT4", "DescAlocacaoFAT4", "PercFaturar4", "ValorFaturar4") }
+            };
+
+
+
         public FrmPreFaturamento() : base()
         {
             if (oForm == null)
@@ -87,13 +99,26 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-                if (pVal.ColUID == "Col_7")
+                if (pVal.ColUID == "CodAlc1" ||
+                    pVal.ColUID == "CodAlc2" ||
+                    pVal.ColUID == "CodAlc2" ||
+                    pVal.ColUID == "CodAlc4")
                 {
+                    string cflName = string.Empty;
+
+                    if (pVal.ColUID == "CodAlc1")
+                        cflName = "CFL_ALOC1";
+                    else if (pVal.ColUID == "CodAlc2")
+                        cflName = "CFL_ALOC2";
+                    else if (pVal.ColUID == "CodAlc2")
+                        cflName = "CFL_ALOC3";
+                    else if (pVal.ColUID == "CodAlc4")
+                        cflName = "CFL_ALOC4";
 
                     var oConds = new SAPbouiCOM.Conditions();
                     var oCfLs = oForm.ChooseFromLists;
 
-                    var cfl = oCfLs.Item("CFL_ALOC");
+                    var cfl = oCfLs.Item(cflName);
 
                     if (cfl.GetConditions().Count > 0)
                     {
@@ -153,7 +178,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 BubbleEvent = true;
 
-                if (pVal.ColUID != "Col_15")
+                if (pVal.ColUID != "ColPO5")
                     return;
 
 
@@ -288,7 +313,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
 
-                            for (int iRowPedido = 0; iRowPedido < oPedidoVenda.Lines.Count; iRowPedido ++ )
+                            for (int iRowPedido = 0; iRowPedido < oPedidoVenda.Lines.Count; iRowPedido++)
                             {
                                 oPedidoVenda.Lines.SetCurrentLine(iRowPedido);
 
@@ -401,8 +426,10 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-                if (pVal.ColUID == "Col_7")
+                if (colMapping.ContainsKey(pVal.ColUID))
                 {
+                    var (CampoAlocacaoFAT, DescAlocacaoFAT, PercFaturar, ValorFaturar) = colMapping[pVal.ColUID];
+
                     MtPedidos.FlushToDataSource();
 
                     Int32 row = pVal.Row - 1;
@@ -413,23 +440,19 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                     string Code = Convert.ToString(aEvent.SelectedObjects.GetValue("Code", 0));
                     string Descricao = Convert.ToString(aEvent.SelectedObjects.GetValue("U_Desc", 0));
+                    double dblPercentualFaturamento = Convert.ToDouble(aEvent.SelectedObjects.GetValue("U_Perc", 0));
 
-
-                    DtPesquisa.SetValue("AlocacaoFAT", row, Code);
-                    DtPesquisa.SetValue("DescAlocacaoFAT", row, Descricao);
-
-                    string SQL_PESQUISA = string.Empty;
-
-                    SQL_PESQUISA = $"SELECT isnull(max(T0.[U_Perc]),0) FROM [@ZPN_ALOCA]  T0 WHERE T0.[Code] = '{Code}'";
-
-                    double dblPercentualFaturamento = Convert.ToDouble(SqlUtils.GetValue(SQL_PESQUISA));
+                    DtPesquisa.SetValue(CampoAlocacaoFAT, row, Code);
+                    DtPesquisa.SetValue(DescAlocacaoFAT, row, Descricao);
 
                     if (dblPercentualFaturamento > 0)
-                        DtPesquisa.SetValue("PercFaturar", row, dblPercentualFaturamento);
+                    {
+                        DtPesquisa.SetValue(PercFaturar, row, dblPercentualFaturamento);
+                    }
 
                     MtPedidos.LoadFromDataSourceEx();
 
-                    CalculaPorcentagemFaturamento(row);
+                    CalculaPorcentagemFaturamento(row, pVal.ColUID);
                 }
                 else if (pVal.ColUID == "Col_25")
                 {
@@ -458,14 +481,39 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar alocação faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
-        private void CalculaPorcentagemFaturamento(Int32 row)
+        private void CalculaPorcentagemFaturamento(Int32 row, string ColUID)
         {
             MtPedidos.FlushToDataSource();
 
-            double dblSaldoAberto = Convert.ToDouble(DtPesquisa.GetValue("SaldoAberto", row));
-            double dblPercentualFaturamento = Convert.ToDouble(DtPesquisa.GetValue("PercFaturar", row));
+            var colunaReferenciaMap = new Dictionary<string, string>
+                    {
+                        { "PercAlc1", "CodAlc1" },
+                        { "PercAlc2", "CodAlc2" },
+                        { "PercAlc3", "CodAlc3" }, 
+                        { "PercAlc4", "CodAlc4" }
+                    };
 
-            DtPesquisa.SetValue("TotalFaturar", row, (dblSaldoAberto * dblPercentualFaturamento / 100));
+            if (!colunaReferenciaMap.ContainsKey(ColUID))
+            {
+                return;
+            }
+
+            string colunaReferencia = colunaReferenciaMap[ColUID];
+
+            if (!colMapping.ContainsKey(colunaReferencia))
+            {
+                return;
+            }
+
+            var (CampoAlocacaoFAT, DescAlocacaoFAT, PercFaturar, ValorFaturar) = colMapping[colunaReferencia];
+
+            if (!double.TryParse(Convert.ToString(DtPesquisa.GetValue("SaldoAberto", row)), out double dblSaldoAberto) ||
+                !double.TryParse(Convert.ToString(DtPesquisa.GetValue(PercFaturar, row)), out double dblPercentualFaturamento))
+            {
+                return;
+            }
+
+            DtPesquisa.SetValue(ValorFaturar, row, (dblSaldoAberto * dblPercentualFaturamento / 100));
 
             MtPedidos.LoadFromDataSourceEx(true);
         }
@@ -477,8 +525,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
             {
                 if (pVal.ColUID == "Col_8")
                     SelecionaAtividadeServico(pVal.Row - 1);
-                else if (pVal.ColUID == "Col_21")
-                    CalculaPorcentagemFaturamento(pVal.Row - 1);
+                else if (pVal.ColUID == "PercAlc1" ||
+                         pVal.ColUID == "PercAlc2" ||
+                         pVal.ColUID == "PercAlc3" ||
+                         pVal.ColUID == "PercAlc4")
+                    CalculaPorcentagemFaturamento(pVal.Row - 1, pVal.ColUID);
             }
             catch (Exception Ex)
             {
@@ -541,76 +592,104 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-                string dataInicial = !string.IsNullOrEmpty(EdDataI.Value) ? EdDataI.Value : "20200101";
-                string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
+                // Definindo as datas padrão
+                string dataInicial = GetDataValor(EdDataI.Value, "20200101");
+                string dataFinal = GetDataValor(EdDataF.Value, "20500101");
+                string dataInicialVencimento = GetDataValor(EdDataIVencimento.Value, "20200101");
+                string dataFinalVencimento = GetDataValor(EdDataFVencimento.Value, "20500101");
 
-                string dataInicialVencimento = !string.IsNullOrEmpty(EdDataIVencimento.Value) ? EdDataIVencimento.Value : "20200101";
-                string dataFinalVencimento = !string.IsNullOrEmpty(EdDataFVencimento.Value) ? EdDataFVencimento.Value : "20500101";
-
+                // Construindo a consulta SQL
                 string SQL_Query = $@"ZPN_SP_ListaPedidosGerarPreFaturamento '{dataInicial}', '{dataFinal}', '{dataInicialVencimento}', '{dataFinalVencimento}', '{EdPO.Value}', '{EdCliente.Value}'";
 
+                // Executando a consulta
                 DtPesquisa.ExecuteQuery(SQL_Query);
 
-
-                MtPedidos.Columns.Item("Col_9").DataBind.Bind("DtPO", "Selecionar");
-                MtPedidos.Columns.Item("Col_0").DataBind.Bind("DtPO", "Pedido");
-                MtPedidos.Columns.Item("Col_1").DataBind.Bind("DtPO", "PO");
-
-                MtPedidos.Columns.Item("Col_22").DataBind.Bind("DtPO", "PrevFat");
-
-                MtPedidos.Columns.Item("Col_2").DataBind.Bind("DtPO", "Item");
-                MtPedidos.Columns.Item("Col_8").DataBind.Bind("DtPO", "Atividade");
-                MtPedidos.Columns.Item("Col_4").DataBind.Bind("DtPO", "Descricao");
-                MtPedidos.Columns.Item("Col_5").DataBind.Bind("DtPO", "Valor");
-
-                MtPedidos.Columns.Item("ItemCode").DataBind.Bind("DtPO", "ItemCode");
-                MtPedidos.Columns.Item("Dscription").DataBind.Bind("DtPO", "Dscription");
-
-                MtPedidos.Columns.Item("Col_10").DataBind.Bind("DtPO", "Cliente");
-                MtPedidos.Columns.Item("Col_11").DataBind.Bind("DtPO", "CodCliente");
-
-                MtPedidos.Columns.Item("Col_12").DataBind.Bind("DtPO", "Status");
-
-                MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "AlocacaoFAT");
-                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "DescAlocacaoFAT");
-                MtPedidos.Columns.Item("Col_21").DataBind.Bind("DtPO", "PercFaturar");
-
-                MtPedidos.Columns.Item("Col_14").DataBind.Bind("DtPO", "SaldoFaturado");
-                MtPedidos.Columns.Item("Col_13").DataBind.Bind("DtPO", "SaldoAberto");
-                MtPedidos.Columns.Item("Col_15").DataBind.Bind("DtPO", "TotalFaturar");
-
-                MtPedidos.Columns.Item("Col_3").DataBind.Bind("DtPO", "Alocacao");
-                MtPedidos.Columns.Item("Col_7").DataBind.Bind("DtPO", "AlocacaoFAT");
-                MtPedidos.Columns.Item("Col_16").DataBind.Bind("DtPO", "DescAlocacaoFAT");
-
-                MtPedidos.Columns.Item("Col_17").DataBind.Bind("DtPO", "Linha");
-                MtPedidos.Columns.Item("Col_18").DataBind.Bind("DtPO", "Obra");
-                MtPedidos.Columns.Item("Col_20").DataBind.Bind("DtPO", "Contrato");
-
-                MtPedidos.Columns.Item("Col_23").DataBind.Bind("DtPO", "IbgeCode");
-                MtPedidos.Columns.Item("Col_24").DataBind.Bind("DtPO", "Estado");
-                MtPedidos.Columns.Item("Col_25").DataBind.Bind("DtPO", "Cidade");
-
-                MtPedidos.Columns.Item("Col_26").DataBind.Bind("DtPO", "CidadeObra");
+                // Mapeamento das colunas
+                MapearColunas();
 
                 MtPedidos.LoadFromDataSourceEx();
                 MtPedidos.AutoResizeColumns();
-
-                Column oColuna = MtPedidos.Columns.Item("Col_7");
-                oColuna.ChooseFromListUID = "CFL_ALOC";
-                oColuna.ChooseFromListAlias = "Code";
-
-                oColuna = MtPedidos.Columns.Item("Col_25");
-                oColuna.ChooseFromListUID = "CFL_265";
-                oColuna.ChooseFromListAlias = "Name";
-
-
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
+
+        // Método para definir o valor de data com fallback
+        private string GetDataValor(string data, string valorDefault)
+        {
+            return !string.IsNullOrEmpty(data) ? data : valorDefault;
+        }
+
+        private void MapearColunas()
+        {
+            var colunas = new (string ColunaMtPedidos, string ColunaDtPO, string ChooseFromListUID, string ChooseFromListAlias)[]
+            {
+                ("Selec", "Selecionar", null, null),
+                ("ColPed", "Pedido", null, null),
+                ("ColPO", "PO", null, null),
+                ("Col_22", "PrevFat", null, null),
+                ("Col_2", "Item", null, null),
+                ("Col_8", "Atividade", null, null),
+                ("Col_4", "Descricao", null, null),
+                ("Col_5", "Valor", null, null),
+                ("ItemCode", "ItemCode", null, null),
+                ("Dscription", "Dscription", null, null),
+                ("Col_11", "Cliente", null, null),
+                ("Col_10", "CodCliente", null, null),
+                ("Col_12", "Status", null, null),
+                ("CodAlc1", "AlocacaoFAT1", "CFL_ALOC1", "Code"),
+                ("Col_16", "DescAlocacaoFAT1", null, null),
+                ("PercAlc1", "PercFaturar1", null, null),
+                ("Col_27", "ValorFaturar1", null, null),
+                ("CodAlc2", "AlocacaoFAT2", "CFL_ALOC2", "Code"),
+                ("Col_30", "DescAlocacaoFAT2", null, null),
+                ("PercAlc2", "PercFaturar2", null, null),
+                ("Col_31", "ValorFaturar2", null, null),
+                ("CodAlc3", "AlocacaoFAT3", "CFL_ALOC3", "Code"),
+                ("Col_33", "DescAlocacaoFAT3", null, null),
+                ("PercAlc3", "PercFaturar3", null, null),
+                ("Col_35", "ValorFaturar3", null, null),
+                ("CodAlc4", "AlocacaoFAT4", "CFL_ALOC4", "Code"),
+                ("Col_37", "DescAlocacaoFAT4", null, null),
+                ("PercAlc4", "PercFaturar4", null, null),
+                ("Col_39", "ValorFaturar4", null, null),
+                ("Col_14", "SaldoFaturado", null, null),
+                ("Col_13", "SaldoAberto", null, null),
+                ("Col_15", "TotalFaturar", null, null),
+                ("Col_3", "Alocacao", null, null),
+                ("Col_17", "Linha", null, null),
+                ("Col_18", "Obra", null, null),
+                ("Col_20", "Contrato", null, null),
+                ("Col_23", "IbgeCode", null, null),
+                ("Col_24", "Estado", null, null),
+                ("Col_25", "Cidade", "CFL_265", "Name"),
+                ("Col_26", "CidadeObra", null, null)
+            };
+
+            // Bindando as colunas
+            foreach (var coluna in colunas)
+            {
+                try
+                {
+                    MtPedidos.Columns.Item(coluna.ColunaMtPedidos).DataBind.Bind("DtPO", coluna.ColunaDtPO);
+                    if (!string.IsNullOrEmpty(coluna.ChooseFromListUID))
+                    {
+                    
+                            var oColuna = MtPedidos.Columns.Item(coluna.ColunaMtPedidos);
+                            oColuna.ChooseFromListUID = coluna.ChooseFromListUID;
+                            oColuna.ChooseFromListAlias = coluna.ChooseFromListAlias;                
+                         
+                    }
+                }
+                catch (Exception Ex)
+                {
+
+                }
+            }
+        }
+
     }
 }
 

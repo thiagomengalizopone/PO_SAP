@@ -1,4 +1,4 @@
-﻿CREATE procedure [ZPN_SP_ListaPedidosGerarPreFaturamento]
+﻿create procedure [dbo].[ZPN_SP_ListaPedidosGerarPreFaturamento]
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -17,7 +17,7 @@ declare @qtde int;
 
 set @qtde = 50;
 
-SELECT top 50
+SELECT top 250
 	'N' "Selecionar",
 	ORDR."DocEntry" "Pedido",
 	GetDate() "PrevFat",
@@ -34,9 +34,27 @@ SELECT top 50
 	RDR1."U_itemDescription" "Descricao",
 	RDR1."LineTotal" "Valor",
 	ALOCA.U_Desc "Alocacao",
-	ISNULL(ALOCAFAT."Code", '                                              ') "AlocacaoFAT",
-	ISNULL(ALOCAFAT.U_Desc, '                                              ') "DescAlocacaoFAT",
-	00000.00000									"PercFaturar",
+	ISNULL(ALOCAFAT."Code", '                                              ')	"AlocacaoFAT1",
+	ISNULL(ALOCAFAT.U_Desc, '                                              ')	"DescAlocacaoFAT1",
+	000000000000.00000		 													"PercFaturar1",
+	000000000000.00000		 													"ValorFaturar1",
+
+	'                                              '							"AlocacaoFAT2",
+	'                                              '							"DescAlocacaoFAT2",
+	000000000000.00000		 													"PercFaturar2",
+	000000000000.00000		 													"ValorFaturar2",
+
+	'                                              '							"AlocacaoFAT3",
+	'                                              '							"DescAlocacaoFAT3",
+	000000000000.00000		 													"PercFaturar3",
+	000000000000.00000		 													"ValorFaturar3",
+
+	'                                              '							"AlocacaoFAT4",
+	'                                              '							"DescAlocacaoFAT4",
+	000000000000.00000		 													"PercFaturar4",
+	000000000000.00000		 													"ValorFaturar4",
+
+
 	isnull(FAT."SaldoFaturado",0)"SaldoFaturado",
 	(RDR1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "SaldoAberto",
 	(RDR1."LineTotal" - isnull(FAT."SaldoFaturado",0)) "TotalFaturar",
