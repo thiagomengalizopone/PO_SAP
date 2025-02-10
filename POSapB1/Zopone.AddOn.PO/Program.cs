@@ -13,7 +13,6 @@ namespace Zopone.AddOn.PO
         {
             try
             {
-
                 System.Windows.Forms.Application.SetUnhandledExceptionMode(System.Windows.Forms.UnhandledExceptionMode.CatchException);
 
                 AppDomain currentDomain = AppDomain.CurrentDomain;
