@@ -577,11 +577,11 @@
     <WCFMetadataStorage Include="Connected Services\SeniorOutraEmpresa\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\sap.dev.core\sap.dev.core.csproj">
+    <ProjectReference Include="..\..\..\sap.dev.addon\sap.dev.core\sap.dev.core.csproj">
       <Project>{14c7edbe-efee-43e8-873e-9b7b8c59eb7d}</Project>
       <Name>sap.dev.core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\sap.dev.data\sap.dev.data.csproj">
+    <ProjectReference Include="..\..\..\sap.dev.addon\sap.dev.data\sap.dev.data.csproj">
       <Project>{ba20857c-43e9-450a-9776-39f33d939249}</Project>
       <Name>sap.dev.data</Name>
     </ProjectReference>
