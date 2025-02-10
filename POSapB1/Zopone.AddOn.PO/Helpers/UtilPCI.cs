@@ -41,10 +41,6 @@ namespace Zopone.AddOn.PO.Helpers
                         Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
                     }
                 }
-
-
-
-
             }
             catch (Exception Ex)
             {

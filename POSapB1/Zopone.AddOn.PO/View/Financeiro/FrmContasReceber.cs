@@ -364,7 +364,8 @@ namespace Zopone.AddOn.PO.View.Financeiro
                                          Outros = DtDadosCR.GetValue("Outros", row),
                                          Desc = DtDadosCR.GetValue("Desconto", row),
                                          DescP = DtDadosCR.GetValue("DescP", row),
-                                         ValoAtual = DtDadosCR.GetValue("ValorAtual", row)
+                                         ValoAtual = DtDadosCR.GetValue("ValorAtual", row),
+                                         Parcela = DtDadosCR.GetValue("Parcela", row)
                                      };
 
                 bool ControlLoopNF = true;
@@ -475,8 +476,8 @@ namespace Zopone.AddOn.PO.View.Financeiro
                         MaxTimeout = -1,
                     };
                     var client = new RestClient(options);
-                    //var request = new RestRequest("/webhook/contasreceber", Method.Post);
-                    var request = new RestRequest("/webhook-test/contasrecebernf", Method.Post);
+                    var request = new RestRequest("/webhook/contasrecebernf", Method.Post);
+                    //var request = new RestRequest("/webhook-test/contasrecebernf", Method.Post);
                     request.AddHeader("Content-Type", "application/json");
 
                     request.AddStringBody(JsonConvert.SerializeObject(new BodyCRN8NNF
@@ -497,7 +498,8 @@ namespace Zopone.AddOn.PO.View.Financeiro
                         Outros = row.Outros.ToString(),
                         Desc = row.Desc.ToString(),
                         DescP = row.DescP.ToString(),
-                        ValoAtual = row.ValoAtual.ToString()
+                        ValoAtual = row.ValoAtual.ToString(),
+                        Parcela = row.Parcela.ToString()
 
                     }), DataFormat.Json);
 
@@ -547,7 +549,8 @@ namespace Zopone.AddOn.PO.View.Financeiro
                                          Outros = DtDadosCR.GetValue("Outros", row).ToString(),
                                          Desc = DtDadosCR.GetValue("Desconto", row).ToString(),
                                          DescP = DtDadosCR.GetValue("DescP", row).ToString(),
-                                         ValoAtual = DtDadosCR.GetValue("ValorAtual", row).ToString()
+                                         ValoAtual = DtDadosCR.GetValue("ValorAtual", row).ToString(),
+                                         ValorReal = double.Parse(DtDadosCR.GetValue("ValorTitulo", row).ToString())
                                      };
 
                 bool ControlLoopLC = true;
@@ -555,64 +558,47 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                 List<string> valoresUnicos = filteredRowsLc.Select(Item => Item.Fatura).Distinct().ToList();
 
+                double valorSomado = 0;
+
                 foreach (string valu in valoresUnicos)
                 {
                     var grupoMesmaFatura = filteredRowsLc.Where(Item => Item.Fatura == valu).ToList();
+                    //var valores      = grupoMesmaFatura.Select(Item => Item.ValoAtual).ToList();
+                    //foreach (string valor in valores)
+                    //    valorSomado += double.Parse(valor);
 
                     //foreach (var row in grupoMesmaFatura)
                     //{                       
 
-                        #region N8N
+                    #region N8N
 
-                        ControlLoopLC = false;
+                    ControlLoopLC = false;
 
-                        var options = new RestClientOptions("http://srvetl:5678")
-                        {
-                            MaxTimeout = -1,
-                        };
-                        var client = new RestClient(options);
-                        //var request = new RestRequest("/webhook/contasreceber", Method.Post);
-                        var request = new RestRequest("/webhook-test/contasreceberlc", Method.Post);
-                        request.AddHeader("Content-Type", "application/json");
-                        request.AddStringBody(JsonConvert.SerializeObject(grupoMesmaFatura), DataFormat.Json);
-                        //request.AddStringBody(JsonConvert.SerializeObject(new BodyCRN8NLCCAB
-                        //{
-                        //    //CompanyDB = Globals.Master.Connection.Database.CompanyDB,                       
-                        //    //CodDoc = row.OF.ToString(),
-                        //    //DataPagto = row.DataPagto.ToString(),                        
-                        //    //Cliente = row.Cliente.ToString(),                                            
-                        //    //Obra = row.Obra.ToString(),
-                        //    //Site = row.Site.ToString(),                       
-                        //    //new BodyCRN8NLCLIN
-                        //    //{
-                        //    //    CodDocR = row.CodDocR.ToString(),
-                        //    //    TipoDoc = row.TipoDoc.ToString(), //NFE ou LCM
-                        //    //    ValorPagto = row.ValorAReceber.ToString(),
-                        //    //    CodLinDoc = row.CodLinDoc.ToString(),
-                        //    //    ValorLiq = row.ValorLiq.ToString(),
-                        //    //    ValorDoc = row.ValorDoc.ToString(),
-                        //    //    Fatura = row.Fatura.ToString(),
-                        //    //    Outros = row.Outros.ToString(),
-                        //    //    Desc = row.Desc.ToString(),
-                        //    //    DescP = row.DescP.ToString(),
-                        //    //    ValoAtual = row.ValoAtual.ToString()
-                        //    //}
-                        //}), DataFormat.Json);
+                    var options = new RestClientOptions("http://srvetl:5678")
+                    {
+                        MaxTimeout = -1,
+                    };
+                    var client = new RestClient(options);
+                    var request = new RestRequest("/webhook/contasreceberlc", Method.Post);
+                    //var request = new RestRequest("/webhook-test/contasreceberlc", Method.Post);
+                    //var request = new RestRequest("/webhook-test/testelc", Method.Post);
+                    request.AddHeader("Content-Type", "application/json");
+                    request.AddStringBody(JsonConvert.SerializeObject(grupoMesmaFatura), DataFormat.Json);     
+                    
+                    RestResponse response = client.Execute(request);
 
-                        RestResponse response = client.Execute(request);
-
-                        if (response.StatusCode.ToString().Contains("NotFound"))
-                        {
-                            Util.ExibirMensagemStatusBar("Falha ao acessar a API, comunique o departamento de TI!", BoMessageTime.bmt_Short, true);
-                            return;
-                        }
-                        else if (response.StatusCode.ToString().Contains("OK"))
-                        {
-                            RetResponse ret = JsonConvert.DeserializeObject<RetResponse>(response.Content);
-                            Util.ExibirMensagemStatusBar(ret.MSG, BoMessageTime.bmt_Short, !ret.CODE.Equals("1"));
-                            //erro = !ret.CODE.Equals("1");
-                        }
-                        #endregion
+                    if (response.StatusCode.ToString().Contains("NotFound"))
+                    {
+                        Util.ExibirMensagemStatusBar("Falha ao acessar a API, comunique o departamento de TI!", BoMessageTime.bmt_Short, true);
+                        return;
+                    }
+                    else if (response.StatusCode.ToString().Contains("OK"))
+                    {
+                        RetResponse ret = JsonConvert.DeserializeObject<RetResponse>(response.Content);
+                        Util.ExibirMensagemStatusBar(ret.MSG, BoMessageTime.bmt_Short, !ret.CODE.Equals("1"));
+                        //erro = !ret.CODE.Equals("1");
+                    }
+                    #endregion
                     //}
                 }
                 if (ControlLoopNF && ControlLoopLC)
@@ -913,10 +899,12 @@ namespace Zopone.AddOn.PO.View.Financeiro
             public string Desc { get; set; }
             public string DescP { get; set; }
             public string ValoAtual { get; set; }
+            public double ValorReal { get; set; }
+            public string Parcela { get; set; }
         }
 
         public class BodyCRN8NLCCAB
-        {       
+        {
             public string CompanyDB { get; set; }
             public string CodDoc { get; set; }
             public string DataPagto { get; set; }
@@ -927,11 +915,11 @@ namespace Zopone.AddOn.PO.View.Financeiro
         }
 
         public class BodyCRN8NLCLIN
-        {            
-            public string TipoDoc { get; set; }             
-            public string CodLinDoc { get; set; } 
-            public string CodDocR { get; set; }            
-            public string Fatura { get; set; }   
+        {
+            public string TipoDoc { get; set; }
+            public string CodLinDoc { get; set; }
+            public string CodDocR { get; set; }
+            public string Fatura { get; set; }
             public string Outros { get; set; }
             public string Desc { get; set; }
             public string DescP { get; set; }
