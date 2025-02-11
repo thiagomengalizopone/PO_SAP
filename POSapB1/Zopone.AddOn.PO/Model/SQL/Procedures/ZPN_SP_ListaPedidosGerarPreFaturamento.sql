@@ -1,4 +1,4 @@
-﻿create procedure [dbo].[ZPN_SP_ListaPedidosGerarPreFaturamento]
+﻿create procedure [dbo].[ZPN_SP_ListarPedidosGerarPreFaturamento]
 (
 	 @DataInicial datetime,
 	 @DataFinal datetime,
@@ -37,22 +37,22 @@ SELECT top 250
 	ISNULL(ALOCAFAT."Code", '                                              ')	"AlocacaoFAT1",
 	ISNULL(ALOCAFAT.U_Desc, '                                              ')	"DescAlocacaoFAT1",
 	000000000000.00000		 													"PercFaturar1",
-	000000000000.00000		 													"ValorFaturar1",
+	000000000000.00000		 													"ValorFat1",
 
 	'                                              '							"AlocacaoFAT2",
 	'                                              '							"DescAlocacaoFAT2",
 	000000000000.00000		 													"PercFaturar2",
-	000000000000.00000		 													"ValorFaturar2",
+	000000000000.00000		 													"ValorFat2",
 
 	'                                              '							"AlocacaoFAT3",
 	'                                              '							"DescAlocacaoFAT3",
 	000000000000.00000		 													"PercFaturar3",
-	000000000000.00000		 													"ValorFaturar3",
+	000000000000.00000		 													"ValorFat3",
 
 	'                                              '							"AlocacaoFAT4",
 	'                                              '							"DescAlocacaoFAT4",
 	000000000000.00000		 													"PercFaturar4",
-	000000000000.00000		 													"ValorFaturar4",
+	000000000000.00000		 													"ValorFat4",
 
 
 	isnull(FAT."SaldoFaturado",0)"SaldoFaturado",

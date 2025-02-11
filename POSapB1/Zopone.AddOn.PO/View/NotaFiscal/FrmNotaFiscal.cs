@@ -18,7 +18,6 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
     public class FrmNotaFiscal : FormSDK
     {
         public Matrix oMtItens { get; set; }
-        public Matrix oMtImpostos { get; set; }
         public Matrix oMtAlocacao { get; set; }
 
 
@@ -28,14 +27,25 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                 return;
 
             oMtItens = (Matrix)oForm.Items.Item("MtItem").Specific;
-            oMtImpostos = (Matrix)oForm.Items.Item("MtImpo").Specific;
             oMtAlocacao = (Matrix)oForm.Items.Item("MtAloca").Specific;
 
             oMtItens.AutoResizeColumns();
-            oMtImpostos.AutoResizeColumns();
             oMtAlocacao.AutoResizeColumns();
+
+            CarregaDadosAlocacao();
         }
 
+        private void CarregaDadosAlocacao()
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex) 
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados de alocação: {ex.Message}", BoMessageTime.bmt_Medium, true, ex);
+            }
+        }
     }
 
 }
