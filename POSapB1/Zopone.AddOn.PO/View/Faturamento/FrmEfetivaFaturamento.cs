@@ -591,8 +591,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                     if (oEsbocoNotaFiscalSaida.DocumentStatus == BoStatus.bost_Open)
                     {
-                        if (oEsbocoNotaFiscalSaida.Close() != 0)
-                            return $"Erro ao Fechar Esboço pré faturamento: {oEsbocoNotaFiscalSaida.DocEntry} Linha {iRow + 1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
+                        if (oEsbocoNotaFiscalSaida.Remove() != 0)
+                            return $"Erro ao remover Esboço pré faturamento: {oEsbocoNotaFiscalSaida.DocEntry} Linha {iRow + 1} -  {Globals.Master.Connection.Database.GetLastErrorDescription()} \n";
                     }
                 }
 

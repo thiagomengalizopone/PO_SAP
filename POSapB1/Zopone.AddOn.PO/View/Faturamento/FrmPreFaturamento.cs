@@ -309,7 +309,61 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             Int32 LineNum = Convert.ToInt32(DtPesquisa.GetValue("Linha", iRow));
                             string ItemCode = DtPesquisa.GetValue("ItemCode", iRow).ToString();
                             string Atividade = DtPesquisa.GetValue("Atividade", iRow).ToString();
-                            string IbgeCode = DtPesquisa.GetValue("IbgeCode", iRow).ToString();
+                            string IbgeCode = DtPesquisa.GetValue("IbgeCode", iRow).ToString();                           
+
+                            DateTime dataFaturamento = Convert.ToDateTime(DtPesquisa.GetValue("PrevFat", iRow));
+
+                            oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
+
+                            if (!oPedidoVenda.GetByKey(DocEntry))
+                                throw new Exception($"Pedido de venda (PO) não encontrado: {DocEntry}");
+
+                            if (string.IsNullOrEmpty(Obra))
+                            {
+                                Obra = oPedidoVenda.Lines.ProjectCode;
+                                PedidoVendaDocEntry = oPedidoVenda.DocEntry;
+                                ItemCodeFaturamento = ItemCode;
+                            }
+
+                            if (Obra != oPedidoVenda.Lines.ProjectCode || oPedidoVenda.DocEntry != PedidoVendaDocEntry || ItemCode != ItemCodeFaturamento)
+                            {
+                                if (oNotaFiscalSaida.Add() != 0)
+                                    throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+                                Int32 NewDocEntry = Convert.ToInt32(SqlUtils.GetValue("SELECT MAX(DocEntry) FROM ODRF WHERE ObjType = '13'"));
+
+                                AddInstallments(
+                                    AlocacaoFAT1, PercFat1, DescAlocacaoFAT1,
+                                    AlocacaoFAT2, PercFat2, DescAlocacaoFAT2,
+                                    AlocacaoFAT3, PercFat3, DescAlocacaoFAT3,
+                                    AlocacaoFAT4, PercFat4, DescAlocacaoFAT4,
+                                    DocEntry);
+
+
+                                AtualizaDocumentoCidadeImposto(NewDocEntry);
+
+                                dataFaturamentoPO = DateTime.Now.ToString("yyyyMMdd HHmmss");
+                                oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+                                oNotaFiscalSaida.CardCode = string.Empty;
+                                oNotaFiscalSaida.Lines.LineTotal = 0;
+                                oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value = string.Empty;
+                                oNotaFiscalSaida.NumberOfInstallments = 0;
+                                IdPCI = SqlUtils.GetValue("select newid()");
+                            }
+
+                            oNotaFiscalSaida.DiscountPercent = 0;
+
+                            oNotaFiscalSaida.SequenceCode = 29;
+                            oNotaFiscalSaida.SequenceModel = "46";
+
+                            oNotaFiscalSaida.DocObjectCodeEx = "13";
+                            oNotaFiscalSaida.DocDate = dataFaturamento;
+                            oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
+                            oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
+                            oNotaFiscalSaida.BPL_IDAssignedToInvoice = oPedidoVenda.BPL_IDAssignedToInvoice;
+                            oNotaFiscalSaida.UserFields.Fields.Item("U_IdPO").Value = oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value;
+                            oNotaFiscalSaida.UserFields.Fields.Item("U_TX_OrigemIbge").Value = IbgeCode;
+                            oNotaFiscalSaida.Project = oPedidoVenda.Lines.ProjectCode;
 
                             AlocacaoFAT1 = DtPesquisa.GetValue("AlocacaoFAT1", iRow).ToString();
                             AlocacaoFAT2 = DtPesquisa.GetValue("AlocacaoFAT2", iRow).ToString();
@@ -336,70 +390,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                                 throw new Exception($"Percentual de faturamento maior que 100 na linha {iRow + 1}!");
                             }
 
-                            DateTime dataFaturamento = Convert.ToDateTime(DtPesquisa.GetValue("PrevFat", iRow));
 
-
-                            oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
-
-                            if (!oPedidoVenda.GetByKey(DocEntry))
-                                throw new Exception($"Pedido de venda (PO) não encontrado: {DocEntry}");
-
-                            if (string.IsNullOrEmpty(Obra))
-                            {
-                                Obra = oPedidoVenda.Lines.ProjectCode;
-                                PedidoVendaDocEntry = oPedidoVenda.DocEntry;
-                                ItemCodeFaturamento = ItemCode;
-                            }
-
-                            if (Obra != oPedidoVenda.Lines.ProjectCode || oPedidoVenda.DocEntry != PedidoVendaDocEntry || ItemCode != ItemCodeFaturamento)
-                            {
-                                if (oNotaFiscalSaida.Add() != 0)
-                                    throw new Exception($"Erro ao faturar PO: {oPedidoVenda.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
-
-                                Int32 NewDocEntry = Convert.ToInt32(SqlUtils.GetValue("SELECT MAX(DocEntry) FROM ODRF WHERE ObjType = '13'"));
-
-                                GeraDocumentoAlocacao(NewDocEntry,
-                                       IdPCI,
-                                       AlocacaoFAT1,
-                                       DescAlocacaoFAT1,
-                                       TotalFat1,
-                                       PercFat1,
-                                       AlocacaoFAT2,
-                                       DescAlocacaoFAT2,
-                                       TotalFat2,
-                                       PercFat2,
-                                       AlocacaoFAT3,
-                                       DescAlocacaoFAT3,
-                                       TotalFat3,
-                                       PercFat3,
-                                       AlocacaoFAT4,
-                                       DescAlocacaoFAT4,
-                                       TotalFat4,
-                                       PercFat4);
-
-                                AtualizaDocumentoCidadeImposto(NewDocEntry);
-
-                                dataFaturamentoPO = DateTime.Now.ToString("yyyyMMdd HHmmss");
-                                oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
-                                oNotaFiscalSaida.CardCode = string.Empty;
-                                oNotaFiscalSaida.Lines.LineTotal = 0;
-                                oNotaFiscalSaida.Lines.UserFields.Fields.Item("U_Item").Value = string.Empty;
-                                IdPCI = SqlUtils.GetValue("select newid()");
-                            }
-
-                            oNotaFiscalSaida.DiscountPercent = 0;
-
-                            oNotaFiscalSaida.SequenceCode = 29;
-                            oNotaFiscalSaida.SequenceModel = "46";
-
-                            oNotaFiscalSaida.DocObjectCodeEx = "13";
-                            oNotaFiscalSaida.DocDate = dataFaturamento;
-                            oNotaFiscalSaida.CardCode = oPedidoVenda.CardCode;
-                            oNotaFiscalSaida.NumAtCard = oPedidoVenda.NumAtCard;
-                            oNotaFiscalSaida.BPL_IDAssignedToInvoice = oPedidoVenda.BPL_IDAssignedToInvoice;
-                            oNotaFiscalSaida.UserFields.Fields.Item("U_IdPO").Value = oPedidoVenda.UserFields.Fields.Item("U_IdPO").Value;
-
-                            oNotaFiscalSaida.UserFields.Fields.Item("U_TX_OrigemIbge").Value = IbgeCode;
 
                             oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
@@ -412,6 +403,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
                                     break;
                             }
 
+                            //oNotaFiscalSaida.NumberOfInstallments += 1;
+
                             oNotaFiscalSaida.UserFields.Fields.Item("U_IdPCI").Value = IdPCI;
 
 
@@ -419,7 +412,6 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                             oNotaFiscalSaida.TaxExtension.MainUsage = Convert.ToInt32(ConfiguracoesImportacaoPO.Utilizacao);
 
-                            oNotaFiscalSaida.Project = oPedidoVenda.Lines.ProjectCode;
 
                             oNotaFiscalSaida.Lines.ItemCode = ItemCode;
                             oNotaFiscalSaida.Lines.Quantity = 1;
@@ -458,24 +450,12 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     }
                     Int32 DocEntry = Convert.ToInt32(SqlUtils.GetValue("SELECT MAX(DocEntry) FROM ODRF WHERE ObjType = '13'"));
 
-                    GeraDocumentoAlocacao(DocEntry,
-                                        IdPCI,
-                                        AlocacaoFAT1,
-                                        DescAlocacaoFAT1,
-                                        TotalFat1,
-                                        PercFat1,
-                                        AlocacaoFAT2,
-                                        DescAlocacaoFAT2,
-                                        TotalFat2,
-                                        PercFat2,
-                                        AlocacaoFAT3,
-                                        DescAlocacaoFAT3,
-                                        TotalFat3,
-                                        PercFat3,
-                                        AlocacaoFAT4,
-                                        DescAlocacaoFAT4,
-                                        TotalFat4,
-                                        PercFat4);
+                    AddInstallments(
+                            AlocacaoFAT1, PercFat1, DescAlocacaoFAT1,
+                            AlocacaoFAT2, PercFat2, DescAlocacaoFAT2,
+                            AlocacaoFAT3, PercFat3, DescAlocacaoFAT3,
+                            AlocacaoFAT4, PercFat4, DescAlocacaoFAT4,
+                            DocEntry);
 
                     AtualizaDocumentoCidadeImposto(DocEntry);
 
@@ -486,6 +466,76 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 throw new Exception($"Erro ao gerar pré faturamento: {Ex.Message}");
             }
         }
+
+        public void AddInstallments(
+            string AlocacaoFAT1, double PercFat1, string DescAlocacaoFAT1,
+            string AlocacaoFAT2, double PercFat2, string DescAlocacaoFAT2,
+            string AlocacaoFAT3, double PercFat3, string DescAlocacaoFAT3,
+            string AlocacaoFAT4, double PercFat4, string DescAlocacaoFAT4,
+            Int32 DocEntry)
+        {
+
+            Documents oNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
+
+            Int32 NumberOfInstallments = 0;
+
+            if (oNotaFiscalSaida.GetByKey(DocEntry))
+            {
+                oNotaFiscalSaida.Installments.SetCurrentLine(0);
+
+                if (!string.IsNullOrEmpty(AlocacaoFAT1) && PercFat1 > 0)
+                {
+                    NumberOfInstallments += 1;
+                    oNotaFiscalSaida.Installments.Percentage = PercFat1;
+                    oNotaFiscalSaida.Installments.DueDate = oNotaFiscalSaida.DocDueDate;
+
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value = AlocacaoFAT1;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value = DescAlocacaoFAT1;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_Project").Value = oNotaFiscalSaida.Project;
+                    oNotaFiscalSaida.Installments.Add();
+                }
+
+                if (!string.IsNullOrEmpty(AlocacaoFAT2) && PercFat2 > 0)
+                {
+                    NumberOfInstallments += 1;
+                    oNotaFiscalSaida.Installments.Percentage = PercFat2;
+                    oNotaFiscalSaida.Installments.DueDate = oNotaFiscalSaida.DocDueDate;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value = AlocacaoFAT2;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value = DescAlocacaoFAT2;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_Project").Value = oNotaFiscalSaida.Project;
+                    oNotaFiscalSaida.Installments.Add();
+                }
+
+                if (!string.IsNullOrEmpty(AlocacaoFAT3) && PercFat3 > 0)
+                {
+                    NumberOfInstallments += 1;
+                    oNotaFiscalSaida.Installments.Percentage = PercFat3;
+                    oNotaFiscalSaida.Installments.DueDate = oNotaFiscalSaida.DocDueDate;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value = AlocacaoFAT3;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value = DescAlocacaoFAT3;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_Project").Value = oNotaFiscalSaida.Project;
+                    oNotaFiscalSaida.Installments.Add();
+                }
+
+                if (!string.IsNullOrEmpty(AlocacaoFAT4) && PercFat4 > 0)
+                {
+                    NumberOfInstallments += 1;
+                    oNotaFiscalSaida.Installments.Percentage = PercFat4;
+                    oNotaFiscalSaida.Installments.DueDate = oNotaFiscalSaida.DocDueDate;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value = AlocacaoFAT4;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value = DescAlocacaoFAT4;
+                    oNotaFiscalSaida.Installments.UserFields.Fields.Item("U_Project").Value = oNotaFiscalSaida.Project;
+                    oNotaFiscalSaida.Installments.Add();
+                }
+
+                oNotaFiscalSaida.NumberOfInstallments = NumberOfInstallments;
+
+                if (oNotaFiscalSaida.Update() != 0)
+                    throw new Exception($"Erro ao atualizar alocações no esboço {DocEntry}: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+
+            }
+        }
+
 
         private void GeraDocumentoAlocacao(int docEntry, string IdPCIDocumento, string alocacaoFAT1, string descAlocacaoFAT1, double totalFat1, double percFat1, string alocacaoFAT2, string descAlocacaoFAT2, double totalFat2, double percFat2, string alocacaoFAT3, string descAlocacaoFAT3, double totalFat3, double percFat3, string alocacaoFAT4, string descAlocacaoFAT4, double totalFat4, double percFat4)
         {

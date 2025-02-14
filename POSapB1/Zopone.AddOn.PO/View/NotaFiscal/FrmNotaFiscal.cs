@@ -7,9 +7,11 @@ using SAPbobsCOM;
 using SAPbouiCOM;
 using System;
 using System.CodeDom.Compiler;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Zopone.AddOn.PO.Helpers;
 using Zopone.AddOn.PO.Model.Objects;
 using Zopone.AddOn.PO.View.Obra;
 
@@ -20,9 +22,13 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
         public Matrix oMtItens { get; set; }
         public Matrix oMtAlocacao { get; set; }
         public DataTable DtAlocacao { get; set; }
-       
+
         public Button BtAdicionarLinha { get; set; }
         public Button BtRemoverLinha { get; set; }
+
+        public EditText EdTotalAlocacapPercentual { get; set; }
+        public EditText EdTotalAlocacaoLiquido { get; set; }
+        public EditText EdTotalAlocacaoBruto { get; set; }
 
         DBDataSource dbOINV { get; set; }
         DBDataSource dbINV1 { get; set; }
@@ -31,6 +37,11 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
         {
             if (oForm == null)
                 return;
+
+
+            EdTotalAlocacapPercentual = (EditText)oForm.Items.Item("EdTotAlocP").Specific;
+            EdTotalAlocacaoLiquido = (EditText)oForm.Items.Item("EdTotAlocL").Specific;
+            EdTotalAlocacaoBruto = (EditText)oForm.Items.Item("EdTotAlocB").Specific;
 
             DtAlocacao = oForm.DataSources.DataTables.Item("DtAloc");
             dbOINV = oForm.DataSources.DBDataSources.Item("OINV");
@@ -41,17 +52,18 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
 
             BtAdicionarLinha = (Button)oForm.Items.Item("BtAdd").Specific;
             BtAdicionarLinha.PressedAfter += BtAdicionarLinha_PressedAfter;
-            
+
             BtRemoverLinha = (Button)oForm.Items.Item("BtDel").Specific;
             BtRemoverLinha.PressedAfter += BtRemoverLinha_PressedAfter;
 
             oMtItens.AutoResizeColumns();
             oMtAlocacao.AutoResizeColumns();
+
             oMtAlocacao.ChooseFromListBefore += OMtAlocacao_ChooseFromListBefore;
             oMtAlocacao.ChooseFromListAfter += OMtAlocacao_ChooseFromListAfter;
             oMtAlocacao.LostFocusAfter += OMtAlocacao_LostFocusAfter;
 
-            CarregaDadosAlocacao("-9999", oMtAlocacao, DtAlocacao);
+            CarregaDadosAlocacao(-9999, oMtAlocacao, DtAlocacao, oForm.UniqueID);
         }
 
         private void OMtAlocacao_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
@@ -60,12 +72,89 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             {
                 if (pVal.ColUID == "Percent")
                     CalcularValorParcela(pVal.Row - 1);
+                else if (pVal.ColUID == "ValParcB")
+                    CalculaValorPercentual(pVal.Row - 1);
 
 
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao validar dados de Alocação: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+
+        }
+
+        private void CalculaValorPercentual(int row)
+        {
+            try
+            {
+                oForm.Freeze(true);
+
+                oMtAlocacao.FlushToDataSource();
+
+                double dblValorLiquidoTotal = Convert.ToDouble(dbOINV.GetValue("DocTotal", 0).ToString().Replace(",", "").Replace(".", ","));
+                double dblValorBrutoTotal = Convert.ToDouble(dbINV1.GetValue("LineTotal", 0).ToString().Replace(",", "").Replace(".", ","));
+                double ValorBrutoLinha = Convert.ToDouble(DtAlocacao.GetValue("ValorParcelaBruto", row));
+
+                double Percentual = ValorBrutoLinha / dblValorBrutoTotal;
+
+                DtAlocacao.SetValue("Percentual", row, Percentual * 100);
+                DtAlocacao.SetValue("ValorParcela", row, dblValorLiquidoTotal * Percentual);
+
+                oMtAlocacao.LoadFromDataSourceEx(true);
+
+                SomaValoresAlocacao(oForm.UniqueID);
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao calcular valor de faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
+            }
+        }
+
+        private static void SomaValoresAlocacao(string formUID)
+        {
+            Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+            try
+            {
+                oForm.Freeze(true);
+
+                DataTable DtAlocacao = oForm.DataSources.DataTables.Item("DtAloc");
+
+                EditText EdTotalAlocacapPercentual = (EditText)oForm.Items.Item("EdTotAlocP").Specific;
+                EditText EdTotalAlocacaoLiquido = (EditText)oForm.Items.Item("EdTotAlocL").Specific;
+                EditText EdTotalAlocacaoBruto = (EditText)oForm.Items.Item("EdTotAlocB").Specific;
+
+                double TotalAlocacaoPercentual = 0;
+                double TotalAlocacaoLiquid = 0;
+                double TotalAlocacaoBruto = 0;
+
+                for (int iRow = 0; iRow < DtAlocacao.Rows.Count; iRow++)
+                {
+                    TotalAlocacaoPercentual += Convert.ToDouble(DtAlocacao.GetValue("Percentual", iRow));
+                    TotalAlocacaoLiquid += Convert.ToDouble(DtAlocacao.GetValue("ValorParcela", iRow));
+                    TotalAlocacaoBruto += Convert.ToDouble(DtAlocacao.GetValue("ValorParcelaBruto", iRow));
+                }
+
+                EdTotalAlocacapPercentual.Value = TotalAlocacaoPercentual.ToString().Replace(".", "").Replace(",", ".");
+                EdTotalAlocacaoLiquido.Value = TotalAlocacaoLiquid.ToString().Replace(".", "").Replace(",", ".");
+                EdTotalAlocacaoBruto.Value = TotalAlocacaoBruto.ToString().Replace(".", "").Replace(",", ".");
+
+                if (TotalAlocacaoPercentual != 100 && TotalAlocacaoLiquid > 0) 
+                    Util.ExibirMensagemStatusBar($"Atenção: Total Percentual diferente de 100%", BoMessageTime.bmt_Medium, true);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao Somar Valores Alocação: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
             }
 
         }
@@ -125,7 +214,7 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao filtrar dados de alocação: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
                 BubbleEvent = false;
             }
-            
+
 
         }
 
@@ -158,7 +247,7 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
 
                     oMtAlocacao.LoadFromDataSourceEx(true);
 
-                    CalcularValorParcela(pVal.Row-1);
+                    CalcularValorParcela(pVal.Row - 1);
                 }
             }
             catch (Exception Ex)
@@ -171,21 +260,28 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
         {
             try
             {
+                oForm.Freeze(true);
+
                 oMtAlocacao.FlushToDataSource();
 
                 double dblValorLiquido = Convert.ToDouble(dbOINV.GetValue("DocTotal", 0).ToString().Replace(",", "").Replace(".", ","));
                 double dblValorBruto = Convert.ToDouble(dbINV1.GetValue("LineTotal", 0).ToString().Replace(",", "").Replace(".", ","));
                 double PercentualFaturamento = Convert.ToDouble(DtAlocacao.GetValue("Percentual", row).ToString().Replace(".", "").Replace(",", "."));
 
-                DtAlocacao.SetValue("ValorParcelaBruto", row, dblValorLiquido * PercentualFaturamento/100);
-                DtAlocacao.SetValue("ValorParcela", row, dblValorBruto * PercentualFaturamento / 100);
+                DtAlocacao.SetValue("ValorParcelaBruto", row, dblValorBruto * PercentualFaturamento / 100);
+                DtAlocacao.SetValue("ValorParcela", row, dblValorLiquido * PercentualFaturamento / 100);
 
                 oMtAlocacao.LoadFromDataSourceEx(true);
 
+                SomaValoresAlocacao(oForm.UniqueID);
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao calcular percentual de faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
             }
         }
 
@@ -216,11 +312,11 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             }
         }
 
-        private static void CarregaDadosAlocacao(string IdPciDocumento, Matrix oMtAlocacao, DataTable DtAlocacao)
+        private static void CarregaDadosAlocacao(Int32 docEntry, Matrix oMtAlocacao, DataTable DtAlocacao, string formUID)
         {
             try
             {
-                string SQL_Alocacao = $"SP_ZPN_ExibeAlocacaoDocumento '{IdPciDocumento}'";
+                string SQL_Alocacao = $"SP_ZPN_ExibeAlocacaoDocumento '{docEntry}'";
 
                 DtAlocacao.ExecuteQuery(SQL_Alocacao);
 
@@ -235,18 +331,19 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                 oMtAlocacao.Columns.Item("CodAloc").ChooseFromListUID = "CFL_Aloc";
                 oMtAlocacao.Columns.Item("CodAloc").ChooseFromListAlias = "Code";
 
-
                 oMtAlocacao.LoadFromDataSourceEx(true);
 
                 oMtAlocacao.AutoResizeColumns();
+
+                SomaValoresAlocacao(formUID);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar dados de alocação: {ex.Message}", BoMessageTime.bmt_Medium, true, ex);
             }
         }
 
-        
+
         private static void CarregarDadosTela(string formUID)
         {
             try
@@ -254,11 +351,14 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                 Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
 
                 DBDataSource DbOINV = oForm.DataSources.DBDataSources.Item("OINV");
-                
-                DataTable DtAlocacao = oForm.DataSources.DataTables.Item("DtAloc");                
+
+                DataTable DtAlocacao = oForm.DataSources.DataTables.Item("DtAloc");
                 Matrix oMtAlocacao = (Matrix)oForm.Items.Item("MtAloca").Specific;
 
-                CarregaDadosAlocacao(DbOINV.GetValue("U_IdPCI", 0), oMtAlocacao, DtAlocacao);
+                VerificaAlocacaoParcela(Convert.ToInt32(DbOINV.GetValue("DocEntry", 0)));
+
+                CarregaDadosAlocacao(Convert.ToInt32(DbOINV.GetValue("DocEntry", 0)), oMtAlocacao, DtAlocacao, oForm.UniqueID);
+                
 
             }
             catch (Exception Ex)
@@ -267,16 +367,54 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             }
         }
 
+        private static void VerificaAlocacaoParcela(Int32 DocEntry)
+        {
+            try
+            {
+                bool verificaAloca = SqlUtils.ExistemRegistros($@"
+                                                SELECT 
+	                                                1
+                                                FROM 
+	                                                OINV
+	                                                INNER JOIN ZPN_ALOCACAOPARCELANF ALOCA ON ALOCA.IdPCI = OINV.U_IdPCI 
+                                                WHERE 
+	                                                OINV.""DocEntry"" = {DocEntry}");
+
+                if (verificaAloca)
+                {
+                    SqlUtils.DoNonQuery($@"SP_ZPN_CRIATABELAALOCACAO {DocEntry}");
+                }
+
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao verificar alocação de parcela: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+
+        }
 
         internal static bool Interface_FormDataEvent(BusinessObjectInfo businessObjectInfo)
         {
             try
             {
                 if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_LOAD && !businessObjectInfo.BeforeAction)
-                {
+                {                    
                     CarregarDadosTela(businessObjectInfo.FormUID);
                 }
-
+                else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE && businessObjectInfo.BeforeAction)
+                {
+                    if (!Util.RetornarDialogo("Deseja atualizar a Nota Fiscal?"))
+                        return false;
+                }
+                else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE && !businessObjectInfo.BeforeAction)
+                {
+                    EnviarDadosPCI(businessObjectInfo.FormUID);
+                }
+                else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE && !businessObjectInfo.BeforeAction)
+                {
+                    AtualizaAlocacaoDocumento(businessObjectInfo.FormUID);
+                }
 
                 return true;
             }
@@ -287,7 +425,66 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             }
         }
 
-    }  
+        private static void EnviarDadosPCI(string formUID)
+        {
+            try
+            {
+                Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                DBDataSource dbOINV = oForm.DataSources.DBDataSources.Item("OINV");
+                Int32 DocEntry = Convert.ToInt32(dbOINV.GetValue("DocEntry", 0));
+
+                UtilPCI.EnviarDadosNFTransmitida(DocEntry);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao enviar dados PCI!");
+            }
+        }
+
+        private static void AtualizaAlocacaoDocumento(string formUID)
+        {
+            try
+            {
+
+                Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+
+                DataTable DtAlocacao = oForm.DataSources.DataTables.Item("DtAloc");
+                Matrix oMtAlocacao = (Matrix)oForm.Items.Item("MtAloca").Specific;
+                DBDataSource dbOINV = oForm.DataSources.DBDataSources.Item("OINV");
+
+                string IdPCIDocumento = dbOINV.GetValue("U_IdPCI", 0);
+                string DocEntry = dbOINV.GetValue("DocEntry", 0);
+
+
+                oMtAlocacao.FlushToDataSource();
+
+                SqlUtils.DoNonQuery($"DELETE FROM ZPN_ALOCACAOPARCELANF WHERE [IdPCIDocumento] = '{IdPCIDocumento}'");
+
+                for (int iRow = 0; iRow < DtAlocacao.Rows.Count; iRow++)
+                {
+                    if (
+                        !string.IsNullOrEmpty(DtAlocacao.GetValue("CodigoAlocacao", iRow).ToString()) &&
+
+                        double.TryParse(Convert.ToString(DtAlocacao.GetValue("Percentual", iRow)), out double dblPercentual) &&
+                        double.TryParse(Convert.ToString(DtAlocacao.GetValue("ValorParcela", iRow)), out double dblValorParcela) &&
+                        double.TryParse(Convert.ToString(DtAlocacao.GetValue("ValorParcelaBruto", iRow)), out double dblValorParcelaBruto))
+                    {
+                        string CodAlocacao = DtAlocacao.GetValue("CodigoAlocacao", iRow).ToString();
+                        string DescricaoAlocacao = DtAlocacao.GetValue("DescricaoAlocacao", iRow).ToString();
+                        string IdPCI = DtAlocacao.GetValue("IdPCI", iRow).ToString();
+
+                        string sqlInsereAtualizaDoc = $"SP_ZPN_InsereAtualizaDocumentoAlocacao null, 13, 'E', {DocEntry},  {dblPercentual.ToString().Replace(".", "").Replace(",", ".")}, {dblValorParcelaBruto.ToString().Replace(".", "").Replace(",", ".")}, '{CodAlocacao}', '{DescricaoAlocacao}', '{IdPCI}', '{IdPCIDocumento}' ";
+
+                        SqlUtils.DoNonQuery(sqlInsereAtualizaDoc);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao executar atualizar de dados no documento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+    }
 
 
 }

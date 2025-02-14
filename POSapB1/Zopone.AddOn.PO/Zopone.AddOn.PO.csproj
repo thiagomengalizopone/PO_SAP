@@ -561,6 +561,7 @@
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CriaAlocacaoDocumento.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_InsereAtualizaDocumentoAlocacao.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_ExibeAlocacaoDocumento.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_CRIATABELAALOCACAO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

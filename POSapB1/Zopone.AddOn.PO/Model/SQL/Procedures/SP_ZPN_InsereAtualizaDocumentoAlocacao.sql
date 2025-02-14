@@ -1,4 +1,5 @@
-﻿create PROCEDURE SP_ZPN_InsereAtualizaDocumentoAlocacao 
+﻿
+CREATE PROCEDURE [dbo].[SP_ZPN_InsereAtualizaDocumentoAlocacao] 
 (
 	@DocEntry int,
 	@ObjType int,
