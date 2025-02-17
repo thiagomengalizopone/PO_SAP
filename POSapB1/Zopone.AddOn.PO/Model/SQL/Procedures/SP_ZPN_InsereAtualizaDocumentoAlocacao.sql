@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[SP_ZPN_InsereAtualizaDocumentoAlocacao] 
+﻿CREATE PROCEDURE [dbo].[SP_ZPN_InsereAtualizaDocumentoAlocacao] 
 (
 	@DocEntry int,
 	@ObjType int,
@@ -16,7 +15,7 @@ AS
 BEGIN
 	DECLARE @Parcela int;
 
-	SELECT @Parcela = ISNULL(MAX(Parcela), 0) + 1 FROM ZPN_ALOCACAOPARCELANF;
+	SELECT @Parcela = ISNULL(MAX(Parcela), 0) + 1 FROM ZPN_ALOCACAOPARCELANF where "DocEntry" = @DocEntry;
 
 	if (isnull(@IdPCI,'') = '')
 	begin

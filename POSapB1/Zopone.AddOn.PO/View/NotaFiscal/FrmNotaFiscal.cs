@@ -30,6 +30,10 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
         public EditText EdTotalAlocacaoLiquido { get; set; }
         public EditText EdTotalAlocacaoBruto { get; set; }
 
+        public EditText EdNroDocumento { get; set; }
+        public EditText EdNroNotaFiscal { get; set; }
+        public EditText EdContrato { get; set; }
+
         DBDataSource dbOINV { get; set; }
         DBDataSource dbINV1 { get; set; }
 
@@ -42,6 +46,8 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             EdTotalAlocacapPercentual = (EditText)oForm.Items.Item("EdTotAlocP").Specific;
             EdTotalAlocacaoLiquido = (EditText)oForm.Items.Item("EdTotAlocL").Specific;
             EdTotalAlocacaoBruto = (EditText)oForm.Items.Item("EdTotAlocB").Specific;
+
+            EdContrato = (EditText)oForm.Items.Item("EdCont").Specific;
 
             DtAlocacao = oForm.DataSources.DataTables.Item("DtAloc");
             dbOINV = oForm.DataSources.DBDataSources.Item("OINV");
@@ -62,6 +68,14 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             oMtAlocacao.ChooseFromListBefore += OMtAlocacao_ChooseFromListBefore;
             oMtAlocacao.ChooseFromListAfter += OMtAlocacao_ChooseFromListAfter;
             oMtAlocacao.LostFocusAfter += OMtAlocacao_LostFocusAfter;
+
+            EdNroDocumento = (EditText)oForm.Items.Item("EdDocEntry").Specific;
+            EdNroDocumento.Item.SetAutoManagedAttribute(BoAutoManagedAttr.ama_Editable, (int)BoAutoFormMode.afm_All, BoModeVisualBehavior.mvb_False);
+            EdNroDocumento.Item.SetAutoManagedAttribute(BoAutoManagedAttr.ama_Editable, (int)BoAutoFormMode.afm_Find, BoModeVisualBehavior.mvb_True);
+
+            EdNroNotaFiscal = (EditText)oForm.Items.Item("EdNroNF").Specific;
+            EdNroNotaFiscal.Item.SetAutoManagedAttribute(BoAutoManagedAttr.ama_Editable, (int)BoAutoFormMode.afm_All, BoModeVisualBehavior.mvb_False);
+            EdNroNotaFiscal.Item.SetAutoManagedAttribute(BoAutoManagedAttr.ama_Editable, (int)BoAutoFormMode.afm_Find, BoModeVisualBehavior.mvb_True);
 
             CarregaDadosAlocacao(-9999, oMtAlocacao, DtAlocacao, oForm.UniqueID);
         }
@@ -141,11 +155,11 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                     TotalAlocacaoBruto += Convert.ToDouble(DtAlocacao.GetValue("ValorParcelaBruto", iRow));
                 }
 
-                EdTotalAlocacapPercentual.Value = TotalAlocacaoPercentual.ToString().Replace(".", "").Replace(",", ".");
-                EdTotalAlocacaoLiquido.Value = TotalAlocacaoLiquid.ToString().Replace(".", "").Replace(",", ".");
-                EdTotalAlocacaoBruto.Value = TotalAlocacaoBruto.ToString().Replace(".", "").Replace(",", ".");
+                EdTotalAlocacapPercentual.Value = Math.Round(TotalAlocacaoPercentual, 2).ToString().Replace(".", "").Replace(",", ".");
+                EdTotalAlocacaoLiquido.Value = Math.Round(TotalAlocacaoLiquid, 2).ToString().Replace(".", "").Replace(",", ".");
+                EdTotalAlocacaoBruto.Value = Math.Round(TotalAlocacaoBruto, 2).ToString().Replace(".", "").Replace(",", ".");
 
-                if (TotalAlocacaoPercentual != 100 && TotalAlocacaoLiquid > 0) 
+                if (TotalAlocacaoPercentual != 100 && TotalAlocacaoLiquid > 0)
                     Util.ExibirMensagemStatusBar($"Atenção: Total Percentual diferente de 100%", BoMessageTime.bmt_Medium, true);
             }
             catch (Exception Ex)
@@ -318,6 +332,8 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             {
                 string SQL_Alocacao = $"SP_ZPN_ExibeAlocacaoDocumento '{docEntry}'";
 
+                DtAlocacao.Rows.Clear();
+
                 DtAlocacao.ExecuteQuery(SQL_Alocacao);
 
                 oMtAlocacao.Columns.Item("Parcela").DataBind.Bind("DtAloc", "Parcela");
@@ -349,8 +365,19 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             try
             {
                 Form oForm = Globals.Master.Connection.Interface.Forms.Item(formUID);
+                EditText oEdContrato = (EditText)oForm.Items.Item("EdCont").Specific;
 
                 DBDataSource DbOINV = oForm.DataSources.DBDataSources.Item("OINV");
+
+                if (DbOINV.GetValue("CANCELED", 0).ToString() == "N")
+                    oForm.Title = "Editar Nota Fiscal de Saída";
+                else if (DbOINV.GetValue("CANCELED", 0).ToString() == "Y")
+                    oForm.Title = "Editar Nota Fiscal de Saída - CANCELADA";
+                else if (DbOINV.GetValue("CANCELED", 0).ToString() == "C")
+                    oForm.Title = "Editar Nota Fiscal de Saída - CANCELAMENTO";
+
+                oEdContrato.Value = SqlUtils.GetValue($@"select U_DescContrato from ""@ZPN_OPRJ"" WHERE ""Code"" = '{DbOINV.GetValue("Project", 0).ToString()}'");
+
 
                 DataTable DtAlocacao = oForm.DataSources.DataTables.Item("DtAloc");
                 Matrix oMtAlocacao = (Matrix)oForm.Items.Item("MtAloca").Specific;
@@ -358,7 +385,7 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                 VerificaAlocacaoParcela(Convert.ToInt32(DbOINV.GetValue("DocEntry", 0)));
 
                 CarregaDadosAlocacao(Convert.ToInt32(DbOINV.GetValue("DocEntry", 0)), oMtAlocacao, DtAlocacao, oForm.UniqueID);
-                
+
 
             }
             catch (Exception Ex)
@@ -375,12 +402,11 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                                                 SELECT 
 	                                                1
                                                 FROM 
-	                                                OINV
-	                                                INNER JOIN ZPN_ALOCACAOPARCELANF ALOCA ON ALOCA.IdPCI = OINV.U_IdPCI 
+	                                                ZPN_ALOCACAOPARCELANF 
                                                 WHERE 
-	                                                OINV.""DocEntry"" = {DocEntry}");
+	                                                ""DocEntry"" = {DocEntry}");
 
-                if (verificaAloca)
+                if (!verificaAloca)
                 {
                     SqlUtils.DoNonQuery($@"SP_ZPN_CRIATABELAALOCACAO {DocEntry}");
                 }
@@ -399,7 +425,7 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             try
             {
                 if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_LOAD && !businessObjectInfo.BeforeAction)
-                {                    
+                {
                     CarregarDadosTela(businessObjectInfo.FormUID);
                 }
                 else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE && businessObjectInfo.BeforeAction)
@@ -409,11 +435,9 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                 }
                 else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE && !businessObjectInfo.BeforeAction)
                 {
-                    EnviarDadosPCI(businessObjectInfo.FormUID);
-                }
-                else if (businessObjectInfo.EventType == BoEventTypes.et_FORM_DATA_UPDATE && !businessObjectInfo.BeforeAction)
-                {
                     AtualizaAlocacaoDocumento(businessObjectInfo.FormUID);
+                    EnviarDadosPCI(businessObjectInfo.FormUID);
+                    CarregarDadosTela(businessObjectInfo.FormUID);
                 }
 
                 return true;
@@ -458,7 +482,7 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
 
                 oMtAlocacao.FlushToDataSource();
 
-                SqlUtils.DoNonQuery($"DELETE FROM ZPN_ALOCACAOPARCELANF WHERE [IdPCIDocumento] = '{IdPCIDocumento}'");
+                SqlUtils.DoNonQuery($"EXEC SP_ZPN_RemoveContasReceberPCI {DocEntry}");
 
                 for (int iRow = 0; iRow < DtAlocacao.Rows.Count; iRow++)
                 {
@@ -473,7 +497,7 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
                         string DescricaoAlocacao = DtAlocacao.GetValue("DescricaoAlocacao", iRow).ToString();
                         string IdPCI = DtAlocacao.GetValue("IdPCI", iRow).ToString();
 
-                        string sqlInsereAtualizaDoc = $"SP_ZPN_InsereAtualizaDocumentoAlocacao null, 13, 'E', {DocEntry},  {dblPercentual.ToString().Replace(".", "").Replace(",", ".")}, {dblValorParcelaBruto.ToString().Replace(".", "").Replace(",", ".")}, '{CodAlocacao}', '{DescricaoAlocacao}', '{IdPCI}', '{IdPCIDocumento}' ";
+                        string sqlInsereAtualizaDoc = $"SP_ZPN_InsereAtualizaDocumentoAlocacao {DocEntry}, 13, 'N', {DocEntry},  {dblPercentual.ToString().Replace(".", "").Replace(",", ".")}, {dblValorParcelaBruto.ToString().Replace(".", "").Replace(",", ".")}, '{CodAlocacao}', '{DescricaoAlocacao}', '{IdPCI}', '{IdPCIDocumento}' ";
 
                         SqlUtils.DoNonQuery(sqlInsereAtualizaDoc);
                     }
