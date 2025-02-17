@@ -78,6 +78,8 @@ namespace Zopone.AddOn.PO.View.NotaFiscal
             EdNroNotaFiscal.Item.SetAutoManagedAttribute(BoAutoManagedAttr.ama_Editable, (int)BoAutoFormMode.afm_Find, BoModeVisualBehavior.mvb_True);
 
             CarregaDadosAlocacao(-9999, oMtAlocacao, DtAlocacao, oForm.UniqueID);
+
+            oForm.Mode = BoFormMode.fm_FIND_MODE;
         }
 
         private void OMtAlocacao_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
