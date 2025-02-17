@@ -94,7 +94,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
-                if (row > 0)
+                if (row > 0 && row <= MtPedidos.RowCount)
                     MtPedidos.SelectRow(row, true, false);
             }
             catch (Exception Ex)
@@ -385,13 +385,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                             PercFat3 = Convert.ToDouble(DtPesquisa.GetValue("PercFaturar3", iRow));
                             PercFat4 = Convert.ToDouble(DtPesquisa.GetValue("PercFaturar4", iRow));
 
-                            if (PercFat1 + PercFat2 + PercFat3 + PercFat4 != 100)
-                            {
-                                throw new Exception($"Percentual de faturamento maior que 100 na linha {iRow + 1}!");
-                            }
-
-
-
+                            
                             oNotaFiscalSaida.UserFields.Fields.Item("U_ZPN_TipoDocto").Value = oPedidoVenda.UserFields.Fields.Item("U_ZPN_TipoDocto").Value;
                             oNotaFiscalSaida.UserFields.Fields.Item("U_NroCont").Value = oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value;
 
@@ -672,7 +666,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao carregar alocação faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
-        private void CalculaPorcentagemFaturamento(Int32 row, string ColUID)
+        private void CalculaValorFaturamento(Int32 row, string ColUID)
         {
             try
             {
@@ -708,7 +702,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                 var (CampoAlocacaoFAT, DescAlocacaoFAT, PercFaturar, ValorFat) = colMapping[ColUID];
 
-                if (!double.TryParse(Convert.ToString(DtPesquisa.GetValue("SaldoAberto", row)), out double dblSaldoAberto) ||
+                if (!double.TryParse(Convert.ToString(DtPesquisa.GetValue("TotalFaturar", row)), out double dblSaldoAberto) ||
                     !double.TryParse(Convert.ToString(DtPesquisa.GetValue(PercFaturar, row)), out double dblPercentualFaturamento))
                 {
                     return;
@@ -729,6 +723,64 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
         }
 
+        private void CalculaPercentualFaturamento(Int32 row, string ColUID)
+        {
+            try
+            {
+                oForm.Freeze(true);
+
+                MtPedidos.FlushToDataSource();
+
+                if (ColUID.StartsWith("PercAlc"))
+                {
+                    ColUID = ColUID.Replace("PercAlc", "CodAlc");
+                }
+                
+                var colunaReferenciaMap = new Dictionary<string, string>
+                    {
+                        { "ValorFat1", "CodAlc1"  },
+                        { "ValorFat2", "CodAlc2"  },
+                        { "ValorFat3", "CodAlc3"  },
+                        { "ValorFat4", "CodAlc4"  }
+                    };
+
+                if (!colunaReferenciaMap.ContainsKey(ColUID))
+                {
+                    return;
+                }
+
+                string colunaReferencia = colunaReferenciaMap[ColUID];
+
+                if (!colMapping.ContainsKey(colunaReferencia))
+                {
+                    return;
+                }
+
+                var (CampoAlocacaoFAT, DescAlocacaoFAT, PercFaturar, ValorFat) = colMapping[colunaReferencia];
+
+                if (!double.TryParse(Convert.ToString(DtPesquisa.GetValue("TotalFaturar", row)), out double dblSaldoAberto) ||
+                    !double.TryParse(Convert.ToString(DtPesquisa.GetValue(ValorFat, row)), out double dblValorFaturar))
+                {
+                    return;
+                }
+
+                DtPesquisa.SetValue(PercFaturar, row, (dblValorFaturar / dblSaldoAberto * 100));
+
+                MtPedidos.LoadFromDataSourceEx(true);
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao calcular valor da alocação: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
+            }
+
+        }
+
+
+
 
         private void MtPedidos_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
         {
@@ -740,9 +792,15 @@ namespace Zopone.AddOn.PO.View.Faturamento
                          pVal.ColUID == "PercAlc2" ||
                          pVal.ColUID == "PercAlc3" ||
                          pVal.ColUID == "PercAlc4")
-                    CalculaPorcentagemFaturamento(pVal.Row - 1, pVal.ColUID);
+                    CalculaValorFaturamento(pVal.Row - 1, pVal.ColUID);
                 else if (colMapping.ContainsKey(pVal.ColUID))
-                    CalculaPorcentagemFaturamento(pVal.Row - 1, pVal.ColUID);
+                    CalculaValorFaturamento(pVal.Row - 1, pVal.ColUID);
+                else if (pVal.ColUID == "ValorFat1" ||
+                         pVal.ColUID == "ValorFat2" ||
+                         pVal.ColUID == "ValorFat3" ||
+                         pVal.ColUID == "ValorFat4")
+                    CalculaPercentualFaturamento(pVal.Row - 1, pVal.ColUID);
+                
             }
             catch (Exception Ex)
             {
