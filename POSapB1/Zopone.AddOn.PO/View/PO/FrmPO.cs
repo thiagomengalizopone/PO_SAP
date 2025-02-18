@@ -20,7 +20,6 @@ namespace Zopone.AddOn.PO.View.Obra
 {
     public partial class FrmPO : Form
     {
-
         public static string TipoPesquisa { get; set; }
         public List<LinePO> linesPO = new List<LinePO>();
         public List<Int32> linesPODeleted = new List<Int32>();
@@ -38,8 +37,6 @@ namespace Zopone.AddOn.PO.View.Obra
         private static Thread formThread;
 
         private static DbConnection DbConnection;
-
-
 
         public static void MenuPO(string docEntryPO = "", bool isDraft = false)
         {
@@ -119,7 +116,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.TopMost = false;
 
             txtNroPedido.Focus();
-
         }
 
         private void CarregarDadosPO(string docEntryPO, bool isDraft = false)
@@ -181,7 +177,6 @@ namespace Zopone.AddOn.PO.View.Obra
                                PCG = oPedidoVenda.Lines.CostingCode,
                                Obra = oPedidoVenda.Lines.CostingCode2,
                                Regional = oPedidoVenda.Lines.CostingCode3
-
                            }
                            );
                     }
@@ -197,8 +192,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 MessageBox.Show(mensagemErro, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Erro, mensagemErro, Ex);
             }
-
-
         }
 
         private void SelecionaValoresTela()
@@ -216,7 +209,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 CbStatus.ValueMember = "Item1";
                 CbStatus.DisplayMember = "Item2";
 
-
                 CbStatus.SelectedValue = "N";
 
                 var valoresTipoItem = new List<Tuple<string, string>>()
@@ -228,7 +220,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 CbTipo.DataSource = valoresTipoItem;
                 CbTipo.ValueMember = "Item1";
                 CbTipo.DisplayMember = "Item2";
-
             }
             catch (Exception Ex)
             {
@@ -296,7 +287,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (!remover)
                 {
-                        LinePO oLinePO = new LinePO()
+                    LinePO oLinePO = new LinePO()
                     {
                         Agrupar = "N",
                         LineNum = LineNumEdit,
@@ -322,9 +313,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         CostingCode = PCG,
                         CostingCode2 = OBRA,
                         CostingCode3 = REGIONAL
-
                     };
-
 
                     if (RowIndexEdit < 0)
                         linesPO.Add(oLinePO);
@@ -337,7 +326,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     linesPODeleted.Add(LineNumEdit);
                 }
-
 
                 CarregarMatrixPO();
 
@@ -353,7 +341,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 {
                     SalvarPO();
                 }
-
             }
             catch (Exception Ex)
             {
@@ -515,7 +502,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 {
                     if (retornoDados.Count == 0)
                     {
-
                         txtItemFaturamento.Text = string.Empty;
                         lblItemFat.Text = string.Empty;
                         txtItemFaturamento.Focus();
@@ -657,7 +643,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 REGIONAL = linesPO[rowIndex].CostingCode3;
 
                 lblObra.Text = SqlUtils.GetValue($@"SELECT Name FROM ""@ZPN_OPRJ"" WHERE ""Code"" = '{linesPO[rowIndex].U_PrjCode}'");
-
             }
             catch (Exception Ex)
             {
@@ -696,7 +681,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (!string.IsNullOrEmpty(txtItem.Text))
                     AdicionarRemoverItemGrid(false, true);
 
-
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
                 try
                 {
@@ -721,7 +705,6 @@ namespace Zopone.AddOn.PO.View.Obra
                     }
                     else
                     {
-
                         if (ConfiguracoesImportacaoPO.TipoDocumentoPO == "E")
                         {
                             oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
@@ -810,9 +793,10 @@ namespace Zopone.AddOn.PO.View.Obra
                     if (Globals.Master.Connection.Database.InTransaction)
                         Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
                     
+                    //Thiago Martins, comentado para teste SAP / Company
                     if (!string.IsNullOrEmpty(CodigoPedidoCancelado))
                          RemoverDadosPCIAsync(CodigoPedidoCancelado);
-
+                    
                     new Task(() => { EnviarDadosPCIAsync(CodigoPO); }).Start();
 
                     if (!bExistePedido)
@@ -904,11 +888,18 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
-                SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+                //SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+
+                var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                oRecordSet.DoQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+
 
                 string SQL_Query = $"ZPN_SP_PCI_INSEREATUALIZAPO '{Docentry}'";
 
-                SqlUtils.DoNonQueryAsync(SQL_Query);
+                //SqlUtils.DoNonQueryAsync(SQL_Query);
+
+                oRecordSet.DoQuery(SQL_Query);
 
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
             }

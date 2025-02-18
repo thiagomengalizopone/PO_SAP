@@ -90,16 +90,12 @@ namespace Zopone.AddOn.PO
 
                     oRecordSet.MoveNext();
                 }
-
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao atualizar itens SAP: {Ex.Message}");
             }
-
         }
-
-
 
         private static void AtualizaCorrigeVencimentos()
         {
