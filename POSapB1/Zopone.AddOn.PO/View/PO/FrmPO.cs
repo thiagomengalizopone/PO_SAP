@@ -353,6 +353,10 @@ namespace Zopone.AddOn.PO.View.Obra
                 {
                     SalvarPO();
                 }
+                else
+                {
+                    txtObra.Focus();
+                }
 
             }
             catch (Exception Ex)

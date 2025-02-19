@@ -7,6 +7,7 @@ using Zopone.AddOn.PO.View.Obra;
 using Zopone.AddOn.PO.View.FrmParceiroNegocio;
 using Zopone.AddOn.PO.View.Deposito;
 using Zopone.AddOn.PO.View.ParametrosPO;
+using Zopone.AddOn.PO.View.NotaFiscal;
 //using Zopone.AddOn.PO.View.ParametrosPO;
 
 namespace Zopone.AddOn.PO
@@ -44,6 +45,10 @@ namespace Zopone.AddOn.PO
             else if (BusinessObjectInfo.FormTypeEx == FormConstantes.FrmNotaFiscalSaida) 
             {
                 BubbleEvent = Frm133.Interface_FormDataEvent(BusinessObjectInfo);
+            }
+            else if (BusinessObjectInfo.FormTypeEx == FormConstantes.FrmEditarNotaFiscalSaida)
+            {
+                BubbleEvent = FrmNotaFiscal.Interface_FormDataEvent(BusinessObjectInfo);
             }
             
 

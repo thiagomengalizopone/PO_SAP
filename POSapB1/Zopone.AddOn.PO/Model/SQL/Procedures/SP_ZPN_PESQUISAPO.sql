@@ -13,7 +13,8 @@ SELECT DISTINCT TOP 200
 	cast(T0.DocDueDate  as varchar(10))		"Data Vencimento",  
 	OPRJ."PrjCode"							"Código Obra",
 	OPRJ."PrjName"							"Obra",
-	'P'										"Documento"
+	'P'										"Documento",
+	T0."DocTotal"							"Total PO"
 
 FROM 
 	ORDR  T0 
