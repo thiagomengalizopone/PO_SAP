@@ -908,11 +908,18 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
-                SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+                //SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+
+                var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                oRecordSet.DoQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+
 
                 string SQL_Query = $"ZPN_SP_PCI_INSEREATUALIZAPO '{Docentry}'";
 
-                SqlUtils.DoNonQueryAsync(SQL_Query);
+                //SqlUtils.DoNonQueryAsync(SQL_Query);
+
+                oRecordSet.DoQuery(SQL_Query);
 
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
             }
