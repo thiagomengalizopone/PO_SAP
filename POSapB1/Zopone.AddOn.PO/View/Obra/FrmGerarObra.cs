@@ -294,10 +294,8 @@ namespace Zopone.AddOn.PO.View.Obra
                     return;
 
                 Globals.Master.Connection.Database.StartTransaction();
-                GerarProjetosSAPB1();
+                GerarProjetosSAPB1Async();
                 Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
-
-                UtilPCI.EnviarDadosObraPCIAsync(string.Empty, DateTime.Now);
 
                 SqlUtils.DoNonQuery($"ZPN_SP_PCI_ATUALIZAOBRAPCG '', '{DateTime.Now.ToString("yyyy-MM-dd")}'");
 
@@ -355,7 +353,7 @@ namespace Zopone.AddOn.PO.View.Obra
             }
         }
 
-        private void GerarProjetosSAPB1()
+        private async Task GerarProjetosSAPB1Async()
         {
             string Code = string.Empty;
             string Localizacao = string.Empty;
@@ -404,6 +402,8 @@ namespace Zopone.AddOn.PO.View.Obra
                     UtilProjetos.SalvarProjeto(Code, Code, BplName);
 
                     CentroCusto.CriaCentroCusto(Code, Dimensao, TipoCentroCusto, "", "", Code);
+
+                    await UtilPCI.EnviarDadosObraPCIAsync(Code, DateTime.Now);
 
                 }
             }

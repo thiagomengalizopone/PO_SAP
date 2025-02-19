@@ -216,6 +216,7 @@
     <Compile Include="Menus\AddMenusGestaoContratos.cs" />
     <Compile Include="Menus\MenusGestaoUtilitarios.cs" />
     <Compile Include="Model\Objects\ConfiguracoesImportacaoPO.cs" />
+    <Compile Include="Model\Objects\Faturamento.cs" />
     <Compile Include="Model\Objects\LinePO.cs" />
     <Compile Include="Model\SAP\MetaData.cs" />
     <Compile Include="Model\SAP\PurchaseOrderSAP.cs" />
