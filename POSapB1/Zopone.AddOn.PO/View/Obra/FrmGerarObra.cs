@@ -393,12 +393,11 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     oGeneralParams = oGeneralService.Add(oGeneralData);
 
-
                     UtilProjetos.SalvarProjeto(Code, Code, BplName);
 
                     CentroCusto.CriaCentroCusto(Code, Dimensao, TipoCentroCusto, "", "", Code);
 
-                    await UtilPCI.EnviarDadosObraPCIAsync(Code, DateTime.Now);
+                    await UtilPCI.EnviarDadosObraPCIAsync(Code, DateTime.Now); //envia para pci a cada caso.
 
                 }
             }
