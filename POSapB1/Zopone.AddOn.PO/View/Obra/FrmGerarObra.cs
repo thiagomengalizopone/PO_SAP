@@ -293,11 +293,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (!Util.RetornarDialogo("Deseja gerar as obras no SAP B1? \n Obras já geradas, serão ignoradas!"))
                     return;
 
-                Globals.Master.Connection.Database.StartTransaction();
-                GerarProjetosSAPB1();
-                Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
-
-                UtilPCI.EnviarDadosObraPCIAsync(string.Empty, DateTime.Now);
+                GerarProjetosSAPB1Async();
 
                 SqlUtils.DoNonQuery($"ZPN_SP_PCI_ATUALIZAOBRAPCG '', '{DateTime.Now.ToString("yyyy-MM-dd")}'");
 
@@ -308,9 +304,6 @@ namespace Zopone.AddOn.PO.View.Obra
             }
             catch (Exception Ex)
             {
-                if (Globals.Master.Connection.Database.InTransaction)
-                    Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_RollBack);
-
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar Obras: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
             finally
@@ -355,7 +348,7 @@ namespace Zopone.AddOn.PO.View.Obra
             }
         }
 
-        private void GerarProjetosSAPB1()
+        private async Task GerarProjetosSAPB1Async()
         {
             string Code = string.Empty;
             string Localizacao = string.Empty;
@@ -400,10 +393,11 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     oGeneralParams = oGeneralService.Add(oGeneralData);
 
-
                     UtilProjetos.SalvarProjeto(Code, Code, BplName);
 
                     CentroCusto.CriaCentroCusto(Code, Dimensao, TipoCentroCusto, "", "", Code);
+
+                    await UtilPCI.EnviarDadosObraPCIAsync(Code, DateTime.Now); //envia para pci a cada caso
 
                 }
             }

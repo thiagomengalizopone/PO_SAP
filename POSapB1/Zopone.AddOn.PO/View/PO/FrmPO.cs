@@ -143,47 +143,38 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     linesPO.Clear();
 
-                    for (int iRow = oPedidoVenda.Lines.Count - 1; iRow >= 0; iRow--)
+                    DataTable dtRegistros = SqlUtils.ExecuteCommand($"SP_ZPN_RetornaDadosLinhaPO {txtCodigo.Text.Trim()}");
+
+                    foreach (DataRow row in dtRegistros.Rows)
                     {
-                        oPedidoVenda.Lines.SetCurrentLine(iRow);
-
-                        linesPO.Add(
-                           new LinePO()
-                           {
-                               LineNum = oPedidoVenda.Lines.LineNum,
-                               U_PrjCode = oPedidoVenda.Lines.ProjectCode,
-                               U_Candidato = oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value.ToString(),
-                               U_CardCode = oPedidoVenda.CardCode,
-                               U_CardName = !string.IsNullOrEmpty(oPedidoVenda.Lines.UserFields.Fields.Item("U_CardName").Value.ToString()) 
-                                                ? oPedidoVenda.Lines.UserFields.Fields.Item("U_CardName").Value.ToString()
-                                                :  oPedidoVenda.CardName,
-                               U_Item = oPedidoVenda.Lines.UserFields.Fields.Item("U_Item").Value.ToString(),
-                               U_ItemFat = oPedidoVenda.Lines.UserFields.Fields.Item("U_ItemFat").Value.ToString(),
-                               U_DescItemFat = oPedidoVenda.Lines.UserFields.Fields.Item("U_DescItemFat").Value.ToString(),
-                               U_Parcela = oPedidoVenda.Lines.UserFields.Fields.Item("U_Parcela").Value.ToString(),
-                               U_Valor = oPedidoVenda.Lines.LineTotal,
-                               U_Tipo = oPedidoVenda.Lines.UserFields.Fields.Item("U_Tipo").Value.ToString(),
-                               U_DataFat = (oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value != null &&
-                                            Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value).Year != 1899) ?
-                                    Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataFat").Value) :
-                                    (DateTime?)null,
-                               U_NroNF = oPedidoVenda.Lines.UserFields.Fields.Item("U_NroNF").Value.ToString(),
-                               U_DataSol = oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value != null &&
-                                            Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value).Year != 1899 ?
-                                            Convert.ToDateTime(oPedidoVenda.Lines.UserFields.Fields.Item("U_DataSol").Value) :
-                                            (DateTime?)null,
-                               U_Obs = oPedidoVenda.Lines.FreeText,
-                               U_Bloqueado = oPedidoVenda.Lines.UserFields.Fields.Item("U_Bloqueado").Value.ToString() == "Y",
-                               U_itemDescription = oPedidoVenda.Lines.UserFields.Fields.Item("U_itemDescription").Value.ToString(),
-                               U_manSiteInfo = oPedidoVenda.Lines.UserFields.Fields.Item("U_manSiteInfo").Value.ToString(),
-                               AgrNo = oPedidoVenda.Lines.AgreementNo,
-                               DescContrato = oPedidoVenda.Lines.UserFields.Fields.Item("U_DescCont").Value.ToString(),
-                               PCG = oPedidoVenda.Lines.CostingCode,
-                               Obra = oPedidoVenda.Lines.CostingCode2,
-                               Regional = oPedidoVenda.Lines.CostingCode3
-
-                           }
-                           );
+                        linesPO.Add(new LinePO()
+                        {
+                            LineNum = row.Field<int>("LineNum"),
+                            VisOrder = row.Field<int>("VisOrder"),
+                            U_PrjCode = row.Field<string>("Project"),
+                            U_Candidato = row.Field<string>("U_Candidato"),
+                            U_CardCode = row.Field<string>("CardCode"),
+                            U_CardName = row.IsNull("CardName") ? null : row.Field<string>("CardName"),
+                            U_Item = row.Field<string>("U_Item"),
+                            U_ItemFat = row.Field<string>("U_ItemFat"),
+                            U_DescItemFat = row.Field<string>("U_DescItemFat"),
+                            U_Parcela = row.Field<string>("U_Parcela"),
+                            U_Valor = Convert.ToDouble(row.Field<decimal>("U_Valor")),
+                            U_Tipo = row.Field<string>("U_Tipo"),
+                            U_DataFat = row.IsNull("U_DataFat") ? (DateTime?)null : row.Field<DateTime>("U_DataFat"),
+                            U_NroNF = row.Field<string>("U_NroNF"),
+                            U_DataSol = row.IsNull("U_DataSol") ? (DateTime?)null : row.Field<DateTime>("U_DataSol"),
+                            U_Obs = row.Field<string>("U_Obs"),
+                            U_Bloqueado = row.Field<string>("U_Bloqueado") == "Y",
+                            U_itemDescription = row.Field<string>("U_itemDescription"),
+                            U_manSiteInfo = row.Field<string>("U_manSiteInfo"),
+                            AgrNo = row.Field<Int32?>("AgrNo"),
+                            DescContrato = row.Field<string>("U_DescCont"),
+                            PCG = row.Field<string>("PCG"),
+                            Obra = row.Field<string>("Obra"),
+                            Regional = row.Field<string>("Regional"),
+                            Edited = false
+                        });
                     }
 
                     CarregarMatrixPO();
@@ -296,11 +287,12 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 if (!remover)
                 {
-                        LinePO oLinePO = new LinePO()
+                    LinePO oLinePO = new LinePO()
                     {
                         Agrupar = "N",
                         LineNum = LineNumEdit,
                         U_PrjCode = txtObra.Text,
+                        VisOrder = string.IsNullOrEmpty(txtLinhaSAP.Text) ? -1 : Convert.ToInt32(txtLinhaSAP.Text), 
                         U_Candidato = txtCandidato.Text,
                         U_CardCode = txtCliente.Text,
                         U_CardName = txtNomeCliente.Text,
@@ -321,7 +313,8 @@ namespace Zopone.AddOn.PO.View.Obra
                         DescContrato = txtDescContrato.Text,
                         CostingCode = PCG,
                         CostingCode2 = OBRA,
-                        CostingCode3 = REGIONAL
+                        CostingCode3 = REGIONAL,
+                        Edited = true
 
                     };
 
@@ -330,6 +323,8 @@ namespace Zopone.AddOn.PO.View.Obra
                         linesPO.Add(oLinePO);
                     else
                         linesPO[RowIndexEdit] = oLinePO;
+
+
                 }
                 else
                 {
@@ -487,7 +482,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         PCG = string.Empty;
                         OBRA = string.Empty;
                         REGIONAL = string.Empty;
-                        txtObra.Focus();
+                        txtCandidato.Focus();
                     }
                     else
                     {
@@ -522,7 +517,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                         txtItemFaturamento.Text = string.Empty;
                         lblItemFat.Text = string.Empty;
-                        txtItemFaturamento.Focus();
+                        txtParcela.Focus();
                     }
                     else
                     {
@@ -638,6 +633,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 RowIndexEdit = rowIndex;
                 LineNumEdit = linesPO[rowIndex].LineNum;
                 txtObra.Text = linesPO[rowIndex].U_PrjCode;
+                txtLinhaSAP.Text = linesPO[rowIndex].VisOrder > 0 ? linesPO[rowIndex].VisOrder.ToString() : string.Empty;
                 txtCandidato.Text = linesPO[rowIndex].U_Candidato;
                 txtCliente.Text = linesPO[rowIndex].U_CardCode;
                 txtNomeCliente.Text = linesPO[rowIndex].U_CardName;
@@ -741,22 +737,21 @@ namespace Zopone.AddOn.PO.View.Obra
                         oPedidoVenda.CardCode = linesPO[0].U_CardCode;
                         oPedidoVenda.BPL_IDAssignedToInvoice = 1;
                     }
-                    
+
                     oPedidoVenda.NumAtCard = txtNroPedido.Text;
 
                     oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
                     oPedidoVenda.Comments = txtObservacao.Text;
 
-                    for (int iRow = oPedidoVenda.Lines.Count - 1; iRow >= 0; iRow--)
-                    {
-                        oPedidoVenda.Lines.SetCurrentLine(iRow);
-                        oPedidoVenda.Lines.Delete();
-                    }
-
-                    foreach (var linePO in linesPO)
+                    foreach (var linePO in linesPO.Where(linePO => linePO.Edited == true).ToList())
                     {
                         if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
-                            oPedidoVenda.Lines.Add();
+                        {
+                            if (linePO.VisOrder > 0)
+                                oPedidoVenda.Lines.SetCurrentLine((int)linePO.VisOrder);
+                            else
+                                oPedidoVenda.Lines.Add();
+                        }
 
                         oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                         oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
@@ -793,7 +788,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         oPedidoVenda.Lines.UserFields.Fields.Item("U_DescCont").Value = linePO.DescContrato;
 
                         if (linePO.AgrNo > 0 && ValidaClienteContrato(linePO.AgrNo, oPedidoVenda.CardCode))
-                            oPedidoVenda.Lines.AgreementNo = linePO.AgrNo;
+                            oPedidoVenda.Lines.AgreementNo = Convert.ToInt32(linePO.AgrNo);
                     }
 
                     if (bExistePedido)
@@ -813,9 +808,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     if (Globals.Master.Connection.Database.InTransaction)
                         Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
-                    
+
                     if (!string.IsNullOrEmpty(CodigoPedidoCancelado))
-                         RemoverDadosPCIAsync(CodigoPedidoCancelado);
+                        RemoverDadosPCIAsync(CodigoPedidoCancelado);
 
                     new Task(() => { EnviarDadosPCIAsync(CodigoPO); }).Start();
 
@@ -839,7 +834,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 finally
                 {
 
-                }                
+                }
 
             }
             catch (Exception Ex)
@@ -861,7 +856,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
         }
 
-        private bool ValidaClienteContrato(Int32 agrNo, string cardCode)
+        private bool ValidaClienteContrato(Int32? agrNo, string cardCode)
         {
             return SqlUtils.ExistemRegistros($"SELECT 1 FROM OOAT WHERE AbsId = {agrNo} and BpCode = '{cardCode}'");
         }
@@ -908,11 +903,18 @@ namespace Zopone.AddOn.PO.View.Obra
             {
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI!");
 
-                SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+                //SqlUtils.DoNonQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+
+                var oRecordSet = (Recordset)SAPDbConnection.oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                oRecordSet.DoQuery($"SP_ZPN_VERIFICACADASTROPCI {Docentry}, 17");
+
 
                 string SQL_Query = $"ZPN_SP_PCI_INSEREATUALIZAPO '{Docentry}'";
 
-                SqlUtils.DoNonQueryAsync(SQL_Query);
+                //SqlUtils.DoNonQueryAsync(SQL_Query);
+
+                oRecordSet.DoQuery(SQL_Query);
 
                 Util.ExibirMensagemStatusBar($"Atualizando dados PCI - Concluído!");
             }
