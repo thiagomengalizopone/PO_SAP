@@ -293,9 +293,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 if (!Util.RetornarDialogo("Deseja gerar as obras no SAP B1? \n Obras já geradas, serão ignoradas!"))
                     return;
 
-                Globals.Master.Connection.Database.StartTransaction();
                 GerarProjetosSAPB1Async();
-                Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
 
                 SqlUtils.DoNonQuery($"ZPN_SP_PCI_ATUALIZAOBRAPCG '', '{DateTime.Now.ToString("yyyy-MM-dd")}'");
 
@@ -306,9 +304,6 @@ namespace Zopone.AddOn.PO.View.Obra
             }
             catch (Exception Ex)
             {
-                if (Globals.Master.Connection.Database.InTransaction)
-                    Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_RollBack);
-
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao gerar Obras: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
             finally
