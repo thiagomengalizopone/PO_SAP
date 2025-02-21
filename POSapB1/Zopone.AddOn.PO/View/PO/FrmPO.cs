@@ -23,10 +23,11 @@ namespace Zopone.AddOn.PO.View.Obra
 
         public static string TipoPesquisa { get; set; }
         public List<LinePO> linesPO = new List<LinePO>();
-        public List<Int32> linesPODeleted = new List<Int32>();
+        public List<Int32?> linesPODeleted = new List<Int32?>();
         public Int32 BPLId { get; set; }
         public Int32 RowIndexEdit { get; set; }
         public Int32 LineNumEdit { get; set; }
+        public Int32? VisOrderEdit { get; set; }
 
         public string PCG { get; set; }
         public string OBRA { get; set; }
@@ -246,8 +247,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 RowIndexEdit = DgItensPO.SelectedRows[0].Index;
                 LineNumEdit = linesPO[RowIndexEdit].LineNum;
+                VisOrderEdit = linesPO[RowIndexEdit].VisOrder;
 
-                string mensagem = $"Usuário {Globals.Master.Connection.Database.UserName} removeu a linha {LineNumEdit} da PO {txtNroPedido.Text}";
+                string mensagem = $"Usuário {Globals.Master.Connection.Database.UserName} removeu a linha {VisOrderEdit} da PO {txtNroPedido.Text}";
 
                 AdicionarRemoverItemGrid(true);
 
@@ -292,7 +294,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         Agrupar = "N",
                         LineNum = LineNumEdit,
                         U_PrjCode = txtObra.Text,
-                        VisOrder = string.IsNullOrEmpty(txtLinhaSAP.Text) ? -1 : Convert.ToInt32(txtLinhaSAP.Text), 
+                        VisOrder = string.IsNullOrEmpty(txtLinhaSAP.Text) ? -1 : Convert.ToInt32(txtLinhaSAP.Text),
                         U_Candidato = txtCandidato.Text,
                         U_CardCode = txtCliente.Text,
                         U_CardName = txtNomeCliente.Text,
@@ -329,8 +331,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 else
                 {
                     linesPO.Remove(linesPO[RowIndexEdit]);
-
-                    linesPODeleted.Add(LineNumEdit);
+                    linesPODeleted.Add(VisOrderEdit);
                 }
 
 
@@ -610,7 +611,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
             LimparLinhaPO();
             linesPO = new List<LinePO>();
-            linesPODeleted = new List<int>();
+            linesPODeleted = new List<Int32?>();
 
             foreach (Control controle in this.Controls)
             {
@@ -633,7 +634,7 @@ namespace Zopone.AddOn.PO.View.Obra
                 RowIndexEdit = rowIndex;
                 LineNumEdit = linesPO[rowIndex].LineNum;
                 txtObra.Text = linesPO[rowIndex].U_PrjCode;
-                txtLinhaSAP.Text = linesPO[rowIndex].VisOrder > 0 ? linesPO[rowIndex].VisOrder.ToString() : string.Empty;
+                txtLinhaSAP.Text = linesPO[rowIndex].VisOrder >= 0 ? linesPO[rowIndex].VisOrder.ToString() : string.Empty;
                 txtCandidato.Text = linesPO[rowIndex].U_Candidato;
                 txtCliente.Text = linesPO[rowIndex].U_CardCode;
                 txtNomeCliente.Text = linesPO[rowIndex].U_CardName;
@@ -747,7 +748,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     {
                         if (!string.IsNullOrEmpty(oPedidoVenda.Lines.ItemCode))
                         {
-                            if (linePO.VisOrder > 0)
+                            if (linePO.VisOrder >= 0)
                                 oPedidoVenda.Lines.SetCurrentLine((int)linePO.VisOrder);
                             else
                                 oPedidoVenda.Lines.Add();
@@ -791,6 +792,13 @@ namespace Zopone.AddOn.PO.View.Obra
                             oPedidoVenda.Lines.AgreementNo = Convert.ToInt32(linePO.AgrNo);
                     }
 
+                    foreach (var deletedLine in linesPODeleted.OrderByDescending(line => line))
+                    {
+                        oPedidoVenda.Lines.SetCurrentLine(Convert.ToInt32(deletedLine));
+                        oPedidoVenda.Lines.Delete();
+
+                    }
+
                     if (bExistePedido)
                     {
                         if (oPedidoVenda.Update() != 0)
@@ -814,10 +822,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     new Task(() => { EnviarDadosPCIAsync(CodigoPO); }).Start();
 
-                    if (!bExistePedido)
-                        LimparTelaPO();
+                    LimparTelaPO();
 
-                    linesPODeleted = new List<int>();
+                    linesPODeleted = new List<Int32?>();
 
                     lblMensagemTela.Text = "PO Salva com sucesso!";
                     lblMensagemTela.Font = new Font(lblMensagemTela.Font, FontStyle.Bold);
@@ -959,7 +966,7 @@ namespace Zopone.AddOn.PO.View.Obra
         private void button1_Click(object sender, EventArgs e)
         {
             PesquisarDados("PO");
-            linesPODeleted = new List<int>();
+            linesPODeleted = new List<Int32?>();
             lblMensagemTela.Text = string.Empty;
         }
 
