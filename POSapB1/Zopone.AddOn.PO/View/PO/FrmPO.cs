@@ -392,6 +392,7 @@ namespace Zopone.AddOn.PO.View.Obra
         private void LimparLinhaPO()
         {
             txtObra.Text = string.Empty;
+            txtLinhaSAP.Text = string.Empty;
             txtCandidato.Text = string.Empty;
             txtCliente.Text = string.Empty;
             txtItem.Text = string.Empty;
@@ -472,6 +473,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     {
                         txtObra.Text = string.Empty;
                         lblObra.Text = string.Empty;
+                        txtLinhaSAP.Text = string.Empty;
 
                         txtCliente.Text = string.Empty;
                         txtNomeCliente.Text = string.Empty;
@@ -633,6 +635,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                 RowIndexEdit = rowIndex;
                 LineNumEdit = linesPO[rowIndex].LineNum;
+                txtLinhaSAP.Text = linesPO[rowIndex].VisOrder.ToString();
                 txtObra.Text = linesPO[rowIndex].U_PrjCode;
                 txtLinhaSAP.Text = linesPO[rowIndex].VisOrder >= 0 ? linesPO[rowIndex].VisOrder.ToString() : string.Empty;
                 txtCandidato.Text = linesPO[rowIndex].U_Candidato;
@@ -701,7 +704,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 SAPbobsCOM.Documents oPedidoVenda = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders);
                 try
                 {
-                    Globals.Master.Connection.Database.StartTransaction();
 
                     if (!string.IsNullOrEmpty(txtCodigo.Text))
                     {
@@ -757,7 +759,9 @@ namespace Zopone.AddOn.PO.View.Obra
                         oPedidoVenda.Lines.Usage = ConfiguracoesImportacaoPO.Utilizacao;
                         oPedidoVenda.Lines.ItemCode = ConfiguracoesImportacaoPO.ItemCodePO;
                         oPedidoVenda.Lines.Quantity = 1;
+                        oPedidoVenda.Lines.UnitPrice = Convert.ToDouble(linePO.U_Valor);
                         oPedidoVenda.Lines.Price = Convert.ToDouble(linePO.U_Valor);
+                        oPedidoVenda.Lines.LineTotal = Convert.ToDouble(linePO.U_Valor);
                         oPedidoVenda.Lines.ProjectCode = linePO.U_PrjCode;
                         oPedidoVenda.Lines.UserFields.Fields.Item("U_Candidato").Value = linePO.U_Candidato;
                         oPedidoVenda.Lines.FreeText = linePO.U_Obs;
@@ -814,9 +818,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     CodigoPO = txtCodigo.Text;
 
-                    if (Globals.Master.Connection.Database.InTransaction)
-                        Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_Commit);
-
                     if (!string.IsNullOrEmpty(CodigoPedidoCancelado))
                         RemoverDadosPCIAsync(CodigoPedidoCancelado);
 
@@ -833,9 +834,6 @@ namespace Zopone.AddOn.PO.View.Obra
                 }
                 catch (Exception Ex)
                 {
-                    if (Globals.Master.Connection.Database.InTransaction)
-                        Globals.Master.Connection.Database.EndTransaction(BoWfTransOpt.wf_RollBack);
-
                     throw;
                 }
                 finally
