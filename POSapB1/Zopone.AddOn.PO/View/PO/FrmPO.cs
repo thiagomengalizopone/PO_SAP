@@ -742,9 +742,9 @@ namespace Zopone.AddOn.PO.View.Obra
                     }
 
                     oPedidoVenda.NumAtCard = txtNroPedido.Text;
+                    oPedidoVenda.Comments = txtDescricao.Text;
 
                     oPedidoVenda.UserFields.Fields.Item("U_NroCont").Value = txtNroContratoCliente.Text;
-                    oPedidoVenda.Comments = txtObservacao.Text;
 
                     foreach (var linePO in linesPO.Where(linePO => linePO.Edited == true).ToList())
                     {
