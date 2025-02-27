@@ -397,7 +397,7 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     CentroCusto.CriaCentroCusto(Code, Dimensao, TipoCentroCusto, "", "", Code);
 
-                    await UtilPCI.EnviarDadosObraPCIAsync(Code, DateTime.Now); //envia para pci a cada caso.
+                    await UtilPCI.EnviarDadosObraPCIAsync(Code, DateTime.Now); //envia para pci a cada caso
 
                 }
             }

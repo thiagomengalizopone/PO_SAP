@@ -77,7 +77,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             EdPis = (EditText)oForm.Items.Item("EdPis").Specific;
             EdInss = (EditText)oForm.Items.Item("EdInss").Specific;
             EdIss = (EditText)oForm.Items.Item("EdIss").Specific;
-            
+
             EDTotBruG = (EditText)oForm.Items.Item("EDTotBruG").Specific;
             EdCofinsG = (EditText)oForm.Items.Item("EdCofinsG").Specific;
             EdCsllG = (EditText)oForm.Items.Item("EdCsllG").Specific;
@@ -141,7 +141,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             try
             {
                 if (pVal.Row > 0 && pVal.ColUID == "Col_9")
-                    SomarRegistrosTelaSelecionado(pVal.Row-1);
+                    SomarRegistrosTelaSelecionado(pVal.Row - 1);
             }
             catch (Exception Ex)
             {
@@ -149,7 +149,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
             }
         }
-        
+
         private void SomarRegistrosTelaSelecionado(int row)
         {
             try
@@ -178,9 +178,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 double INSS = 0;
                 double ISS = 0;
 
-                for (int iRow = 0; iRow  < LinhasSelecionadas.Count; iRow ++)
+                for (int iRow = 0; iRow < LinhasSelecionadas.Count; iRow++)
                 {
-                    Valor += Convert.ToDouble(DtPesquisa.GetValue("Valor", LinhasSelecionadas[iRow] ));
+                    Valor += Convert.ToDouble(DtPesquisa.GetValue("Valor", LinhasSelecionadas[iRow]));
                     COFINS += Convert.ToDouble(DtPesquisa.GetValue("COFINS", LinhasSelecionadas[iRow]));
                     CSLL += Convert.ToDouble(DtPesquisa.GetValue("CSLL", LinhasSelecionadas[iRow]));
                     IRRF += Convert.ToDouble(DtPesquisa.GetValue("IRRF", LinhasSelecionadas[iRow]));
@@ -325,6 +325,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
         {
             try
             {
+                List<Tuple<string, string, double>> alocacaoParcelas = new List<Tuple<string, string, double>>();
+
                 string MensagemErro = string.Empty;
 
                 MtPedidos.FlushToDataSource();
@@ -341,9 +343,49 @@ namespace Zopone.AddOn.PO.View.Faturamento
 
                         if (oEsbocoNotaFiscalSaida.GetByKey(DocEntry))
                         {
+                            alocacaoParcelas = new List<Tuple<string, string, double>>();
+
+                            for (int iParcela = 0; iParcela < oEsbocoNotaFiscalSaida.Installments.Count; iParcela++)
+                            {
+                                oEsbocoNotaFiscalSaida.Installments.SetCurrentLine(iParcela);
+                                alocacaoParcelas.Add(new Tuple<string, string, double>(
+                                                            oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value.ToString(),
+                                                            oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value.ToString(),
+                                                            oEsbocoNotaFiscalSaida.Installments.Percentage
+                                                        )
+                                                    );
+
+                            }
+
                             oEsbocoNotaFiscalSaida.DocDate = dtDataTransmissao;
                             if (oEsbocoNotaFiscalSaida.Update() != 0)
                                 MensagemErro += $" {Globals.Master.Connection.Database.GetLastErrorDescription()} ";
+
+                            oEsbocoNotaFiscalSaida.GetByKey(DocEntry);
+
+                            for (int iParc = oEsbocoNotaFiscalSaida.Installments.Count; iParc > 0; iParc--)
+                            {
+                                oEsbocoNotaFiscalSaida.Installments.SetCurrentLine(iParc-1);
+                                oEsbocoNotaFiscalSaida.Installments.Delete();
+                            }
+
+                            oEsbocoNotaFiscalSaida.NumberOfInstallments = alocacaoParcelas.Count;
+
+                            foreach (var parcela in alocacaoParcelas)
+                            {
+                                oEsbocoNotaFiscalSaida.Installments.DueDate = oEsbocoNotaFiscalSaida.DocDueDate;
+                                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value = parcela.Item1;
+                                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value = parcela.Item2;
+                                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_Project").Value = oEsbocoNotaFiscalSaida.Project;
+                                oEsbocoNotaFiscalSaida.Installments.Percentage = parcela.Item3;
+
+                                oEsbocoNotaFiscalSaida.Installments.Add();
+                            }
+
+                            if (oEsbocoNotaFiscalSaida.Update() != 0)
+                                MensagemErro += $" {Globals.Master.Connection.Database.GetLastErrorDescription()} ";
+
+
                         }
                     }
                 }
@@ -580,7 +622,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
                     {
                         return $"Erro ao Faturar PO {oEsbocoNotaFiscalSaida.NumAtCard} - Data de transmissão diferente da data de hoje!";
                     }
-                    
+
                     oEsbocoNotaFiscalSaida.DiscountPercent = 0;
 
                     if (oEsbocoNotaFiscalSaida.SaveDraftToDocument() != 0)
