@@ -970,7 +970,7 @@ namespace Zopone.AddOn.PO.View.Obra
                         else
                         {
                             Util.GravarLog(EnumList.EnumAddOn.CadastroPO, EnumList.TipoMensagem.Sucesso, "Dados atualizados na Senior, Obra: " + Contrato.Rows[0]["razSoc"].ToString(), new Exception(""));
-                            Util.ExibirMensagemStatusBar("Dados atualizados na Senior com suceso, Obra: " + Contrato.Rows[0]["razSoc"].ToString(), BoMessageTime.bmt_Medium);
+                            Util.ExibirMensagemStatusBar("Dados atualizados na Senior com sucesso, Obra: " + Contrato.Rows[0]["razSoc"].ToString(), BoMessageTime.bmt_Medium);
                             if (Contrato.Rows[0][19].ToString().Equals("N"))
                                 SqlUtils.DoNonQuery("UPDATE [@ZPN_OPRJ] SET U_EnSen = 'Y' WHERE DocEntry = '" + Contrato.Rows[0]["codFil"] + "'");
                         }

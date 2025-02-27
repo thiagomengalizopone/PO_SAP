@@ -74,6 +74,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
         Button BtEfetivar { get; set; }
         Button BtExcel { get; set; }
+        Item iBtExcel { get; set; }
 
         CheckBox CkbLinhas { get; set; }
 
@@ -97,6 +98,8 @@ namespace Zopone.AddOn.PO.View.Financeiro
             Column oColumn = MtDadosCR.Columns.Item("Col_29");
             oColumn.Visible = false;
             oColumn = MtDadosCR.Columns.Item("Col_30");
+            oColumn.Visible = false;
+            oColumn = MtDadosCR.Columns.Item("Col_34");
             oColumn.Visible = false;
 
             MtDadosCR.LinkPressedBefore += LinkPressedBefore_ClickBefore;
@@ -126,10 +129,10 @@ namespace Zopone.AddOn.PO.View.Financeiro
             EdISSG = (EditText)oForm.Items.Item("EdIssG").Specific;
                        
             EdDataI = (EditText)oForm.Items.Item("EdDataI").Specific;
-            EdDataI.Value = DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "01";
+            //EdDataI.Value = DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "01";
 
             EdDataF = (EditText)oForm.Items.Item("EdDataF").Specific;
-            EdDataF.Value = DateTime.Now.ToString("yyyyMMdd");
+            //EdDataF.Value = DateTime.Now.ToString("yyyyMMdd");
 
             CbTpDt = (ComboBox)oForm.Items.Item("CbTpDt").Specific;
             EdObra = (EditText)oForm.Items.Item("EdObra").Specific;
@@ -151,8 +154,10 @@ namespace Zopone.AddOn.PO.View.Financeiro
             BtEfetivar = (Button)oForm.Items.Item("BtEnv").Specific;           
             BtEfetivar.PressedAfter += BtEfetivar_PressedAfter;
 
-            BtExcel = (Button)oForm.Items.Item("BtExcel").Specific;
+            BtExcel = (Button)oForm.Items.Item("BtExcel").Specific;            
             BtExcel.PressedAfter += BtExcel_PressedAfter;
+            iBtExcel = oForm.Items.Item("BtExcel");
+            iBtExcel.Visible = false;
 
             CbTpDt.Select("V", BoSearchKey.psk_ByValue);
 
@@ -165,7 +170,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
             Util.ExibirMensagemStatusBar("Aguarde enquanto a tela é carregada!");
 
-            PesquisarDadosPagamento();
+            //PesquisarDadosPagamento();
         }
 
         static string OpenExcelFile()
@@ -499,7 +504,8 @@ namespace Zopone.AddOn.PO.View.Financeiro
                                          DescP = DtDadosCR.GetValue("DescP", row).ToString(),
                                          ValoAtual = DtDadosCR.GetValue("ValorAtual", row).ToString(),
                                          Parcela = DtDadosCR.GetValue("Parcela", row).ToString(),
-                                         Obs = DtDadosCR.GetValue("OBS", row).ToString()
+                                         Obs = DtDadosCR.GetValue("OBS", row).ToString(),
+                                         Filial = DtDadosCR.GetValue("Filial", row).ToString()
                                      };
 
                 bool ControlLoopNF = true;
@@ -525,7 +531,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                         vPay.CardCode = grupoMesmaFaturaNf[0].Cliente.ToString();// "103000";
 
-                        vPay.BPLID = 1;
+                        vPay.BPLID = int.Parse(grupoMesmaFaturaNf[0].Filial.ToString());
 
                         vPay.DocType = BoRcptTypes.rCustomer;
 
@@ -562,39 +568,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                             vPay.Invoices.TotalDiscount = double.Parse(row.Desc.ToString());
 
-                            vPay.Invoices.InstallmentId = int.Parse(row.Parcela.ToString());
-
-                            //if ((double.Parse(row.ValoAtual.ToString())
-                            //    < double.Parse(row.ValorLiq.ToString()))
-                            //    && double.Parse(row.Desc.ToString()) == 0)
-                            //{
-                            //    if (double.Parse(row.Outros.ToString()) < 0)
-                            //        vPay.Invoices.SumApplied = double.Parse(row.ValorLiq.ToString());
-                            //    else
-
-                            //rever
-                            if (false)
-                            {
-                                if (double.Parse(row.Outros) < 0 || double.Parse(row.Outros) > 0)
-                                {
-                                    if (double.Parse(row.Outros) > 0)
-                                    {
-                                        BankChargeA += double.Parse(row.Outros);
-                                        vPay.Invoices.SumApplied = double.Parse(row.ValorAReceber.ToString()) - double.Parse(row.Outros);
-                                    }
-                                    else if (double.Parse(row.Outros) < 0)
-                                    {
-                                        BankChargeA += double.Parse(row.Outros) * -1;
-                                        vPay.Invoices.SumApplied = double.Parse(row.ValorAReceber.ToString()) + (double.Parse(row.Outros) * -1);
-                                    }
-                                }
-                                else
-                                    vPay.Invoices.SumApplied = double.Parse(row.ValorAReceber.ToString()); // double.Parse(row.ValoAtual.ToString());
-
-
-                                TransFerSum += double.Parse(row.ValorAReceber.ToString());
-
-                            }
+                            vPay.Invoices.InstallmentId = int.Parse(row.Parcela.ToString());                                                       
 
                             if (double.Parse(row.Outros) > 0)
                             {
@@ -603,25 +577,22 @@ namespace Zopone.AddOn.PO.View.Financeiro
                             }
                             else
                             {
-                                vPay.Invoices.SumApplied = double.Parse(row.ValorAReceber.ToString());
-                                TransFerSum += double.Parse(row.ValorLiq.ToString());
-                            }
+                                if(double.Parse(row.Desc.ToString()) == 0)
+                                    vPay.Invoices.SumApplied = double.Parse(row.ValorAReceber.ToString());
 
-
-                            //}
-                            //else if (double.Parse(row.Outros.ToString()) < 0)
-                            //    vPay.Invoices.SumApplied = double.Parse(row.ValorLiq.ToString());
-                            //else
-                            //    vPay.Invoices.SumApplied = double.Parse(row.ValoAtual.ToString());
-
-                            //if (double.Parse(row.Outros.ToString()) < 0)
-
-                            
-                            //TransFerSum += double.Parse(row.ValorAReceber.ToString());
-
-                            //TransFerSum += vPay.Invoices.SumApplied;// double.Parse(row.ValorAReceber.ToString());
-                            //else
-                            //    TransFerSum += double.Parse(row.ValorLiq.ToString());
+                                if (double.Parse(row.Outros) < 0)
+                                {
+                                    TransFerSum += double.Parse(row.ValorAReceber.ToString());
+                                    vPay.Invoices.SumApplied = double.Parse(row.ValorLiq.ToString());
+                                }
+                                else
+                                {
+                                    if (double.Parse(row.ValorAReceber.ToString()) < double.Parse(row.ValoAtual.ToString()))
+                                        TransFerSum += double.Parse(row.ValorAReceber.ToString());
+                                    else
+                                        TransFerSum += double.Parse(row.ValorLiq.ToString());
+                                }
+                            }                            
 
                             if (double.Parse(row.Outros) < 0 || double.Parse(row.Desc) > 0)
                             {
@@ -704,15 +675,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
                     //    //erro = !ret.CODE.Equals("1");
                     //}
                     #endregion
-                }
-
-                //if (ControlLoop)
-                //    Util.ExibeMensagensDialogoStatusBar("Selecione os documentos a serem efetivados!");
-                //else
-                //{
-                //    PesquisarDadosPagamento();
-                //    Util.ExibirMensagemStatusBar("Processo concluido!", BoMessageTime.bmt_Short, false);
-                //}
+                }                              
 
                 //------------------------------------------------------------------------------------------------------------------------------- Baixando LCM no contas a receber!
 
@@ -737,7 +700,8 @@ namespace Zopone.AddOn.PO.View.Financeiro
                                          Desc = DtDadosCR.GetValue("Desconto", row).ToString(),
                                          DescP = DtDadosCR.GetValue("DescP", row).ToString(),
                                          ValoAtual = DtDadosCR.GetValue("ValorAtual", row).ToString(),
-                                         ValorReal = double.Parse(DtDadosCR.GetValue("ValorTitulo", row).ToString())
+                                         ValorReal = double.Parse(DtDadosCR.GetValue("ValorTitulo", row).ToString()),
+                                         Filial = DtDadosCR.GetValue("Filial", row).ToString()
                                      };
 
                 bool ControlLoopLC = true;
@@ -762,7 +726,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                         vPay.CardCode = grupoMesmaFatura[0].Cliente.ToString();// "103000";
 
-                        vPay.BPLID = 1;
+                        vPay.BPLID = int.Parse(grupoMesmaFatura[0].Filial.ToString());
 
                         vPay.DocType = BoRcptTypes.rCustomer;
 
@@ -798,34 +762,32 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                             vPay.Invoices.DocEntry = int.Parse(row.CodDocR.ToString());
 
-                            TotDesconto += double.Parse(row.Desc.ToString());
+                            TotDesconto += double.Parse(row.Desc.ToString());     
 
-                            //vPay.Invoices.TotalDiscount = double.Parse(row.Desc.ToString());
-                            //vPay.Invoices.InstallmentId = int.Parse(row.Parcela.ToString());
-
-                            //if ((double.Parse(row.ValoAtual.ToString())
-                            //    < double.Parse(row.ValorLiq.ToString()))
-                            //    && double.Parse(row.Desc.ToString()) == 0)
-                            //{
-                            //    if (double.Parse(row.Outros.ToString()) < 0)
-                            //        vPay.Invoices.SumApplied = double.Parse(row.ValorLiq.ToString());
-                            //    else
-                            //        vPay.Invoices.SumApplied = double.Parse(row.ValoAtual.ToString());
-                            //}
-                            //else if (double.Parse(row.Outros.ToString()) < 0)
-                            //    vPay.Invoices.SumApplied = double.Parse(row.ValorLiq.ToString());
-                            //else
-
-                            vPay.Invoices.SumApplied = double.Parse(row.ValoAtual.ToString());
-                            //vPay.Invoices.SumApplied = double.Parse(row.ValorAReceber.ToString());
-
-
-                            //if (double.Parse(row.Outros.ToString()) < 0 || double.Parse(row.Desc.ToString()) > 0)
+                            if (double.Parse(row.Outros) > 0)
+                            {
+                                vPay.Invoices.SumApplied = double.Parse(row.ValoAtual.ToString());
                                 TransFerSum += double.Parse(row.ValorAReceber.ToString());
-                            //else
-                            //    TransFerSum += vPay.Invoices.SumApplied;
+                            }
+                            else
+                            {
+                                if (double.Parse(row.Desc.ToString()) == 0)
+                                    vPay.Invoices.SumApplied = double.Parse(row.ValorAReceber.ToString());
 
-
+                                if (double.Parse(row.Outros) < 0)
+                                {
+                                    TransFerSum += double.Parse(row.ValorAReceber.ToString());
+                                    vPay.Invoices.SumApplied = double.Parse(row.ValorLiq.ToString());
+                                }
+                                else
+                                {
+                                    if (double.Parse(row.ValorAReceber.ToString()) < double.Parse(row.ValoAtual.ToString()))
+                                        TransFerSum += double.Parse(row.ValorAReceber.ToString());
+                                    else
+                                        TransFerSum += double.Parse(row.ValorLiq.ToString());
+                                }
+                            }
+                           
                             /*
                              * Para que a baixa tenha ganho eventuais, não pode passar o valor do campo outros para o BankCharge.
                              */
@@ -840,8 +802,8 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                         //vPay.TransferSum = double.Parse(grupoMesmaFaturaNf[0].ValorAReceber.ToString());
 
-                        if (TotDesconto > 0)
-                            TransFerSum = TransFerSum - TotDesconto;
+                        //if (TotDesconto > 0)
+                        //    TransFerSum = TransFerSum - TotDesconto;
 
                         vPay.TransferSum = TransFerSum;
                         vPay.BankChargeAmount = BankChargeA;
@@ -989,6 +951,17 @@ namespace Zopone.AddOn.PO.View.Financeiro
                 string dataFinal = !string.IsNullOrEmpty(EdDataF.Value) ? EdDataF.Value : "20500101";
                 string tipoData = !string.IsNullOrEmpty(CbTpDt.Value) ? CbTpDt.Value : "V";
 
+
+                //Caso nada tenha sido informado com filtro
+                if (string.IsNullOrEmpty(EdDataI.Value) && string.IsNullOrEmpty(EdDataF.Value)
+                    && string.IsNullOrEmpty(EdFat.Value) && string.IsNullOrEmpty(EdObra.Value)
+                    && string.IsNullOrEmpty(EdPO.Value) && string.IsNullOrEmpty(EdCardCode.Value)
+                    && string.IsNullOrEmpty(EdCardName.Value) && string.IsNullOrEmpty(EdCont.Value))
+                {
+                    dataInicial = DateTime.Now.ToString("yyyyMM01");
+                    dataFinal   = DateTime.Now.ToString("yyyyMMdd");
+                }
+
                 string SQL_Query = $@"EXEC SP_ZPN_LISTACONTASRECEBER 
                                 '{dataInicial}', 
                                 '{dataFinal}',
@@ -1037,6 +1010,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
                 MtDadosCR.Columns.Item("Col_31").DataBind.Bind("DtItm", "OBS");
                 MtDadosCR.Columns.Item("Col_32").DataBind.Bind("DtItm", "DescP");
                 MtDadosCR.Columns.Item("Col_33").DataBind.Bind("DtItm", "ValorAtual");
+                MtDadosCR.Columns.Item("Col_34").DataBind.Bind("DtItm", "Filial");
 
                 MtDadosCR.LoadFromDataSourceEx();
                 MtDadosCR.AutoResizeColumns();

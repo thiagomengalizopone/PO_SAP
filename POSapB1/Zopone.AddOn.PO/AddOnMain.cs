@@ -129,7 +129,6 @@ namespace Zopone.AddOn.PO
                         if (oNotaFiscalSaidaImposto.Update() != 0)
                             throw new Exception($"Erro ao Atualizar NF Faturamento: {oNotaFiscalSaidaImposto.NumAtCard}: {Globals.Master.Connection.Database.GetLastErrorCode()} {Globals.Master.Connection.Database.GetLastErrorDescription()}");
 
-
                     }
                 }
                 catch (Exception Ex)
@@ -137,10 +136,7 @@ namespace Zopone.AddOn.PO
                     string erro = Ex.ToString();
                 }
                 oRecordSet.MoveNext();
-
             }
-
-
         }
 
         private static void AtualizaEsbocoCidadeISS()
@@ -195,14 +191,8 @@ namespace Zopone.AddOn.PO
                     string erro = Ex.ToString();
                 }
                 oRecordSet.MoveNext();
-
             }
-
-
         }
-
-
-
 
         private static Int32 GetDLLVersion()
         {
