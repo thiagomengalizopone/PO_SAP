@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [ZPN_SP_PCI_ATUALIZACONTRATO]
+﻿
+CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ATUALIZACONTRATO]
 (
 	@AbsIDParam INT
 )
@@ -11,25 +12,22 @@ DECLARE @AbsID INT;
 declare @RouCount int;
 declare @RouNum int;
 
+DECLARE @UltimaData date;
+DECLARE @UltimaHora int;
+DECLARE @UltimaDataExec DATE;
+DECLARE @UltimaHoraExec INT;
 
-		DECLARE @UltimaData date;
-		DECLARE @UltimaHora int;
-		DECLARE @UltimaDataExec DATE;
-        DECLARE @UltimaHoraExec INT;
-
-declare 	 @contratoid varchar(200),
-	 @gestatus INT,
-	 @gedataacao DATETIME,
-	 @referencia VARCHAR(200),
-	 @descricao VARCHAR(max),
-	 @filialid VARCHAR(200),
-	 @clienteid VARCHAR(200),
-	 @iniciocontrato DATETIME,
-	 @terminocontrato DATETIME,
-	 @datacadastro DATETIME,
-	 @codigo INT;
-	 
-
+declare @contratoid varchar(200);
+declare	 @gestatus INT;
+declare	 @gedataacao DATETIME;
+declare	 @referencia NVARCHAR(200);
+declare	 @descricao NVARCHAR(max);
+declare	 @filialid VARCHAR(200);
+declare	 @clienteid VARCHAR(200);
+declare	 @iniciocontrato DATETIME;
+declare	 @terminocontrato DATETIME;
+declare	 @datacadastro DATETIME;
+declare	 @codigo INT;
 	 
         -- Captura a data e hora da execução atual
         SET @UltimaDataExec = GETDATE();
@@ -39,24 +37,22 @@ declare 	 @contratoid varchar(200),
         SET @UltimaData = (SELECT ISNULL(MAX(DataExecutado), '2024-01-01') FROM ZPN_INTEGRAPCI WHERE ObjType = 'OOAT');
         SET @UltimaHora = (SELECT ISNULL(MAX(HoraExecutado), 0) FROM ZPN_INTEGRAPCI WHERE ObjType ='OOAT');
 
-
 	declare @Contratos table 
 	(
 	     RowNumber INT IDENTITY(1,1),
 		 AbsId int,
 		 contratoid varchar(200),
 		 gestatus INT,
-		 gedataacao DATETIME,
-		 referencia VARCHAR(200),
-		 descricao VARCHAR(max),
-		 filialid VARCHAR(200),
-		 clienteid VARCHAR(200),
+		 gedataacao DATETIME ,
+		 referencia NVARCHAR(200),
+		 descricao NVARCHAR(MAX) ,
+		 filialid VARCHAR(200) ,
+		 clienteid VARCHAR(200) ,
 		 iniciocontrato DATETIME,
 		 terminocontrato DATETIME,
 		 datacadastro DATETIME,
 		 codigo INT
 	 );
-
 
      INSERT INTO @Contratos
 	 (
@@ -74,23 +70,23 @@ declare 	 @contratoid varchar(200),
 		 codigo
 	 )
 	 SELECT
-		ooat.absid,
-		isnull(OOAT.U_IdPCI,''),
+		OOAT.absid,
+		ISNULL(OOAT.U_IdPCI,'') ,
 		1,
 		GETDATE(),
-		OOAT.Descript,
-		OOAT.Remarks,
-		OPRC.U_IdPCI,
-		CRD8.U_IdPCI,
+		CAST(OOAT.Descript AS nvarchar(200)),
+		CAST(OOAT.Remarks AS nvarchar(max)) ,
+		OPRC.U_IdPCI ,
+		CRD8.U_IdPCI ,
 		OOAT.StartDate,
 		OOAT.TermDate,
 		GETDATE(),
-		ISNULL(OOAT.AbsID,0)
+		ISNULL(OOAT.U_CodMigrado,0)
 	 FROM 
 		OOAT
 		INNER JOIN OPRC ON OPRC.PrcCode = OOAT.U_Regional 
 		INNER JOIN OBPL ON OBPL.BPLId  = OPRC.U_MM_Filial
-		INNER JOIN OCRD ON OCRD.CardCode = ooat.BpCode
+		INNER JOIN OCRD ON OCRD.CardCode = OOAT.BpCode
 		INNER JOIN CRD8 ON CRD8.CardCode = OCRD.CardCode AND ISNULL(CRD8.DisabledBP,'') <> 'Y' 
 						   and CRD8.BPLId = OBPL.BPLId
 	WHERE
@@ -116,39 +112,35 @@ declare 	 @contratoid varchar(200),
 		select @RouCount = (select count(1) From @Contratos );
 
 		while (@RouNum <= @RouCount)
-		begin 
-			
+		begin 			
 			
 			select 
 				 @AbsID = AbsId,
-				 @contratoid = contratoid,
+				 @contratoid = contratoid ,
 				 @gestatus =  gestatus,
-				 @gedataacao = gedataacao,
-				 @referencia = referencia,
+				 @gedataacao = gedataacao ,
+				 @referencia = referencia ,
 				 @descricao = descricao,
 				 @filialid =  filialid ,
-				 @clienteid = clienteid,
-				 @iniciocontrato = iniciocontrato,
-				 @terminocontrato = terminocontrato,
-				 @datacadastro = datacadastro,
+				 @clienteid = clienteid ,
+				 @iniciocontrato = iniciocontrato ,
+				 @terminocontrato = terminocontrato ,
+				 @datacadastro = datacadastro ,
 				 @codigo = codigo
 
 			from 
 				@Contratos	
 			where 
 				RowNumber = @RouNum;
-			
 
-			
 			if (@contratoid = '')
 			begin 
-				select @contratoid = isnull(max(cast(contratoid as varchar(250))),'') from [LINKZCLOUD].[zsistema_producao].[dbo].contrato where [referencia] = @referencia;
+				select @contratoid = isnull(max(cast(contratoid as varchar(250))),'') from [LINKZCLOUD].[zsistema_producao].[dbo].contrato where [referencia]  = @referencia ;
 
 				if (@contratoid = '') begin
 					set @contratoid = newid();
 				end;	
 			end;
-
 	
 		   exec [LINKZCLOUD].[zsistema_producao].[dbo].[ZPN_PCI_InsereAtualizaContrato]
 				@contratoid,
@@ -162,8 +154,6 @@ declare 	 @contratoid varchar(200),
 				@terminocontrato,
 				@datacadastro,
 				@codigo;
-
-
 			UPDATE OOAT
 					SET 
 						U_IdPCI = @contratoid

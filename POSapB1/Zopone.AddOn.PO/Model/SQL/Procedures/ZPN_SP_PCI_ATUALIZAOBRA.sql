@@ -1,4 +1,5 @@
-﻿create PROCEDURE [ZPN_SP_PCI_ATUALIZAOBRA]
+﻿
+CREATE PROCEDURE [dbo].[ZPN_SP_PCI_ATUALIZAOBRA]
 (
     @CodeObra VARCHAR(30),
 	@CreateDate date
@@ -12,92 +13,93 @@ BEGIN TRY
         @obraid VARCHAR(255),
         @gestatus INT,
         @gedataacao DATETIME,
-        @gecontaidacao VARCHAR(255),
-        @obraclassificacaoid VARCHAR(255),
-        @referencia VARCHAR(255),
-        @longitude VARCHAR(255),
-        @bairro VARCHAR(100),
+        @gecontaidacao NVARCHAR(255),
+        @obraclassificacaoid NVARCHAR(255),
+        @referencia NVARCHAR(255),
+        @longitude NVARCHAR(255),
+        @bairro NVARCHAR(100),
         @realizadotermino DATETIME,
         @realizadoinicio DATETIME,
-        @altitude VARCHAR(255),
+        @altitude NVARCHAR(255),
         @cep VARCHAR(10),
-        @complemento VARCHAR(255),
-        @contratoid varchar(250),
+        @complemento NVARCHAR(255),
+        @contratoid Nvarchar(250),
         @datacadastro DATETIME,
-        @endereco VARCHAR(255),
-        @filialid varchar(250),
-        @latitude VARCHAR(255),
-        @localizacao VARCHAR(255),
-        @numero VARCHAR(50),
+        @endereco NVARCHAR(255),
+        @filialid Nvarchar(250),
+        @latitude NVARCHAR(255),
+        @localizacao NVARCHAR(255),
+        @numero NVARCHAR(50),
         @previsaoinicio DATETIME,
         @previsaotermino DATETIME,
         @visualizarpci INT,
-        @detentora VARCHAR(100),
-        @equipamento VARCHAR(100),
-        @historicoavaliacoes VARCHAR(MAX),
-        @iddetentora VARCHAR(50),
-        @idsite VARCHAR(50),
-        @tipo VARCHAR(50),
-        @situacao VARCHAR(50),
-        @cidade VARCHAR(100),
-        @estado VARCHAR(50),
+        @detentora NVARCHAR(100),
+        @equipamento NVARCHAR(100),
+        @historicoavaliacoes NVARCHAR(MAX),
+        @iddetentora NVARCHAR(50),
+        @idsite NVARCHAR(50),
+        @tipo NVARCHAR(50),
+        @situacao NVARCHAR(50),
+        @cidade NVARCHAR(100),
+        @estado NVARCHAR(50),
         @dataatualizacao DATETIME,
-        @situacaopci VARCHAR(50),
-        @observacaomontagemform VARCHAR(MAX),
-        @gedarquivoid VARCHAR(250),
-        @gedpastaid VARCHAR(250);
+        @situacaopci NVARCHAR(50),
+        @observacaomontagemform NVARCHAR(MAX),
+        @gedarquivoid NVARCHAR(250),
+        @gedpastaid NVARCHAR(250),
+		@codigo int;
 
-	declare @erro_obra  VARCHAR(max) = '';
-
+	DECLARE @erro_obra  NVARCHAR(max) = '';
 
     -- Cria a tabela temporária
-    declare @TempObra TABLE 
+    DECLARE @TempObra TABLE 
     (
 		rownumber int,
         obraid VARCHAR(255),
         gestatus INT,
         gedataacao DATETIME,
-        gecontaidacao VARCHAR(255),
-        obraclassificacaoid VARCHAR(255),
-        referencia VARCHAR(255),
-        longitude VARCHAR(255),
-        bairro VARCHAR(100),
+        gecontaidacao NVARCHAR(255),
+        obraclassificacaoid NVARCHAR(255),
+        referencia NVARCHAR(255),
+        longitude NVARCHAR(255),
+        bairro NVARCHAR(100),
         realizadotermino DATETIME,
         realizadoinicio DATETIME,
-        altitude VARCHAR(255),
-        cep VARCHAR(10),
-        complemento VARCHAR(255),
-        contratoid VARCHAR(255),
+        altitude NVARCHAR(255),
+        cep NVARCHAR(10),
+        complemento NVARCHAR(255),
+        contratoid NVARCHAR(255),
         datacadastro DATETIME,
-        endereco VARCHAR(255),
-        filialid VARCHAR(255),
-        latitude VARCHAR(255),
-        localizacao VARCHAR(255),
-        numero VARCHAR(50),
+        endereco NVARCHAR(255),
+        filialid NVARCHAR(255),
+        latitude NVARCHAR(255),
+        localizacao NVARCHAR(255),
+        numero NVARCHAR(50),
         previsaoinicio DATETIME,
         previsaotermino DATETIME,
         visualizarpci INT,
-        detentora VARCHAR(100),
-        equipamento VARCHAR(100),
+        detentora NVARCHAR(100),
+        equipamento NVARCHAR(100),
         historicoavaliacoes TEXT,
-        iddetentora VARCHAR(255),
-        idsite VARCHAR(255),
-        tipo VARCHAR(50),
-        situacao VARCHAR(50),
-        cidade VARCHAR(100),
-        estado VARCHAR(50),
+        iddetentora NVARCHAR(255),
+        idsite NVARCHAR(255),
+        tipo NVARCHAR(50),
+        situacao NVARCHAR(50),
+        cidade NVARCHAR(100),
+        estado NVARCHAR(50),
         dataatualizacao DATETIME,
-        situacaopci VARCHAR(255),
+        situacaopci NVARCHAR(255),
         observacaomontagemform TEXT,
-        gedarquivoid VARCHAR(255),
-        gedpastaid VARCHAR(255)
+        gedarquivoid NVARCHAR(255),
+        gedpastaid NVARCHAR(255),
+		codigo int
     );
 
     -- Inserir dados na tabela temporária
-    INSERT INTO #TempObra
+    INSERT INTO @TempObra
     SELECT
-		 ROW_NUMBER() over (order by OBRA.DocEntry),
-        isnull(OBRA.U_IdPCI,''),                 -- obraid
+		ROW_NUMBER() over (order by OBRA.DocEntry),
+        ISNULL(OBRA.U_IdPCI,''),                 -- obraid
         1,                                       -- gestatus
         GETDATE(),                               -- gedataacao
         NULL,                                    -- gecontaidacao
@@ -115,7 +117,7 @@ BEGIN TRY
         ISNULL(OBRA.U_TipoLog, '') + ' ' + ISNULL(OBRA.U_Rua, ''),  -- endereco
         OPRC.U_IdPCI,                            -- filialid
         OBRA.U_Latitude,                         -- latitude
-        OBRA.U_IdSite,                           -- localizacao
+        OBRA.Name,                           -- localizacao
         OBRA.U_Numero,                           -- numero
         OBRA.U_PrevIni,                          -- previsaoinicio
         OBRA.U_PrevTerm,                         -- previsaotermino
@@ -126,14 +128,15 @@ BEGIN TRY
         OBRA.U_IdDetent,                         -- iddetentora
         OBRA.U_IdSite,                           -- idsite
         OBRA.U_Tipo,                             -- tipo
-        isnull(OBRA.U_Situacao,''),              -- situacao
+        ISNULL(OBRA.U_Situacao,''),              -- situacao
         obra.U_CidadeDesc collate SQL_Latin1_General_CP1_CI_AS,                             -- cidade
         OBRA.U_Estado,                              -- estado
         OBRA.UpdateDate,                         -- dataatualizacao
         0,                                       -- situacaopci
         NULL,                                    -- observacaomontagemform
         NULL,                                    -- gedarquivoid
-        NULL                                     -- gedpastaid
+        NULL,                                     -- gedpastaid,
+		OBRA.U_CodMigrado
     FROM     
         "@ZPN_OPRJ" OBRA
         INNER JOIN OOAT ON OOAT.AbsID = OBRA.U_CodContrato
@@ -146,12 +149,11 @@ BEGIN TRY
 			ISNULL(@CodeObra, '') = '' AND 
 			OBRA.CreateDate = @CreateDate
 		)
-	order by OBRA.DocEntry		;
-      
+	order by OBRA.DocEntry;      
 
     -- Loop para inserir os dados da tabela temporária na tabela final
     DECLARE @Counter INT = 1;
-    DECLARE @TotalRows INT = (SELECT COUNT(*) FROM #TempObra);
+    DECLARE @TotalRows INT = (SELECT COUNT(*) FROM @TempObra);
     declare @Row_Number int;
 
     WHILE @Counter <= @TotalRows
@@ -193,21 +195,19 @@ BEGIN TRY
             @situacaopci = situacaopci,
             @observacaomontagemform = observacaomontagemform,
             @gedarquivoid = gedarquivoid,
-            @gedpastaid = gedpastaid
-        FROM #TempObra
+            @gedpastaid = gedpastaid,
+			@codigo = codigo
+        FROM @TempObra
         WHERE rownumber = @Counter;
 
+		if (ISNULL(@obraid,'') = '') begin
 
-		if (isnull(@obraid,'') = '') begin
-
-       		select @obraid = isnull(max(cast(obraid as varchar(250))),'') from [LINKZCLOUD].[zsistema_producao].[dbo].obra where [referencia] = @referencia;
+       		select @obraid = ISNULL(max(cast(obraid as varchar(250))),'') from [LINKZCLOUD].[zsistema_producao].[dbo].obra where [referencia] = @referencia;
 
             if (@obraid = '') begin
 			    set @obraid = newid();
             end;
 		end;
-
-
 			-- Chama a procedure para inserir/atualizar a obra
 			EXEC [LINKZCLOUD].[zsistema_producao].[dbo].[ZPN_PCI_InsereAtualizaObra]
 				@obraid,
@@ -240,22 +240,19 @@ BEGIN TRY
 				@idsite,
 				@tipo,
 				@situacao,
-				@cidade collate SQL_Latin1_General_CP1_CI_AS,
+				@cidade ,
 				@estado,
 				@dataatualizacao,
 				@situacaopci,
 				@observacaomontagemform,
 				@gedarquivoid,
-				@gedpastaid;
+				@gedpastaid, 
+				@codigo;
 
-			update "@ZPN_OPRJ" set U_IdPCI = @obraid where "Code" = @referencia;
-
+			UPDATE "@ZPN_OPRJ" SET U_IdPCI = @obraid WHERE "Code" = @referencia;
 
         SET @Counter = @Counter + 1;
-    END;
-
-    -- Limpa a tabela temporária
-    DROP TABLE #TempObra;
+    END;    
 
 	select @erro_obra "erro";
 
@@ -263,19 +260,18 @@ BEGIN TRY
 BEGIN CATCH
    -- Captura do erro
     DECLARE 
-        @ErrorNumber INT = ERROR_NUMBER(),
-        @ErrorSeverity INT = ERROR_SEVERITY(),
-        @ErrorState INT = ERROR_STATE(),
+        @ErrorNumber INT              = ERROR_NUMBER(),
+        @ErrorSeverity INT            = ERROR_SEVERITY(),
+        @ErrorState INT               = ERROR_STATE(),
         @ErrorProcedure NVARCHAR(128) = ERROR_PROCEDURE(),
-        @ErrorLine INT = ERROR_LINE(),
-        @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        @ErrorLine INT                = ERROR_LINE(),
+        @ErrorMessage NVARCHAR(4000)  = ERROR_MESSAGE();
 
     -- Inserir o log de erro na tabela ErrorLog
     INSERT INTO ZPN_LogImportacaoPCI (ErrorNumber, ErrorSeverity, ErrorState, ErrorProcedure, ErrorLine, ErrorMessage, HostName, ApplicationName, UserName)
     VALUES (@ErrorNumber, @ErrorSeverity, @ErrorState, @ErrorProcedure, @ErrorLine, @ErrorMessage, HOST_NAME(), APP_NAME(), SYSTEM_USER);
     
-    select @erro_obra = @erro_obra + ' Erro ao enviar Obra ' + @referencia + ' '  + ERROR_MESSAGE() + '\n' ;
-
+    select @erro_obra = @erro_obra + ' Erro ao enviar Obra ' + @referencia + ' '  + ERROR_MESSAGE() + '\n';
     
     -- Opcional: Re-lançar o erro se necessário
     -- THROW; 

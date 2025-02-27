@@ -25,6 +25,7 @@ namespace Zopone.AddOn.PO.View.Manutencao
         #region Variáveis
 
         EditText EdCliente { get; set; }
+        EditText EdDescCliente { get; set; }
 
 
         EditText EdDtLancI { get; set; }
@@ -63,7 +64,10 @@ namespace Zopone.AddOn.PO.View.Manutencao
             if (oForm == null)
                 return;
 
-            EdCliente = (EditText)oForm.Items.Item("EdCli").Specific;
+            EdCliente = (EditText)oForm.Items.Item("EdCli").Specific;     
+            EdCliente.ChooseFromListAfter += EdCliente_ChooseFromListAfter;
+
+            EdDescCliente = (EditText)oForm.Items.Item("EdDescCli").Specific;
 
             EdDtLancI = (EditText)oForm.Items.Item("EdDtLaI").Specific;
             EdDtLancF = (EditText)oForm.Items.Item("EdDtLaF").Specific;
@@ -100,6 +104,31 @@ namespace Zopone.AddOn.PO.View.Manutencao
             MtNotasP.AutoResizeColumns();
 
             oForm.Visible = true;
+        }
+       
+        private void EdCliente_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                oForm.Freeze(true);
+
+                SBOChooseFromListEventArg aEvent = (SBOChooseFromListEventArg)pVal;
+                if (aEvent.SelectedObjects == null)
+                    return;
+
+                EdCliente.Value = Convert.ToString(aEvent.SelectedObjects.GetValue("CardCode", 0));
+                EdDescCliente.Value = Convert.ToString(aEvent.SelectedObjects.GetValue("CardName", 0));
+                //EdPamCardDig.Value = Convert.ToString(aEvent.SelectedObjects.GetValue("U_PamCard", 0));
+            }
+            catch (Exception Ex)
+            {
+                if (!Ex.Message.Contains("Data Table"))
+                    Util.ExibeMensagensDialogoStatusBar($"Erro ao selecionar PN: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+            finally
+            {
+                oForm.Freeze(false);
+            }
         }
 
         private void BtHelp1_PressedAfter(object sboObject, SBOItemEventArg pVal)

@@ -134,7 +134,7 @@ namespace Zopone.AddOn.PO.View.Faturamento
             oForm.Visible = true;
 
             LinhasSelecionadas = new List<int>();
-        }
+        }             
 
         private void MtPedidos_ClickAfter(object sboObject, SBOItemEventArg pVal)
         {
