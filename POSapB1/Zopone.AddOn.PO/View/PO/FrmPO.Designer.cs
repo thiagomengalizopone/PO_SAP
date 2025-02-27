@@ -128,6 +128,8 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtAnexo = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.lblMensagemTela = new System.Windows.Forms.Label();
+            this.txtLinhaSAP = new System.Windows.Forms.TextBox();
+            this.lblLinhaSAP = new System.Windows.Forms.Label();
             this.gbItens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -135,77 +137,69 @@ namespace Zopone.AddOn.PO.View.Obra
             // txtCodigo
             // 
             this.txtCodigo.Enabled = false;
-            this.txtCodigo.Location = new System.Drawing.Point(12, 32);
-            this.txtCodigo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCodigo.Location = new System.Drawing.Point(12, 40);
             this.txtCodigo.Name = "txtCodigo";
-            this.txtCodigo.Size = new System.Drawing.Size(79, 20);
+            this.txtCodigo.Size = new System.Drawing.Size(100, 22);
             this.txtCodigo.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(12, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.Size = new System.Drawing.Size(51, 16);
             this.label1.TabIndex = 4;
             this.label1.Text = "Código";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(137, 16);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(139, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
+            this.label3.Size = new System.Drawing.Size(76, 16);
             this.label3.TabIndex = 7;
             this.label3.Text = "Nro Pedido";
             // 
             // txtNroPedido
             // 
-            this.txtNroPedido.Location = new System.Drawing.Point(139, 33);
-            this.txtNroPedido.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtNroPedido.Location = new System.Drawing.Point(142, 40);
             this.txtNroPedido.Name = "txtNroPedido";
-            this.txtNroPedido.Size = new System.Drawing.Size(230, 20);
+            this.txtNroPedido.Size = new System.Drawing.Size(305, 22);
             this.txtNroPedido.TabIndex = 1;
             this.txtNroPedido.Validating += new System.ComponentModel.CancelEventHandler(this.txtNroPedido_Validating);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(379, 15);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(453, 18);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(31, 13);
+            this.label4.Size = new System.Drawing.Size(39, 16);
             this.label4.TabIndex = 9;
             this.label4.Text = "Valor";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(527, 14);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(653, 18);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(30, 13);
+            this.label5.Size = new System.Drawing.Size(36, 16);
             this.label5.TabIndex = 11;
             this.label5.Text = "Data";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(616, 16);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Location = new System.Drawing.Point(767, 18);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(102, 13);
+            this.label6.Size = new System.Drawing.Size(126, 16);
             this.label6.TabIndex = 13;
             this.label6.Text = "Nro Contrato Cliente";
             // 
             // txtNroContratoCliente
             // 
-            this.txtNroContratoCliente.Location = new System.Drawing.Point(616, 33);
-            this.txtNroContratoCliente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtNroContratoCliente.Location = new System.Drawing.Point(767, 40);
             this.txtNroContratoCliente.Name = "txtNroContratoCliente";
-            this.txtNroContratoCliente.Size = new System.Drawing.Size(114, 20);
+            this.txtNroContratoCliente.Size = new System.Drawing.Size(151, 22);
             this.txtNroContratoCliente.TabIndex = 4;
             // 
             // contextMenuStrip1
@@ -217,44 +211,42 @@ namespace Zopone.AddOn.PO.View.Obra
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 58);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Location = new System.Drawing.Point(12, 71);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(55, 13);
+            this.label7.Size = new System.Drawing.Size(69, 16);
             this.label7.TabIndex = 16;
             this.label7.Text = "Descrição";
             // 
             // txtDescricao
             // 
-            this.txtDescricao.Location = new System.Drawing.Point(9, 76);
-            this.txtDescricao.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDescricao.Location = new System.Drawing.Point(12, 94);
             this.txtDescricao.Multiline = true;
             this.txtDescricao.Name = "txtDescricao";
-            this.txtDescricao.Size = new System.Drawing.Size(680, 56);
+            this.txtDescricao.Size = new System.Drawing.Size(906, 68);
             this.txtDescricao.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Enabled = false;
-            this.label2.Location = new System.Drawing.Point(9, 144);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(12, 180);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(37, 13);
+            this.label2.Size = new System.Drawing.Size(45, 16);
             this.label2.TabIndex = 18;
             this.label2.Text = "Anexo";
             // 
             // txtAnexo
             // 
             this.txtAnexo.Enabled = false;
-            this.txtAnexo.Location = new System.Drawing.Point(9, 162);
-            this.txtAnexo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAnexo.Location = new System.Drawing.Point(12, 202);
             this.txtAnexo.Name = "txtAnexo";
-            this.txtAnexo.Size = new System.Drawing.Size(680, 20);
+            this.txtAnexo.Size = new System.Drawing.Size(906, 22);
             this.txtAnexo.TabIndex = 6;
             // 
             // gbItens
             // 
+            this.gbItens.Controls.Add(this.lblLinhaSAP);
+            this.gbItens.Controls.Add(this.txtLinhaSAP);
             this.gbItens.Controls.Add(this.txtNomeCliente);
             this.gbItens.Controls.Add(this.BtMesclar);
             this.gbItens.Controls.Add(this.txtDescContrato);
@@ -302,11 +294,9 @@ namespace Zopone.AddOn.PO.View.Obra
             this.gbItens.Controls.Add(this.txtCandidato);
             this.gbItens.Controls.Add(this.label8);
             this.gbItens.Controls.Add(this.txtObra);
-            this.gbItens.Location = new System.Drawing.Point(9, 187);
-            this.gbItens.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbItens.Location = new System.Drawing.Point(12, 230);
             this.gbItens.Name = "gbItens";
-            this.gbItens.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.gbItens.Size = new System.Drawing.Size(1008, 500);
+            this.gbItens.Size = new System.Drawing.Size(1320, 592);
             this.gbItens.TabIndex = 21;
             this.gbItens.TabStop = false;
             this.gbItens.Text = "Itens - PO";
@@ -315,19 +305,17 @@ namespace Zopone.AddOn.PO.View.Obra
             // txtNomeCliente
             // 
             this.txtNomeCliente.Enabled = false;
-            this.txtNomeCliente.Location = new System.Drawing.Point(514, 34);
-            this.txtNomeCliente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtNomeCliente.Location = new System.Drawing.Point(686, 42);
             this.txtNomeCliente.Multiline = true;
             this.txtNomeCliente.Name = "txtNomeCliente";
-            this.txtNomeCliente.Size = new System.Drawing.Size(461, 24);
+            this.txtNomeCliente.Size = new System.Drawing.Size(613, 28);
             this.txtNomeCliente.TabIndex = 66;
             // 
             // BtMesclar
             // 
-            this.BtMesclar.Location = new System.Drawing.Point(918, 284);
-            this.BtMesclar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BtMesclar.Location = new System.Drawing.Point(1224, 305);
             this.BtMesclar.Name = "BtMesclar";
-            this.BtMesclar.Size = new System.Drawing.Size(56, 19);
+            this.BtMesclar.Size = new System.Drawing.Size(75, 23);
             this.BtMesclar.TabIndex = 65;
             this.BtMesclar.Text = "Mesclar";
             this.BtMesclar.UseVisualStyleBackColor = true;
@@ -336,19 +324,17 @@ namespace Zopone.AddOn.PO.View.Obra
             // txtDescContrato
             // 
             this.txtDescContrato.Enabled = false;
-            this.txtDescContrato.Location = new System.Drawing.Point(580, 136);
-            this.txtDescContrato.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDescContrato.Location = new System.Drawing.Point(773, 140);
             this.txtDescContrato.Name = "txtDescContrato";
-            this.txtDescContrato.Size = new System.Drawing.Size(246, 20);
+            this.txtDescContrato.Size = new System.Drawing.Size(326, 22);
             this.txtDescContrato.TabIndex = 64;
             // 
             // BtDel
             // 
             this.BtDel.Image = ((System.Drawing.Image)(resources.GetObject("BtDel.Image")));
-            this.BtDel.Location = new System.Drawing.Point(954, 9);
-            this.BtDel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BtDel.Location = new System.Drawing.Point(1272, 11);
             this.BtDel.Name = "BtDel";
-            this.BtDel.Size = new System.Drawing.Size(20, 23);
+            this.BtDel.Size = new System.Drawing.Size(27, 28);
             this.BtDel.TabIndex = 63;
             this.BtDel.UseVisualStyleBackColor = true;
             this.BtDel.Click += new System.EventHandler(this.button1_Click_1);
@@ -356,87 +342,78 @@ namespace Zopone.AddOn.PO.View.Obra
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(808, 473);
-            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label23.Location = new System.Drawing.Point(1078, 535);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(49, 13);
+            this.label23.Size = new System.Drawing.Size(60, 16);
             this.label23.TabIndex = 59;
             this.label23.Text = "Total PO";
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(514, 118);
-            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label22.Location = new System.Drawing.Point(683, 118);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(67, 13);
+            this.label22.Size = new System.Drawing.Size(82, 16);
             this.label22.TabIndex = 62;
             this.label22.Text = "Nro Contrato";
             // 
             // txtTotalPO
             // 
             this.txtTotalPO.Enabled = false;
-            this.txtTotalPO.Location = new System.Drawing.Point(858, 468);
-            this.txtTotalPO.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTotalPO.Location = new System.Drawing.Point(1144, 529);
             this.txtTotalPO.Name = "txtTotalPO";
             this.txtTotalPO.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txtTotalPO.Size = new System.Drawing.Size(117, 20);
+            this.txtTotalPO.Size = new System.Drawing.Size(155, 22);
             this.txtTotalPO.TabIndex = 58;
             // 
             // txtNroCont
             // 
             this.txtNroCont.Enabled = false;
-            this.txtNroCont.Location = new System.Drawing.Point(514, 136);
-            this.txtNroCont.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtNroCont.Location = new System.Drawing.Point(686, 140);
             this.txtNroCont.Name = "txtNroCont";
-            this.txtNroCont.Size = new System.Drawing.Size(62, 20);
+            this.txtNroCont.Size = new System.Drawing.Size(81, 22);
             this.txtNroCont.TabIndex = 17;
             // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(6, 219);
-            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label21.Location = new System.Drawing.Point(6, 229);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(111, 13);
+            this.label21.Size = new System.Drawing.Size(138, 16);
             this.label21.TabIndex = 60;
             this.label21.Text = "Descrição do Item PO";
             // 
             // txtDescItemPO
             // 
             this.txtDescItemPO.Enabled = false;
-            this.txtDescItemPO.Location = new System.Drawing.Point(7, 236);
-            this.txtDescItemPO.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDescItemPO.Location = new System.Drawing.Point(9, 250);
             this.txtDescItemPO.Name = "txtDescItemPO";
-            this.txtDescItemPO.Size = new System.Drawing.Size(901, 20);
+            this.txtDescItemPO.Size = new System.Drawing.Size(1200, 22);
             this.txtDescItemPO.TabIndex = 21;
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(7, 264);
-            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Location = new System.Drawing.Point(6, 285);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(119, 13);
+            this.label16.Size = new System.Drawing.Size(148, 16);
             this.label16.TabIndex = 58;
             this.label16.Text = "Informações do Site PO";
             // 
             // txtInfoSitePO
             // 
             this.txtInfoSitePO.Enabled = false;
-            this.txtInfoSitePO.Location = new System.Drawing.Point(7, 284);
-            this.txtInfoSitePO.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtInfoSitePO.Location = new System.Drawing.Point(9, 305);
             this.txtInfoSitePO.Name = "txtInfoSitePO";
-            this.txtInfoSitePO.Size = new System.Drawing.Size(901, 20);
+            this.txtInfoSitePO.Size = new System.Drawing.Size(1200, 22);
             this.txtInfoSitePO.TabIndex = 22;
             // 
             // cbBloqueado
             // 
             this.cbBloqueado.AutoSize = true;
-            this.cbBloqueado.Location = new System.Drawing.Point(531, 192);
-            this.cbBloqueado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbBloqueado.Location = new System.Drawing.Point(686, 200);
             this.cbBloqueado.Name = "cbBloqueado";
-            this.cbBloqueado.Size = new System.Drawing.Size(163, 17);
+            this.cbBloqueado.Size = new System.Drawing.Size(205, 20);
             this.cbBloqueado.TabIndex = 20;
             this.cbBloqueado.Text = "Bloqueado para Faturamento";
             this.cbBloqueado.UseVisualStyleBackColor = true;
@@ -444,10 +421,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // button5
             // 
             this.button5.Image = ((System.Drawing.Image)(resources.GetObject("button5.Image")));
-            this.button5.Location = new System.Drawing.Point(488, 35);
-            this.button5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button5.Location = new System.Drawing.Point(652, 40);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(21, 23);
+            this.button5.Size = new System.Drawing.Size(28, 28);
             this.button5.TabIndex = 56;
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
@@ -455,10 +431,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // button4
             // 
             this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
-            this.button4.Location = new System.Drawing.Point(490, 83);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button4.Location = new System.Drawing.Point(652, 86);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(21, 23);
+            this.button4.Size = new System.Drawing.Size(28, 28);
             this.button4.TabIndex = 55;
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -466,10 +441,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // button3
             // 
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Location = new System.Drawing.Point(174, 35);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button3.Location = new System.Drawing.Point(225, 42);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(21, 23);
+            this.button3.Size = new System.Drawing.Size(28, 28);
             this.button3.TabIndex = 54;
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -477,20 +451,18 @@ namespace Zopone.AddOn.PO.View.Obra
             // BtPesqObra
             // 
             this.BtPesqObra.Image = ((System.Drawing.Image)(resources.GetObject("BtPesqObra.Image")));
-            this.BtPesqObra.Location = new System.Drawing.Point(85, 35);
-            this.BtPesqObra.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BtPesqObra.Location = new System.Drawing.Point(110, 40);
             this.BtPesqObra.Name = "BtPesqObra";
-            this.BtPesqObra.Size = new System.Drawing.Size(21, 23);
+            this.BtPesqObra.Size = new System.Drawing.Size(28, 28);
             this.BtPesqObra.TabIndex = 24;
             this.BtPesqObra.UseVisualStyleBackColor = true;
             this.BtPesqObra.Click += new System.EventHandler(this.BtPesqObra_Click);
             // 
             // BtCancelar
             // 
-            this.BtCancelar.Location = new System.Drawing.Point(68, 468);
-            this.BtCancelar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BtCancelar.Location = new System.Drawing.Point(90, 529);
             this.BtCancelar.Name = "BtCancelar";
-            this.BtCancelar.Size = new System.Drawing.Size(56, 19);
+            this.BtCancelar.Size = new System.Drawing.Size(75, 23);
             this.BtCancelar.TabIndex = 25;
             this.BtCancelar.Text = "Cancelar";
             this.BtCancelar.UseVisualStyleBackColor = true;
@@ -499,10 +471,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // BtSalvar
             // 
-            this.BtSalvar.Location = new System.Drawing.Point(7, 468);
-            this.BtSalvar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BtSalvar.Location = new System.Drawing.Point(9, 529);
             this.BtSalvar.Name = "BtSalvar";
-            this.BtSalvar.Size = new System.Drawing.Size(56, 19);
+            this.BtSalvar.Size = new System.Drawing.Size(75, 23);
             this.BtSalvar.TabIndex = 24;
             this.BtSalvar.Text = "Salvar";
             this.BtSalvar.UseVisualStyleBackColor = true;
@@ -512,10 +483,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.lblItemFat.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblItemFat.ForeColor = System.Drawing.Color.Red;
-            this.lblItemFat.Location = new System.Drawing.Point(517, 86);
-            this.lblItemFat.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblItemFat.Location = new System.Drawing.Point(686, 92);
             this.lblItemFat.Name = "lblItemFat";
-            this.lblItemFat.Size = new System.Drawing.Size(306, 18);
+            this.lblItemFat.Size = new System.Drawing.Size(408, 22);
             this.lblItemFat.TabIndex = 50;
             this.lblItemFat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -523,20 +493,18 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.lblObra.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblObra.ForeColor = System.Drawing.Color.Red;
-            this.lblObra.Location = new System.Drawing.Point(194, 37);
-            this.lblObra.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblObra.Location = new System.Drawing.Point(259, 46);
             this.lblObra.Name = "lblObra";
-            this.lblObra.Size = new System.Drawing.Size(190, 18);
+            this.lblObra.Size = new System.Drawing.Size(253, 22);
             this.lblObra.TabIndex = 48;
             this.lblObra.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.lblObra.Click += new System.EventHandler(this.lblObra_Click);
             // 
             // txtValor
             // 
-            this.txtValor.Location = new System.Drawing.Point(71, 136);
-            this.txtValor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtValor.Location = new System.Drawing.Point(90, 140);
             this.txtValor.Name = "txtValor";
-            this.txtValor.Size = new System.Drawing.Size(98, 20);
+            this.txtValor.Size = new System.Drawing.Size(130, 22);
             this.txtValor.TabIndex = 13;
             this.txtValor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtValor.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
@@ -544,31 +512,28 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // mskDataFaturamento
             // 
-            this.mskDataFaturamento.Location = new System.Drawing.Point(345, 136);
-            this.mskDataFaturamento.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.mskDataFaturamento.Location = new System.Drawing.Point(467, 140);
             this.mskDataFaturamento.Mask = "99/99/9999";
             this.mskDataFaturamento.Name = "mskDataFaturamento";
-            this.mskDataFaturamento.Size = new System.Drawing.Size(80, 20);
+            this.mskDataFaturamento.Size = new System.Drawing.Size(100, 22);
             this.mskDataFaturamento.TabIndex = 15;
             this.mskDataFaturamento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // mskDataSol
             // 
-            this.mskDataSol.Location = new System.Drawing.Point(8, 190);
-            this.mskDataSol.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.mskDataSol.Location = new System.Drawing.Point(6, 198);
             this.mskDataSol.Mask = "99/99/9999";
             this.mskDataSol.Name = "mskDataSol";
-            this.mskDataSol.Size = new System.Drawing.Size(76, 20);
+            this.mskDataSol.Size = new System.Drawing.Size(100, 22);
             this.mskDataSol.TabIndex = 18;
             this.mskDataSol.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // BtAdicionar
             // 
             this.BtAdicionar.Image = ((System.Drawing.Image)(resources.GetObject("BtAdicionar.Image")));
-            this.BtAdicionar.Location = new System.Drawing.Point(929, 9);
-            this.BtAdicionar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BtAdicionar.Location = new System.Drawing.Point(1239, 11);
             this.BtAdicionar.Name = "BtAdicionar";
-            this.BtAdicionar.Size = new System.Drawing.Size(20, 23);
+            this.BtAdicionar.Size = new System.Drawing.Size(27, 28);
             this.BtAdicionar.TabIndex = 23;
             this.BtAdicionar.UseVisualStyleBackColor = true;
             this.BtAdicionar.Click += new System.EventHandler(this.BtAdicionar_Click);
@@ -614,8 +579,7 @@ namespace Zopone.AddOn.PO.View.Obra
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.DgItensPO.DefaultCellStyle = dataGridViewCellStyle5;
-            this.DgItensPO.Location = new System.Drawing.Point(4, 316);
-            this.DgItensPO.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.DgItensPO.Location = new System.Drawing.Point(6, 334);
             this.DgItensPO.Name = "DgItensPO";
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
@@ -627,7 +591,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.DgItensPO.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.DgItensPO.RowHeadersWidth = 51;
             this.DgItensPO.RowTemplate.Height = 24;
-            this.DgItensPO.Size = new System.Drawing.Size(970, 144);
+            this.DgItensPO.Size = new System.Drawing.Size(1293, 177);
             this.DgItensPO.TabIndex = 21;
             this.DgItensPO.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgItensPO_CellContentClick);
             this.DgItensPO.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgItensPO_CellDoubleClick);
@@ -826,68 +790,61 @@ namespace Zopone.AddOn.PO.View.Obra
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(101, 170);
-            this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label20.Location = new System.Drawing.Point(112, 173);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(65, 13);
+            this.label20.Size = new System.Drawing.Size(82, 16);
             this.label20.TabIndex = 47;
             this.label20.Text = "Observação";
             // 
             // txtObservacao
             // 
-            this.txtObservacao.Location = new System.Drawing.Point(103, 190);
-            this.txtObservacao.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtObservacao.Location = new System.Drawing.Point(115, 198);
             this.txtObservacao.Name = "txtObservacao";
-            this.txtObservacao.Size = new System.Drawing.Size(425, 20);
+            this.txtObservacao.Size = new System.Drawing.Size(565, 22);
             this.txtObservacao.TabIndex = 19;
             this.txtObservacao.Validated += new System.EventHandler(this.txtObservacao_Validated);
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(8, 170);
-            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label19.Location = new System.Drawing.Point(6, 173);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(85, 13);
+            this.label19.Size = new System.Drawing.Size(106, 16);
             this.label19.TabIndex = 45;
             this.label19.Text = "Data Solicitação";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(436, 118);
-            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label18.Location = new System.Drawing.Point(580, 119);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(41, 13);
+            this.label18.Size = new System.Drawing.Size(50, 16);
             this.label18.TabIndex = 43;
             this.label18.Text = "Nro NF";
             // 
             // txtNroNF
             // 
-            this.txtNroNF.Location = new System.Drawing.Point(435, 136);
-            this.txtNroNF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtNroNF.Location = new System.Drawing.Point(580, 140);
             this.txtNroNF.Name = "txtNroNF";
-            this.txtNroNF.Size = new System.Drawing.Size(76, 20);
+            this.txtNroNF.Size = new System.Drawing.Size(100, 22);
             this.txtNroNF.TabIndex = 16;
             this.txtNroNF.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(343, 118);
-            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label17.Location = new System.Drawing.Point(464, 117);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(92, 13);
+            this.label17.Size = new System.Drawing.Size(114, 16);
             this.label17.TabIndex = 41;
             this.label17.Text = "Data Faturamento";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(170, 117);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Location = new System.Drawing.Point(220, 116);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(28, 13);
+            this.label15.Size = new System.Drawing.Size(35, 16);
             this.label15.TabIndex = 37;
             this.label15.Text = "Tipo";
             // 
@@ -895,155 +852,136 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.CbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbTipo.FormattingEnabled = true;
-            this.CbTipo.ItemHeight = 13;
-            this.CbTipo.Location = new System.Drawing.Point(170, 136);
-            this.CbTipo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CbTipo.ItemHeight = 16;
+            this.CbTipo.Location = new System.Drawing.Point(223, 138);
             this.CbTipo.Name = "CbTipo";
-            this.CbTipo.Size = new System.Drawing.Size(92, 21);
+            this.CbTipo.Size = new System.Drawing.Size(121, 24);
             this.CbTipo.TabIndex = 14;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.BackColor = System.Drawing.Color.Transparent;
-            this.label14.Location = new System.Drawing.Point(71, 118);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label14.Location = new System.Drawing.Point(90, 117);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.Size = new System.Drawing.Size(39, 16);
             this.label14.TabIndex = 35;
             this.label14.Text = "Valor";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.Location = new System.Drawing.Point(7, 118);
-            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label13.Location = new System.Drawing.Point(6, 117);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(43, 13);
+            this.label13.Size = new System.Drawing.Size(54, 16);
             this.label13.TabIndex = 33;
             this.label13.Text = "Parcela";
             // 
             // txtParcela
             // 
-            this.txtParcela.Location = new System.Drawing.Point(7, 136);
-            this.txtParcela.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtParcela.Location = new System.Drawing.Point(6, 140);
             this.txtParcela.Name = "txtParcela";
-            this.txtParcela.Size = new System.Drawing.Size(62, 20);
+            this.txtParcela.Size = new System.Drawing.Size(81, 22);
             this.txtParcela.TabIndex = 12;
             this.txtParcela.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.BackColor = System.Drawing.Color.Transparent;
-            this.label12.Location = new System.Drawing.Point(329, 66);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Location = new System.Drawing.Point(435, 72);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(89, 13);
+            this.label12.Size = new System.Drawing.Size(110, 16);
             this.label12.TabIndex = 31;
             this.label12.Text = "Item Faturamento";
             // 
             // txtItemFaturamento
             // 
-            this.txtItemFaturamento.Location = new System.Drawing.Point(329, 85);
-            this.txtItemFaturamento.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtItemFaturamento.Location = new System.Drawing.Point(435, 92);
             this.txtItemFaturamento.Name = "txtItemFaturamento";
-            this.txtItemFaturamento.Size = new System.Drawing.Size(159, 20);
+            this.txtItemFaturamento.Size = new System.Drawing.Size(211, 22);
             this.txtItemFaturamento.TabIndex = 11;
             this.txtItemFaturamento.Validating += new System.ComponentModel.CancelEventHandler(this.txtItemFaturamento_Validating);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(7, 67);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Location = new System.Drawing.Point(6, 72);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(27, 13);
+            this.label11.Size = new System.Drawing.Size(32, 16);
             this.label11.TabIndex = 29;
             this.label11.Text = "Item";
             // 
             // txtItem
             // 
-            this.txtItem.Location = new System.Drawing.Point(7, 85);
-            this.txtItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtItem.Location = new System.Drawing.Point(6, 92);
             this.txtItem.Name = "txtItem";
-            this.txtItem.Size = new System.Drawing.Size(318, 20);
+            this.txtItem.Size = new System.Drawing.Size(423, 22);
             this.txtItem.TabIndex = 10;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(397, 19);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Location = new System.Drawing.Point(528, 26);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(39, 13);
+            this.label10.Size = new System.Drawing.Size(48, 16);
             this.label10.TabIndex = 27;
             this.label10.Text = "Cliente";
             // 
             // txtCliente
             // 
-            this.txtCliente.Location = new System.Drawing.Point(396, 37);
-            this.txtCliente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCliente.Location = new System.Drawing.Point(528, 45);
             this.txtCliente.Name = "txtCliente";
-            this.txtCliente.Size = new System.Drawing.Size(90, 20);
+            this.txtCliente.Size = new System.Drawing.Size(118, 22);
             this.txtCliente.TabIndex = 9;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(111, 18);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Location = new System.Drawing.Point(141, 22);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(55, 13);
+            this.label9.Size = new System.Drawing.Size(69, 16);
             this.label9.TabIndex = 25;
             this.label9.Text = "Candidato";
             // 
             // txtCandidato
             // 
-            this.txtCandidato.Location = new System.Drawing.Point(112, 37);
-            this.txtCandidato.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCandidato.Location = new System.Drawing.Point(144, 45);
             this.txtCandidato.Name = "txtCandidato";
-            this.txtCandidato.Size = new System.Drawing.Size(62, 20);
+            this.txtCandidato.Size = new System.Drawing.Size(82, 22);
             this.txtCandidato.TabIndex = 8;
             this.txtCandidato.TextChanged += new System.EventHandler(this.txtCandidato_TextChanged);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 18);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Location = new System.Drawing.Point(6, 22);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(30, 13);
+            this.label8.Size = new System.Drawing.Size(37, 16);
             this.label8.TabIndex = 23;
             this.label8.Text = "Obra";
             // 
             // txtObra
             // 
-            this.txtObra.Location = new System.Drawing.Point(8, 37);
-            this.txtObra.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtObra.Location = new System.Drawing.Point(6, 45);
             this.txtObra.Name = "txtObra";
-            this.txtObra.Size = new System.Drawing.Size(76, 20);
+            this.txtObra.Size = new System.Drawing.Size(100, 22);
             this.txtObra.TabIndex = 7;
             this.txtObra.TextChanged += new System.EventHandler(this.txtObra_TextChanged);
             this.txtObra.Validating += new System.ComponentModel.CancelEventHandler(this.txtObra_Validating);
             // 
             // mskDATA
             // 
-            this.mskDATA.Location = new System.Drawing.Point(529, 32);
-            this.mskDATA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.mskDATA.Location = new System.Drawing.Point(656, 40);
             this.mskDATA.Mask = "99/99/9999";
             this.mskDATA.Name = "mskDATA";
-            this.mskDATA.Size = new System.Drawing.Size(79, 20);
+            this.mskDATA.Size = new System.Drawing.Size(87, 22);
             this.mskDATA.TabIndex = 3;
             this.mskDATA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // txtValorPO
             // 
-            this.txtValorPO.Location = new System.Drawing.Point(378, 32);
-            this.txtValorPO.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtValorPO.Location = new System.Drawing.Point(456, 40);
             this.txtValorPO.Name = "txtValorPO";
-            this.txtValorPO.Size = new System.Drawing.Size(140, 20);
+            this.txtValorPO.Size = new System.Drawing.Size(186, 22);
             this.txtValorPO.TabIndex = 2;
             this.txtValorPO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtValorPO.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
@@ -1053,61 +991,72 @@ namespace Zopone.AddOn.PO.View.Obra
             this.CbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbStatus.Enabled = false;
             this.CbStatus.FormattingEnabled = true;
-            this.CbStatus.Location = new System.Drawing.Point(739, 32);
-            this.CbStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CbStatus.Location = new System.Drawing.Point(936, 38);
             this.CbStatus.Name = "CbStatus";
-            this.CbStatus.Size = new System.Drawing.Size(132, 21);
+            this.CbStatus.Size = new System.Drawing.Size(175, 24);
             this.CbStatus.TabIndex = 22;
             // 
             // BtPesqPO
             // 
             this.BtPesqPO.Image = ((System.Drawing.Image)(resources.GetObject("BtPesqPO.Image")));
-            this.BtPesqPO.Location = new System.Drawing.Point(95, 30);
-            this.BtPesqPO.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BtPesqPO.Location = new System.Drawing.Point(113, 38);
             this.BtPesqPO.Name = "BtPesqPO";
-            this.BtPesqPO.Size = new System.Drawing.Size(23, 23);
+            this.BtPesqPO.Size = new System.Drawing.Size(23, 25);
             this.BtPesqPO.TabIndex = 23;
             this.BtPesqPO.UseVisualStyleBackColor = true;
             this.BtPesqPO.Click += new System.EventHandler(this.button1_Click);
             // 
             // BtAnexo
             // 
-            this.BtAnexo.BackColor = System.Drawing.Color.Transparent;
             this.BtAnexo.Image = ((System.Drawing.Image)(resources.GetObject("BtAnexo.Image")));
-            this.BtAnexo.Location = new System.Drawing.Point(693, 158);
-            this.BtAnexo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BtAnexo.Location = new System.Drawing.Point(924, 198);
             this.BtAnexo.Name = "BtAnexo";
-            this.BtAnexo.Size = new System.Drawing.Size(30, 28);
+            this.BtAnexo.Size = new System.Drawing.Size(28, 28);
             this.BtAnexo.TabIndex = 57;
-            this.BtAnexo.UseVisualStyleBackColor = false;
+            this.BtAnexo.UseVisualStyleBackColor = true;
             this.BtAnexo.Click += new System.EventHandler(this.BtAnexo_Click);
             // 
             // button1
             // 
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(853, 3);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Location = new System.Drawing.Point(1102, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(20, 23);
+            this.button1.Size = new System.Drawing.Size(27, 28);
             this.button1.TabIndex = 64;
             this.button1.UseVisualStyleBackColor = true;
             // 
             // lblMensagemTela
             // 
             this.lblMensagemTela.AutoSize = true;
-            this.lblMensagemTela.Location = new System.Drawing.Point(14, 677);
-            this.lblMensagemTela.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblMensagemTela.Location = new System.Drawing.Point(18, 833);
             this.lblMensagemTela.Name = "lblMensagemTela";
-            this.lblMensagemTela.Size = new System.Drawing.Size(0, 13);
+            this.lblMensagemTela.Size = new System.Drawing.Size(0, 16);
             this.lblMensagemTela.TabIndex = 66;
+            // 
+            // txtLinhaSAP
+            // 
+            this.txtLinhaSAP.Enabled = false;
+            this.txtLinhaSAP.Location = new System.Drawing.Point(1199, 200);
+            this.txtLinhaSAP.Name = "txtLinhaSAP";
+            this.txtLinhaSAP.Size = new System.Drawing.Size(100, 22);
+            this.txtLinhaSAP.TabIndex = 67;
+            // 
+            // lblLinhaSAP
+            // 
+            this.lblLinhaSAP.AutoSize = true;
+            this.lblLinhaSAP.Location = new System.Drawing.Point(1196, 178);
+            this.lblLinhaSAP.Name = "lblLinhaSAP";
+            this.lblLinhaSAP.Size = new System.Drawing.Size(66, 16);
+            this.lblLinhaSAP.TabIndex = 68;
+            this.lblLinhaSAP.Text = "LinhaSAP";
             // 
             // FrmPO
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(1028, 698);
+            this.ClientSize = new System.Drawing.Size(1370, 859);
             this.Controls.Add(this.lblMensagemTela);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.BtAnexo);
@@ -1130,7 +1079,6 @@ namespace Zopone.AddOn.PO.View.Obra
             this.Controls.Add(this.txtCodigo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FrmPO";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Detalhe PO";
@@ -1236,6 +1184,8 @@ namespace Zopone.AddOn.PO.View.Obra
         private DataGridViewTextBoxColumn DescContrato;
         private Label lblMensagemTela;
         private TextBox txtNomeCliente;
+        private Label lblLinhaSAP;
+        private TextBox txtLinhaSAP;
     }
 }
 
