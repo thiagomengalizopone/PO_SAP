@@ -97,7 +97,7 @@ namespace Zopone.AddOn.PO.View.Obra
             EdCodeContrato = (EditText)oForm.Items.Item("EdCodCont").Specific;
             EdDescContrato = (EditText)oForm.Items.Item("EdDescCont").Specific;
             EdDescContrato.ChooseFromListAfter += EdDescContrato_ChooseFromListAfter;
-            EdDescContrato.ValidateAfter += EdDescContrato_ValidateAfter;
+            EdDescContrato.LostFocusAfter += EdDescContrato_LostFocusAfter;
 
             EdCardCode = (EditText)oForm.Items.Item("EdCardCode").Specific;
             EdCardCode.ChooseFromListAfter += EdCardCode_ChooseFromListAfter;
@@ -189,22 +189,9 @@ namespace Zopone.AddOn.PO.View.Obra
 
         }
 
-        private void EdDescContrato_ValidateAfter(object sboObject, SBOItemEventArg pVal)
+        private void EdDescContrato_LostFocusAfter(object sboObject, SBOItemEventArg pVal)
         {
-            try
-            {
-                string CodContrato = SqlUtils.GetValue($"SELECT AbsId FROM OOAT WHERE Descript = '{EdDescContrato.Value.Trim()}'");
-
-                if (!string.IsNullOrEmpty(CodContrato) && EdCodeContrato.Value != CodContrato)
-                    EdCodeContrato.Value = CodContrato;
-                
-                oForm.Mode = BoFormMode.fm_UPDATE_MODE;
-
-            }
-            catch (Exception Ex)
-            {
-                Util.ExibeMensagensDialogoStatusBar($"Erro carregar código contrato: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
-            }
+            ValidaCodigoContrato();
         }
 
         private void EdCardCode_ChooseFromListAfter(object sboObject, SBOItemEventArg pVal)
@@ -625,11 +612,39 @@ namespace Zopone.AddOn.PO.View.Obra
             try
             {
                 BubbleEvent = true;
+
+                ValidaCodigoContrato();
             }
             catch (Exception Ex)
             {
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao salvar registro: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
                 BubbleEvent = false;
+            }
+        }
+
+        private void ValidaCodigoContrato()
+        {
+            try
+            {
+                if (oForm.Mode == BoFormMode.fm_FIND_MODE)
+                    return;
+
+                string CodContrato = SqlUtils.GetValue($"SELECT AbsId FROM OOAT WHERE Descript = '{EdDescContrato.Value.Trim()}'");
+
+                if (!string.IsNullOrEmpty(CodContrato) && EdCodeContrato.Value != CodContrato)
+                {
+                    EdCodeContrato.Value = CodContrato;
+                    
+                    if (oForm.Mode == BoFormMode.fm_OK_MODE)
+                        oForm.Mode = BoFormMode.fm_UPDATE_MODE;
+                }
+                
+                
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro carregar código contrato: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
 

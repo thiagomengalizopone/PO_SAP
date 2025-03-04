@@ -884,7 +884,6 @@ namespace Zopone.AddOn.PO.View.Obra
 
                         txtCodigo.Text = Globals.Master.Connection.Database.GetNewObjectKey();
 
-                        LimparTelaPO();
                     }
 
                     CodigoPO = txtCodigo.Text;
@@ -895,6 +894,8 @@ namespace Zopone.AddOn.PO.View.Obra
                     new Task(() => { EnviarDadosPCIAsync(CodigoPO); }).Start();
 
                     
+                    if (!bExistePedido)
+                        LimparTelaPO();
 
                     linesPODeleted = new List<Int32?>();
 
