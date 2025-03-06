@@ -442,7 +442,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
                         if (oColumn.Width <= 150)
                             oColumn.Width = 150;
                         //new Task(() => { SomarValoresDocumentosSelecionados(); }).Start();
-                        //SomarValoresDocumentosSelecionados();
+                        SomarValoresDocumentosSelecionados();
                     }
                 }
                 catch (Exception Ex)
@@ -590,7 +590,13 @@ namespace Zopone.AddOn.PO.View.Financeiro
                                     if (double.Parse(row.ValorAReceber.ToString()) < double.Parse(row.ValoAtual.ToString()))
                                         TransFerSum += double.Parse(row.ValorAReceber.ToString());
                                     else
+                                    {
+                                        //if(double.Parse(row.Desc.ToString()) > 0)
+                                        //    vPay.Invoices.SumApplied = double.Parse(row.ValorAReceber.ToString());
+                                        //else
+                                        
                                         TransFerSum += double.Parse(row.ValorLiq.ToString());
+                                    }
                                 }
                             }                            
 
@@ -1049,7 +1055,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                 for (int iRow = 0; iRow < DtDadosCR.Rows.Count; iRow++)
                 {
-                    totalPagto += Convert.ToDouble(DtDadosCR.GetValue("ValorTitulo", iRow));
+                    totalPagto += Convert.ToDouble(DtDadosCR.GetValue("ValorAtual", iRow));
                     totalBruto += Convert.ToDouble(DtDadosCR.GetValue("ValorTitulo", iRow));
                     totalLiquido += Convert.ToDouble(DtDadosCR.GetValue("ValorLiquido", iRow));
                     totalConfins += Convert.ToDouble(DtDadosCR.GetValue("COFINS", iRow));
@@ -1088,20 +1094,21 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
             try
             {
-                double totalPagto = 0;
-                double totalBruto = 0;
+                double totalPagto   = 0;
+                double totalBruto   = 0;
                 double totalLiquido = 0;
                 double totalConfins = 0;
-                double totalCSLL = 0;
-                double totalIRRF = 0;
-                double totalPIS = 0;
-                double totalINSS = 0;
-                double totalISS = 0;
+                double totalCSLL    = 0;
+                double totalIRRF    = 0;
+                double totalPIS     = 0;
+                double totalINSS    = 0;
+                double totalISS     = 0;
 
                 var filteredRows = from row in Enumerable.Range(0, DtDadosCR.Rows.Count)
                                    where DtDadosCR.GetValue("Seleciona", row).ToString() == "Y"
                                    select new
                                    {
+                                       ValorAReceber = DtDadosCR.GetValue("ValorAReceber", row),
                                        ValorTitulo = DtDadosCR.GetValue("ValorTitulo", row),
                                        ValorLiquido = DtDadosCR.GetValue("ValorLiquido", row),
                                        COFINS = DtDadosCR.GetValue("COFINS", row),
@@ -1114,7 +1121,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                 foreach (var row in filteredRows)
                 {
-                    totalPagto += Convert.ToDouble(row.ValorTitulo);
+                    totalPagto += Convert.ToDouble(row.ValorAReceber);
                     totalBruto += Convert.ToDouble(row.ValorTitulo);
                     totalLiquido += Convert.ToDouble(row.ValorLiquido);
                     totalConfins += Convert.ToDouble(row.COFINS);
