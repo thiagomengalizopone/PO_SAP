@@ -35,10 +35,10 @@ namespace Zopone.AddOn.PO.View.Obra
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPO));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPO));
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,6 +53,8 @@ namespace Zopone.AddOn.PO.View.Obra
             this.label2 = new System.Windows.Forms.Label();
             this.txtAnexo = new System.Windows.Forms.TextBox();
             this.gbItens = new System.Windows.Forms.GroupBox();
+            this.lblDescContrato = new System.Windows.Forms.Label();
+            this.lblNomeCliente = new System.Windows.Forms.Label();
             this.lblLinhaSAP = new System.Windows.Forms.Label();
             this.txtLinhaSAP = new System.Windows.Forms.TextBox();
             this.BtMesclar = new System.Windows.Forms.Button();
@@ -128,8 +130,7 @@ namespace Zopone.AddOn.PO.View.Obra
             this.BtAnexo = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.lblMensagemTela = new System.Windows.Forms.Label();
-            this.lblNomeCliente = new System.Windows.Forms.Label();
-            this.lblDescContrato = new System.Windows.Forms.Label();
+            this.btLkObra = new System.Windows.Forms.Button();
             this.gbItens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgItensPO)).BeginInit();
             this.SuspendLayout();
@@ -245,6 +246,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // gbItens
             // 
+            this.gbItens.Controls.Add(this.btLkObra);
             this.gbItens.Controls.Add(this.lblDescContrato);
             this.gbItens.Controls.Add(this.lblNomeCliente);
             this.gbItens.Controls.Add(this.lblLinhaSAP);
@@ -301,6 +303,26 @@ namespace Zopone.AddOn.PO.View.Obra
             this.gbItens.TabStop = false;
             this.gbItens.Text = "Itens - PO";
             this.gbItens.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // lblDescContrato
+            // 
+            this.lblDescContrato.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDescContrato.ForeColor = System.Drawing.Color.Black;
+            this.lblDescContrato.Location = new System.Drawing.Point(783, 140);
+            this.lblDescContrato.Name = "lblDescContrato";
+            this.lblDescContrato.Size = new System.Drawing.Size(516, 22);
+            this.lblDescContrato.TabIndex = 70;
+            this.lblDescContrato.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // lblNomeCliente
+            // 
+            this.lblNomeCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNomeCliente.ForeColor = System.Drawing.Color.Black;
+            this.lblNomeCliente.Location = new System.Drawing.Point(686, 46);
+            this.lblNomeCliente.Name = "lblNomeCliente";
+            this.lblNomeCliente.Size = new System.Drawing.Size(613, 22);
+            this.lblNomeCliente.TabIndex = 69;
+            this.lblNomeCliente.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // lblLinhaSAP
             // 
@@ -441,7 +463,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // button3
             // 
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Location = new System.Drawing.Point(225, 42);
+            this.button3.Location = new System.Drawing.Point(253, 42);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(28, 28);
             this.button3.TabIndex = 54;
@@ -451,7 +473,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // BtPesqObra
             // 
             this.BtPesqObra.Image = ((System.Drawing.Image)(resources.GetObject("BtPesqObra.Image")));
-            this.BtPesqObra.Location = new System.Drawing.Point(110, 40);
+            this.BtPesqObra.Location = new System.Drawing.Point(137, 40);
             this.BtPesqObra.Name = "BtPesqObra";
             this.BtPesqObra.Size = new System.Drawing.Size(28, 28);
             this.BtPesqObra.TabIndex = 24;
@@ -493,9 +515,9 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             this.lblObra.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblObra.ForeColor = System.Drawing.Color.Red;
-            this.lblObra.Location = new System.Drawing.Point(259, 46);
+            this.lblObra.Location = new System.Drawing.Point(287, 46);
             this.lblObra.Name = "lblObra";
-            this.lblObra.Size = new System.Drawing.Size(253, 22);
+            this.lblObra.Size = new System.Drawing.Size(221, 22);
             this.lblObra.TabIndex = 48;
             this.lblObra.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.lblObra.Click += new System.EventHandler(this.lblObra_Click);
@@ -936,7 +958,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(141, 22);
+            this.label9.Location = new System.Drawing.Point(169, 22);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(69, 16);
             this.label9.TabIndex = 25;
@@ -944,7 +966,7 @@ namespace Zopone.AddOn.PO.View.Obra
             // 
             // txtCandidato
             // 
-            this.txtCandidato.Location = new System.Drawing.Point(144, 45);
+            this.txtCandidato.Location = new System.Drawing.Point(172, 45);
             this.txtCandidato.Name = "txtCandidato";
             this.txtCandidato.Size = new System.Drawing.Size(82, 22);
             this.txtCandidato.TabIndex = 8;
@@ -1033,25 +1055,15 @@ namespace Zopone.AddOn.PO.View.Obra
             this.lblMensagemTela.Size = new System.Drawing.Size(0, 16);
             this.lblMensagemTela.TabIndex = 66;
             // 
-            // lblNomeCliente
+            // btLkObra
             // 
-            this.lblNomeCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNomeCliente.ForeColor = System.Drawing.Color.Black;
-            this.lblNomeCliente.Location = new System.Drawing.Point(686, 46);
-            this.lblNomeCliente.Name = "lblNomeCliente";
-            this.lblNomeCliente.Size = new System.Drawing.Size(613, 22);
-            this.lblNomeCliente.TabIndex = 69;
-            this.lblNomeCliente.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // lblDescContrato
-            // 
-            this.lblDescContrato.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescContrato.ForeColor = System.Drawing.Color.Black;
-            this.lblDescContrato.Location = new System.Drawing.Point(783, 140);
-            this.lblDescContrato.Name = "lblDescContrato";
-            this.lblDescContrato.Size = new System.Drawing.Size(516, 22);
-            this.lblDescContrato.TabIndex = 70;
-            this.lblDescContrato.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.btLkObra.Image = ((System.Drawing.Image)(resources.GetObject("btLkObra.Image")));
+            this.btLkObra.Location = new System.Drawing.Point(108, 40);
+            this.btLkObra.Name = "btLkObra";
+            this.btLkObra.Size = new System.Drawing.Size(28, 28);
+            this.btLkObra.TabIndex = 71;
+            this.btLkObra.UseVisualStyleBackColor = true;
+            this.btLkObra.Click += new System.EventHandler(this.btLkObra_Click);
             // 
             // FrmPO
             // 
@@ -1080,8 +1092,8 @@ namespace Zopone.AddOn.PO.View.Obra
             this.Controls.Add(this.txtNroPedido);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCodigo);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.KeyPreview = true;
+            this.MaximizeBox = false;
             this.Name = "FrmPO";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Detalhe PO";
@@ -1189,6 +1201,7 @@ namespace Zopone.AddOn.PO.View.Obra
         private TextBox txtLinhaSAP;
         private Label lblNomeCliente;
         private Label lblDescContrato;
+        private Button btLkObra;
     }
 }
 

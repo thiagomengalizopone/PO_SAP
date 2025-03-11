@@ -1266,5 +1266,11 @@ namespace Zopone.AddOn.PO.View.Obra
         {
             AdicionarRemoverItemGrid();
         }
+
+        private void btLkObra_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtObra.Text))
+                new FrmObra(txtObra.Text);
+        }
     }
 }
