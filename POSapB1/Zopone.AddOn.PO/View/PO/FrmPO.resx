@@ -348,6 +348,16 @@
         Q8JuC3aps5eUawyKyXUE+hCBjjDD/AeHGdGpsvPBLCAgICDALaLoL+1OcZLop09iAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="btLkObra.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABEAAAALCAIAAAAWQvFQAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAS
+        cwAAEnMBjCK5BwAAAM9JREFUKFNj+E86wKfn2ZlwIIJykAA+PY9Ohv170QQkoXwYQOi5eyQEE/17M/Pf
+        k1wgA6oIDBB6ru8L/P/1xP+vJ/99Pfbvy6F/n3b/+7Du36u+f89r/95xBsnCAELPhR3+/55X/nte9+9l
+        x7/Xk/69nvLvVS9Iw5Psvw+j/15XByqAqEToObnJ5++jpL9PMv89KwV649/Lln/Pq+EagLJQdch6Dq3x
+        wkQQDUAGVBEYIPRggt3L3IEagCSUDwP49Gxb5ApEUA4SwKcHO/j/HwChn/dN8hCGswAAAABJRU5ErkJg
+        gg==
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>151</value>
   </metadata>

@@ -28,7 +28,8 @@ namespace Zopone.AddOn.PO.View.Faturamento
         ComboBox cbUsuario { get; set; }
 
         EditText EdDataT { get; set; }
-        Button BtAlterarDataT { get; set; }
+        Button BtAlterarDataTransmissao { get; set; }        
+        Button BtAlterarDataVencimento { get; set; }       
 
         Button BtPesquisar { get; set; }
         Button BtImportarFaturamento { get; set; }
@@ -101,8 +102,11 @@ namespace Zopone.AddOn.PO.View.Faturamento
             DtPesquisa = oForm.DataSources.DataTables.Item("DtPO");
 
             EdDataT = (EditText)oForm.Items.Item("EdDataT").Specific;
-            BtAlterarDataT = (Button)oForm.Items.Item("BtDataT").Specific;
-            BtAlterarDataT.PressedAfter += BtAlterarDataT_PressedAfter;
+            BtAlterarDataTransmissao = (Button)oForm.Items.Item("BtDataT").Specific;
+            BtAlterarDataTransmissao.PressedAfter += BtAlterarDataT_PressedAfter;
+
+            BtAlterarDataVencimento = (Button)oForm.Items.Item("BtDataV").Specific;
+            BtAlterarDataVencimento.PressedAfter += BtAlterarDataVencimento_PressedAfter;
 
             BtPesquisar = (Button)oForm.Items.Item("BtPesq").Specific;
             BtPesquisar.PressedAfter += BtPesquisar_PressedAfter;
@@ -134,7 +138,9 @@ namespace Zopone.AddOn.PO.View.Faturamento
             oForm.Visible = true;
 
             LinhasSelecionadas = new List<int>();
-        }             
+        }
+
+        
 
         private void MtPedidos_ClickAfter(object sboObject, SBOItemEventArg pVal)
         {
@@ -305,14 +311,14 @@ namespace Zopone.AddOn.PO.View.Faturamento
             BubbleEvent = true;
         }
 
-        private void BtAlterarDataT_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        private void BtAlterarDataVencimento_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {
             try
             {
-                if (!Util.RetornarDialogo("Deseja alterar a Previsão de Transmissão para as notas selecionadas?"))
+                if (!Util.RetornarDialogo("Deseja alterar a Data de Vencimento das notas selecionadas?"))
                     return;
 
-                AlterarDataPrevisaoFaturamento();
+                AlterarDataPrevisaoFaturamento(true);
 
             }
             catch (Exception Ex)
@@ -321,80 +327,68 @@ namespace Zopone.AddOn.PO.View.Faturamento
             }
         }
 
-        private void AlterarDataPrevisaoFaturamento()
+        
+
+        private void BtAlterarDataT_PressedAfter(object sboObject, SBOItemEventArg pVal)
+        {
+            try
+            {
+                if (!Util.RetornarDialogo("Deseja alterar a Previsão de Transmissão para as notas selecionadas?"))
+                    return;
+
+                AlterarDataPrevisaoFaturamento(false);
+
+            }
+            catch (Exception Ex)
+            {
+                Util.ExibeMensagensDialogoStatusBar($"Erro ao importar faturamento: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
+            }
+        }
+
+        private void AlterarDataPrevisaoFaturamento(bool alterarVencimento = false)
         {
             try
             {
                 List<Tuple<string, string, double>> alocacaoParcelas = new List<Tuple<string, string, double>>();
-
                 string MensagemErro = string.Empty;
 
                 MtPedidos.FlushToDataSource();
-
-                DateTime dtDataTransmissao = DateTime.ParseExact(EdDataT.Value, "yyyyMMdd", CultureInfo.InvariantCulture);
+                DateTime dtDataAlterar = DateTime.ParseExact(EdDataT.Value, "yyyyMMdd", CultureInfo.InvariantCulture);
 
                 for (int iRow = 0; iRow < DtPesquisa.Rows.Count; iRow++)
                 {
                     if (DtPesquisa.GetValue("Selecionar", iRow).ToString() == "Y")
                     {
                         Int32 DocEntry = Convert.ToInt32(DtPesquisa.GetValue("Esboco", iRow));
-
                         SAPbobsCOM.Documents oEsbocoNotaFiscalSaida = (SAPbobsCOM.Documents)Globals.Master.Connection.Database.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
 
                         if (oEsbocoNotaFiscalSaida.GetByKey(DocEntry))
                         {
-                            alocacaoParcelas = new List<Tuple<string, string, double>>();
+                            alocacaoParcelas = ObterParcelas(oEsbocoNotaFiscalSaida);
 
-                            for (int iParcela = 0; iParcela < oEsbocoNotaFiscalSaida.Installments.Count; iParcela++)
+                            if (!alterarVencimento)
                             {
-                                oEsbocoNotaFiscalSaida.Installments.SetCurrentLine(iParcela);
-                                alocacaoParcelas.Add(new Tuple<string, string, double>(
-                                                            oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value.ToString(),
-                                                            oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value.ToString(),
-                                                            oEsbocoNotaFiscalSaida.Installments.Percentage
-                                                        )
-                                                    );
-
+                                AlterarDataDocumento(oEsbocoNotaFiscalSaida, dtDataAlterar, alocacaoParcelas);
                             }
-
-                            oEsbocoNotaFiscalSaida.DocDate = dtDataTransmissao;
-                            if (oEsbocoNotaFiscalSaida.Update() != 0)
-                                MensagemErro += $" {Globals.Master.Connection.Database.GetLastErrorDescription()} ";
-
-                            oEsbocoNotaFiscalSaida.GetByKey(DocEntry);
-
-                            for (int iParc = oEsbocoNotaFiscalSaida.Installments.Count; iParc > 0; iParc--)
+                            else
                             {
-                                oEsbocoNotaFiscalSaida.Installments.SetCurrentLine(iParc-1);
-                                oEsbocoNotaFiscalSaida.Installments.Delete();
-                            }
-
-                            oEsbocoNotaFiscalSaida.NumberOfInstallments = alocacaoParcelas.Count;
-
-                            foreach (var parcela in alocacaoParcelas)
-                            {
-                                oEsbocoNotaFiscalSaida.Installments.DueDate = oEsbocoNotaFiscalSaida.DocDueDate;
-                                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value = parcela.Item1;
-                                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value = parcela.Item2;
-                                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_Project").Value = oEsbocoNotaFiscalSaida.Project;
-                                oEsbocoNotaFiscalSaida.Installments.Percentage = parcela.Item3;
-
-                                oEsbocoNotaFiscalSaida.Installments.Add();
+                                AlterarDataVencimento(oEsbocoNotaFiscalSaida, dtDataAlterar);
                             }
 
                             if (oEsbocoNotaFiscalSaida.Update() != 0)
+                            {
                                 MensagemErro += $" {Globals.Master.Connection.Database.GetLastErrorDescription()} ";
-
-
+                            }
                         }
                     }
                 }
 
                 if (!string.IsNullOrEmpty(MensagemErro))
+                {
                     Util.ExibeMensagensDialogoStatusBar($"Erro ao alterar data de transmissão: {MensagemErro}", BoMessageTime.bmt_Medium, true);
+                }
 
                 CarregarDadosFaturamentoFaturar();
-
                 Util.ExibirMensagemStatusBar("Dados alterados com sucesso!");
             }
             catch (Exception Ex)
@@ -402,6 +396,69 @@ namespace Zopone.AddOn.PO.View.Faturamento
                 Util.ExibeMensagensDialogoStatusBar($"Erro ao alterar data de previsão de transmissão: {Ex.Message}", BoMessageTime.bmt_Medium, true, Ex);
             }
         }
+
+        private List<Tuple<string, string, double>> ObterParcelas(SAPbobsCOM.Documents oEsbocoNotaFiscalSaida)
+        {
+            List<Tuple<string, string, double>> alocacaoParcelas = new List<Tuple<string, string, double>>();
+
+            for (int iParcela = 0; iParcela < oEsbocoNotaFiscalSaida.Installments.Count; iParcela++)
+            {
+                oEsbocoNotaFiscalSaida.Installments.SetCurrentLine(iParcela);
+                alocacaoParcelas.Add(new Tuple<string, string, double>(
+                    oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value.ToString(),
+                    oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value.ToString(),
+                    oEsbocoNotaFiscalSaida.Installments.Percentage
+                ));
+            }
+
+            return alocacaoParcelas;
+        }
+
+        private void AlterarDataDocumento(SAPbobsCOM.Documents oEsbocoNotaFiscalSaida, DateTime dtDataAlterar, List<Tuple<string, string, double>> alocacaoParcelas)
+        {
+            oEsbocoNotaFiscalSaida.DocDate = dtDataAlterar;
+
+            if (oEsbocoNotaFiscalSaida.Update() != 0)
+            {
+                throw new Exception($"Erro ao atualizar data do documento: {Globals.Master.Connection.Database.GetLastErrorDescription()}");
+            }
+
+            oEsbocoNotaFiscalSaida.GetByKey(oEsbocoNotaFiscalSaida.DocEntry);
+
+            LimparParcelas(oEsbocoNotaFiscalSaida);
+
+            oEsbocoNotaFiscalSaida.NumberOfInstallments = alocacaoParcelas.Count;
+            foreach (var parcela in alocacaoParcelas)
+            {
+                oEsbocoNotaFiscalSaida.Installments.DueDate = oEsbocoNotaFiscalSaida.DocDueDate;
+                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_ItemFat").Value = parcela.Item1;
+                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_DescItemFat").Value = parcela.Item2;
+                oEsbocoNotaFiscalSaida.Installments.UserFields.Fields.Item("U_Project").Value = oEsbocoNotaFiscalSaida.Project;
+                oEsbocoNotaFiscalSaida.Installments.Percentage = parcela.Item3;
+                oEsbocoNotaFiscalSaida.Installments.Add();
+            }
+        }
+
+        private void AlterarDataVencimento(SAPbobsCOM.Documents oEsbocoNotaFiscalSaida, DateTime dtDataAlterar)
+        {
+            oEsbocoNotaFiscalSaida.DocDueDate = dtDataAlterar;
+
+            for (int iParc = oEsbocoNotaFiscalSaida.Installments.Count; iParc > 0; iParc--)
+            {
+                oEsbocoNotaFiscalSaida.Installments.SetCurrentLine(iParc - 1);
+                oEsbocoNotaFiscalSaida.Installments.DueDate = dtDataAlterar;
+            }
+        }
+
+        private void LimparParcelas(SAPbobsCOM.Documents oEsbocoNotaFiscalSaida)
+        {
+            for (int iParc = oEsbocoNotaFiscalSaida.Installments.Count; iParc > 0; iParc--)
+            {
+                oEsbocoNotaFiscalSaida.Installments.SetCurrentLine(iParc - 1);
+                oEsbocoNotaFiscalSaida.Installments.Delete();
+            }
+        }
+
 
         private void BtImportarFaturamento_PressedAfter(object sboObject, SBOItemEventArg pVal)
         {

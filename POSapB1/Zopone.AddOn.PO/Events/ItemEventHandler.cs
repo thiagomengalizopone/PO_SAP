@@ -1,4 +1,6 @@
-﻿using SAPbouiCOM;
+﻿using sap.dev.core;
+using SAPbouiCOM;
+using System.Windows.Forms;
 using Zopone.AddOn.PO.Controller.Constantes;
 using Zopone.AddOn.PO.View.Config;
 using Zopone.AddOn.PO.View.Contrato;
@@ -47,6 +49,11 @@ namespace Zopone.AddOn.PO
             else if (pVal.FormTypeEx == FormConstantes.FrmNotaFiscalSaida)
             {
                 BubbleEvent = Frm133.Interface_FormItemEvent(ref pVal);
+            }
+
+            if (pVal.EventType == BoEventTypes.et_CLICK) 
+            {
+                Util.MatrixSelectLine(pVal.FormUID, pVal);
             }
         }
     }

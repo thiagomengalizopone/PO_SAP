@@ -453,6 +453,9 @@ namespace Zopone.AddOn.PO.View.Manutencao
                 if(EdCliente.Value != "")
                     SQL_Query += $" AND Cliente = '" + EdCliente.Value + "' ";
 
+                if (!string.IsNullOrEmpty(EdDescCliente.Value))
+                    SQL_Query += $" AND UPPER(RazaoSocial) Like '%" + EdDescCliente.Value.ToUpper() + "%' ";
+
                 DtDocs.ExecuteQuery(SQL_Query);
 
                 //MtNotasP.Columns.Item("#").DataBind.Bind("DtDocs", "Sequencia");
