@@ -19,6 +19,7 @@
         public const string MnuPreFaturaPO = "MnuPreFaturaPO";
         public const string MnuEfetFaturaPO = "MnuEfetFatura";
         public const string MnuEditarNF = "MnuEditarNF";
+        public const string MnuGerarDescontoNF = "MnuGerarDescontoNF";        
 
         public const string MnuConfiguracoes = "MnuConfiguracoes";
         public const string MnuCadastros = "MnuCadastros";

@@ -260,6 +260,7 @@
     <Compile Include="View\ContratoAlocacao\FrmContAloca.cs" />
     <Compile Include="View\Contrato\Frm1250000100.cs" />
     <Compile Include="View\Deposito\Frm62.cs" />
+    <Compile Include="View\Faturamento\FrmGeraLCMDesconto.cs" />
     <Compile Include="View\Financeiro\FrmContasReceber.cs" />
     <Compile Include="View\Manutencao\FrmAtualizaDataProgramada.cs" />
     <Compile Include="View\Faturamento\FrmEfetivaFaturamento.cs" />
@@ -586,6 +587,11 @@
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_RemoveContasReceberPCI.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_RetornaDadosLinhaPO.sql" />
     <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_PCI_ListaNFsPCI.sql" />
+    <EmbeddedResource Include="View\Faturamento\FrmGeraLCMDesconto.srf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\SQL\Procedures\SP_ZPN_GeraDadosLCMDesconto.sql" />
+    <EmbeddedResource Include="Model\SQL\Procedures\ZPN_SP_PCI_ENVIACONTASRECEBERDESCRONTO.sql" />
     <Content Include="zopone.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

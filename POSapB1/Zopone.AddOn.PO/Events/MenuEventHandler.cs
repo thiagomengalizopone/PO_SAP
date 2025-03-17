@@ -106,6 +106,11 @@ namespace Zopone.AddOn.PO
                                 new FrmNotaFiscal();
                             }
                             break;
+                        case MenuConstantes.MnuGerarDescontoNF:
+                            {
+                                new FrmGeraLCMDesconto();
+                            }
+                            break;
                         case MenuConstantes.MnuManutencaoDtProgramanda:
                             {
                                 new FrmAtualizaDataProgramada();

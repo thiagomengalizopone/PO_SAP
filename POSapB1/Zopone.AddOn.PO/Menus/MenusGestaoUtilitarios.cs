@@ -170,6 +170,16 @@ namespace Zopone.AddOn.PO.Menus
                  "Editar Nota Fiscal",
                  24,
                  null));
+            
+            listMenu.Add(new Menu(
+                 MenuConstantes.MnuFaturamento,
+                 BoMenuType.mt_STRING,
+                 MenuConstantes.MnuGerarDescontoNF,
+                 "Gerar LCM Desconto",
+                 24,
+                 null));
+
+            
 
             listMenu.Add(new Menu(
                 MenuConstantes.MnuFaturamentoPO,
