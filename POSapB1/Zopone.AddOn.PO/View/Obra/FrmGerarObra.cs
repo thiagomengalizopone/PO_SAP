@@ -376,6 +376,8 @@ namespace Zopone.AddOn.PO.View.Obra
 
                     Util.ExibirMensagemStatusBar($"Gerando obra {Code}");
 
+                    string codigoMigrado = SqlUtils.GetValue("EXEC SP_ZPN_RetornaProximoCodigo");
+
                     oGeneralData = (GeneralData)oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData);
                     oGeneralData.SetProperty("Code", Code);
                     oGeneralData.SetProperty("Name", Localizacao);
@@ -390,6 +392,7 @@ namespace Zopone.AddOn.PO.View.Obra
                     oGeneralData.SetProperty("U_CardName", DtObras.GetValue("Cliente", iRow).ToString());
                     oGeneralData.SetProperty("U_Regional", DtObras.GetValue("IdRegional", iRow).ToString());
                     oGeneralData.SetProperty("U_Pais", "BR");
+                    oGeneralData.SetProperty("U_CodMigrado", codigoMigrado);                    
 
                     oGeneralParams = oGeneralService.Add(oGeneralData);
 

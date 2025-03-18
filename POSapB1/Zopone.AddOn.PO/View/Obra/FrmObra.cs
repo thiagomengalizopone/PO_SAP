@@ -1057,6 +1057,13 @@ namespace Zopone.AddOn.PO.View.Obra
                             CheckBox CkVisualizarPCI = (CheckBox)oFormObra.Items.Item("CkVisPCI").Specific;
 
                             CkVisualizarPCI.Checked = true;
+
+                            DBDataSource oDSObra = oFormObra.DataSources.DBDataSources.Item("@ZPN_OPRJ");
+
+                            if (string.IsNullOrEmpty(oDSObra.GetValue("U_CodMigrado", 0).ToString()))
+                            {
+                                oDSObra.SetValue("U_CodMigrado", 0, SqlUtils.GetValue("EXEC SP_ZPN_RetornaProximoCodigo"));
+                            }
                         }
 
                         return ValidarDadosObra(businessObjectInfo.FormUID);
