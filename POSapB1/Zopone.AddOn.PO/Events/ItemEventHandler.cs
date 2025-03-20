@@ -53,7 +53,7 @@ namespace Zopone.AddOn.PO
 
             if (pVal.EventType == BoEventTypes.et_CLICK) 
             {
-                Util.MatrixSelectLine(pVal.FormUID, pVal);
+                //Util.MatrixSelectLine(pVal.FormUID, pVal);
             }
         }
     }

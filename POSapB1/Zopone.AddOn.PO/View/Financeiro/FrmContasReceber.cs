@@ -766,7 +766,7 @@ namespace Zopone.AddOn.PO.View.Financeiro
 
                             vPay.Invoices.InvoiceType = BoRcptInvTypes.it_JournalEntry;
 
-                            vPay.Invoices.DocEntry = int.Parse(row.CodDocR.ToString());
+                            vPay.Invoices.DocEntry = int.Parse(row.CodDocR.ToString());    
 
                             TotDesconto += double.Parse(row.Desc.ToString());     
 
